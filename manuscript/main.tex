@@ -7,6 +7,9 @@
 \usepackage{etoolbox}
 % one corresponding author: drop the template's "(s)"
 \makeatletter\patchcmd{\@maketitle}{Corresponding author(s). E-mail(s):}{Corresponding author. E-mail:}{}{\typeout{WARNING corresponding-author patch failed}}\makeatother
+% no ';' after the single e-mail
+\patchcmd{\email}{\textcolor{blue}{#1};\ }{\textcolor{blue}{#1}}{}{\typeout{WARNING email patch failed}}
+\patchcmd{\email}{\textcolor{blue}{#1};\ }{\textcolor{blue}{#1}}{}{\typeout{WARNING email patch failed}}
 
 \begin{document}
 
