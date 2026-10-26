@@ -1,0 +1,100 @@
+\documentclass[pdflatex,sn-nature]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\begin{document}
+
+\title[yruler]{Measuring the satellite arrays of the human Y chromosome from sequencing reads}
+
+\author*[1]{\fnm{Andrea} \sur{Guarracino}}\email{aguarracino@tgen.org}
+\affil*[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
+
+% Genome Biology Method format (structured abstract, max 350 words); a Brief Communication is cut from this draft
+\abstract{\textbf{Background:} The satellite arrays of the human Y chromosome (the DYZ3 centromere, the Yq12 heterochromatin with its DYZ1 and DYZ2 units, and the DYZ18 and DYZ19 arrays) vary in length between males, Yq12 by tens of megabases. Complete Y assemblies now exist for more than one hundred males, but most genomes are short-read genomes.
+
+\textbf{Results:} We present yruler, which measures these arrays and the Y dosage from aligned or unaligned reads with marker k-mers built from complete Y assemblies. On held-out males, the median error is 2.65\% for DYZ3 (22 males) and 1.09\% for Yq12 (15 males).
+
+\textbf{Conclusions:} }
+
+\keywords{Y chromosome, satellite DNA, centromere, heterochromatin, short reads, k-mers}
+
+\maketitle
+
+\section{Background}\label{sec:background}
+
+The human Y chromosome carries large satellite arrays. The centromere is a DYZ3 alpha-satellite higher-order repeat array, and the Yq12 heterochromatin on the long arm is made of alternating DYZ1 (HSat3) and DYZ2 (HSat1B) arrays; smaller arrays such as DYZ18 and DYZ19 lie near Yq12 \cite{Rhie2023,Hallast2023}. These arrays were gaps in the GRCh38 reference. The first complete human Y chromosome, 62,460,029 bp long, added more than 30 Mb of sequence to it \cite{Rhie2023}. Complete Y assemblies of many males now show how much the arrays vary. In 43 Y chromosomes, the seven complete Yq12 regions measured 17.6 to 37.2 Mb, and the DYZ3 arrays of haplogroup R1b were smaller than those of other lineages (mean 341 vs 787 kb) \cite{Hallast2023}. In 142 near-complete Y assemblies, DYZ3 arrays measure 121 kb to 1.67 Mb and Yq12 regions 10.3 to 53.1 Mb \cite{Hallast2026}, and independent panels report Yq12 lengths of 17.85 to 37.39 Mb in 16 males \cite{Logsdon2025} and 9.0 to 45.8 Mb in 85 gapless East Asian Y chromosomes \cite{Liu2026}. The arrays also change between generations: in a four-generation pedigree, each Y transmission carried one new structural variant of whole DYZ2 units, 2,416 to 4,839 bp long \cite{Porubsky2025}.
+
+The arrays have known functions, but the effects of their length are not known. DYZ3 carries the kinetochore of the Y chromosome \cite{Jain2018}, and Yq12 binds HSF1 and forms nuclear stress bodies in male cells after heat shock \cite{Penin2021}. An early study found no association between the length of the Y alpha-satellite array and sex chromosome disomy in sperm \cite{Abruzzo1996}. Mosaic loss of the Y chromosome in blood is frequent in aging males and is associated with disease \cite{Thompson2019,Sano2022}, and whether the length of the Y arrays changes this risk has not been tested. Such tests need array lengths and Y dosage measured in the same genomes, for many males.
+
+Most human genomes are short-read genomes: 3,202 genomes of the 1000 Genomes Project at 30x \cite{ByrskaBishop2022}, 245,388 in All of Us \cite{AoU2024} and 490,640 in UK Biobank \cite{UKB2025}. Earlier studies estimated single arrays from these reads. DYZ3 was measured with array-specific k-mers in 366 males \cite{Miga2014}, DYZ1 in 396 males \cite{Altemose2014}, and the read depth of DYZ1 was used as a proxy of Yq12 length in 1,225 males \cite{SanRoman2024}. Other k-mer methods give related results: Y-mer assigns Y haplogroups \cite{Puurand2025}, ascairn infers centromere haplogroups and the closest reference haplotype \cite{Shiraishi2026}, and HOROSCOPE estimates centromeric array lengths for some chromosomes, but its released models do not include the Y \cite{Hain2026}. No method measures all the Y arrays in base pairs from short reads with a calibration on complete Y assemblies. Here we present yruler, which counts marker k-mers built from complete Y assemblies to measure the DYZ3, Yq12, DYZ1, DYZ2, DYZ18 and DYZ19 arrays and the Y dosage, and we test it on males with complete arrays, on pedigrees and on different sequencing platforms.
+
+\section{Results}\label{sec:results}
+
+\subsection{Complete arrays in 129 and 91 males}\label{sec:res-truth}
+% truth sets; our unit annotation vs published lengths (Yq12 span -0.24%); classes and their share of Yq12
+
+\subsection{yruler: marker k-mers and one pass over the reads}\label{sec:res-yruler}
+% Figure 1: method; speed and memory on a 30x CRAM
+
+\subsection{Accuracy on held-out males}\label{sec:res-benchmark}
+On held-out males, the median absolute error is 2.65\% for DYZ3 (22 males; 90th percentile 3.83\%, Pearson 0.9983, Kendall 0.939) and 1.09\% for Yq12 (15 males; 90th percentile 3.58\%, Pearson 0.9980, Kendall 0.943). By leave-one-out on all truth males with 1kGP reads, the median absolute error is 1.95\% for DYZ3 (119 males) and 1.63\% for Yq12 (84 males).
+% DYZ1, DYZ2, DYZ18, DYZ19: pending
+
+\subsection{Aligners, platforms and read groups}\label{sec:res-groups}
+
+\subsection{Precision in pedigrees}\label{sec:res-pedigree}
+% CEPH 1463 patrilineal males on several platforms; 1kGP father-son pairs; true one-generation changes are a few kb
+
+\subsection{Array lengths in 1000 Genomes males}\label{sec:res-catalog}
+
+\subsection{Array lengths along Y lineages}\label{sec:res-lineages}
+% DYZ3 smaller in R1b; DYZ19 deletion in J2a; DYZ1:DYZ2 ratio
+
+\section{Discussion}\label{sec:discussion}
+
+\section{Conclusions}\label{sec:conclusions}
+
+\section{Methods}\label{sec:methods}
+
+\subsection{Truth arrays}\label{sec:m-truth}
+Truth lengths come from complete Y chromosome assemblies of 142 males \cite{Hallast2026} and, for arrays that are not complete there, from the HPRC release 2 assemblies \cite{Liao2023}. An array is complete when it lies on one contig with at least 100 kb of flanking sequence on both sides, has no gap, and has no 1 kb window that all four combinations of Flagger and NucFlag with HiFi and ONT reads flag as an error. We remove the DYZ3 arrays of two males (NA18879, HG00329) because part of the array is on an unplaced contig. This gives 129 males with a complete DYZ3 array and 91 males with a complete Yq12 array.
+
+\subsection{Array units}\label{sec:m-units}
+We annotate the units of each array with profile hidden Markov models built from the truth assemblies. For each class (DYZ1, DYZ2, DYZ18, the 3.1 kb and 2.7 kb units of the DYZ18 subregion, DYZ19 and the DYZ3 higher-order repeat), we take 10 full-length units from each assembly, align them with MAFFT 7.526 \cite{Katoh2013} and build a profile with hmmbuild from HMMER 3.4 \cite{Eddy2011}. Seed units come from published consensus sequences \cite{Hallast2023}. % verify: DYZ1 seed (3,559 bp, yq_cons.fa) source DYZ3 units run from the start of one higher-order repeat to the start of the next, inside the active array. We search all models together with nhmmer (E-value at most $10^{-10}$, $10^{-5}$ for the 125 bp DYZ19 unit) on every truth assembly and give each base to the model with the highest score. The Yq12 span runs from the first to the last unit that covers at least half of its model, and the non-DYZ part is the span minus the units.
+
+\subsection{Marker k-mers}\label{sec:m-markers}
+For each array class we count the canonical 31-mers of the array in each training assembly with KMC 3.2.4 \cite{Kokot2017}, keep the 31-mers present in at least half of the training assemblies, and remove 31-mers present in CHM13 outside chromosome Y \cite{Nurk2022}. Yq12 markers also exclude 31-mers found elsewhere on the Y. Single-copy Y markers (6,940,206) and chromosome 2 depth markers (8,965,587, GRCh38 chr2:50,004,014-59,994,358) come from single-copy regions. yruler stores the markers as one masked superstring per class \cite{Sladky2023} compressed with zstd (4,730,117 bytes for 16,584,535 markers).
+% verify: presence threshold of the new classes (90% vs 50%)
+
+\subsection{Counting}\label{sec:m-counting}
+yruler reads CRAM or BAM files with htslib \cite{Bonfield2021} through rust-htslib, or SAM records on standard input. It splits the file into 10 Mb windows by its index (or into the regions of a BED file) plus the unmapped reads, and reads the windows in parallel; each read is counted once, in the window where it starts. It keeps primary reads (no secondary or supplementary flag) and counts every canonical 31-mer of each read against the markers with an open-addressing hash table behind a Bloom filter and a per-thread cache. For genomes aligned with DRAGEN 3.7.6, reading only the regions that carry marker reads (chromosome Y, the chromosome 2 depth span, 23 decoy contigs and the unmapped reads) returns the same estimates as the whole file. % verify ratio numbers before use
+
+\subsection{Array length}\label{sec:m-length}
+The length of an array is $L = K \cdot S_{\mathrm{array}} / S_{\mathrm{Y}}$, where $S_{\mathrm{array}}$ is the G+C corrected sum of the counts of the array markers, $S_{\mathrm{Y}}$ the sum of the counts of the single-copy Y markers, and $K$ a scale fitted on the training males as $K = \sum_i L_i / \sum_i (S_{\mathrm{array},i}/S_{\mathrm{Y},i})$. The G+C correction divides each marker count by the relative depth of single-copy Y markers with the same G+C content.
+
+\subsection{Y dosage}\label{sec:m-dosage}
+The Y dosage is $D = 2\,(S_{\mathrm{Y}}/n_{\mathrm{Y}}) / (S_{2}/n_{2})$, where $n_{\mathrm{Y}} = 6{,}940{,}206$ and $n_{2} = 8{,}965{,}587$ are the numbers of single-copy Y and chromosome 2 markers and $S_{2}$ the sum of the chromosome 2 marker counts.
+
+\subsection{Intervals}\label{sec:m-intervals}
+Intervals use split-conformal prediction \cite{Lei2018} on the relative residual $|L_{\mathrm{true}} - L|/L$, with 200 random splits, families kept in the same split, and $\alpha = 0.1$.
+
+\subsection{Benchmark}\label{sec:m-benchmark}
+Held-out males are never used to build markers or to fit $K$. We report the median absolute error, the 90th percentile, the bias, and the Pearson and Kendall correlations on the held-out males, and the same values by leave-one-out on all truth males with reads.
+
+\backmatter
+
+\bmhead{Acknowledgements}
+
+\section*{Declarations}
+
+\bmhead{Data availability}
+
+\bmhead{Code availability}
+yruler is available at https://github.com/guarracinolab/yruler.
+
+\bibliography{refs}
+
+\end{document}
