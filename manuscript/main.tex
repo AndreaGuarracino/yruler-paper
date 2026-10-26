@@ -4,13 +4,17 @@
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage{etoolbox}
+% one corresponding author: drop the template's "(s)"
+\makeatletter\patchcmd{\@maketitle}{Corresponding author(s). E-mail(s):}{Corresponding author. E-mail:}{}{\typeout{WARNING corresponding-author patch failed}}\makeatother
 
 \begin{document}
 
 \title[yruler]{Measuring the satellite arrays of the human Y chromosome from sequencing reads}
 
+\author[1]{\fnm{Alejandro} \sur{Ortigas-Vasquez}}
 \author*[1]{\fnm{Andrea} \sur{Guarracino}}\email{aguarracino@tgen.org}
-\affil*[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
+\affil[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
 
 % Genome Biology Method format (structured abstract, max 350 words); a Brief Communication is cut from this draft
 \abstract{\textbf{Background:} The satellite arrays of the human Y chromosome (the DYZ3 centromere, the Yq12 heterochromatin with its DYZ1 and DYZ2 units, and the DYZ18 and DYZ19 arrays) vary in length between males, Yq12 by tens of megabases. Complete Y assemblies now exist for more than one hundred males, but most genomes are short-read genomes.
