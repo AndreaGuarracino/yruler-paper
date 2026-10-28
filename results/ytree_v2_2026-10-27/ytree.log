@@ -1,0 +1,1789 @@
+IQ-TREE version 3.1.3 for Linux x86 64-bit built Jul 26 2026
+Developed by Bui Quang Minh, Thomas Wong, Nhan Ly-Trong, Huaiyan Ren
+Contributed by Lam-Tung Nguyen, Dominik Schrempf, Chris Bielow,
+Olga Chernomor, Michael Woodhams, Diep Thi Hoang, Heiko Schmidt
+
+Host:    g-c-1-4-11 (AVX512, FMA3, 503 GB RAM)
+Command: /path/to/conda/iqtree/3.1.3/bin/iqtree -s aln.phy -st BIN -m GTR2+FO+ASC -B 1000 -alrt 1000 -seed 20261027 -T 8 --prefix ytree -redo
+Seed:    20261027 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Tue Oct 27 19:40:34 2026
+Kernel:  AVX+FMA - 8 threads (8 CPU cores detected)
+
+Reading alignment file aln.phy ... Phylip format detected
+Alignment most likely contains binary sequences
+Constructing alignment: done in 0.677622 secs using 285.4% CPU
+Alignment has 1597 sequences with 79941 columns, 13328 distinct patterns
+39668 parsimony-informative, 40273 singleton sites, 0 constant sites
+         Gap/Ambiguity  Composition  p-value
+Analyzing sequences: done in 0.0198922 secs using 773.6% CPU
+   1  HG00096    0.00%    failed      0.00%
+   2  HG00101    0.00%    failed      1.70%
+   3  HG00103    0.00%    failed      0.00%
+   4  HG00105    0.00%    failed      0.00%
+   5  HG00107    0.00%    failed      0.00%
+   6  HG00108    0.00%    failed      0.00%
+   7  HG00109    0.00%    failed      0.00%
+   8  HG00112    0.00%    failed      0.00%
+   9  HG00113    0.01%    failed      0.00%
+  10  HG00114    0.01%    failed      0.00%
+  11  HG00115    0.00%    failed      0.00%
+  12  HG00116    0.00%    failed      0.00%
+  13  HG00117    0.00%    failed      2.06%
+  14  HG00119    0.00%    failed      0.00%
+  15  HG00126    0.00%    failed      0.00%
+  16  HG00129    0.00%    failed      0.00%
+  17  HG00131    0.00%    failed      0.00%
+  18  HG00136    0.00%    failed      1.26%
+  19  HG00138    0.00%    failed      0.00%
+  20  HG00139    0.04%    failed      0.00%
+  21  HG00140    0.00%    passed      5.04%
+  22  HG00141    0.00%    failed      0.00%
+  23  HG00142    0.92%    failed      0.00%
+  24  HG00143    0.00%    failed      0.00%
+  25  HG00145    0.00%    failed      0.00%
+  26  HG00148    0.00%    failed      0.00%
+  27  HG00149    0.00%    failed      0.00%
+  28  HG00151    0.00%    failed      0.00%
+  29  HG00155    0.04%    failed      0.00%
+  30  HG00157    0.00%    failed      0.00%
+  31  HG00159    0.00%    failed      1.26%
+  32  HG00160    0.00%    passed      6.98%
+  33  HG00181    0.00%    failed      0.19%
+  34  HG00182    0.00%    passed     62.69%
+  35  HG00183    0.00%    passed     55.27%
+  36  HG00185    0.01%    passed     57.55%
+  37  HG00186    0.00%    failed      0.67%
+  38  HG00187    0.01%    passed     50.48%
+  39  HG00188    0.00%    passed     60.14%
+  40  HG00189    0.00%    failed      1.54%
+  41  HG00190    0.01%    failed      0.83%
+  42  HG00234    0.00%    failed      0.67%
+  43  HG00242    0.00%    failed      0.00%
+  44  HG00243    0.00%    failed      0.00%
+  45  HG00244    0.00%    failed      0.00%
+  46  HG00246    0.92%    failed      0.00%
+  47  HG00251    0.00%    failed      0.00%
+  48  HG00252    0.00%    failed      1.26%
+  49  HG00256    0.00%    failed      0.00%
+  50  HG00260    0.00%    failed      0.00%
+  51  HG00264    0.00%    failed      0.00%
+  52  HG00265    0.00%    failed      0.00%
+  53  HG00267    0.00%    failed      0.00%
+  54  HG00271    0.00%    passed     43.93%
+  55  HG00273    0.01%    passed     62.61%
+  56  HG00277    0.00%    failed      0.00%
+  57  HG00278    0.00%    passed     48.29%
+  58  HG00280    0.00%    passed     46.08%
+  59  HG00284    0.00%    passed     55.24%
+  60  HG00290    0.00%    passed     35.94%
+  61  HG00308    0.01%    failed      0.92%
+  62  HG00310    0.00%    failed      1.14%
+  63  HG00311    0.01%    passed     78.53%
+  64  HG00321    0.00%    failed      1.40%
+  65  HG00325    0.00%    failed      1.40%
+  66  HG00329    0.00%    passed     34.08%
+  67  HG00335    0.00%    passed     39.79%
+  68  HG00336    0.00%    passed     70.47%
+  69  HG00338    0.00%    passed     60.17%
+  70  HG00341    0.01%    passed     32.24%
+  71  HG00342    0.00%    passed     35.94%
+  72  HG00345    0.01%    failed      0.83%
+  73  HG00351    0.01%    passed     39.77%
+  74  HG00358    0.00%    passed     57.67%
+  75  HG00360    0.01%    passed      6.43%
+  76  HG00366    0.00%    failed      0.00%
+  77  HG00369    0.00%    passed     48.33%
+  78  HG00371    0.00%    passed     30.58%
+  79  HG00372    0.00%    failed      1.54%
+  80  HG00375    0.00%    passed     43.91%
+  81  HG00382    0.00%    failed      0.00%
+  82  HG00403    0.00%    passed     70.47%
+  83  HG00406    0.00%    passed     84.58%
+  84  HG00409    0.01%    passed     50.44%
+  85  HG00418    0.00%    passed     30.60%
+  86  HG00420    0.00%    passed     41.88%
+  87  HG00421    0.01%    passed     27.24%
+  88  HG00427    0.01%    passed     39.65%
+  89  HG00429    0.02%    passed     41.63%
+  90  HG00436    0.00%    passed     24.27%
+  91  HG00442    0.00%    passed     28.90%
+  92  HG00444    0.00%    passed     27.32%
+  93  HG00445    0.00%    passed     67.85%
+  94  HG00448    0.00%    passed     62.98%
+  95  HG00451    0.00%    passed     22.86%
+  96  HG00457    0.01%    passed     41.80%
+  97  HG00459    0.01%    passed     46.04%
+  98  HG00463    0.01%    passed     28.87%
+  99  HG00465    0.00%    passed     24.27%
+ 100  HG00472    0.00%    passed     98.76%
+ 101  HG00474    0.01%    passed     90.26%
+ 102  HG00475    0.01%    passed     21.45%
+ 103  HG00477    0.00%    passed     18.98%
+ 104  HG00478    0.01%    passed     28.82%
+ 105  HG00480    0.01%    passed     34.04%
+ 106  HG00500    0.01%    passed     14.56%
+ 107  HG00502    0.01%    passed     27.26%
+ 108  HG00512    0.01%    passed     37.70%
+ 109  HG00524    0.01%    passed     43.78%
+ 110  HG00526    0.02%    passed     48.04%
+ 111  HG00530    0.00%    passed     41.86%
+ 112  HG00532    0.00%    passed     48.31%
+ 113  HG00533    0.00%    passed     41.86%
+ 114  HG00535    0.00%    passed     41.84%
+ 115  HG00536    0.00%    passed     28.89%
+ 116  HG00538    0.00%    passed     27.30%
+ 117  HG00542    0.00%    passed     17.81%
+ 118  HG00552    0.00%    failed      0.00%
+ 119  HG00553    0.01%    failed      0.00%
+ 120  HG00556    0.01%    passed     86.93%
+ 121  HG00559    0.01%    passed     16.65%
+ 122  HG00565    0.00%    passed     46.06%
+ 123  HG00567    0.00%    passed     48.29%
+ 124  HG00577    0.00%    passed     98.74%
+ 125  HG00580    0.01%    passed     70.37%
+ 126  HG00583    0.03%    passed     57.18%
+ 127  HG00589    0.01%    passed     78.42%
+ 128  HG00591    0.02%    passed     76.53%
+ 129  HG00592    0.00%    passed     67.85%
+ 130  HG00594    0.01%    passed     57.62%
+ 131  HG00595    0.00%    passed     90.21%
+ 132  HG00598    0.00%    passed     19.00%
+ 133  HG00607    0.00%    passed     43.95%
+ 134  HG00609    0.00%    passed     43.91%
+ 135  HG00610    0.01%    passed     87.51%
+ 136  HG00613    0.01%    passed     34.04%
+ 137  HG00619    0.00%    passed     75.87%
+ 138  HG00621    0.00%    passed     78.61%
+ 139  HG00622    0.01%    passed     76.29%
+ 140  HG00625    0.01%    passed     81.90%
+ 141  HG00627    0.01%    passed     98.85%
+ 142  HG00628    0.02%    failed      0.00%
+ 143  HG00630    0.02%    failed      0.00%
+ 144  HG00631    0.00%    passed     35.90%
+ 145  HG00634    0.01%    passed     68.24%
+ 146  HG00636    0.00%    passed     70.86%
+ 147  HG00637    0.00%    failed      0.00%
+ 148  HG00640    0.00%    failed      0.00%
+ 149  HG00642    0.00%    failed      0.00%
+ 150  HG00650    0.00%    passed     87.02%
+ 151  HG00653    0.00%    passed     52.90%
+ 152  HG00656    0.00%    passed     73.18%
+ 153  HG00658    0.00%    passed     75.84%
+ 154  HG00662    0.00%    passed     60.19%
+ 155  HG00664    0.00%    passed     65.25%
+ 156  HG00671    0.00%    passed     75.92%
+ 157  HG00673    0.00%    passed     73.21%
+ 158  HG00674    0.00%    passed     73.18%
+ 159  HG00683    0.01%    passed     50.39%
+ 160  HG00685    0.01%    passed     35.89%
+ 161  HG00689    0.00%    passed     57.69%
+ 162  HG00691    0.00%    passed     70.45%
+ 163  HG00692    0.00%    passed     73.21%
+ 164  HG00694    0.00%    passed     78.67%
+ 165  HG00698    0.00%    passed     75.87%
+ 166  HG00701    0.00%    passed     37.83%
+ 167  HG00703    0.00%    passed     43.93%
+ 168  HG00704    0.00%    passed     75.87%
+ 169  HG00706    0.00%    passed     86.99%
+ 170  HG00707    0.00%    passed     20.23%
+ 171  HG00709    0.00%    passed     25.76%
+ 172  HG00728    0.00%    passed     20.22%
+ 173  HG00731    0.00%    failed      0.00%
+ 174  HG00736    0.00%    failed      0.00%
+ 175  HG00738    0.00%    failed      0.00%
+ 176  HG00739    0.00%    failed      0.00%
+ 177  HG00742    0.00%    failed      0.00%
+ 178  HG00844    0.01%    passed     18.95%
+ 179  HG00881    0.00%    passed     60.12%
+ 180  HG00982    0.01%    passed     27.27%
+ 181  HG01028    0.00%    passed     28.92%
+ 182  HG01031    0.00%    passed     32.29%
+ 183  HG01047    0.00%    failed      0.00%
+ 184  HG01048    0.00%    failed      0.00%
+ 185  HG01051    0.01%    passed     84.06%
+ 186  HG01054    0.01%    failed      0.00%
+ 187  HG01056    0.00%    failed      0.00%
+ 188  HG01060    0.00%    failed      0.00%
+ 189  HG01063    0.00%    failed      0.00%
+ 190  HG01066    0.01%    failed      0.00%
+ 191  HG01069    0.00%    failed      0.27%
+ 192  HG01072    0.00%    failed      0.00%
+ 193  HG01074    0.01%    failed      0.00%
+ 194  HG01075    0.00%    failed      0.00%
+ 195  HG01079    0.00%    failed      0.00%
+ 196  HG01082    0.00%    failed      0.00%
+ 197  HG01085    0.00%    failed      0.00%
+ 198  HG01088    0.26%    failed      0.00%
+ 199  HG01094    0.01%    failed      0.00%
+ 200  HG01096    0.00%    failed      0.00%
+ 201  HG01097    0.09%    failed      2.55%
+ 202  HG01099    0.09%    failed      4.35%
+ 203  HG01101    0.00%    failed      0.02%
+ 204  HG01104    0.01%    failed      0.00%
+ 205  HG01106    0.00%    failed      0.00%
+ 206  HG01107    0.02%    failed      0.00%
+ 207  HG01109    0.01%    failed      0.00%
+ 208  HG01110    0.17%    failed      0.00%
+ 209  HG01112    0.17%    failed      0.00%
+ 210  HG01121    0.00%    failed      0.00%
+ 211  HG01124    0.00%    failed      0.00%
+ 212  HG01126    0.00%    failed      0.00%
+ 213  HG01130    0.00%    failed      0.17%
+ 214  HG01133    0.01%    passed     18.94%
+ 215  HG01135    0.00%    passed     20.20%
+ 216  HG01136    0.00%    failed      0.00%
+ 217  HG01138    0.00%    failed      0.00%
+ 218  HG01139    0.00%    failed      0.00%
+ 219  HG01142    0.00%    failed      0.00%
+ 220  HG01148    0.00%    failed      0.00%
+ 221  HG01161    0.25%    failed      0.00%
+ 222  HG01164    0.00%    failed      1.54%
+ 223  HG01167    0.00%    failed      0.19%
+ 224  HG01170    0.00%    failed      0.00%
+ 225  HG01172    0.00%    failed      0.00%
+ 226  HG01173    0.00%    failed      0.00%
+ 227  HG01176    0.00%    failed      0.00%
+ 228  HG01178    0.00%    failed      0.00%
+ 229  HG01182    0.00%    failed      0.00%
+ 230  HG01187    0.00%    failed      0.00%
+ 231  HG01189    0.00%    failed      0.00%
+ 232  HG01190    0.01%    passed     18.95%
+ 233  HG01192    0.01%    passed     21.46%
+ 234  HG01197    0.00%    failed      0.05%
+ 235  HG01199    0.00%    failed      0.08%
+ 236  HG01200    0.00%    failed      0.00%
+ 237  HG01204    0.00%    failed      0.00%
+ 238  HG01206    0.00%    failed      0.00%
+ 239  HG01241    0.00%    failed      0.00%
+ 240  HG01243    0.00%    failed      0.00%
+ 241  HG01247    0.00%    failed      0.00%
+ 242  HG01250    0.16%    failed      0.00%
+ 243  HG01252    0.18%    failed      0.00%
+ 244  HG01253    0.01%    failed      0.12%
+ 245  HG01255    0.01%    failed      0.27%
+ 246  HG01256    0.01%    failed      0.12%
+ 247  HG01258    0.01%    failed      0.15%
+ 248  HG01259    0.00%    failed      0.00%
+ 249  HG01261    0.00%    failed      0.00%
+ 250  HG01271    0.00%    failed      0.00%
+ 251  HG01273    0.00%    failed      0.00%
+ 252  HG01274    0.00%    failed      0.00%
+ 253  HG01277    0.02%    failed      0.00%
+ 254  HG01280    0.00%    failed      0.00%
+ 255  HG01286    0.00%    failed      0.00%
+ 256  HG01302    0.00%    failed      0.00%
+ 257  HG01305    0.00%    failed      0.00%
+ 258  HG01308    0.01%    failed      0.00%
+ 259  HG01311    0.09%    failed      0.95%
+ 260  HG01325    0.18%    failed      0.00%
+ 261  HG01334    0.00%    failed      0.00%
+ 262  HG01341    0.00%    failed      0.00%
+ 263  HG01344    0.00%    failed      0.01%
+ 264  HG01347    0.02%    failed      0.38%
+ 265  HG01350    0.00%    failed      0.00%
+ 266  HG01353    0.05%    failed      0.00%
+ 267  HG01356    0.00%    failed      0.00%
+ 268  HG01358    0.00%    failed      0.00%
+ 269  HG01359    0.00%    failed      0.00%
+ 270  HG01362    0.00%    failed      0.00%
+ 271  HG01365    0.00%    failed      0.00%
+ 272  HG01374    0.00%    failed      0.00%
+ 273  HG01377    0.00%    failed      0.00%
+ 274  HG01383    0.00%    failed      0.00%
+ 275  HG01389    0.00%    failed      0.00%
+ 276  HG01392    0.00%    failed      0.00%
+ 277  HG01395    0.00%    failed      0.00%
+ 278  HG01398    0.00%    failed      0.00%
+ 279  HG01402    0.00%    passed     11.84%
+ 280  HG01405    0.00%    failed      0.00%
+ 281  HG01412    0.00%    failed      0.75%
+ 282  HG01413    0.00%    failed      0.00%
+ 283  HG01431    0.00%    failed      0.01%
+ 284  HG01433    0.00%    failed      0.01%
+ 285  HG01437    0.00%    failed      0.22%
+ 286  HG01440    0.00%    failed      0.00%
+ 287  HG01443    0.00%    failed      0.00%
+ 288  HG01455    0.17%    failed      0.00%
+ 289  HG01457    0.17%    failed      0.00%
+ 290  HG01461    0.00%    failed      0.00%
+ 291  HG01464    0.00%    failed      0.00%
+ 292  HG01479    0.00%    failed      0.00%
+ 293  HG01485    0.00%    failed      0.00%
+ 294  HG01488    0.00%    failed      0.00%
+ 295  HG01491    0.00%    failed      0.00%
+ 296  HG01494    0.01%    failed      0.01%
+ 297  HG01497    0.00%    failed      0.00%
+ 298  HG01499    0.00%    failed      0.00%
+ 299  HG01500    0.00%    failed      0.00%
+ 300  HG01502    0.00%    failed      0.00%
+ 301  HG01503    0.00%    failed      0.00%
+ 302  HG01505    0.00%    failed      0.00%
+ 303  HG01506    0.00%    failed      0.00%
+ 304  HG01508    0.00%    failed      0.00%
+ 305  HG01509    0.01%    passed      8.14%
+ 306  HG01512    0.09%    failed      1.29%
+ 307  HG01515    0.02%    failed      0.00%
+ 308  HG01518    0.00%    failed      0.00%
+ 309  HG01521    0.00%    failed      0.00%
+ 310  HG01523    0.00%    failed      0.00%
+ 311  HG01524    0.00%    failed      0.00%
+ 312  HG01526    0.00%    failed      0.00%
+ 313  HG01527    0.00%    failed      0.83%
+ 314  HG01529    0.00%    failed      0.75%
+ 315  HG01530    0.01%    passed     84.06%
+ 316  HG01532    0.02%    passed     89.51%
+ 317  HG01536    0.00%    failed      0.00%
+ 318  HG01550    0.00%    failed      0.00%
+ 319  HG01552    0.00%    failed      0.00%
+ 320  HG01556    0.00%    failed      0.00%
+ 321  HG01565    0.00%    failed      0.00%
+ 322  HG01571    0.00%    failed      0.02%
+ 323  HG01577    0.01%    failed      0.00%
+ 324  HG01579    0.01%    failed      0.00%
+ 325  HG01583    0.01%    failed      0.05%
+ 326  HG01586    0.01%    failed      0.00%
+ 327  HG01589    0.01%    failed      0.92%
+ 328  HG01596    0.01%    passed     50.51%
+ 329  HG01601    0.00%    failed      0.00%
+ 330  HG01603    0.00%    failed      0.00%
+ 331  HG01606    0.00%    failed      0.00%
+ 332  HG01608    0.00%    failed      0.00%
+ 333  HG01609    0.00%    failed      0.00%
+ 334  HG01610    0.00%    failed      0.22%
+ 335  HG01611    0.00%    failed      0.19%
+ 336  HG01615    0.00%    failed      0.00%
+ 337  HG01617    0.00%    failed      0.00%
+ 338  HG01619    0.00%    failed      1.54%
+ 339  HG01621    0.00%    failed      1.87%
+ 340  HG01624    0.00%    failed      0.00%
+ 341  HG01625    0.00%    failed      0.00%
+ 342  HG01627    0.00%    failed      0.00%
+ 343  HG01629    0.00%    failed      0.00%
+ 344  HG01630    0.00%    failed      0.00%
+ 345  HG01631    0.00%    failed      0.00%
+ 346  HG01633    0.00%    failed      0.00%
+ 347  HG01667    0.00%    failed      0.00%
+ 348  HG01669    0.00%    failed      0.00%
+ 349  HG01671    0.00%    passed      8.15%
+ 350  HG01672    0.01%    passed      8.79%
+ 351  HG01674    0.03%    failed      0.00%
+ 352  HG01675    0.03%    failed      0.00%
+ 353  HG01678    0.01%    failed      0.00%
+ 354  HG01680    0.25%    failed      0.00%
+ 355  HG01682    0.00%    failed      0.00%
+ 356  HG01683    0.00%    failed      0.00%
+ 357  HG01686    0.00%    failed      0.08%
+ 358  HG01694    0.00%    failed      0.00%
+ 359  HG01696    0.01%    failed      0.00%
+ 360  HG01698    0.01%    failed      0.00%
+ 361  HG01699    0.00%    failed      0.00%
+ 362  HG01700    0.00%    failed      0.00%
+ 363  HG01701    0.00%    failed      0.00%
+ 364  HG01703    0.00%    failed      0.00%
+ 365  HG01705    0.00%    failed      0.00%
+ 366  HG01708    0.00%    failed      0.00%
+ 367  HG01709    0.00%    failed      0.00%
+ 368  HG01747    0.00%    failed      0.00%
+ 369  HG01748    0.00%    failed      0.00%
+ 370  HG01756    0.00%    failed      0.93%
+ 371  HG01761    0.00%    failed      0.00%
+ 372  HG01765    0.00%    failed      0.00%
+ 373  HG01767    0.00%    failed      0.00%
+ 374  HG01771    0.00%    failed      0.00%
+ 375  HG01774    0.00%    failed      0.00%
+ 376  HG01775    0.00%    failed      0.00%
+ 377  HG01777    0.01%    failed      0.00%
+ 378  HG01778    0.00%    failed      0.00%
+ 379  HG01780    0.00%    failed      1.14%
+ 380  HG01781    0.00%    failed      0.60%
+ 381  HG01783    0.00%    failed      0.00%
+ 382  HG01785    0.00%    failed      0.00%
+ 383  HG01789    0.00%    failed      0.00%
+ 384  HG01791    0.00%    failed      0.00%
+ 385  HG01810    0.00%    passed     60.14%
+ 386  HG01811    0.00%    passed     73.18%
+ 387  HG01816    0.00%    passed     43.91%
+ 388  HG01840    0.00%    passed     39.81%
+ 389  HG01842    0.00%    passed     17.79%
+ 390  HG01844    0.01%    passed     70.42%
+ 391  HG01846    0.00%    passed     34.08%
+ 392  HG01849    0.00%    passed     35.92%
+ 393  HG01852    0.00%    passed     37.87%
+ 394  HG01860    0.01%    passed     46.02%
+ 395  HG01861    0.00%    passed     62.63%
+ 396  HG01864    0.01%    passed     41.73%
+ 397  HG01865    0.00%    passed     46.08%
+ 398  HG01866    0.00%    passed     46.10%
+ 399  HG01867    0.00%    passed     41.84%
+ 400  HG01872    0.00%    passed     81.41%
+ 401  HG01873    0.00%    passed     25.78%
+ 402  HG01879    0.00%    failed      0.00%
+ 403  HG01882    0.00%    failed      0.00%
+ 404  HG01885    0.00%    failed      0.00%
+ 405  HG01887    0.00%    failed      0.00%
+ 406  HG01888    0.01%    failed      0.00%
+ 407  HG01890    0.08%    failed      0.00%
+ 408  HG01892    0.01%    failed      0.00%
+ 409  HG01895    0.00%    failed      0.00%
+ 410  HG01897    0.00%    failed      0.00%
+ 411  HG01912    0.01%    failed      0.00%
+ 412  HG01914    0.01%    failed      0.00%
+ 413  HG01917    0.00%    failed      0.00%
+ 414  HG01920    0.00%    failed      0.00%
+ 415  HG01923    0.00%    failed      0.00%
+ 416  HG01926    0.00%    failed      0.00%
+ 417  HG01928    0.00%    failed      0.00%
+ 418  HG01932    0.00%    failed      0.00%
+ 419  HG01934    0.00%    failed      0.00%
+ 420  HG01935    0.00%    failed      0.10%
+ 421  HG01937    0.00%    failed      0.08%
+ 422  HG01938    0.00%    failed      0.00%
+ 423  HG01941    0.00%    failed      0.00%
+ 424  HG01943    0.00%    failed      0.00%
+ 425  HG01944    0.03%    failed      0.00%
+ 426  HG01946    0.02%    failed      0.00%
+ 427  HG01947    0.00%    failed      0.00%
+ 428  HG01950    0.01%    failed      0.00%
+ 429  HG01952    0.00%    failed      0.00%
+ 430  HG01953    0.00%    failed      0.00%
+ 431  HG01961    0.01%    failed      0.00%
+ 432  HG01967    0.49%    failed      0.00%
+ 433  HG01970    0.00%    failed      0.00%
+ 434  HG01974    0.00%    failed      0.00%
+ 435  HG01977    0.01%    failed      0.00%
+ 436  HG01979    0.00%    failed      0.00%
+ 437  HG01982   20.91%    failed      0.00%
+ 438  HG01984   20.92%    failed      0.00%
+ 439  HG01986    0.00%    failed      0.00%
+ 440  HG01987    0.00%    failed      0.00%
+ 441  HG01988    0.01%    failed      0.13%
+ 442  HG01990    0.00%    failed      0.00%
+ 443  HG01991    0.03%    failed      0.73%
+ 444  HG01998    0.00%    failed      0.00%
+ 445  HG02002    0.01%    failed      0.00%
+ 446  HG02008    0.00%    failed      0.00%
+ 447  HG02009    0.02%    failed      0.00%
+ 448  HG02011    0.02%    failed      0.00%
+ 449  HG02013    0.00%    failed      0.00%
+ 450  HG02014    0.00%    failed      0.00%
+ 451  HG02015    0.00%    passed     90.21%
+ 452  HG02017    0.00%    passed     98.74%
+ 453  HG02020    0.00%    passed     48.31%
+ 454  HG02023    0.00%    passed     57.67%
+ 455  HG02026    0.00%    passed     46.12%
+ 456  HG02027    0.00%    passed     93.08%
+ 457  HG02029    0.00%    passed     78.99%
+ 458  HG02030    0.00%    passed     34.09%
+ 459  HG02032    0.00%    passed     39.85%
+ 460  HG02035    0.01%    passed     39.73%
+ 461  HG02040    0.01%    passed      6.42%
+ 462  HG02047    0.01%    passed     75.81%
+ 463  HG02050    0.00%    passed     57.64%
+ 464  HG02051    0.00%    failed      0.00%
+ 465  HG02053    0.11%    failed      0.00%
+ 466  HG02055    0.00%    failed      0.00%
+ 467  HG02056    0.01%    passed     43.84%
+ 468  HG02058    0.01%    passed     39.67%
+ 469  HG02061    0.00%    passed     43.93%
+ 470  HG02064    0.00%    passed     15.61%
+ 471  HG02067    0.00%    passed     48.31%
+ 472  HG02070    0.01%    passed     81.13%
+ 473  HG02071    0.00%    passed     35.94%
+ 474  HG02073    0.01%    passed     39.77%
+ 475  HG02074    0.01%    passed     42.22%
+ 476  HG02076    0.01%    passed     51.00%
+ 477  HG02077    0.00%    passed     89.79%
+ 478  HG02079    0.00%    passed     78.64%
+ 479  HG02082    0.00%    passed     62.69%
+ 480  HG02083    0.00%    passed     46.08%
+ 481  HG02085    0.00%    passed     41.86%
+ 482  HG02088    0.00%    passed     41.88%
+ 483  HG02090    0.49%    failed      0.00%
+ 484  HG02104    0.11%    failed      0.00%
+ 485  HG02107    0.00%    failed      0.00%
+ 486  HG02116    0.00%    failed      0.00%
+ 487  HG02120    0.00%    passed     27.32%
+ 488  HG02122    0.00%    passed     20.23%
+ 489  HG02128    0.00%    passed     55.22%
+ 490  HG02129    0.00%    passed     37.85%
+ 491  HG02131    0.01%    passed     48.22%
+ 492  HG02132    0.00%    failed      0.00%
+ 493  HG02134    0.00%    failed      0.00%
+ 494  HG02135    0.00%    passed     78.64%
+ 495  HG02137    0.00%    passed     73.15%
+ 496  HG02138    0.00%    passed     86.99%
+ 497  HG02141    0.02%    failed      0.00%
+ 498  HG02143    0.00%    failed      0.00%
+ 499  HG02145    0.01%    failed      0.00%
+ 500  HG02146    0.00%    failed      0.00%
+ 501  HG02150    0.26%    failed      0.00%
+ 502  HG02219    0.00%    failed      0.00%
+ 503  HG02221    0.00%    failed      0.00%
+ 504  HG02224    0.09%    failed      0.40%
+ 505  HG02231    0.00%    failed      0.00%
+ 506  HG02233    0.00%    failed      0.00%
+ 507  HG02234    0.00%    failed      0.00%
+ 508  HG02236    0.00%    failed      3.58%
+ 509  HG02238    0.00%    failed      0.00%
+ 510  HG02250    0.00%    passed     67.80%
+ 511  HG02253    0.00%    failed      0.04%
+ 512  HG02255    0.00%    failed      0.00%
+ 513  HG02258    0.00%    failed      0.00%
+ 514  HG02259    0.00%    failed      0.00%
+ 515  HG02261    0.00%    failed      0.00%
+ 516  HG02262    0.00%    failed      0.00%
+ 517  HG02265    0.00%    failed      0.00%
+ 518  HG02271    0.00%    failed      0.00%
+ 519  HG02274    0.00%    failed      0.54%
+ 520  HG02277    0.00%    failed      0.00%
+ 521  HG02279    0.00%    failed      0.00%
+ 522  HG02281    0.00%    failed      0.00%
+ 523  HG02283    0.00%    failed      0.00%
+ 524  HG02284    0.00%    failed      0.00%
+ 525  HG02285    0.00%    failed      0.00%
+ 526  HG02291    0.01%    failed      0.00%
+ 527  HG02299    0.01%    failed      0.00%
+ 528  HG02302    0.00%    failed      0.00%
+ 529  HG02304    0.00%    failed      0.00%
+ 530  HG02307    0.00%    failed      0.00%
+ 531  HG02314    0.00%    failed      0.00%
+ 532  HG02316    0.00%    failed      0.00%
+ 533  HG02317    0.01%    failed      0.00%
+ 534  HG02323    0.00%    failed      0.00%
+ 535  HG02330    0.00%    failed      0.00%
+ 536  HG02332    0.00%    failed      0.00%
+ 537  HG02334    0.02%    failed      0.00%
+ 538  HG02343    0.00%    failed      0.00%
+ 539  HG02351    0.00%    passed     60.14%
+ 540  HG02353    0.00%    passed     62.63%
+ 541  HG02355    0.00%    passed     39.81%
+ 542  HG02356    0.01%    passed     57.62%
+ 543  HG02360    0.00%    passed     87.02%
+ 544  HG02364    0.00%    passed     20.22%
+ 545  HG02367    0.02%    passed     62.31%
+ 546  HG02371    0.01%    passed     78.56%
+ 547  HG02373    0.01%    failed      0.00%
+ 548  HG02374    0.00%    passed     70.47%
+ 549  HG02375    0.00%    passed     60.14%
+ 550  HG02379    0.01%    passed     30.53%
+ 551  HG02380    0.00%    passed     65.22%
+ 552  HG02382    0.00%    passed     39.81%
+ 553  HG02383    0.00%    passed     22.90%
+ 554  HG02384    0.00%    passed     84.20%
+ 555  HG02385    0.01%    passed     75.81%
+ 556  HG02386    0.00%    passed     22.86%
+ 557  HG02389    0.00%    passed     62.66%
+ 558  HG02390    0.00%    passed     39.79%
+ 559  HG02391    0.01%    passed     57.50%
+ 560  HG02392    0.01%    passed     50.44%
+ 561  HG02394    0.00%    passed      9.50%
+ 562  HG02395    0.00%    passed     18.96%
+ 563  HG02396    0.00%    passed     98.43%
+ 564  HG02397    0.01%    passed     39.73%
+ 565  HG02398    0.00%    passed     28.90%
+ 566  HG02399    0.01%    passed     65.04%
+ 567  HG02401    0.00%    passed     25.75%
+ 568  HG02402    0.00%    passed     39.85%
+ 569  HG02406    0.00%    passed     32.31%
+ 570  HG02407    0.06%    passed     59.03%
+ 571  HG02408    0.01%    passed     22.84%
+ 572  HG02409    0.00%    passed     78.61%
+ 573  HG02410    0.00%    passed     22.89%
+ 574  HG02420    0.00%    failed      0.84%
+ 575  HG02429    0.01%    failed      0.00%
+ 576  HG02433    0.00%    failed      1.39%
+ 577  HG02439    0.00%    failed      0.00%
+ 578  HG02442    0.00%    failed      0.00%
+ 579  HG02445    0.00%    failed      1.54%
+ 580  HG02449    0.00%    failed      0.00%
+ 581  HG02455    0.01%    failed      0.00%
+ 582  HG02461    0.00%    failed      0.00%
+ 583  HG02463    0.00%    failed      0.00%
+ 584  HG02464    0.01%    failed      0.00%
+ 585  HG02466    0.00%    failed      0.00%
+ 586  HG02470    0.01%    failed      0.48%
+ 587  HG02481    0.00%    failed      0.00%
+ 588  HG02484    0.00%    failed      0.00%
+ 589  HG02489    0.00%    failed      0.00%
+ 590  HG02490    0.00%    failed      1.70%
+ 591  HG02492    0.00%    failed      1.14%
+ 592  HG02493    0.00%    passed     17.78%
+ 593  HG02496    0.00%    failed      0.00%
+ 594  HG02501    0.00%    failed      0.00%
+ 595  HG02512    0.00%    passed     43.91%
+ 596  HG02514    0.00%    passed     39.83%
+ 597  HG02521    0.00%    passed     22.90%
+ 598  HG02524    0.00%    failed      0.00%
+ 599  HG02536    0.00%    passed     11.82%
+ 600  HG02541    0.00%    failed      0.00%
+ 601  HG02545    0.00%    failed      0.00%
+ 602  HG02554    0.00%    failed      0.00%
+ 603  HG02557    0.00%    failed      0.00%
+ 604  HG02561    0.00%    failed      0.00%
+ 605  HG02563    0.00%    failed      0.00%
+ 606  HG02569    0.00%    failed      0.00%
+ 607  HG02570    0.00%    failed      0.00%
+ 608  HG02572    0.01%    failed      0.00%
+ 609  HG02573    0.00%    failed      0.00%
+ 610  HG02575    0.01%    failed      0.00%
+ 611  HG02582    0.00%    failed      0.00%
+ 612  HG02584    0.00%    failed      0.00%
+ 613  HG02585    0.00%    failed      0.00%
+ 614  HG02588    0.14%    failed      0.00%
+ 615  HG02590    0.15%    failed      0.00%
+ 616  HG02594    0.00%    failed      0.00%
+ 617  HG02596    0.01%    failed      0.00%
+ 618  HG02597    0.00%    failed      0.00%
+ 619  HG02600    0.00%    failed      0.00%
+ 620  HG02602    0.00%    failed      0.00%
+ 621  HG02603    0.00%    failed      0.00%
+ 622  HG02610    0.00%    failed      0.00%
+ 623  HG02612    0.00%    failed      0.00%
+ 624  HG02613    0.02%    failed      0.00%
+ 625  HG02620    0.00%    failed      0.00%
+ 626  HG02623    0.00%    failed      0.00%
+ 627  HG02625    0.00%    failed      0.00%
+ 628  HG02628    0.01%    failed      0.00%
+ 629  HG02634    0.00%    failed      0.00%
+ 630  HG02636    0.01%    failed      0.00%
+ 631  HG02642    0.00%    failed      0.00%
+ 632  HG02644    0.01%    failed      0.00%
+ 633  HG02645    0.02%    failed      0.00%
+ 634  HG02647    0.02%    failed      0.00%
+ 635  HG02648    0.00%    failed      0.00%
+ 636  HG02650    0.00%    failed      0.00%
+ 637  HG02651    0.01%    failed      0.60%
+ 638  HG02654    0.00%    passed     37.81%
+ 639  HG02656    0.00%    passed     41.84%
+ 640  HG02657    0.00%    failed      0.00%
+ 641  HG02660    0.00%    failed      0.00%
+ 642  HG02666    0.03%    failed      0.00%
+ 643  HG02668    0.03%    failed      0.00%
+ 644  HG02675    0.01%    failed      0.00%
+ 645  HG02678    0.00%    failed      0.00%
+ 646  HG02681    0.09%    failed      3.06%
+ 647  HG02684    0.04%    passed      5.81%
+ 648  HG02686    0.03%    failed      3.82%
+ 649  HG02687    0.09%    failed      1.06%
+ 650  HG02689    0.08%    failed      1.18%
+ 651  HG02690    0.01%    passed     24.26%
+ 652  HG02696    0.00%    failed      0.00%
+ 653  HG02698    0.00%    failed      0.00%
+ 654  HG02699    0.00%    failed      0.00%
+ 655  HG02701    0.00%    failed      0.00%
+ 656  HG02702    0.00%    failed      0.00%
+ 657  HG02715    0.00%    failed      0.00%
+ 658  HG02717    0.01%    failed      0.00%
+ 659  HG02721    0.00%    failed      0.00%
+ 660  HG02724    0.00%    passed      7.55%
+ 661  HG02727    0.01%    failed      0.00%
+ 662  HG02729    0.00%    failed      0.00%
+ 663  HG02733    0.00%    passed     14.60%
+ 664  HG02735    0.00%    passed     20.23%
+ 665  HG02736    0.00%    failed      0.00%
+ 666  HG02738    0.12%    failed      0.00%
+ 667  HG02756    0.00%    failed      0.00%
+ 668  HG02759    0.00%    failed      0.00%
+ 669  HG02762    0.00%    failed      0.00%
+ 670  HG02764    0.00%    failed      0.00%
+ 671  HG02768    0.00%    failed      0.00%
+ 672  HG02771    0.01%    failed      0.00%
+ 673  HG02773    0.00%    failed      0.00%
+ 674  HG02774    0.00%    passed      9.50%
+ 675  HG02780    0.00%    failed      0.00%
+ 676  HG02783    0.00%    failed      0.00%
+ 677  HG02786    0.00%    failed      0.04%
+ 678  HG02789    0.10%    failed      0.04%
+ 679  HG02791    0.10%    failed      0.08%
+ 680  HG02792    0.01%    passed     27.24%
+ 681  HG02794    0.00%    passed     24.29%
+ 682  HG02798    0.00%    failed      0.00%
+ 683  HG02800    0.00%    failed      0.00%
+ 684  HG02804    0.00%    failed      0.00%
+ 685  HG02807    0.00%    failed      0.00%
+ 686  HG02810    0.01%    failed      0.00%
+ 687  HG02812    0.00%    failed      0.00%
+ 688  HG02813    0.00%    failed      0.00%
+ 689  HG02815    0.00%    failed      0.00%
+ 690  HG02816    0.00%    failed      0.00%
+ 691  HG02819    0.00%    failed      0.00%
+ 692  HG02821    0.00%    failed      0.00%
+ 693  HG02836    0.01%    failed      0.00%
+ 694  HG02838    0.01%    failed      0.00%
+ 695  HG02839    0.01%    failed      0.00%
+ 696  HG02851    0.00%    failed      0.00%
+ 697  HG02853    0.00%    failed      0.00%
+ 698  HG02854    0.00%    failed      0.00%
+ 699  HG02856    0.00%    failed      0.00%
+ 700  HG02860    0.00%    failed      0.00%
+ 701  HG02869    0.00%    failed      0.00%
+ 702  HG02878    0.00%    failed      0.00%
+ 703  HG02881    0.00%    failed      0.00%
+ 704  HG02883    0.00%    failed      0.00%
+ 705  HG02884    0.00%    failed      0.00%
+ 706  HG02887    0.07%    failed      0.00%
+ 707  HG02890    0.00%    failed      0.00%
+ 708  HG02892    0.00%    failed      0.00%
+ 709  HG02895    0.00%    failed      0.00%
+ 710  HG02923    0.00%    failed      0.00%
+ 711  HG02924    0.00%    failed      0.00%
+ 712  HG02938    0.00%    failed      0.00%
+ 713  HG02941    0.01%    failed      0.00%
+ 714  HG02944    0.00%    failed      0.00%
+ 715  HG02947    0.00%    failed      0.00%
+ 716  HG02948    0.00%    failed      0.00%
+ 717  HG02953    0.00%    failed      0.00%
+ 718  HG02954    0.00%    failed      0.00%
+ 719  HG02965    0.00%    failed      0.00%
+ 720  HG02966   34.81%    failed      0.00%
+ 721  HG02968    0.00%    failed      0.00%
+ 722  HG02971    0.00%    failed      0.00%
+ 723  HG02972    0.00%    failed      0.00%
+ 724  HG02973    0.00%    failed      0.00%
+ 725  HG02975    0.00%    failed      0.00%
+ 726  HG02977    0.00%    failed      0.00%
+ 727  HG02980    0.00%    failed      0.00%
+ 728  HG02981    0.01%    failed      0.00%
+ 729  HG02982    0.07%    failed      0.00%
+ 730  HG02984    0.07%    failed      0.00%
+ 731  HG03006   20.87%    passed      5.56%
+ 732  HG03008   20.91%    failed      4.48%
+ 733  HG03009    0.00%    failed      0.10%
+ 734  HG03012    0.00%    passed     17.81%
+ 735  HG03015    0.00%    failed      0.00%
+ 736  HG03017    0.00%    failed      0.00%
+ 737  HG03018    0.00%    passed      6.97%
+ 738  HG03021    0.00%    passed      8.15%
+ 739  HG03024    0.01%    failed      0.00%
+ 740  HG03027    0.01%    failed      0.00%
+ 741  HG03029    0.00%    failed      0.00%
+ 742  HG03033    0.00%    failed      0.00%
+ 743  HG03035    0.00%    failed      0.00%
+ 744  HG03039    0.01%    failed      0.00%
+ 745  HG03045    0.00%    failed      0.00%
+ 746  HG03048    0.00%    failed      0.00%
+ 747  HG03050    0.00%    failed      0.00%
+ 748  HG03054    0.00%    failed      0.00%
+ 749  HG03056    0.00%    failed      0.00%
+ 750  HG03057    0.32%    failed      0.00%
+ 751  HG03060    0.01%    failed      0.00%
+ 752  HG03063    0.00%    failed      0.00%
+ 753  HG03065    0.00%    failed      0.00%
+ 754  HG03066    0.00%    failed      0.00%
+ 755  HG03069    0.00%    failed      0.00%
+ 756  HG03072    0.00%    failed      0.00%
+ 757  HG03074    0.00%    failed      0.00%
+ 758  HG03077    0.01%    failed      0.00%
+ 759  HG03078    0.00%    failed      0.00%
+ 760  HG03081    0.00%    failed      0.00%
+ 761  HG03084    0.01%    failed      0.00%
+ 762  HG03096    0.00%    failed      0.00%
+ 763  HG03098    0.00%    failed      0.00%
+ 764  HG03100    0.00%    failed      0.00%
+ 765  HG03101    0.00%    failed      0.00%
+ 766  HG03103    0.00%    failed      0.00%
+ 767  HG03109    0.00%    failed      0.00%
+ 768  HG03112    0.01%    failed      0.00%
+ 769  HG03115    0.00%    failed      0.00%
+ 770  HG03118    0.00%    failed      0.00%
+ 771  HG03120    0.01%    failed      0.00%
+ 772  HG03122    0.00%    failed      0.00%
+ 773  HG03124    0.00%    failed      0.00%
+ 774  HG03127    0.01%    failed      0.00%
+ 775  HG03128    0.00%    failed      0.00%
+ 776  HG03130    0.01%    failed      0.00%
+ 777  HG03131    0.00%    failed      0.00%
+ 778  HG03133    0.00%    failed      0.00%
+ 779  HG03134    0.01%    failed      0.00%
+ 780  HG03136    0.00%    failed      0.00%
+ 781  HG03137    0.00%    failed      0.00%
+ 782  HG03139    0.01%    failed      0.00%
+ 783  HG03157    0.00%    failed      0.00%
+ 784  HG03160    0.01%    failed      0.00%
+ 785  HG03161    0.00%    failed      0.00%
+ 786  HG03163    0.00%    failed      0.00%
+ 787  HG03166    0.00%    failed      0.00%
+ 788  HG03169    0.00%    failed      0.00%
+ 789  HG03170    0.00%    failed      0.00%
+ 790  HG03172    0.00%    failed      0.00%
+ 791  HG03175    0.00%    failed      0.00%
+ 792  HG03190    0.00%    failed      0.00%
+ 793  HG03191    0.00%    failed      0.00%
+ 794  HG03193    0.00%    failed      0.00%
+ 795  HG03196    0.00%    failed      0.00%
+ 796  HG03197    0.00%    failed      0.00%
+ 797  HG03199    0.00%    failed      0.00%
+ 798  HG03202    0.00%    failed      0.00%
+ 799  HG03209    0.00%    failed      0.00%
+ 800  HG03224    0.00%    failed      0.00%
+ 801  HG03225    0.14%    failed      0.00%
+ 802  HG03228    0.02%    failed      0.00%
+ 803  HG03234    0.00%    failed      0.00%
+ 804  HG03237    0.00%    failed      2.48%
+ 805  HG03240    0.01%    failed      0.00%
+ 806  HG03242    0.02%    failed      0.00%
+ 807  HG03246    0.00%    failed      0.00%
+ 808  HG03248    0.00%    failed      0.00%
+ 809  HG03249    0.00%    failed      0.00%
+ 810  HG03258    0.00%    failed      0.00%
+ 811  HG03260    0.00%    failed      0.00%
+ 812  HG03265    0.01%    failed      0.00%
+ 813  HG03268    0.01%    failed      0.00%
+ 814  HG03269    0.01%    failed      0.00%
+ 815  HG03271    0.00%    failed      0.00%
+ 816  HG03280    0.00%    failed      0.00%
+ 817  HG03295    0.00%    failed      0.00%
+ 818  HG03296    0.00%    failed      0.00%
+ 819  HG03298    0.00%    failed      0.00%
+ 820  HG03299    0.00%    failed      0.00%
+ 821  HG03301    0.00%    failed      0.00%
+ 822  HG03302    0.00%    failed      0.00%
+ 823  HG03304    0.00%    failed      0.00%
+ 824  HG03307    0.00%    failed      0.00%
+ 825  HG03308    0.00%    failed      0.00%
+ 826  HG03311    0.00%    failed      0.00%
+ 827  HG03313    0.01%    failed      0.00%
+ 828  HG03314    0.00%    failed      0.00%
+ 829  HG03343    0.00%    failed      0.00%
+ 830  HG03344    0.00%    failed      0.00%
+ 831  HG03350    0.00%    failed      0.00%
+ 832  HG03352    0.01%    failed      0.00%
+ 833  HG03367    0.00%    failed      0.00%
+ 834  HG03368    0.00%    failed      0.00%
+ 835  HG03370    0.00%    failed      0.00%
+ 836  HG03371    0.00%    failed      0.00%
+ 837  HG03373    0.00%    failed      0.00%
+ 838  HG03376    0.14%    failed      0.00%
+ 839  HG03382    0.00%    failed      0.00%
+ 840  HG03385    0.01%    failed      0.00%
+ 841  HG03388    0.00%    failed      0.00%
+ 842  HG03391    0.00%    failed      0.00%
+ 843  HG03394    0.00%    failed      0.00%
+ 844  HG03397    0.00%    failed      0.00%
+ 845  HG03432    0.00%    failed      0.00%
+ 846  HG03433    0.00%    failed      0.00%
+ 847  HG03436    0.00%    failed      0.00%
+ 848  HG03439    0.00%    failed      0.00%
+ 849  HG03442    0.00%    failed      0.00%
+ 850  HG03445    0.00%    failed      0.00%
+ 851  HG03451    0.00%    failed      0.00%
+ 852  HG03454    0.01%    failed      0.00%
+ 853  HG03456    0.00%    failed      0.00%
+ 854  HG03457    0.00%    failed      0.00%
+ 855  HG03460    0.00%    failed      0.00%
+ 856  HG03469    0.00%    failed      0.00%
+ 857  HG03472    0.00%    failed      0.00%
+ 858  HG03478    0.00%    failed      0.00%
+ 859  HG03484    0.00%    failed      0.00%
+ 860  HG03487    0.09%    failed      0.28%
+ 861  HG03489    0.09%    failed      0.20%
+ 862  HG03490    0.00%    failed      0.00%
+ 863  HG03492    0.00%    failed      0.00%
+ 864  HG03515    0.00%    failed      0.00%
+ 865  HG03518    0.00%    failed      0.00%
+ 866  HG03519    0.00%    failed      0.00%
+ 867  HG03521    0.00%    failed      0.00%
+ 868  HG03538    0.00%    failed      0.00%
+ 869  HG03547    0.01%    failed      0.00%
+ 870  HG03556    0.00%    failed      0.00%
+ 871  HG03559    0.01%    failed      0.00%
+ 872  HG03565    0.00%    failed      0.00%
+ 873  HG03571    0.01%    failed      0.00%
+ 874  HG03574    0.00%    failed      0.00%
+ 875  HG03577    0.09%    passed      7.14%
+ 876  HG03579    0.09%    failed      4.36%
+ 877  HG03582    0.00%    failed      0.00%
+ 878  HG03585    0.00%    failed      0.00%
+ 879  HG03593    0.01%    failed      0.00%
+ 880  HG03594    0.00%    failed      0.83%
+ 881  HG03596    0.00%    failed      0.83%
+ 882  HG03600    0.01%    failed      0.08%
+ 883  HG03603    0.00%    failed      0.00%
+ 884  HG03606    0.00%    failed      0.00%
+ 885  HG03615    0.04%    passed      5.82%
+ 886  HG03618    0.00%    failed      0.15%
+ 887  HG03624    0.00%    failed      0.00%
+ 888  HG03629    0.00%    failed      0.00%
+ 889  HG03633    0.00%    failed      1.40%
+ 890  HG03636    0.00%    failed      0.00%
+ 891  HG03639    0.00%    failed      0.00%
+ 892  HG03641    0.00%    failed      0.00%
+ 893  HG03644    0.00%    failed      0.27%
+ 894  HG03646    0.00%    failed      2.06%
+ 895  HG03649    0.00%    failed      0.00%
+ 896  HG03651    0.00%    failed      0.00%
+ 897  HG03652    0.00%    failed      0.00%
+ 898  HG03654    0.01%    failed      0.00%
+ 899  HG03660    0.01%    failed      4.24%
+ 900  HG03663    0.00%    failed      0.00%
+ 901  HG03667    0.01%    failed      0.00%
+ 902  HG03672    0.00%    passed     37.83%
+ 903  HG03679    0.00%    failed      0.00%
+ 904  HG03680    0.01%    failed      1.13%
+ 905  HG03681    0.00%    failed      0.00%
+ 906  HG03682    0.00%    failed      0.00%
+ 907  HG03685    0.00%    failed      0.00%
+ 908  HG03686    0.00%    passed     39.81%
+ 909  HG03687    0.00%    failed      0.00%
+ 910  HG03688    0.01%    passed     10.99%
+ 911  HG03691    0.00%    failed      0.00%
+ 912  HG03693    0.00%    failed      0.24%
+ 913  HG03694    0.03%    failed      0.00%
+ 914  HG03695    0.00%    passed     52.90%
+ 915  HG03696    0.00%    passed     11.82%
+ 916  HG03697    0.01%    failed      0.74%
+ 917  HG03699    0.00%    failed      0.00%
+ 918  HG03701    0.00%    failed      0.00%
+ 919  HG03702    0.00%    failed      0.00%
+ 920  HG03705    0.01%    failed      0.00%
+ 921  HG03707    0.00%    failed      0.00%
+ 922  HG03708    0.08%    failed      0.28%
+ 923  HG03710    0.09%    failed      0.32%
+ 924  HG03711    0.01%    failed      0.00%
+ 925  HG03713    0.00%    failed      0.00%
+ 926  HG03716    0.01%    failed      0.05%
+ 927  HG03718    0.00%    failed      0.00%
+ 928  HG03720    0.00%    failed      0.00%
+ 929  HG03725    0.00%    failed      0.00%
+ 930  HG03727    0.00%    failed      0.00%
+ 931  HG03729    0.00%    failed      0.00%
+ 932  HG03732    0.00%    failed      0.00%
+ 933  HG03738    0.01%    failed      1.54%
+ 934  HG03740    0.01%    failed      0.00%
+ 935  HG03742    0.01%    passed     25.70%
+ 936  HG03743    0.01%    failed      0.00%
+ 937  HG03744    0.00%    failed      0.00%
+ 938  HG03745    0.01%    failed      0.21%
+ 939  HG03746    0.01%    passed     32.20%
+ 940  HG03750    0.00%    failed      0.00%
+ 941  HG03753    0.00%    passed     34.06%
+ 942  HG03755    0.00%    failed      2.06%
+ 943  HG03761    0.00%    failed      0.00%
+ 944  HG03763    0.00%    failed      0.00%
+ 945  HG03767    0.01%    failed      0.02%
+ 946  HG03771    0.00%    failed      0.00%
+ 947  HG03773    0.00%    failed      0.00%
+ 948  HG03775    0.00%    failed      0.00%
+ 949  HG03777    0.00%    failed      0.09%
+ 950  HG03778    0.00%    failed      0.75%
+ 951  HG03779    0.00%    failed      0.00%
+ 952  HG03785    0.00%    passed     13.60%
+ 953  HG03786    0.00%    passed     30.60%
+ 954  HG03788    0.01%    passed     35.87%
+ 955  HG03790    0.00%    passed     55.24%
+ 956  HG03792    0.01%    failed      0.02%
+ 957  HG03794    0.00%    failed      0.00%
+ 958  HG03795    0.00%    failed      0.00%
+ 959  HG03797    0.00%    failed      0.00%
+ 960  HG03798    0.00%    failed      0.00%
+ 961  HG03800    0.01%    failed      2.05%
+ 962  HG03803    0.00%    failed      0.00%
+ 963  HG03806    0.01%    passed     11.81%
+ 964  HG03809    0.00%    failed      0.17%
+ 965  HG03812    0.00%    failed      0.13%
+ 966  HG03815    0.00%    failed      0.48%
+ 967  HG03821    0.00%    passed     24.27%
+ 968  HG03824    0.00%    failed      0.15%
+ 969  HG03830    0.01%    passed     78.50%
+ 970  HG03833    0.00%    failed      0.00%
+ 971  HG03837    0.01%    failed      0.75%
+ 972  HG03844    0.02%    failed      0.00%
+ 973  HG03846    0.03%    failed      0.21%
+ 974  HG03848    0.01%    failed      0.24%
+ 975  HG03850    0.00%    failed      0.00%
+ 976  HG03851    0.00%    failed      3.27%
+ 977  HG03854    0.00%    failed      0.31%
+ 978  HG03856    0.00%    failed      0.00%
+ 979  HG03864    0.00%    failed      0.00%
+ 980  HG03866    0.00%    failed      0.00%
+ 981  HG03867    0.01%    failed      0.00%
+ 982  HG03869    0.01%    failed      0.00%
+ 983  HG03870    0.01%    failed      0.00%
+ 984  HG03871    0.00%    failed      0.00%
+ 985  HG03872    0.01%    failed      0.00%
+ 986  HG03875    0.00%    passed     35.92%
+ 987  HG03885    0.01%    passed     15.57%
+ 988  HG03887    0.00%    failed      0.00%
+ 989  HG03890    0.01%    failed      0.75%
+ 990  HG03896    0.00%    failed      0.00%
+ 991  HG03899    0.00%    failed      0.00%
+ 992  HG03900    0.00%    passed     34.11%
+ 993  HG03902    0.00%    failed      0.00%
+ 994  HG03905    0.01%    passed     12.67%
+ 995  HG03906    0.01%    passed     14.54%
+ 996  HG03908    0.00%    passed     11.82%
+ 997  HG03909    0.01%    passed      8.79%
+ 998  HG03911    0.00%    failed      0.00%
+ 999  HG03914    0.01%    failed      0.00%
+1000  HG03917    0.01%    failed      0.00%
+1001  HG03920    0.00%    passed     28.90%
+1002  HG03926    0.00%    failed      0.00%
+1003  HG03929    0.00%    failed      0.01%
+1004  HG03941    0.01%    failed      0.12%
+1005  HG03942    0.00%    failed      0.12%
+1006  HG03943    0.00%    failed      0.00%
+1007  HG03950    0.01%    failed      0.67%
+1008  HG03953    0.01%    passed     34.02%
+1009  HG03960    0.01%    failed      0.00%
+1010  HG03963    0.00%    failed      0.00%
+1011  HG03965    0.01%    failed      0.09%
+1012  HG03967    0.00%    failed      0.00%
+1013  HG03969    0.00%    passed     30.56%
+1014  HG03971    0.00%    passed     32.29%
+1015  HG03974    0.00%    failed      0.00%
+1016  HG03976   20.66%    failed      4.08%
+1017  HG03978    0.00%    failed      0.00%
+1018  HG03985    0.01%    failed      0.34%
+1019  HG03990    0.00%    passed     11.83%
+1020  HG03991    0.00%    failed      0.00%
+1021  HG03992    0.00%    failed      0.00%
+1022  HG03998   20.89%    failed      1.29%
+1023  HG03999    0.00%    failed      0.00%
+1024  HG04002    0.00%    failed      0.04%
+1025  HG04003    0.00%    passed     39.83%
+1026  HG04006    0.04%    failed      0.13%
+1027  HG04015    0.00%    passed     62.63%
+1028  HG04017    0.00%    failed      0.00%
+1029  HG04019    0.00%    failed      0.00%
+1030  HG04020    0.00%    failed      0.00%
+1031  HG04022    0.00%    failed      0.00%
+1032  HG04023    0.00%    failed      0.00%
+1033  HG04033    0.01%    failed      0.21%
+1034  HG04039    0.00%    failed      0.00%
+1035  HG04056    0.01%    failed      0.00%
+1036  HG04060    0.00%    failed      0.48%
+1037  HG04061    0.01%    failed      0.54%
+1038  HG04080    0.00%    passed     27.32%
+1039  HG04093    0.01%    passed     20.17%
+1040  HG04094    0.01%    passed     62.51%
+1041  HG04096    0.00%    failed      0.00%
+1042  HG04098    0.00%    failed      0.00%
+1043  HG04100    0.01%    passed     18.95%
+1044  HG04107    0.00%    passed     18.96%
+1045  HG04115    0.00%    failed      0.00%
+1046  HG04122    0.00%    failed      0.00%
+1047  HG04127    0.00%    failed      0.00%
+1048  HG04131    0.00%    failed      0.00%
+1049  HG04134    0.00%    passed     43.93%
+1050  HG04140    0.00%    passed     65.22%
+1051  HG04146    0.01%    failed      0.67%
+1052  HG04149    0.00%    failed      0.01%
+1053  HG04152    0.00%    failed      0.00%
+1054  HG04155    0.01%    failed      0.00%
+1055  HG04157    0.02%    failed      0.00%
+1056  HG04158    0.00%    failed      0.00%
+1057  HG04160    0.00%    failed      0.00%
+1058  HG04161    0.00%    failed      0.08%
+1059  HG04164    0.00%    failed      0.02%
+1060  HG04173    0.00%    passed     67.83%
+1061  HG04176    0.01%    failed      0.21%
+1062  HG04182    0.00%    failed      0.00%
+1063  HG04185    0.00%    failed      0.24%
+1064  HG04187    0.00%    failed      0.15%
+1065  HG04188    0.00%    failed      0.03%
+1066  HG04191    0.01%    failed      0.31%
+1067  HG04193    0.00%    failed      0.39%
+1068  HG04194    0.00%    failed      0.00%
+1069  HG04198    0.01%    failed      0.02%
+1070  HG04199    0.00%    passed     20.20%
+1071  HG04204    0.00%    failed      0.00%
+1072  HG04206    0.00%    failed      0.60%
+1073  HG04210    0.01%    passed      5.92%
+1074  HG04211    0.00%    failed      0.05%
+1075  HG04215    0.00%    failed      0.00%
+1076  HG04219    0.00%    failed      0.00%
+1077  HG04222    0.01%    failed      1.02%
+1078  HG04225    0.00%    failed      0.00%
+1079  HG04228    0.00%    failed      0.00%
+1080  HG04229    0.00%    failed      0.00%
+1081  HG04235    0.01%    failed      0.48%
+1082  HG04238    0.01%    failed      0.00%
+1083  HG04239    0.00%    passed     10.99%
+1084  NA06984    0.00%    failed      0.00%
+1085  NA06986    0.00%    failed      0.00%
+1086  NA06993    0.00%    failed      0.00%
+1087  NA06994    0.00%    failed      0.27%
+1088  NA06995    0.10%    failed      0.32%
+1089  NA07022    0.00%    failed      0.93%
+1090  NA07029    0.00%    failed      0.48%
+1091  NA07034    0.00%    failed      0.00%
+1092  NA07048    0.01%    failed      0.00%
+1093  NA07051    0.01%    failed      0.34%
+1094  NA07347    0.00%    failed      0.00%
+1095  NA07349    0.00%    failed      0.00%
+1096  NA07357    0.01%    failed      0.00%
+1097  NA07435    0.10%    failed      0.31%
+1098  NA10830    0.14%    failed      0.00%
+1099  NA10835    0.00%    failed      0.00%
+1100  NA10837    0.00%    failed      0.00%
+1101  NA10838    0.01%    failed      0.48%
+1102  NA10842    0.00%    failed      0.00%
+1103  NA10845    0.00%    failed      3.27%
+1104  NA10846    0.00%    failed      0.00%
+1105  NA10851    0.00%    failed      0.00%
+1106  NA10856    0.01%    failed      0.09%
+1107  NA10857    0.00%    failed      0.00%
+1108  NA10860    0.00%    failed      2.06%
+1109  NA10865    0.00%    failed      0.00%
+1110  NA11829    0.00%    failed      0.54%
+1111  NA11831    0.00%    failed      0.00%
+1112  NA11839    0.00%    failed      0.00%
+1113  NA11843    0.00%    failed      0.00%
+1114  NA11881    0.00%    failed      0.93%
+1115  NA11891    0.00%    failed      0.00%
+1116  NA11893    0.00%    failed      2.48%
+1117  NA11917    0.00%    failed      0.00%
+1118  NA11919    0.00%    failed      0.34%
+1119  NA11930    0.00%    failed      2.72%
+1120  NA11932    0.00%    failed      0.43%
+1121  NA11992    0.00%    failed      1.26%
+1122  NA11994    0.00%    failed      0.00%
+1123  NA12003    0.00%    failed      0.54%
+1124  NA12005    0.00%    failed      0.00%
+1125  NA12043    0.00%    failed      0.00%
+1126  NA12045    0.00%    failed      0.00%
+1127  NA12056    0.00%    failed      0.00%
+1128  NA12144    0.00%    failed      0.00%
+1129  NA12146    0.01%    passed      5.02%
+1130  NA12154    0.13%    failed      0.00%
+1131  NA12155    0.00%    failed      0.00%
+1132  NA12248    0.00%    failed      0.00%
+1133  NA12264    0.00%    failed      0.00%
+1134  NA12272    0.00%    failed      0.00%
+1135  NA12274    0.00%    failed      0.00%
+1136  NA12282    0.00%    failed      0.12%
+1137  NA12286    0.17%    failed      0.01%
+1138  NA12335    0.00%    failed      0.00%
+1139  NA12340    0.00%    failed      0.00%
+1140  NA12342    0.00%    failed      0.00%
+1141  NA12344    0.00%    failed      0.00%
+1142  NA12347    0.00%    failed      0.00%
+1143  NA12399    0.00%    failed      0.00%
+1144  NA12413    0.01%    failed      3.26%
+1145  NA12485    0.00%    failed      2.99%
+1146  NA12546    0.09%    failed      0.50%
+1147  NA12707    0.00%    failed      0.00%
+1148  NA12716    0.00%    failed      0.00%
+1149  NA12739    0.01%    failed      0.75%
+1150  NA12748    0.00%    failed      0.34%
+1151  NA12750    0.01%    failed      1.87%
+1152  NA12752    0.00%    failed      0.00%
+1153  NA12760    0.00%    failed      0.00%
+1154  NA12762    0.00%    failed      0.00%
+1155  NA12766    0.00%    failed      0.00%
+1156  NA12775    0.00%    failed      0.00%
+1157  NA12777    0.09%    failed      1.44%
+1158  NA12801    0.00%    failed      0.00%
+1159  NA12812    0.00%    failed      0.00%
+1160  NA12814    0.01%    failed      0.00%
+1161  NA12817    0.00%    failed      0.00%
+1162  NA12827    0.00%    failed      0.00%
+1163  NA12829    0.00%    failed      0.00%
+1164  NA12842    0.00%    failed      0.00%
+1165  NA12864    0.00%    failed      0.00%
+1166  NA12872    0.00%    failed      0.00%
+1167  NA12874    0.00%    failed      0.00%
+1168  NA12877    0.00%    failed      0.00%
+1169  NA12889    0.00%    failed      0.00%
+1170  NA12891    0.00%    failed      0.75%
+1171  NA18485    0.00%    failed      0.00%
+1172  NA18486    0.00%    failed      0.00%
+1173  NA18487    0.00%    failed      0.00%
+1174  NA18497    0.00%    failed      0.00%
+1175  NA18498    0.00%    failed      0.00%
+1176  NA18500    0.01%    failed      0.00%
+1177  NA18501    0.00%    failed      0.00%
+1178  NA18503    0.00%    failed      0.00%
+1179  NA18504    0.00%    failed      0.00%
+1180  NA18506    0.00%    failed      0.00%
+1181  NA18507    0.00%    failed      0.00%
+1182  NA18510    0.00%    failed      0.00%
+1183  NA18515    0.00%    failed      0.00%
+1184  NA18516    0.00%    failed      0.00%
+1185  NA18519    0.00%    failed      0.00%
+1186  NA18521    0.01%    failed      0.00%
+1187  NA18522    0.00%    failed      0.00%
+1188  NA18530    0.00%    passed     25.75%
+1189  NA18534    0.00%    passed     65.60%
+1190  NA18536    0.00%    passed     93.05%
+1191  NA18543    0.01%    passed     92.52%
+1192  NA18544    0.00%    passed     67.83%
+1193  NA18546    0.02%    passed     35.70%
+1194  NA18548    0.00%    passed     84.18%
+1195  NA18549    0.09%    failed      2.33%
+1196  NA18557    0.00%    passed     78.64%
+1197  NA18558    0.00%    passed     50.55%
+1198  NA18559    0.00%    passed     60.14%
+1199  NA18561    0.01%    passed     78.53%
+1200  NA18562    0.01%    passed     37.72%
+1201  NA18563    0.00%    passed     53.19%
+1202  NA18572    0.01%    passed     73.02%
+1203  NA18603    0.01%    passed     48.70%
+1204  NA18605    0.01%    passed     73.10%
+1205  NA18606    0.00%    passed     87.02%
+1206  NA18608    0.00%    passed     18.99%
+1207  NA18609    0.02%    passed     50.33%
+1208  NA18611    0.00%    passed     57.69%
+1209  NA18612    0.01%    failed      0.00%
+1210  NA18613    0.00%    passed     37.85%
+1211  NA18620    0.01%    failed      0.00%
+1212  NA18621    0.01%    passed     84.09%
+1213  NA18622    0.27%    passed     39.62%
+1214  NA18623    0.00%    passed     55.24%
+1215  NA18624    0.01%    passed     75.62%
+1216  NA18629    0.00%    passed     37.85%
+1217  NA18632    0.00%    passed     98.38%
+1218  NA18633    0.00%    passed     73.13%
+1219  NA18635    0.00%    passed     39.85%
+1220  NA18636    0.00%    passed     35.94%
+1221  NA18637    0.00%    passed     48.59%
+1222  NA18638    0.00%    passed     50.55%
+1223  NA18639    0.00%    passed     67.83%
+1224  NA18643    0.01%    passed     50.44%
+1225  NA18645    0.02%    failed      0.00%
+1226  NA18647    0.00%    passed     48.27%
+1227  NA18648    0.02%    passed     67.57%
+1228  NA18740    0.01%    passed     98.82%
+1229  NA18745    0.01%    passed     50.51%
+1230  NA18747    0.00%    passed     25.78%
+1231  NA18748    0.00%    passed     67.85%
+1232  NA18749    0.01%    failed      0.00%
+1233  NA18757    0.01%    passed     70.42%
+1234  NA18853    0.00%    failed      0.00%
+1235  NA18854    0.00%    failed      0.00%
+1236  NA18856    0.01%    failed      0.00%
+1237  NA18857    0.00%    failed      0.00%
+1238  NA18859    0.00%    failed      0.00%
+1239  NA18860    0.00%    failed      0.00%
+1240  NA18862    0.01%    failed      0.00%
+1241  NA18863    0.00%    failed      0.00%
+1242  NA18865    0.00%    failed      0.00%
+1243  NA18868    0.00%    failed      0.00%
+1244  NA18869    0.00%    failed      0.00%
+1245  NA18871    0.00%    failed      0.00%
+1246  NA18872    0.00%    failed      0.00%
+1247  NA18874    0.00%    failed      0.00%
+1248  NA18877    0.00%    failed      0.00%
+1249  NA18879    0.00%    failed      0.00%
+1250  NA18908    0.00%    failed      0.00%
+1251  NA18910    0.01%    failed      0.00%
+1252  NA18911    0.01%    failed      0.00%
+1253  NA18913    0.01%    failed      0.00%
+1254  NA18914    0.00%    failed      0.00%
+1255  NA18915    0.00%    failed      0.00%
+1256  NA18917    0.00%    failed      0.00%
+1257  NA18923    0.01%    failed      0.00%
+1258  NA18925    0.00%    failed      0.00%
+1259  NA18934    0.00%    failed      0.00%
+1260  NA18935    0.00%    failed      0.00%
+1261  NA18940    0.00%    failed      0.00%
+1262  NA18943    0.01%    passed     76.29%
+1263  NA18944    0.00%    failed      0.00%
+1264  NA18945    0.00%    passed     73.18%
+1265  NA18948    0.00%    failed      0.00%
+1266  NA18952    0.00%    failed      0.00%
+1267  NA18953    0.01%    passed     84.61%
+1268  NA18959    0.01%    passed     32.17%
+1269  NA18960    0.00%    failed      0.00%
+1270  NA18961    0.01%    failed      0.00%
+1271  NA18962    0.00%    passed     65.52%
+1272  NA18965    0.01%    passed     98.32%
+1273  NA18966    0.00%    failed      0.00%
+1274  NA18967    0.00%    failed      0.00%
+1275  NA18970    0.01%    failed      0.00%
+1276  NA18971    0.07%    failed      0.00%
+1277  NA18974    0.08%    failed      0.00%
+1278  NA18977    0.00%    passed     76.24%
+1279  NA18982    0.01%    passed     75.73%
+1280  NA18983    0.01%    failed      0.00%
+1281  NA18984    0.00%    passed     81.44%
+1282  NA18985    0.00%    passed     87.40%
+1283  NA18986    0.00%    passed     76.21%
+1284  NA18988    0.00%    failed      0.00%
+1285  NA18989    0.07%    failed      0.00%
+1286  NA18990    0.00%    passed     55.52%
+1287  NA18994    0.00%    passed     84.50%
+1288  NA18995    0.01%    failed      0.00%
+1289  NA19000    0.00%    passed     95.88%
+1290  NA19004    0.01%    failed      0.00%
+1291  NA19005    0.01%    passed     81.87%
+1292  NA19006    0.07%    failed      0.00%
+1293  NA19007    0.00%    passed     95.54%
+1294  NA19009    0.00%    passed     37.85%
+1295  NA19012    0.00%    failed      0.00%
+1296  NA19020    0.00%    failed      0.00%
+1297  NA19025    0.00%    failed      0.00%
+1298  NA19026    0.00%    failed      0.00%
+1299  NA19027    0.00%    failed      0.00%
+1300  NA19028    0.01%    failed      0.00%
+1301  NA19031    0.00%    failed      0.00%
+1302  NA19035    0.00%    failed      0.00%
+1303  NA19041    0.00%    failed      0.00%
+1304  NA19043    0.01%    failed      0.00%
+1305  NA19055    0.01%    passed     87.43%
+1306  NA19056    0.12%    failed      0.00%
+1307  NA19058    0.00%    failed      0.00%
+1308  NA19060    0.00%    passed     92.64%
+1309  NA19062    0.01%    passed     67.78%
+1310  NA19063    0.01%    failed      0.00%
+1311  NA19066    0.01%    passed     79.04%
+1312  NA19067    0.00%    passed     95.52%
+1313  NA19068    0.00%    failed      0.00%
+1314  NA19070    0.00%    passed     81.73%
+1315  NA19072    0.00%    passed     98.35%
+1316  NA19075    0.00%    passed     73.21%
+1317  NA19076    0.01%    passed     62.43%
+1318  NA19079    0.01%    failed      0.00%
+1319  NA19082    0.00%    failed      0.00%
+1320  NA19083    0.00%    passed     34.09%
+1321  NA19085    0.00%    passed     57.64%
+1322  NA19086    0.00%    passed     30.55%
+1323  NA19088    0.00%    passed     98.76%
+1324  NA19089    0.00%    failed      0.00%
+1325  NA19091    0.02%    failed      0.00%
+1326  NA19092    0.00%    failed      0.00%
+1327  NA19096    0.01%    failed      0.00%
+1328  NA19098    0.00%    failed      0.00%
+1329  NA19101    0.00%    failed      0.00%
+1330  NA19103    0.00%    failed      0.00%
+1331  NA19107    0.00%    failed      0.00%
+1332  NA19113    0.01%    failed      0.00%
+1333  NA19117    0.00%    failed      0.00%
+1334  NA19119    0.01%    failed      0.00%
+1335  NA19120    0.01%    failed      0.00%
+1336  NA19121    0.00%    failed      0.00%
+1337  NA19123    0.00%    failed      0.00%
+1338  NA19128    0.00%    failed      0.00%
+1339  NA19130    0.00%    failed      0.00%
+1340  NA19138    0.00%    failed      0.00%
+1341  NA19139    0.00%    failed      0.00%
+1342  NA19141    0.00%    failed      0.00%
+1343  NA19142    0.00%    failed      0.00%
+1344  NA19144    0.00%    failed      0.00%
+1345  NA19145    0.00%    failed      0.00%
+1346  NA19146    0.01%    failed      0.00%
+1347  NA19150    0.01%    failed      0.00%
+1348  NA19153    0.00%    failed      0.00%
+1349  NA19154    0.00%    failed      0.00%
+1350  NA19160    0.00%    failed      0.00%
+1351  NA19161    0.00%    failed      0.00%
+1352  NA19171    0.00%    failed      0.00%
+1353  NA19173    0.00%    failed      0.00%
+1354  NA19174    0.00%    failed      0.00%
+1355  NA19175    0.00%    failed      0.00%
+1356  NA19177    0.00%    failed      0.00%
+1357  NA19184    0.00%    failed      0.00%
+1358  NA19186    0.00%    failed      0.00%
+1359  NA19189    0.01%    failed      0.00%
+1360  NA19191    0.00%    failed      0.00%
+1361  NA19198    0.00%    failed      0.00%
+1362  NA19200    0.00%    failed      0.00%
+1363  NA19203    0.00%    failed      0.00%
+1364  NA19205    0.00%    failed      0.00%
+1365  NA19207    0.00%    failed      0.00%
+1366  NA19208    0.00%    failed      0.00%
+1367  NA19210    0.00%    failed      0.00%
+1368  NA19211    0.00%    failed      0.00%
+1369  NA19213    0.01%    failed      0.00%
+1370  NA19223    0.00%    failed      0.00%
+1371  NA19224    0.00%    failed      0.00%
+1372  NA19236    0.00%    failed      0.00%
+1373  NA19239    0.01%    failed      0.00%
+1374  NA19248    0.00%    failed      0.00%
+1375  NA19249    0.00%    failed      0.00%
+1376  NA19256    0.00%    failed      0.00%
+1377  NA19258    0.00%    failed      0.00%
+1378  NA19307    0.00%    failed      0.00%
+1379  NA19308    0.00%    failed      0.00%
+1380  NA19309    0.00%    failed      0.00%
+1381  NA19312    0.01%    failed      0.00%
+1382  NA19317    0.00%    failed      0.00%
+1383  NA19318    0.00%    failed      0.00%
+1384  NA19319    0.00%    failed      0.00%
+1385  NA19331    0.06%    failed      0.00%
+1386  NA19334    0.05%    failed      0.00%
+1387  NA19346    0.00%    failed      0.00%
+1388  NA19347    0.00%    failed      0.00%
+1389  NA19350    0.00%    failed      0.00%
+1390  NA19360    0.00%    failed      0.00%
+1391  NA19372    0.00%    failed      0.00%
+1392  NA19374    0.00%    failed      0.00%
+1393  NA19375    0.00%    failed      0.00%
+1394  NA19376    0.00%    failed      0.00%
+1395  NA19380    0.01%    failed      0.00%
+1396  NA19383    0.00%    failed      0.00%
+1397  NA19384    0.01%    failed      0.00%
+1398  NA19385    0.00%    failed      0.00%
+1399  NA19393    0.00%    failed      0.00%
+1400  NA19394    0.00%    failed      0.00%
+1401  NA19397    0.00%    failed      0.00%
+1402  NA19428    0.00%    failed      0.00%
+1403  NA19429    0.00%    failed      0.00%
+1404  NA19430    0.00%    failed      0.00%
+1405  NA19443    0.00%    failed      0.00%
+1406  NA19448    0.00%    failed      0.00%
+1407  NA19451    0.00%    failed      0.00%
+1408  NA19452    0.00%    failed      0.00%
+1409  NA19454    0.10%    failed      0.00%
+1410  NA19455    0.00%    failed      0.00%
+1411  NA19461    0.00%    failed      0.00%
+1412  NA19466    0.00%    failed      0.00%
+1413  NA19649    0.70%    failed      0.00%
+1414  NA19650    0.70%    failed      0.00%
+1415  NA19652    0.00%    failed      0.00%
+1416  NA19655    0.01%    passed     16.60%
+1417  NA19658    0.00%    failed      0.00%
+1418  NA19661    0.00%    failed      0.00%
+1419  NA19664    0.01%    failed      0.00%
+1420  NA19670    0.10%    failed      1.05%
+1421  NA19676    0.01%    failed      0.00%
+1422  NA19679    0.00%    failed      0.00%
+1423  NA19682    0.01%    failed      0.00%
+1424  NA19685    0.00%    failed      0.00%
+1425  NA19700    0.00%    failed      0.00%
+1426  NA19702    0.00%    failed      0.00%
+1427  NA19703    0.00%    failed      0.00%
+1428  NA19705    0.00%    failed      0.00%
+1429  NA19711    0.00%    failed      0.00%
+1430  NA19717    0.00%    failed      0.00%
+1431  NA19720    0.00%    failed      0.00%
+1432  NA19723    0.00%    failed      0.93%
+1433  NA19724    0.01%    failed      0.92%
+1434  NA19726    0.01%    failed      0.00%
+1435  NA19727    0.00%    failed      0.00%
+1436  NA19729    0.01%    failed      0.00%
+1437  NA19732    0.00%    failed      0.00%
+1438  NA19735    0.01%    failed      0.00%
+1439  NA19741    0.00%    failed      0.00%
+1440  NA19747    0.10%    failed      1.74%
+1441  NA19750    0.00%    failed      0.00%
+1442  NA19751    0.00%    failed      0.00%
+1443  NA19756    0.00%    failed      0.00%
+1444  NA19757    0.00%    failed      0.00%
+1445  NA19759    0.00%    failed      0.00%
+1446  NA19762    0.00%    failed      0.00%
+1447  NA19771    0.00%    failed      0.00%
+1448  NA19772    0.00%    failed      0.00%
+1449  NA19774    0.00%    failed      0.00%
+1450  NA19777    0.00%    failed      0.00%
+1451  NA19778    0.00%    failed      0.00%
+1452  NA19780    0.01%    failed      0.00%
+1453  NA19783    0.00%    failed      0.00%
+1454  NA19784    0.00%    failed      0.00%
+1455  NA19786    0.00%    failed      0.00%
+1456  NA19787    0.01%    failed      0.00%
+1457  NA19789    0.00%    failed      0.00%
+1458  NA19792    0.00%    failed      0.00%
+1459  NA19795    0.00%    failed      0.00%
+1460  NA19796    0.00%    failed      0.00%
+1461  NA19818    0.00%    failed      0.00%
+1462  NA19828    0.00%    failed      0.00%
+1463  NA19834    0.00%    failed      0.00%
+1464  NA19900    0.00%    failed      0.00%
+1465  NA19904    0.00%    failed      0.00%
+1466  NA19908    0.00%    failed      0.00%
+1467  NA19916    0.00%    failed      0.00%
+1468  NA19918    0.00%    failed      0.00%
+1469  NA19919    0.00%    failed      0.00%
+1470  NA19920    0.00%    failed      0.00%
+1471  NA19922    0.00%    failed      0.00%
+1472  NA19982    0.00%    failed      1.14%
+1473  NA19984    0.00%    failed      0.60%
+1474  NA20126    0.00%    failed      0.00%
+1475  NA20278    0.00%    failed      0.00%
+1476  NA20279    0.00%    failed      0.00%
+1477  NA20281    0.01%    failed      0.00%
+1478  NA20291    0.01%    failed      0.00%
+1479  NA20298    0.01%    failed      0.00%
+1480  NA20318    0.00%    failed      0.00%
+1481  NA20340    0.00%    failed      0.00%
+1482  NA20342    0.00%    failed      0.00%
+1483  NA20346    0.00%    failed      0.00%
+1484  NA20348    0.07%    failed      0.00%
+1485  NA20351    0.00%    failed      1.54%
+1486  NA20356    0.00%    failed      0.00%
+1487  NA20358    0.00%    failed      0.00%
+1488  NA20362    0.00%    failed      0.00%
+1489  NA20509    0.00%    failed      0.00%
+1490  NA20510    0.01%    failed      0.00%
+1491  NA20511    0.00%    failed      0.93%
+1492  NA20512    0.00%    failed      0.00%
+1493  NA20513    0.01%    passed      5.03%
+1494  NA20515    0.00%    failed      0.00%
+1495  NA20516    0.00%    failed      0.00%
+1496  NA20518    0.01%    failed      0.00%
+1497  NA20519    0.00%    failed      0.00%
+1498  NA20520    0.01%    passed     30.51%
+1499  NA20521    0.00%    failed      1.03%
+1500  NA20524    0.00%    failed      0.00%
+1501  NA20525    0.01%    passed     13.59%
+1502  NA20527    0.01%    passed     11.78%
+1503  NA20528    0.00%    failed      0.00%
+1504  NA20532    0.02%    failed      0.00%
+1505  NA20534    0.00%    passed      8.16%
+1506  NA20536    0.09%    failed      0.95%
+1507  NA20538    0.00%    failed      0.00%
+1508  NA20539    0.00%    failed      0.00%
+1509  NA20543    0.00%    failed      0.15%
+1510  NA20544    0.00%    failed      0.00%
+1511  NA20581    0.00%    failed      0.00%
+1512  NA20586    0.01%    failed      0.00%
+1513  NA20588    0.00%    failed      4.26%
+1514  NA20752    0.00%    failed      0.00%
+1515  NA20754    0.29%    failed      0.00%
+1516  NA20755    0.00%    failed      0.00%
+1517  NA20758    0.01%    passed     78.45%
+1518  NA20759    0.00%    failed      0.00%
+1519  NA20762    0.00%    failed      0.83%
+1520  NA20763    0.00%    failed      4.63%
+1521  NA20765    0.00%    passed      8.15%
+1522  NA20767    0.09%    failed      0.95%
+1523  NA20770    0.00%    failed      0.00%
+1524  NA20778    0.01%    failed      2.48%
+1525  NA20783    0.00%    failed      0.00%
+1526  NA20785    0.00%    failed      0.00%
+1527  NA20787    0.01%    failed      0.75%
+1528  NA20792    0.00%    failed      0.00%
+1529  NA20796    0.01%    failed      0.00%
+1530  NA20798    0.00%    failed      0.00%
+1531  NA20801    0.52%    failed      2.02%
+1532  NA20803    0.00%    failed      0.00%
+1533  NA20805    0.01%    failed      0.54%
+1534  NA20806    0.00%    failed      0.00%
+1535  NA20809    0.00%    failed      1.87%
+1536  NA20810    0.00%    failed      0.00%
+1537  NA20811    0.03%    passed      9.36%
+1538  NA20812    0.00%    failed      0.00%
+1539  NA20814    0.01%    failed      0.00%
+1540  NA20815    0.00%    passed      5.94%
+1541  NA20827    0.00%    passed      5.94%
+1542  NA20845    0.00%    failed      0.00%
+1543  NA20846    0.00%    failed      0.00%
+1544  NA20850    0.00%    failed      0.00%
+1545  NA20852    0.01%    failed      0.00%
+1546  NA20858    0.09%    failed      0.28%
+1547  NA20861    0.01%    passed     18.95%
+1548  NA20863    0.01%    failed      1.25%
+1549  NA20864    0.00%    failed      0.00%
+1550  NA20866    0.02%    failed      0.00%
+1551  NA20867    0.01%    passed     30.53%
+1552  NA20870    0.09%    failed      1.44%
+1553  NA20884    0.00%    failed      2.26%
+1554  NA20885    0.00%    passed     21.51%
+1555  NA20887    0.00%    failed      0.00%
+1556  NA20889    0.01%    failed      0.00%
+1557  NA20890    0.00%    failed      0.00%
+1558  NA20891    0.01%    failed      0.00%
+1559  NA20895    0.00%    failed      0.00%
+1560  NA20897    0.00%    failed      0.00%
+1561  NA20901    0.00%    failed      0.31%
+1562  NA20903    0.03%    failed      0.00%
+1563  NA20904    0.00%    failed      0.00%
+1564  NA20905    0.00%    failed      3.27%
+1565  NA20911    0.01%    failed      0.00%
+1566  NA21087    0.01%    failed      0.04%
+1567  NA21090    0.01%    passed     28.85%
+1568  NA21091    0.01%    failed      0.00%
+1569  NA21092    0.01%    failed      0.00%
+1570  NA21093    0.01%    failed      0.12%
+1571  NA21094    0.01%    failed      0.00%
+1572  NA21095    0.00%    failed      0.00%
+1573  NA21098    0.00%    failed      0.00%
+1574  NA21099    0.00%    failed      0.17%
+1575  NA21100    0.01%    failed      0.00%
+1576  NA21104    0.00%    failed      0.00%
+1577  NA21105    0.00%    failed      0.00%
+1578  NA21107    0.00%    failed      0.24%
+1579  NA21109    0.01%    passed     28.84%
+1580  NA21111    0.01%    failed      0.21%
+1581  NA21112    0.00%    failed      0.21%
+1582  NA21113    0.00%    failed      0.24%
+1583  NA21114    0.00%    failed      0.00%
+1584  NA21115    0.00%    failed      0.00%
+1585  NA21116    0.00%    failed      0.67%
+1586  NA21117    0.02%    failed      0.00%
+1587  NA21118    0.01%    failed      0.00%
+1588  NA21119    0.01%    failed      0.00%
+1589  NA21123    0.01%    failed      0.00%
+1590  NA21124    0.00%    failed      0.00%
+1591  NA21126    0.01%    failed      0.67%
+1592  NA21127    0.01%    failed      0.00%
+1593  NA21128    0.01%    passed     25.72%
+1594  NA21129    0.00%    failed      0.00%
+1595  NA21130    0.00%    failed      1.70%
+1596  NA21133    0.01%    failed      0.00%
+1597  NA21135    0.01%    passed     28.84%
+****  TOTAL      0.11%  1230 sequences failed composition chi2 test (p-value<5%; df=1)
+Checking for duplicate sequences: done in 0.024708 secs using 781.3% CPU
+Creating fast initial parsimony tree by random order stepwise addition...
+17.565 seconds, parsimony score: 85098 (based on 79941 sites)
+Generating 1000 samples for ultrafast bootstrap (seed: 20261027)...
+
+NOTE: 416 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -669585.710
+2. Current log-likelihood: -637446.607
+3. Current log-likelihood: -636643.757
+4. Current log-likelihood: -636578.684
+5. Current log-likelihood: -636539.252
+6. Current log-likelihood: -636501.584
+7. Current log-likelihood: -636464.216
+8. Current log-likelihood: -636429.108
+9. Current log-likelihood: -636395.678
+10. Current log-likelihood: -636363.536
+11. Current log-likelihood: -636332.569
+12. Current log-likelihood: -636302.468
+13. Current log-likelihood: -636273.687
+14. Current log-likelihood: -636246.023
+15. Current log-likelihood: -636219.179
+16. Current log-likelihood: -636193.733
+17. Current log-likelihood: -636168.378
+18. Current log-likelihood: -636144.644
+19. Current log-likelihood: -636121.911
+20. Current log-likelihood: -636099.143
+21. Current log-likelihood: -636078.363
+22. Current log-likelihood: -636058.478
+23. Current log-likelihood: -636038.236
+24. Current log-likelihood: -636019.111
+25. Current log-likelihood: -636001.278
+26. Current log-likelihood: -635983.878
+27. Current log-likelihood: -635967.105
+28. Current log-likelihood: -635950.776
+29. Current log-likelihood: -635935.689
+30. Current log-likelihood: -635921.148
+31. Current log-likelihood: -635907.393
+32. Current log-likelihood: -635894.315
+33. Current log-likelihood: -635881.646
+34. Current log-likelihood: -635868.462
+35. Current log-likelihood: -635855.968
+36. Current log-likelihood: -635843.878
+37. Current log-likelihood: -635831.655
+38. Current log-likelihood: -635821.995
+39. Current log-likelihood: -635811.158
+40. Current log-likelihood: -635800.880
+41. Current log-likelihood: -635792.460
+42. Current log-likelihood: -635783.846
+43. Current log-likelihood: -635775.402
+44. Current log-likelihood: -635768.388
+45. Current log-likelihood: -635760.351
+46. Current log-likelihood: -635752.970
+47. Current log-likelihood: -635746.159
+48. Current log-likelihood: -635739.595
+49. Current log-likelihood: -635733.864
+50. Current log-likelihood: -635727.593
+51. Current log-likelihood: -635722.699
+52. Current log-likelihood: -635718.131
+53. Current log-likelihood: -635713.041
+54. Current log-likelihood: -635708.107
+55. Current log-likelihood: -635704.642
+56. Current log-likelihood: -635699.816
+57. Current log-likelihood: -635695.651
+58. Current log-likelihood: -635691.951
+59. Current log-likelihood: -635688.928
+60. Current log-likelihood: -635686.063
+61. Current log-likelihood: -635685.384
+62. Current log-likelihood: -635684.719
+63. Current log-likelihood: -635684.085
+64. Current log-likelihood: -635683.772
+65. Current log-likelihood: -635683.439
+66. Current log-likelihood: -635683.239
+Optimal log-likelihood: -635683.205
+State frequencies:  0: 0.992  1: 0.008
+Parameters optimization took 66 rounds (42.040 sec)
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 7.79807 secs using 798.5% CPU
+Computing ML distances took 7.828305 sec (of wall-clock time) 62.481961 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 0.00684094 secs using 681.3% CPU
+Constructing RapidNJ tree: done in 0.28109 secs using 457.3% CPU
+Computing RapidNJ tree took 0.287973 sec (of wall-clock time) 1.332272 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -644241.557
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 585.839 second
+Computing log-likelihood of 98 initial trees ... 65.074 seconds
+Current best score: -635683.205
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -634507.135
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 3: -634413.773
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 4: -634386.762
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 9: -634375.563
+Iteration 10 / LogL: -634376.961 / Time: 0h:18m:29s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 12: -634346.926
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 13: -634340.322
+Iteration 20 / LogL: -634470.521 / Time: 0h:25m:23s
+Finish initializing candidate tree set (20)
+Current best tree score: -634340.322 / CPU time: 1445.573
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -635381.829 / Time: 0h:26m:53s (1h:16m:6s left)
+Iteration 40 / LogL: -634709.346 / Time: 0h:28m:13s (0h:52m:16s left)
+Iteration 50 / LogL: -635826.340 / Time: 0h:29m:33s (0h:37m:37s left)
+Log-likelihood cutoff on original alignment: -634587.520
+Iteration 60 / LogL: -634571.594 / Time: 0h:31m:9s (0h:27m:43s left)
+Iteration 70 / LogL: -635472.765 / Time: 0h:32m:37s (0h:20m:8s left)
+Iteration 80 / LogL: -635058.276 / Time: 0h:34m:5s (0h:14m:7s left)
+Iteration 90 / LogL: -635865.697 / Time: 0h:35m:29s (0h:9m:5s left)
+Iteration 100 / LogL: -635192.470 / Time: 0h:36m:54s (0h:4m:48s left)
+Log-likelihood cutoff on original alignment: -634587.520
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.999
+Iteration 110 / LogL: -634923.843 / Time: 0h:38m:33s (0h:31m:35s left)
+TREE SEARCH COMPLETED AFTER 114 ITERATIONS / Time: 0h:39m:15s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -634340.322
+2. Current log-likelihood: -634340.310
+Optimal log-likelihood: -634340.310
+State frequencies:  0: 0.993  1: 0.007
+Parameters optimization took 2 rounds (0.945 sec)
+BEST SCORE FOUND : -634340.310
+
+Testing tree branches by SH-like aLRT with 1000 replicates...
+Alternative NNI shows better log-likelihood -634339.509 > -634340.310
+Alternative NNI shows better log-likelihood -634340.309 > -634340.310
+Alternative NNI shows better log-likelihood -634340.258 > -634340.310
+Alternative NNI shows better log-likelihood -634333.286 > -634340.310
+Alternative NNI shows better log-likelihood -634340.308 > -634340.310
+258.075 sec.
+Creating bootstrap support values...
+Split supports printed to NEXUS file ytree.splits.nex
+Total tree length: 0.185
+
+Total number of iterations: 114
+CPU time used for tree search: 17493.420 sec (4h:51m:33s)
+Wall-clock time used for tree search: 2278.123 sec (0h:37m:58s)
+Total CPU time used: 20163.694 sec (5h:36m:3s)
+Total wall-clock time used: 2622.448 sec (0h:43m:42s)
+
+Computing bootstrap consensus tree...
+Reading input file ytree.splits.nex...
+1597 taxa and 6605 splits.
+Consensus tree written to ytree.contree
+Reading input trees file ytree.contree
+Log-likelihood of consensus tree: -634380.314
+
+Analysis results written to: 
+  IQ-TREE report:                ytree.iqtree
+  Maximum-likelihood tree:       ytree.treefile
+  Likelihood distances:          ytree.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          ytree.splits.nex
+  Consensus tree:                ytree.contree
+  Screen log file:               ytree.log
+
+Date and Time: Tue Oct 27 20:24:29 2026

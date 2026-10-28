@@ -1,0 +1,391 @@
+{
+  "snapshot": "results/prelim_1kgp_2026-10-28.tsv",
+  "model_status": "v3a; complete CV, coverage, lineage-out and cohort",
+  "completed": 1639,
+  "stream_target": 1639,
+  "completed_fraction": 1.0,
+  "valid_males": 1593,
+  "valid_reference_males": 136,
+  "population_summary_n": 1583,
+  "population_excluded_samples": [
+    "HG00185",
+    "HG01967",
+    "HG01982",
+    "HG01984",
+    "HG02966",
+    "HG03006",
+    "HG03008",
+    "HG03976",
+    "HG03998",
+    "NA20806"
+  ],
+  "all_reference_males": 136,
+  "flag_counts": {
+    "ok": 1585,
+    "female": 40,
+    "y_dose_below_0.9": 8,
+    "no_estimate": 6
+  },
+  "female_max_y_dose": 0.0078,
+  "male_below_0_9_including_no_estimate": 14,
+  "complete_father_son_pairs": 307,
+  "pair_batch_directions": {
+    "698->698": 25,
+    "2504->698": 280,
+    "698->2504": 2
+  },
+  "pairs_involving_reference": 77,
+  "both_nonreference_pairs": 230,
+  "batch_counts": {
+    "2504": 1229,
+    "698": 364
+  },
+  "superpopulation_counts": {
+    "EUR": 303,
+    "EAS": 292,
+    "AMR": 224,
+    "SAS": 319,
+    "AFR": 455
+  },
+  "population_count": 26,
+  "lineage_counts": {
+    "R1b": 281,
+    "I": 62,
+    "R1a": 102,
+    "J": 90,
+    "N": 33,
+    "O": 248,
+    "B": 8,
+    "C": 32,
+    "T": 11,
+    "E": 464,
+    "G": 28,
+    "Q": 63,
+    "H": 71,
+    "R": 40,
+    "A": 8,
+    "F": 1,
+    "L": 31,
+    "D": 20
+  },
+  "display_lineage_counts": {
+    "R1b": 281,
+    "I": 62,
+    "R1a": 102,
+    "J": 90,
+    "N": 32,
+    "O": 248,
+    "B": 8,
+    "C": 32,
+    "T": 11,
+    "E": 464,
+    "G": 28,
+    "Q": 63,
+    "H": 71,
+    "R": 40,
+    "A": 8,
+    "F": 1,
+    "L": 31,
+    "NO": 1,
+    "D": 20
+  },
+  "population_lineage_counts": {
+    "R1b": 280,
+    "I": 62,
+    "R1a": 100,
+    "J": 86,
+    "N": 32,
+    "O": 248,
+    "B": 8,
+    "C": 32,
+    "T": 11,
+    "E": 463,
+    "G": 28,
+    "Q": 62,
+    "H": 71,
+    "R": 40,
+    "A": 8,
+    "F": 1,
+    "L": 31,
+    "D": 20
+  },
+  "median_bp_by_target": {
+    "DYZ3_bp": 857700.0,
+    "Yq12_bp": 26903097.0,
+    "DYZ1_bp": 15341091.0,
+    "DYZ2_bp": 10785376.0,
+    "DYZ18S_bp": 305747.0,
+    "YqHet2.7_bp": 122627.0,
+    "DYZ18sub_bp": 433913.0,
+    "DYZ19_bp": 329586.0
+  },
+  "lineage_medians_bp": {
+    "A": {
+      "DYZ3_bp": 940786.5,
+      "Yq12_bp": 25673499.0,
+      "DYZ1_bp": 16012074.0,
+      "DYZ2_bp": 8771671.0,
+      "DYZ18S_bp": 277419.0,
+      "YqHet2.7_bp": 138727.0,
+      "DYZ18sub_bp": 429794.5,
+      "DYZ19_bp": 285386.5
+    },
+    "B": {
+      "DYZ3_bp": 719101.5,
+      "Yq12_bp": 29473461.5,
+      "DYZ1_bp": 14789740.5,
+      "DYZ2_bp": 13835027.0,
+      "DYZ18S_bp": 282517.0,
+      "YqHet2.7_bp": 105922.5,
+      "DYZ18sub_bp": 396739.5,
+      "DYZ19_bp": 230899.0
+    },
+    "C": {
+      "DYZ3_bp": 1083521.5,
+      "Yq12_bp": 23177868.0,
+      "DYZ1_bp": 12773627.0,
+      "DYZ2_bp": 9954860.0,
+      "DYZ18S_bp": 269522.5,
+      "YqHet2.7_bp": 97252.0,
+      "DYZ18sub_bp": 376212.5,
+      "DYZ19_bp": 268785.0
+    },
+    "D": {
+      "DYZ3_bp": 477621.0,
+      "Yq12_bp": 32338418.5,
+      "DYZ1_bp": 17428881.0,
+      "DYZ2_bp": 13517613.5,
+      "DYZ18S_bp": 408366.5,
+      "YqHet2.7_bp": 122673.0,
+      "DYZ18sub_bp": 558407.0,
+      "DYZ19_bp": 329614.5
+    },
+    "E": {
+      "DYZ3_bp": 1090039.0,
+      "Yq12_bp": 26970944.0,
+      "DYZ1_bp": 15614252.0,
+      "DYZ2_bp": 10528425.0,
+      "DYZ18S_bp": 304297.0,
+      "YqHet2.7_bp": 105392.0,
+      "DYZ18sub_bp": 418620.0,
+      "DYZ19_bp": 247766.0
+    },
+    "F": {
+      "DYZ3_bp": 1429773.0,
+      "Yq12_bp": 38716934.0,
+      "DYZ1_bp": 18940832.0,
+      "DYZ2_bp": 19271212.0,
+      "DYZ18S_bp": 323916.0,
+      "YqHet2.7_bp": 108243.0,
+      "DYZ18sub_bp": 446427.0,
+      "DYZ19_bp": 316002.0
+    },
+    "G": {
+      "DYZ3_bp": 1146991.5,
+      "Yq12_bp": 24771885.0,
+      "DYZ1_bp": 13600050.5,
+      "DYZ2_bp": 10367675.5,
+      "DYZ18S_bp": 328218.5,
+      "YqHet2.7_bp": 127542.0,
+      "DYZ18sub_bp": 454591.5,
+      "DYZ19_bp": 338004.5
+    },
+    "H": {
+      "DYZ3_bp": 1348889.0,
+      "Yq12_bp": 22734097.0,
+      "DYZ1_bp": 12376277.0,
+      "DYZ2_bp": 9266300.0,
+      "DYZ18S_bp": 312609.0,
+      "YqHet2.7_bp": 127933.0,
+      "DYZ18sub_bp": 444477.0,
+      "DYZ19_bp": 394824.0
+    },
+    "I": {
+      "DYZ3_bp": 981611.5,
+      "Yq12_bp": 30792833.0,
+      "DYZ1_bp": 16722059.5,
+      "DYZ2_bp": 13146865.5,
+      "DYZ18S_bp": 280128.5,
+      "YqHet2.7_bp": 129816.0,
+      "DYZ18sub_bp": 411729.0,
+      "DYZ19_bp": 257928.0
+    },
+    "J": {
+      "DYZ3_bp": 642727.5,
+      "Yq12_bp": 28305270.5,
+      "DYZ1_bp": 15752214.0,
+      "DYZ2_bp": 11670811.0,
+      "DYZ18S_bp": 308101.0,
+      "YqHet2.7_bp": 92355.5,
+      "DYZ18sub_bp": 416454.0,
+      "DYZ19_bp": 228635.5
+    },
+    "L": {
+      "DYZ3_bp": 1102590.0,
+      "Yq12_bp": 30381120.0,
+      "DYZ1_bp": 16861512.0,
+      "DYZ2_bp": 12773458.0,
+      "DYZ18S_bp": 294542.0,
+      "YqHet2.7_bp": 117148.0,
+      "DYZ18sub_bp": 408529.0,
+      "DYZ19_bp": 346841.0
+    },
+    "N": {
+      "DYZ3_bp": 1048555.0,
+      "Yq12_bp": 31766932.5,
+      "DYZ1_bp": 18339452.5,
+      "DYZ2_bp": 12546874.0,
+      "DYZ18S_bp": 337328.0,
+      "YqHet2.7_bp": 116763.0,
+      "DYZ18sub_bp": 466028.0,
+      "DYZ19_bp": 350911.5
+    },
+    "O": {
+      "DYZ3_bp": 844891.5,
+      "Yq12_bp": 34735685.5,
+      "DYZ1_bp": 18891070.5,
+      "DYZ2_bp": 14954342.5,
+      "DYZ18S_bp": 309501.0,
+      "YqHet2.7_bp": 120272.5,
+      "DYZ18sub_bp": 433117.5,
+      "DYZ19_bp": 341823.0
+    },
+    "Q": {
+      "DYZ3_bp": 1080179.0,
+      "Yq12_bp": 22669482.5,
+      "DYZ1_bp": 12551055.5,
+      "DYZ2_bp": 9351543.5,
+      "DYZ18S_bp": 299894.0,
+      "YqHet2.7_bp": 147161.5,
+      "DYZ18sub_bp": 434552.5,
+      "DYZ19_bp": 403304.5
+    },
+    "R": {
+      "DYZ3_bp": 478646.0,
+      "Yq12_bp": 29791734.5,
+      "DYZ1_bp": 16810421.5,
+      "DYZ2_bp": 12063607.0,
+      "DYZ18S_bp": 276075.5,
+      "YqHet2.7_bp": 126850.5,
+      "DYZ18sub_bp": 398032.5,
+      "DYZ19_bp": 406011.0
+    },
+    "R1a": {
+      "DYZ3_bp": 540501.0,
+      "Yq12_bp": 28064783.0,
+      "DYZ1_bp": 15526508.5,
+      "DYZ2_bp": 11750464.5,
+      "DYZ18S_bp": 314210.0,
+      "YqHet2.7_bp": 173893.0,
+      "DYZ18sub_bp": 472765.5,
+      "DYZ19_bp": 408468.5
+    },
+    "R1b": {
+      "DYZ3_bp": 318650.5,
+      "Yq12_bp": 24609518.5,
+      "DYZ1_bp": 13463137.0,
+      "DYZ2_bp": 10316069.0,
+      "DYZ18S_bp": 309038.5,
+      "YqHet2.7_bp": 173528.5,
+      "DYZ18sub_bp": 462087.5,
+      "DYZ19_bp": 393775.0
+    },
+    "T": {
+      "DYZ3_bp": 565416.0,
+      "Yq12_bp": 18043251.0,
+      "DYZ1_bp": 7802521.0,
+      "DYZ2_bp": 8633051.0,
+      "DYZ18S_bp": 292761.0,
+      "YqHet2.7_bp": 116484.0,
+      "DYZ18sub_bp": 403682.0,
+      "DYZ19_bp": 328481.0
+    }
+  },
+  "pair_stats": {
+    "all": {
+      "n": 307,
+      "DYZ3_bp": {
+        "median_signed_pct": -0.6278335605844565,
+        "median_absolute_pct": 1.8992894113518677,
+        "p90_absolute_pct": 5.96162650832285
+      },
+      "Yq12_bp": {
+        "median_signed_pct": 0.020687214304593304,
+        "median_absolute_pct": 2.024225606466834,
+        "p90_absolute_pct": 6.66960614576005
+      }
+    },
+    "cross_batch": {
+      "n": 282,
+      "DYZ3_bp": {
+        "median_signed_pct": -0.7762972227402798,
+        "median_absolute_pct": 2.0211501941692522,
+        "p90_absolute_pct": 6.1563610768990715
+      },
+      "Yq12_bp": {
+        "median_signed_pct": -0.036644243665578946,
+        "median_absolute_pct": 2.011363451581821,
+        "p90_absolute_pct": 6.581373097931872
+      }
+    },
+    "same_batch": {
+      "n": 25,
+      "DYZ3_bp": {
+        "median_signed_pct": 0.24398484834553535,
+        "median_absolute_pct": 1.0009041269746222,
+        "p90_absolute_pct": 3.361425529862038
+      },
+      "Yq12_bp": {
+        "median_signed_pct": 0.2278733217795592,
+        "median_absolute_pct": 2.115342447997648,
+        "p90_absolute_pct": 7.558595291558867
+      }
+    }
+  },
+  "subsets": {
+    "all_valid": {
+      "n": 1583,
+      "families": 1258,
+      "j_n": 86,
+      "j2a1a1_n": 42,
+      "other_j_n": 44,
+      "j2a1a1_families": 37,
+      "other_j_families": 37,
+      "j2a1a1_dyz19_min_bp": 60977.0,
+      "j2a1a1_dyz19_max_bp": 76792.0,
+      "other_j_dyz19_min_bp": 220656.0,
+      "other_j_dyz19_max_bp": 306168.0,
+      "ratio_bp_median": 1.3674298787554424,
+      "ratio_bp_p1": 0.9629810932875408,
+      "ratio_bp_p99": 2.038109779962246,
+      "dyz1_dyz2_spearman": 0.8216893371670111
+    },
+    "outside_reference_panel": {
+      "n": 1447,
+      "families": 1198,
+      "j_n": 77,
+      "j2a1a1_n": 37,
+      "other_j_n": 40,
+      "j2a1a1_families": 34,
+      "other_j_families": 36,
+      "j2a1a1_dyz19_min_bp": 63554.0,
+      "j2a1a1_dyz19_max_bp": 76792.0,
+      "other_j_dyz19_min_bp": 220656.0,
+      "other_j_dyz19_max_bp": 306168.0,
+      "ratio_bp_median": 1.3657168626290315,
+      "ratio_bp_p1": 0.967108234713077,
+      "ratio_bp_p99": 2.028977346820205,
+      "dyz1_dyz2_spearman": 0.8225533181612731
+    }
+  },
+  "relatedness": {
+    "source": "https://www.cog-genomics.org/plink/2.0/resources",
+    "valid_reported_pairs_union": 318,
+    "cross_family_pairs_consensus": 10,
+    "cross_family_pairs_union": 11,
+    "family_representatives": 1258,
+    "king_component_representatives": 1272,
+    "selection_rule": "lexicographically first sample per group; no satellite phenotype used",
+    "scope": "Published first/second-degree reports; absence does not establish no more-distant relatedness."
+  }
+}

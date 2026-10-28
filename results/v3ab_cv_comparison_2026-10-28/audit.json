@@ -1,0 +1,10 @@
+{
+  "source": "/path/to/project/markers_u25",
+  "source_sha256": "b7d3bd3a1916e5cc0ee5d1e20afd1a4d646464e515f8540f5ff24e953e7c3138",
+  "models": "v3a unqualified targets vs v3b unqualified nested-selected targets",
+  "matched_predictions_per_model": 7000,
+  "identical_target_repeat_sample_and_fold": true,
+  "v3b_g0_control_matches_v3a": true,
+  "aggregation": "Mean/P90/P95/maximum pool all out-of-fold predictions; median averages ten repeat-specific medians. Maximum is one prediction, not the maximum of individual means.",
+  "cluster_access": "Read-only; no jobs started or remote files modified."
+}

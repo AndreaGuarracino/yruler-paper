@@ -1,0 +1,33 @@
+\subsection{Remaining validation and biological analyses}\label{sec:m-planned}
+\draftnote{Grouped CV, lineage-out evaluation, test-read downsampling and the first initial population analysis are completed and reported above. The procedures below describe remaining work; they do not supply additional completed results.}
+
+\subsubsection{Validation beyond the current internal evaluation}
+The estimation procedure has been evaluated with family-grouped CV, 18 excluded lineage groups and seven depth fractions. We will complement those median-error summaries with bias, tail errors, failure rates and empirical interval coverage, using parameters learned outside the evaluated individuals. Whole-file and restricted-region modes require their own calibration and tests. Repeated thinning of the same individuals does not create independent biological replicates.
+
+An untouched external manifest will identify complete, quality-checked Y assemblies and read sets that did not inform method design. The final model, test inclusion criteria and protocol-specific targets will be fixed before that evaluation. This remains distinct from the historical Miga/Altemose development comparison.
+
+\subsubsection{Reproducibility across cohorts}
+The current manifests contain 22 shared individuals. We will first establish whether their cohort files derive from independent libraries or sequencing experiments. Independent libraries can test reproducibility; reprocessed copies of the same reads test computational consistency. Matched-sample contrasts will assess class-specific shifts without relying on cohort-wide differences in ancestry. Population summaries will count each individual once and will distinguish assembly-reference individuals from samples outside the calibration panel. Any adjustment and its validation will use separate individuals.
+
+\subsubsection{Compositional balance and reproducible exceptions}
+For the two major Yq12 repeat classes, let $u_1$ and $u_2$ denote the stated, versioned repeat-unit lengths. We will define unit-equivalent abundance as $N_{i1}=\widehat L_{i,\mathrm{DYZ1}}/u_1$ and $N_{i2}=\widehat L_{i,\mathrm{DYZ2}}/u_2$, and the balance statistic as
+\begin{equation}
+R_i=N_{i1}/N_{i2},\qquad b_i=\log_2 R_i.
+\end{equation}
+The unit-length convention will be checked against direct full-unit annotations before interpreting departure from $R_i=1$. Ratio analyses will require positive component estimates and class-specific quality checks. Zero or unsupported component estimates will be reported separately and require state-specific validation. The assembly comparison will assess sensitivity to profile choice, unit boundaries and alternative annotations. Base-pair fractions will remain distinct from repeat-unit ratios.
+
+The population analysis will estimate the distribution of $b_i$, its lineage structure and candidate departures from balance. Error simulations or resampling will preserve covariance between class estimates, including their shared Y denominator. Candidate exceptions must exceed the calibrated uncertainty under a declared rule and be evaluated in independent data; a deviation from one alone is insufficient. Cohort, sequencing batch and pedigree sensitivity analyses will accompany the summaries. The balance and evolutionary coupling reported in the assembly resource \cite{Hallast2026} motivate this population test; they are not claimed here as new discoveries.
+
+\subsubsection{DYZ19 states and phylogenetic comparisons}
+We will evaluate DYZ19 performance separately for short and ordinary reference arrays before classifying population samples. The distribution of supported short states will be mapped within J2a, its sublineages and neighbouring groups, with confirmation from independent reads or assemblies where available. A short span by itself does not identify a deletion breakpoint.
+
+The current display uses an inferred SNP tree with branch lengths. Before evolutionary analysis, we will verify fine-scale topology and branch support, particularly the placement of the J2a1a2 call between short-state groups, and reconcile classification calls with SNP evidence. We will compare lineage structure and evolutionary covariance among DYZ3, Yq12, DYZ19 and compositional balance while accounting for measurement uncertainty. A Brownian model will provide a baseline; more complex models will require adequate sampling and a specific biological hypothesis. Sensitivity analyses will retain one representative per documented pedigree or empirically supported close-kinship component and address cohort and annotation effects. State-transition timing will require an independently calibrated tree.
+
+\subsubsection{Transmission and apparent convergence of composition}
+We will test the proposed tendency for sons to have DYZ1:DYZ2 ratios nearer one using $|b_{\mathrm{son}}|-|b_{\mathrm{father}}|$, with sequencing-batch contrasts kept explicit. The null model will retain a stable underlying family composition while adding the jointly calibrated measurement errors and observed technical shifts. This assesses regression towards the mean induced by measurement noise and conditioning on paternal values. Calibration and testing will use separate families. Only changes exceeding the relevant error model and supported in independent data will be considered biological candidates; pedigree concordance alone does not estimate a mutation rate.
+
+\subsubsection{Proposed prediction intervals}
+The planned interval analysis uses split-conformal calibration \cite{Lei2018}. Individuals are divided into fitting, calibration and test sets with families kept together. Marker selection and the scale fit use the fitting set only. Calibration scores are $R_i=|L_i-\widehat L_i|/\widehat L_i$. For $n$ calibration scores and $\alpha=0.1$, the selected order statistic is $\lceil(n+1)(1-\alpha)\rceil$, giving a relative half-width $q$ and an interval $[\max(0,\widehat L(1-q)),\widehat L(1+q)]$. If the order statistic exceeds the calibration sample size, the interval is unbounded. Two hundred random family-preserving splits are specified to assess empirical coverage and width within each validated read group.
+
+\draftnote{Run this analysis with the final markers and documented split sizes. Report empirical coverage with family-aware uncertainty, and assess the exchangeability assumptions before invoking nominal conformal coverage. Do not transfer intervals across sequencing protocols without testing coverage there.}
+

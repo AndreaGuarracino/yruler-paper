@@ -1,0 +1,14 @@
+{
+  "target": "dyz1_dyz2_ratio",
+  "label": "DYZ1:DYZ2",
+  "cv_n": 82,
+  "cv_repeats": 10,
+  "cv_mean_median_absolute_pct": 2.6596201944376374,
+  "cv_min_median_absolute_pct": 2.4351908815199277,
+  "cv_max_median_absolute_pct": 2.9367178791644024,
+  "lolo_n": 82,
+  "lolo_median_absolute_pct": 2.635171658137081,
+  "cv_mean_absolute_pct": 3.500167972687727,
+  "cv_p90_absolute_pct": 7.215914219838396,
+  "cv_max_absolute_pct": 20.547081189890413
+}

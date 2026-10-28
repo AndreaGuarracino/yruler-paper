@@ -1,0 +1,30 @@
+{
+  "cohort": "results/prelim_1kgp_2026-10-28.tsv",
+  "cohort_sha256": "fa1e4b664f827c64d6d64ad86b63d799e02dad25cb185d148961835f0b196b2a",
+  "pairs_per_measurement": 307,
+  "measurement_records": 2763,
+  "measurements": [
+    "DYZ3",
+    "Yq12",
+    "DYZ1",
+    "DYZ2",
+    "DYZ18S",
+    "YqHet2.7",
+    "DYZ18sub",
+    "DYZ19",
+    "DYZ1:DYZ2"
+  ],
+  "batch_counts": {
+    "Same batch": 25,
+    "Cross batch": 280,
+    "Reverse cross batch": 2
+  },
+  "reference_involved_pairs": 77,
+  "existing_main_differences_matched": 614,
+  "profile_policy": "All complete profiles retained, including flagged arm imbalance; no dosage cutoff; no batch correction.",
+  "paired_depth_ratio_checks": 5740,
+  "ratio_reference_count": 82,
+  "ratio_cv_predictions": 820,
+  "ratio_formula": "100*((1+signed_DYZ1/100)/(1+signed_DYZ2/100)-1)",
+  "direct_rounded_export_agreement_tolerance_percentage_points": 0.0001
+}

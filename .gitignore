@@ -6,3 +6,9 @@
 *.pdf
 __pycache__/
 *.pyc
+/data
+results/ytree_audit/v1_aln.phy
+!manuscript/figures/*.pdf
+manuscript/figures/*.png
+manuscript/figures/*.svg
+!results/ytree_v2_2026-10-27/ytree.log

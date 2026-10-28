@@ -1,0 +1,30 @@
+source	group	target	n	median_bp
+development catalog	R	dyz3_bp	420	342238.5
+development catalog	R	yq12_bp	420	25166412.0
+development catalog	D	dyz3_bp	20	475927.5
+development catalog	D	yq12_bp	20	32316880.5
+development catalog	T	dyz3_bp	10	573528.5
+development catalog	T	yq12_bp	10	17202923.0
+development catalog	J	dyz3_bp	89	643452.0
+development catalog	J	yq12_bp	89	28265543.0
+development catalog	O	dyz3_bp	248	842263.5
+development catalog	O	yq12_bp	248	34718781.0
+development catalog	I	dyz3_bp	62	978885.5
+development catalog	I	yq12_bp	62	30773065.5
+development catalog	N	dyz3_bp	30	1045189.0
+development catalog	N	yq12_bp	30	31582964.0
+development catalog	Q	dyz3_bp	63	1072828.0
+development catalog	Q	yq12_bp	63	22538893.0
+development catalog	C	dyz3_bp	32	1080729.0
+development catalog	C	yq12_bp	32	23163039.0
+development catalog	E	dyz3_bp	463	1087083.0
+development catalog	E	yq12_bp	463	26982608.0
+development catalog	L	dyz3_bp	31	1098830.0
+development catalog	L	yq12_bp	31	30378479.0
+development catalog	G	dyz3_bp	28	1143546.0
+development catalog	G	yq12_bp	28	24755387.0
+development catalog	H	dyz3_bp	71	1345666.0
+development catalog	H	yq12_bp	71	22722471.0
+assembly span	J2a	dyz19_bp	4	62733.0
+assembly span	J2b	dyz19_bp	1	267893.0
+assembly span	Other references	dyz19_bp	134	322808.99999999994
