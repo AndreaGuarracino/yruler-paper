@@ -145,7 +145,7 @@ def supplement(rows,out):
                 ax.set_title(f'{chr(97+i)}   {label}',loc='left',color=color,fontsize=11,pad=7)
             legend(fig,rows,y=.985)
             fig.subplots_adjust(left=.075,right=.98,bottom=.075,top=.91,wspace=.42,hspace=.49)
-            fig.text(.5,.018,'307 father–son pairs; all profiles retained. Ratio is DYZ1/DYZ2. No batch correction.',ha='center',fontsize=8,color=INK)
+            fig.text(.5,.018,f'{len(rows)//len(MEASUREMENTS)} father–son pairs; all profiles retained. Ratio is DYZ1/DYZ2. No batch correction.',ha='center',fontsize=8,color=INK)
             if kind=='differences':fig.text(.5,.04,'Median and interquartile range; difference axes linear within ±5% and logarithmic outside.',ha='center',fontsize=8,color=INK)
             for ext in ('png','pdf','svg'):fig.savefig(out/f'figureS8_pedigree_{kind}.{ext}',dpi=170,bbox_inches='tight')
             pdf.savefig(fig,bbox_inches='tight');plt.close(fig)
@@ -154,7 +154,7 @@ def supplement(rows,out):
 def main():
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':9,'pdf.fonttype':42,'svg.fonttype':'none'})
     _,valid,_=f.load_snapshot();rows=collect(valid);out=f.ROOT/'manuscript/figures'
-    assert len(rows)==307*9
+    assert len(rows)%len(MEASUREMENTS)==0; npairs=len(rows)//len(MEASUREMENTS); print('father-son pairs',npairs,flush=True)
     # Verify the two existing main-panel comparisons before extending to other measurements.
     previous_path=out/'figure1_pedigree_pairs.tsv'
     previous=list(csv.DictReader(previous_path.open(),delimiter='\t')) if previous_path.exists() else []
@@ -165,7 +165,7 @@ def main():
     summary=stats(rows);f.write_rows(out/'figureS8_pedigree_pairs.tsv',rows);f.write_rows(out/'figureS8_pedigree_summary.tsv',summary)
     supplement(rows,out)
     audit={'cohort':str(f.DEFAULT_SNAPSHOT.relative_to(f.ROOT)),'cohort_sha256':hashlib.sha256(f.DEFAULT_SNAPSHOT.read_bytes()).hexdigest(),
-           'pairs_per_measurement':307,'measurement_records':len(rows),'measurements':[m[2] for m in MEASUREMENTS],
+           'pairs_per_measurement':npairs,'measurement_records':len(rows),'measurements':[m[2] for m in MEASUREMENTS],
            'batch_counts':dict(Counter(r['batch_group'] for r in rows if r['target']=='dyz3')),
            'reference_involved_pairs':sum(r['father_reference']=='yes' or r['son_reference']=='yes' for r in rows if r['target']=='dyz3'),
            'existing_main_differences_matched':len(previous),'profile_policy':'All complete profiles retained, including flagged arm imbalance; no dosage cutoff; no batch correction.'}

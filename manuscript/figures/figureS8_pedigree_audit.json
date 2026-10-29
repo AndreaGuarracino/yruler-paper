@@ -1,8 +1,8 @@
 {
   "cohort": "results/estimates_1kgp.tsv",
-  "cohort_sha256": "b34fb59ac0fbd3680434b5946515c22592d3df9ea8f0289e2e1de9d9cc4ca945",
-  "pairs_per_measurement": 307,
-  "measurement_records": 2763,
+  "cohort_sha256": "12c3a1335b25342ed19eae3f46646249823e8f716a764da84c141b0231df8731",
+  "pairs_per_measurement": 309,
+  "measurement_records": 2781,
   "measurements": [
     "DYZ3",
     "Yq12",
@@ -16,10 +16,10 @@
   ],
   "batch_counts": {
     "Same batch": 25,
-    "Cross batch": 280,
+    "Cross batch": 282,
     "Reverse cross batch": 2
   },
-  "reference_involved_pairs": 77,
+  "reference_involved_pairs": 78,
   "existing_main_differences_matched": 0,
   "profile_policy": "All complete profiles retained, including flagged arm imbalance; no dosage cutoff; no batch correction."
 }

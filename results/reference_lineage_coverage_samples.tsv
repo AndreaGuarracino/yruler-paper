@@ -48,6 +48,7 @@ HG00234	I1a2a1a1a1b1a1a	I	True	False	False	False	False	False	False
 HG00242	R1b1a1b1a1a2c1a5b1a1a4	R1b	True	False	False	False	False	False	False
 HG00243	R1b1a1b1a1a2c1b1	R1b	True	False	False	False	False	False	False
 HG00244	R1b1a1b1a1a2b1c1b1a2a	R1b	True	False	False	False	False	False	False
+HG00246	R1b1a1b1a1a2c1a4a1	R1b	True	False	False	False	False	False	False
 HG00251	R1b1a1b1a1a1c2b2a1b1a4b1b	R1b	True	False	False	False	False	False	False
 HG00252	I1a2a2a3a1	I	True	False	False	False	False	False	False
 HG00256	R1b1a1b1a1a1c1	R1b	True	False	False	False	False	False	False
@@ -468,6 +469,7 @@ HG02040	F4	F4	True	True	True	True	True	True	True
 HG02047	O2a1b1a1a1a1e1a2a1	O2a	True	False	False	False	False	False	False
 HG02050	O2a2b1a2a2b1	O2a	True	False	False	False	False	False	False
 HG02051	R1b1a1b1a1a2c1a6	R1b	True	False	False	False	False	False	False
+HG02053	E1b1a1a1a2a1a3b1a12b	E	True	False	False	False	False	False	False
 HG02055	E1b1a1a1a2a1a3b1a12b	E	True	True	True	True	True	True	True
 HG02056	O2a2b1a2a1a1a2a1a1a	O2a	True	True	True	True	True	True	True
 HG02058	O2a2b1a2a1a1a2a1a1a	O2a	True	False	False	False	False	False	False
@@ -835,6 +837,7 @@ HG03314	E1b1a1a1a2a1a3a2a1a	E	True	False	False	False	False	False	False
 HG03343	E1b1a1a1a2a1a3b1d1a1	E	True	False	False	False	False	False	False
 HG03344	E1b1a1a1a2a1a3b1d1a1	E	True	False	False	False	False	False	False
 HG03350	E1b1a1a1a1c1a1a3c2b1a2	E	True	False	False	False	False	False	False
+HG03352	E1b1a1a1a1c1a1a3c2b1a2	E	True	False	False	False	False	False	False
 HG03367	E1b1a1a1a1c1a1a3a1b2a1a	E	True	False	False	False	False	False	False
 HG03368	E1b1a1a1a1c1a1a3a1b2a1	E	True	False	False	False	False	False	False
 HG03370	E1b1a1a1a1c1a1a3c1b1b	E	True	False	False	False	False	False	False
@@ -1520,6 +1523,7 @@ NA20581	R1b1a1b1a1a2b3c	R1b	True	False	False	False	False	False	False
 NA20586	R1b1a1b1a1a1c2b2a1b1b1a	R1b	True	False	False	False	False	False	False
 NA20588	J2b2b1	J2b	True	False	False	False	False	False	False
 NA20752	R1b1a1b1a1a2a1a2	R1b	True	True	True	True	True	True	True
+NA20754	R1b1a1b1a1a2b	R1b	True	False	False	False	False	False	False
 NA20755	R1b1a1b1a1a2b	R1b	True	False	False	False	False	False	False
 NA20758	T1a2b1a1	T	True	False	False	False	False	False	False
 NA20759	R1b1a1b1a1a2b1a2a	R1b	True	False	False	False	False	False	False

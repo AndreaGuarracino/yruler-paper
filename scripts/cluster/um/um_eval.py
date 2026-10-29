@@ -80,12 +80,14 @@ def build(train, c, thr, of=0.0):   # one rule: present in >= thr of training cl
     return CAND[c][ok & (out + NY[CAND[c]] < max(1, math.ceil(of * (len(al) + NYN))))]   # Y outside the class + non-Y genomes
 NOGC = os.environ.get('NOGC') == '1'   # no G+C correction
 if NOGC: log('G+C correction off')
+def gcbins(y, g):   # G+C curve: ruler counts pooled per G+C bin, counts above 10 x (mean + 1) dropped; needs 1e6 ruler counts, bins 1,000 markers and 1e4 counts
+    m = y.mean(); k = y <= 10 * (m + 1)
+    if y.sum() < 1e6 or not m > 0: return None
+    al = y[k].mean(); d = [(b, y[k & (g == b)].mean() / al) for b in range(32) if (g == b).sum() >= 1000 and y[k & (g == b)].sum() >= 1e4]
+    return d or None
 def gccurve(j, ysc):   # yruler gc_sums: G+C curve from single-copy Y markers -> (r per G+C, f, Y sum)
-    y = C[j, ysc].astype(np.float64); g = gc[ysc]; med = np.median(y); Y = y.sum()
-    tm = lambda a, lo, hi: a[(a >= lo * med) & (a <= hi * med)].mean() if ((a >= lo * med) & (a <= hi * med)).any() else np.nan
-    al = tm(y, 0.5, 1.5)
-    if med < 10 or not al > 0 or NOGC: return np.ones(32), 1.0, Y
-    d = [(b, tm(y[g == b], 0.25, 2.5) / al) for b in range(32) if (g == b).sum() >= 1000]
+    y = C[j, ysc].astype(np.float64); g = gc[ysc]; Y = y.sum(); d = None if NOGC else gcbins(y, g)
+    if not d: return np.ones(32), 1.0, Y
     r = np.array([min(d, key=lambda e: abs(e[0] - b))[1] for b in range(32)]); return r, (np.bincount(g, minlength=32) * r).sum() / len(g), Y
 def tsum(v):   # trimmed sum, rescaled to all markers (TRIM 0: plain sum)
     if not TRIM or len(v) < 100: return v.sum()

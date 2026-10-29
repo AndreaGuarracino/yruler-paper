@@ -10,15 +10,15 @@
       "HGDP": 17,
       "SGDP": 4
     },
-    "original_cohort_records": 2328,
-    "retained_cohort_records": 2320,
+    "original_cohort_records": 2332,
+    "retained_cohort_records": 2324,
     "retained_by_cohort": {
-      "1kGP": 1593,
+      "1kGP": 1597,
       "HGDP": 552,
       "SGDP": 175
     },
     "retained_assigned_by_cohort": {
-      "1kGP": 1593,
+      "1kGP": 1597,
       "HGDP": 551,
       "SGDP": 173
     },
@@ -33,11 +33,11 @@
       "SGDP_ALB212",
       "SGDP_NOR111"
     ],
-    "unique_map_individuals": 2298,
+    "unique_map_individuals": 2302,
     "shared_individuals": 22,
     "reported_locations": 132,
     "lineage_counts": {
-      "R": 565,
+      "R": 567,
       "I": 83,
       "J": 167,
       "N": 73,
@@ -45,7 +45,7 @@
       "B": 29,
       "C": 69,
       "T": 14,
-      "E": 570,
+      "E": 572,
       "G": 62,
       "Q": 101,
       "H": 90,
@@ -67,7 +67,7 @@
   "inputs": [
     {
       "path": "data/figure_metadata/cohort_pie_samples.tsv",
-      "sha256": "a4917cc1d1a784c04cf6bf40ff63693c868aec83b4da2a75f8eb463a56256359"
+      "sha256": "6374f29bc8d3e2c9900de566753652f9daf987f26cf3d4e9a0790a9ef540e0db"
     },
     {
       "path": "data/figure_metadata/sgdp_metadata.txt",

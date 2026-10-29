@@ -3,12 +3,12 @@
   "label": "DYZ1:DYZ2",
   "cv_n": 81,
   "cv_repeats": 10,
-  "cv_mean_median_absolute_pct": 2.6872682192158925,
-  "cv_min_median_absolute_pct": 2.4902543346930206,
-  "cv_max_median_absolute_pct": 3.0208328829198994,
+  "cv_mean_median_absolute_pct": 2.6844888883397098,
+  "cv_min_median_absolute_pct": 2.4898695313145702,
+  "cv_max_median_absolute_pct": 2.967720048100664,
   "lolo_n": 81,
-  "lolo_median_absolute_pct": 2.6846390762746752,
-  "cv_mean_absolute_pct": 3.430502009043509,
-  "cv_p90_absolute_pct": 8.04564755553511,
-  "cv_max_absolute_pct": 23.934846169677293
+  "lolo_median_absolute_pct": 2.768926154621687,
+  "cv_mean_absolute_pct": 3.4328717969968094,
+  "cv_p90_absolute_pct": 7.9701646640780455,
+  "cv_max_absolute_pct": 24.03753437582703
 }

@@ -1,5 +1,5 @@
 # Depth and lineage-out tables of the model
-# usage: [MSRC=class:cv suffix,...] python3 um_mexport.py (class keys as in the CV files) <out dir> <fractions,comma>; per class CV source below; Yq12 = Yq12 - its DYZ2 part + DYZ2 with the GC floor
+# usage: [MSRC=class:cv suffix,...; yq12dyz2:<suffix> for the DYZ2 part of Yq12] python3 um_mexport.py (class keys as in the CV files) <out dir> <fractions,comma>; per class CV source below; Yq12 = Yq12 - its DYZ2 part + DYZ2 with the GC floor
 import os, sys, glob, re, numpy as np
 P = '/path/to/project'; O = f'{P}/markers_u25'; X = f'{P}/truth_qc/x'; sys.path.insert(0, f'{P}/scripts'); import truth_cl
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
@@ -20,7 +20,7 @@ def rd(pat, c, n):   # rows of class c: id (first n-6 fields + sample) -> row
             if x[n - 5] == c: R[tuple(x[:n - 5]) + (x[n - 4],)] = x
     return R
 def classes(pat, n, key):   # class -> {id: row}; Yq12 rows rebuilt from its parts, matched on key(id)
-    R = {c: rd(pat(SRC[c]), c, n) for c in NM}; Y, D0 = R['yq12'], {key(i): x for i, x in rd(pat('w4'), 'dyz2', n).items()}; D = {key(i): x for i, x in R['dyz2'].items()}
+    R = {c: rd(pat(SRC[c]), c, n) for c in NM}; Y, D0 = R['yq12'], {key(i): x for i, x in rd(pat(SRC.get('yq12dyz2', 'w4')), 'dyz2', n).items()}; D = {key(i): x for i, x in R['dyz2'].items()}
     for i, x in list(Y.items()):
         s = i[-1]; k = key(i)
         if k not in D0 or k not in D or s not in T['dyz2']: del Y[i]; continue

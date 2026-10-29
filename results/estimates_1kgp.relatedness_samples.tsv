@@ -44,6 +44,7 @@ HG00234	HG00234	0	0	True	0	0	0	HG00234	1	True	True	normal	no	first/second-degree
 HG00242	HG00242	0	0	True	0	0	0	HG00242	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG00243	HG00243	0	0	True	0	0	0	HG00243	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG00244	HG00244	0	0	True	0	0	0	HG00244	1	True	True	mosaic_loss	no	first/second-degree public reports; no inference of absence of distant kinship
+HG00246	HG00246	0	0	True	0	0	0	HG00246	1	True	True	no_Y	no	first/second-degree public reports; no inference of absence of distant kinship
 HG00251	HG00251	0	0	True	0	0	0	HG00251	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG00252	HG00252	0	0	True	0	0	0	HG00252	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG00256	HG00256	0	0	True	0	0	0	HG00256	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
@@ -462,7 +463,8 @@ HG02040	VN054	0	0	True	0	0	0	HG02040	1	True	True	normal	yes	first/second-degree 
 HG02047	VN056	0	0	True	0	0	0	HG02047	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG02050	VN059	0	0	True	0	0	0	HG02050	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG02051	BB14	0	0	True	0	0	0	HG02051	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
-HG02055	BB15	HG02053	HG02054	True	0	0	0	HG02055	1	True	True	normal	yes	first/second-degree public reports; no inference of absence of distant kinship
+HG02053	BB15	0	0	True	1	0	0	HG02053	2	True	True	mosaic_loss	no	first/second-degree public reports; no inference of absence of distant kinship
+HG02055	BB15	HG02053	HG02054	True	1	0	0	HG02053	2	False	True	normal	yes	first/second-degree public reports; no inference of absence of distant kinship
 HG02056	VN060	HG02058	HG02057	True	1	0	0	HG02056	2	True	True	normal	yes	first/second-degree public reports; no inference of absence of distant kinship
 HG02058	VN060	0	0	True	1	0	0	HG02056	2	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG02061	VN061	0	0	True	0	0	0	HG02061	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
@@ -825,9 +827,10 @@ HG03308	NG77	HG03307	HG03306	True	1	0	0	HG03307	2	False	True	normal	no	first/sec
 HG03311	NG78	0	0	True	0	0	0	HG03311	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG03313	NG79	0	0	True	1	0	0	HG03313	2	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG03314	NG79	HG03313	HG03312	True	1	0	0	HG03313	2	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
-HG03343	NG89	0	0	True	1	0	0	HG03343	2	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
-HG03344	NG89	HG03343	HG03342	True	1	0	0	HG03343	2	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
-HG03350	NG92	HG03352	HG03351	True	0	0	0	HG03350	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
+HG03343	NG89	0	0	True	2	0	1	HG03343	4	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
+HG03344	NG89	HG03343	HG03342	True	1	0	0	HG03343	4	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
+HG03350	NG92	HG03352	HG03351	True	1	0	0	HG03343	4	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
+HG03352	NG92	0	0	True	2	0	1	HG03343	4	False	True	mosaic_loss	no	first/second-degree public reports; no inference of absence of distant kinship
 HG03367	NG97	0	0	True	1	0	0	HG03367	2	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG03368	NG97	HG03367	HG03366	True	1	0	0	HG03367	2	False	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 HG03370	NG98	0	0	True	1	0	0	HG03370	2	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
@@ -1510,6 +1513,7 @@ NA20581	NA20581	0	0	True	0	0	0	NA20581	1	True	True	normal	no	first/second-degree
 NA20586	NA20586	0	0	True	0	0	0	NA20586	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 NA20588	NA20588	0	0	True	0	0	0	NA20588	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 NA20752	NA20752	0	0	True	0	0	0	NA20752	1	True	True	normal	yes	first/second-degree public reports; no inference of absence of distant kinship
+NA20754	NA20754	0	0	True	0	0	0	NA20754	1	True	True	no_Y	no	first/second-degree public reports; no inference of absence of distant kinship
 NA20755	NA20755	0	0	True	0	0	0	NA20755	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 NA20758	NA20758	0	0	True	0	0	0	NA20758	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship
 NA20759	NA20759	0	0	True	0	0	0	NA20759	1	True	True	normal	no	first/second-degree public reports; no inference of absence of distant kinship

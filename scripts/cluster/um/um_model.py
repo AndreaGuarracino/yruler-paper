@@ -9,12 +9,14 @@ def gcount(U):   # G+C bases of each 31-mer key
     for i in range(31): b = (U >> np.uint64(2 * i)) & np.uint64(3); g += ((b == 1) | (b == 2)).astype(np.uint8)
     return g
 def load(D=f'{P}/model'): return dict(np.load(f'{D}/model.npz').items()), rtsv(f'{D}/model.tsv')[1]   # load before fork
+def gcbins(y, g):   # G+C curve: ruler counts pooled per G+C bin, counts above 10 x (mean + 1) dropped; needs 1e6 ruler counts, bins 1,000 markers and 1e4 counts
+    m = y.mean(); k = y <= 10 * (m + 1)
+    if y.sum() < 1e6 or not m > 0: return None
+    al = y[k].mean(); d = [(b, y[k & (g == b)].mean() / al) for b in range(32) if (g == b).sum() >= 1000 and y[k & (g == b)].sum() >= 1e4]
+    return d or None
 def lengths(c, fm, M, gc, y0):   # counts in u_keys order -> (reported bp, sum_gc per class, ruler sum); None without a G+C curve
-    y = c[y0]; g = gc[y0]; med = np.median(y); Y = y.sum()
-    tm = lambda a, lo, hi: a[(a >= lo * med) & (a <= hi * med)].mean() if ((a >= lo * med) & (a <= hi * med)).any() else np.nan
-    al = tm(y, 0.5, 1.5)
-    if med < 10 or not al > 0: return None
-    d = [(b, tm(y[g == b], 0.25, 2.5) / al) for b in range(32) if (g == b).sum() >= 1000]
+    y = c[y0].astype(np.float64); g = gc[y0]; Y = y.sum(); d = gcbins(y, g)
+    if not d: return None
     r = np.array([min(d, key=lambda e: abs(e[0] - b))[1] for b in range(32)]); fr = (np.bincount(g, minlength=32) * r).sum() / len(g)
     S = {m['class']: (np.bincount(gc[fm[f'm_{m["class"]}']], weights=c[fm[f'm_{m["class"]}']], minlength=32) / r).sum() * fr for m in M}
     L = {m['class']: float(m['K']) * S[m['class']] / Y for m in M}

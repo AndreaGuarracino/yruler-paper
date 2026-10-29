@@ -1,5 +1,5 @@
 {
-  "population_n": 1593,
+  "population_n": 1597,
   "groups_n": 30,
   "unknown_reference_calls": [
     "200080",
@@ -39,7 +39,7 @@
   "inputs": [
     {
       "path": "results/estimates_1kgp.tsv",
-      "sha256": "b34fb59ac0fbd3680434b5946515c22592d3df9ea8f0289e2e1de9d9cc4ca945"
+      "sha256": "12c3a1335b25342ed19eae3f46646249823e8f716a764da84c141b0231df8731"
     },
     {
       "path": "data/markers_u/truth_regions.tsv",
@@ -63,7 +63,7 @@
     },
     {
       "path": "results/model/depth/depth_f1.tsv",
-      "sha256": "dcece8066857edeff8fda6985cdc87777367d0518b8b461ee5c1185ff557790a"
+      "sha256": "88234d4ad4ebcbc41504a05f15cc51366cc74dc9f9da3fc058222dae5ee6e8f9"
     },
     {
       "path": "data/method/truth_qc/x/rule_w4.txt",

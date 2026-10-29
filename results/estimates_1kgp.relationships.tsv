@@ -102,7 +102,7 @@ HG02009	HG02011	parent_offspring	HG02009	HG02011	father	BB13	BB13	True	ok	ok	no	
 HG02015	HG02017	parent_offspring	HG02017	HG02015	father	VN046	VN046	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
 HG02027	HG02029	parent_offspring	HG02029	HG02027	father	VN050	VN050	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
 HG02030	HG02032	parent_offspring	HG02032	HG02030	father	VN051	VN051	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
-HG02053	HG02055	parent_offspring	HG02053	HG02055	father	BB15	BB15	False	no_estimate	ok	no	yes	documented pedigree; compare separate precomputed public KING audit
+HG02053	HG02055	parent_offspring	HG02053	HG02055	father	BB15	BB15	False	y_dose_below_0.9	ok	no	yes	documented pedigree; compare separate precomputed public KING audit
 HG02056	HG02058	parent_offspring	HG02058	HG02056	father	VN060	VN060	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
 HG02071	HG02073	parent_offspring	HG02073	HG02071	father	VN065	VN065	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
 HG02074	HG02076	parent_offspring	HG02076	HG02074	father	VN066	VN066	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
@@ -195,7 +195,7 @@ HG03301	HG03302	parent_offspring	HG03301	HG03302	father	NG75	NG75	True	ok	ok	no	
 HG03307	HG03308	parent_offspring	HG03307	HG03308	father	NG77	NG77	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG03313	HG03314	parent_offspring	HG03313	HG03314	father	NG79	NG79	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG03343	HG03344	parent_offspring	HG03343	HG03344	father	NG89	NG89	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
-HG03350	HG03352	parent_offspring	HG03352	HG03350	father	NG92	NG92	False	ok	no_estimate	no	no	documented pedigree; compare separate precomputed public KING audit
+HG03350	HG03352	parent_offspring	HG03352	HG03350	father	NG92	NG92	False	ok	y_dose_below_0.9	no	no	documented pedigree; compare separate precomputed public KING audit
 HG03367	HG03368	parent_offspring	HG03367	HG03368	father	NG97	NG97	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG03370	HG03371	parent_offspring	HG03370	HG03371	father	NG98	NG98	True	ok	ok	no	yes	documented pedigree; compare separate precomputed public KING audit
 HG03454	HG03456	parent_offspring	HG03454	HG03456	father	SL51	SL51	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit

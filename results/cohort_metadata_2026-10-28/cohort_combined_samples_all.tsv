@@ -44,6 +44,7 @@ HG00234	1kGP	1kGP:HG00234	GBR	52.486243	-1.890401	I	HaploGrouper ISOGG 2019 deCO
 HG00242	1kGP	1kGP:HG00242	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00242	IGSR population metadata	1kGP:HG00242	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG00243	1kGP	1kGP:HG00243	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00243	IGSR population metadata	1kGP:HG00243	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG00244	1kGP	1kGP:HG00244	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00244	IGSR population metadata	1kGP:HG00244	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
+HG00246	1kGP	1kGP:HG00246	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00246	IGSR population metadata	1kGP:HG00246	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG00251	1kGP	1kGP:HG00251	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00251	IGSR population metadata	1kGP:HG00251	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG00252	1kGP	1kGP:HG00252	GBR	52.486243	-1.890401	I	HaploGrouper ISOGG 2019 deCODE	HG00252	IGSR population metadata	1kGP:HG00252	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG00256	1kGP	1kGP:HG00256	GBR	52.486243	-1.890401	R	HaploGrouper ISOGG 2019 deCODE	HG00256	IGSR population metadata	1kGP:HG00256	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
@@ -462,6 +463,7 @@ HG02040	1kGP	1kGP:HG02040	KHV	10.78	106.68	F	HaploGrouper ISOGG 2019 deCODE	HG02
 HG02047	1kGP	1kGP:HG02047	KHV	10.78	106.68	O	HaploGrouper ISOGG 2019 deCODE	HG02047	IGSR population metadata	1kGP:HG02047	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG02050	1kGP	1kGP:HG02050	KHV	10.78	106.68	O	HaploGrouper ISOGG 2019 deCODE	HG02050	IGSR population metadata	1kGP:HG02050	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG02051	1kGP	1kGP:HG02051	ACB	13.1	-59.62	R	HaploGrouper ISOGG 2019 deCODE	HG02051	IGSR population metadata	1kGP:HG02051	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
+HG02053	1kGP	1kGP:HG02053	ACB	13.1	-59.62	E	HaploGrouper ISOGG 2019 deCODE	HG02053	IGSR population metadata	1kGP:HG02053	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG02055	1kGP	1kGP:HG02055	ACB	13.1	-59.62	E	HaploGrouper ISOGG 2019 deCODE	HG02055	IGSR population metadata	1kGP:HG02055	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG02056	1kGP	1kGP:HG02056	KHV	10.78	106.68	O	HaploGrouper ISOGG 2019 deCODE	HG02056	IGSR population metadata	1kGP:HG02056	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG02058	1kGP	1kGP:HG02058	KHV	10.78	106.68	O	HaploGrouper ISOGG 2019 deCODE	HG02058	IGSR population metadata	1kGP:HG02058	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
@@ -828,6 +830,7 @@ HG03314	1kGP	1kGP:HG03314	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	
 HG03343	1kGP	1kGP:HG03343	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03343	IGSR population metadata	1kGP:HG03343	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG03344	1kGP	1kGP:HG03344	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03344	IGSR population metadata	1kGP:HG03344	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG03350	1kGP	1kGP:HG03350	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03350	IGSR population metadata	1kGP:HG03350	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
+HG03352	1kGP	1kGP:HG03352	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03352	IGSR population metadata	1kGP:HG03352	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG03367	1kGP	1kGP:HG03367	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03367	IGSR population metadata	1kGP:HG03367	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG03368	1kGP	1kGP:HG03368	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03368	IGSR population metadata	1kGP:HG03368	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 HG03370	1kGP	1kGP:HG03370	ESN	9.06666	7.483333	E	HaploGrouper ISOGG 2019 deCODE	HG03370	IGSR population metadata	1kGP:HG03370	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
@@ -1510,6 +1513,7 @@ NA20581	1kGP	1kGP:NA20581	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20581
 NA20586	1kGP	1kGP:NA20586	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20586	IGSR population metadata	1kGP:NA20586	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 NA20588	1kGP	1kGP:NA20588	TSI	42.1	12.0	J	HaploGrouper ISOGG 2019 deCODE	NA20588	IGSR population metadata	1kGP:NA20588	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 NA20752	1kGP	1kGP:NA20752	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20752	IGSR population metadata	1kGP:NA20752	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
+NA20754	1kGP	1kGP:NA20754	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20754	IGSR population metadata	1kGP:NA20754	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 NA20755	1kGP	1kGP:NA20755	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20755	IGSR population metadata	1kGP:NA20755	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 NA20758	1kGP	1kGP:NA20758	TSI	42.1	12.0	T	HaploGrouper ISOGG 2019 deCODE	NA20758	IGSR population metadata	1kGP:NA20758	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
 NA20759	1kGP	1kGP:NA20759	TSI	42.1	12.0	R	HaploGrouper ISOGG 2019 deCODE	NA20759	IGSR population metadata	1kGP:NA20759	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained	True	
