@@ -5,6 +5,9 @@ The model that yruler uses for Illumina whole-genome reads, and its estimates fo
 | File | Content |
 |---|---|
 | model.tsv | Settings of each class |
+| depth/depth_f<fraction>.tsv | Cross-validation predictions with the test reads thinned to the fraction (1: all reads); columns as in the 10-repeat CV, plus the reference and estimated bp and the chromosome 2 marker depth of the test run |
+| depth/summary.tsv | Error statistics per fraction and class |
+| lineage_out.tsv, lineage_out_summary.tsv | One prediction per male with his lineage left out of training, and the statistics per class and lineage |
 | ../estimates_1kgp.tsv | Estimates, Y dosage, Y state and lineage of the 1,639 1kGP samples |
 
 ## Model

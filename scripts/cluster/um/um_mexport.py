@@ -1,5 +1,5 @@
 # Depth and lineage-out tables of the model
-# usage: [MSRC=class:cv suffix,...] python3 um_mexport.py <out dir> <fractions,comma>; per class CV source below; Yq12 = Yq12 - its DYZ2 part + DYZ2 with the GC floor
+# usage: [MSRC=class:cv suffix,...] python3 um_mexport.py (class keys as in the CV files) <out dir> <fractions,comma>; per class CV source below; Yq12 = Yq12 - its DYZ2 part + DYZ2 with the GC floor
 import os, sys, glob, re, numpy as np
 P = '/path/to/project'; O = f'{P}/markers_u25'; X = f'{P}/truth_qc/x'; sys.path.insert(0, f'{P}/scripts'); import truth_cl
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
@@ -36,7 +36,7 @@ for f in sys.argv[2].split(','):
     with open(f'{OUT}/depth_f{f}.tsv', 'w') as o:
         o.write('repeat\tfold\tclass\tsample\tchoice_presence_outside_ruler_filter\tmarkers\terror_pct\treference_bp\testimate_bp\tchr2_depth_test\n')
         for c in NM:
-            for i, x in sorted(R[c].items(), key=lambda z: (int(z[0][0]), int(z[0][1]), z[0][2])): o.write('\t'.join([x[0], x[1], NM[c], x[3], x[4], x[5], x[6], f'{T[c][x[3]]:.0f}', f'{T[c][x[3]] * (1 + float(x[6]) / 100):.0f}', dep(f, x[3]) if f != '1' else '.']) + '\n')
+            for i, x in sorted(R[c].items(), key=lambda z: (int(z[0][0]), int(z[0][1]), z[0][2])): o.write('\t'.join([x[0], x[1], c, x[3], x[4], x[5], x[6], f'{T[c][x[3]]:.1f}', f'{T[c][x[3]] * (1 + float(x[6]) / 100):.0f}', dep(f, x[3])]) + '\n')
     for c in NM:
         a = np.array([float(x[6]) for x in R[c].values()]); reps = sorted({int(x[0]) for x in R[c].values()})
         if not len(a): log(f'WARNING f{f} {c}: no rows'); continue
@@ -48,7 +48,7 @@ L = classes(lambda m: f'{O}/lolo_{m}/*.tsv', 6, lambda i: i)
 with open(f'{OUT}/lineage_out.tsv', 'w') as o, open(f'{OUT}/lineage_out_summary.tsv', 'w') as q:
     o.write('lineage\tclass\tsample\tchoice_presence_outside_ruler_filter\tmarkers\terror_pct\treference_bp\testimate_bp\n'); q.write('class\tlineage\tn\tmean_abs_pct\tmedian_abs_pct\tp90_abs_pct\tmax_abs_pct\n')
     for c in NM:
-        for i, x in sorted(L[c].items()): o.write('\t'.join([x[0], NM[c], x[2], x[3], x[4], x[5], f'{T[c][x[2]]:.0f}', f'{T[c][x[2]] * (1 + float(x[5]) / 100):.0f}']) + '\n')
+        for i, x in sorted(L[c].items()): o.write('\t'.join([x[0], c, x[2], x[3], x[4], x[5], f'{T[c][x[2]]:.1f}', f'{T[c][x[2]] * (1 + float(x[5]) / 100):.0f}']) + '\n')
         for g in ['all'] + sorted({x[0] for x in L[c].values()}):
             a = np.array([float(x[5]) for x in L[c].values() if g in ('all', x[0])]); q.write(f'{NM[c]}\t{g}\t{len(a)}\t{st(a)}\n')
 log(''.join(l for l in open(f'{OUT}/lineage_out_summary.tsv') if '\tall\t' in l or l.startswith('class')))

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render main and supplementary figures from the complete v3a package."""
+"""Render main and supplementary figures from the short-read model results."""
 import json
 
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ import validation_plots as v
 
 def main():
     out = f.ROOT / "manuscript/figures"
-    cohort = f.ROOT / "results/prelim_1kgp_2026-10-28.tsv"
+    cohort = f.ROOT / "results/estimates_1kgp.tsv"; tag = f.snapshot_tag(cohort)
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9,
                          "axes.labelsize": 10, "xtick.labelsize": 8, "ytick.labelsize": 8,
                          "pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none",
@@ -35,20 +35,18 @@ def main():
     render_validation()
     from pedigree_plots import main as render_pedigrees
     render_pedigrees()
-    f.write_rows(out / "v3a_validation_summary.tsv",benchmarks)
-    f.write_rows(out / "v3a_depth_summary.tsv",depth)
     f.write_rows(out / "figure1_validation_summary.tsv",benchmarks)
     f.write_rows(out / "figure1_depth_summary.tsv",depth)
     summary = f.snapshot_summary(raw, valid, pedigree, cohort)
-    summary['model_status'] = 'v3a; complete CV, coverage, lineage-out and cohort'
+    summary['model_status'] = 'short-read model; complete CV, coverage, lineage-out and cohort'
     kinship, sensitivity, info, qc, audit = f.autosomal_audit(raw, valid, pedigree)
     summary["relatedness"] = info
     for suffix, data in [("sensitivity", sensitivity), ("kinship", kinship),
                          ("sample_qc", qc), ("relatedness_samples", audit),
                          ("relationships", f.pedigree_relationships(raw, pedigree))]:
         f.write_rows(cohort.with_suffix("." + suffix + ".tsv"), data)
-    f.write_rows(out / "snapshot_2026-10-28_samples.tsv", valid)
-    (out / "snapshot_2026-10-28_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    f.write_rows(out / f"snapshot_{tag}_samples.tsv", valid)
+    (out / f"snapshot_{tag}_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     f.snapshot_manifest(cohort,out)
     print(json.dumps({k: summary[k] for k in ["valid_males", "valid_reference_males", "population_summary_n", "complete_father_son_pairs", "median_bp_by_target", "subsets"]}, indent=2))
 

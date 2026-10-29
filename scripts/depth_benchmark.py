@@ -8,7 +8,7 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "results/final_model_short_v3_2026-10-28/depth"
+SOURCE = ROOT / "results/model/depth"
 FRACTIONS = ("1", "0.667", "0.5", "0.333", "0.167", "0.067", "0.033")
 
 
@@ -39,12 +39,12 @@ def load():
                     "reference_bp": reference, "estimate_bp": estimate,
                     "chr2_depth": measured,
                 })
-        assert len(seen) == 7000 and len(sample_depth) == 118, path
+        assert len(seen) == 7120 and len(sample_depth) == 118, path
         assert len(depth[fraction]) == 8, path
         for target, repeats in depth[fraction].items():
             assert set(repeats) == set(range(10)), (fraction, target)
             for rows in repeats.values():
-                assert len(rows) == ({"dyz3": 97, "dyz19": 111}.get(target, 82)), (fraction, target)
+                assert len(rows) == ({"dyz3": 104, "yq12": 81, "dyz2": 81, "dyz19": 118}.get(target, 82)), (fraction, target)
                 assert {row["fold"] for row in rows} == set(range(5))
         # Every individual counts once, independently of its number of targets.
         coverage[fraction] = float(np.median(list(sample_depth.values())))

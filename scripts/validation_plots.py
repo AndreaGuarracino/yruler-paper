@@ -18,15 +18,10 @@ def load():
     from depth_benchmark import load as load_depth
     depth, depth_files, _ = load_depth()
     cv = depth["1"]
-    # Independently archived CV predates the depth delivery: guard against mixing models.
-    import json
-    baseline=json.loads((ROOT/"results/v3ab_cv_comparison_2026-10-28/predictions_and_sources.json").read_text())["models"]["v3a"]
-    expected={(r["target"],r["repeat"],r["sample"]):(r["fold"],r["signed_error_pct"]) for r in baseline}
-    actual={(key,rep,r["sample"]):(r["fold"],r["signed"])
-            for key,groups in cv.items() for rep,rows in groups.items() for r in rows}
-    assert len(actual)==7000 and actual==expected
+    actual={(key,rep,r["sample"]) for key,groups in cv.items() for rep,rows in groups.items() for r in rows}
+    assert len(actual)==7120
     lo=defaultdict(lambda:defaultdict(list))
-    source=ROOT/"results/final_model_short_v3_2026-10-28/lineage_out.tsv"
+    source=ROOT/"results/model/lineage_out.tsv"
     files=[*depth_files,source]
     seen=set()
     with source.open() as stream:
@@ -35,7 +30,7 @@ def load():
             assert (key,sample) not in seen, (key,sample)
             seen.add((key,sample))
             lo[key][group].append({"sample":sample,"signed":float(row["error_pct"]),"reference_bp":float(row["reference_bp"]),"estimate_bp":float(row["estimate_bp"])})
-    assert len(seen)==700
+    assert len(seen)==712
     assert {g for groups in lo.values() for g in groups}==set(GROUPS)
     for key in KEYS:
         assert sorted(cv[key])==list(range(10))

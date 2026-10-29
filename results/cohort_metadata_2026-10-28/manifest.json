@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "input_call_records": 31,
+    "call_status_counts": {
+      "no chrY genotypes yet": 8,
+      "called": 21,
+      "no Y signal (y_dose below 0.01, few informative sites)": 2
+    },
+    "assigned_by_cohort": {
+      "HGDP": 17,
+      "SGDP": 4
+    },
+    "original_cohort_records": 2328,
+    "retained_cohort_records": 2320,
+    "retained_by_cohort": {
+      "1kGP": 1593,
+      "HGDP": 552,
+      "SGDP": 175
+    },
+    "retained_assigned_by_cohort": {
+      "1kGP": 1593,
+      "HGDP": 551,
+      "SGDP": 173
+    },
+    "excluded_map_records": 8,
+    "excluded_samples": [
+      "SGDP_Peru60",
+      "SGDP_Utsa21",
+      "SGDP_SA0722",
+      "SGDP_SA0342",
+      "SGDP_mixe0007",
+      "SGDP_Dus16",
+      "SGDP_ALB212",
+      "SGDP_NOR111"
+    ],
+    "unique_map_individuals": 2298,
+    "shared_individuals": 22,
+    "reported_locations": 132,
+    "lineage_counts": {
+      "R": 565,
+      "I": 83,
+      "J": 167,
+      "N": 73,
+      "O": 344,
+      "B": 29,
+      "C": 69,
+      "T": 14,
+      "E": 570,
+      "G": 62,
+      "Q": 101,
+      "H": 90,
+      "A": 14,
+      "F": 6,
+      "L": 62,
+      "NO": 1,
+      "D": 30,
+      "Unassigned": 2,
+      "M": 11,
+      "S": 5
+    },
+    "remaining_unassigned": [
+      "HGDP00119",
+      "SGDP_HGDP00725"
+    ]
+  },
+  "policy": "No lineage inferred from geography. Supplement existing missing calls by exact cohort/sample ID. Exclude documented SGDP females and delivered no-Y-signal samples from the paternal-lineage map only. Preserve complete joins for QC.",
+  "inputs": [
+    {
+      "path": "data/figure_metadata/cohort_pie_samples.tsv",
+      "sha256": "a4917cc1d1a784c04cf6bf40ff63693c868aec83b4da2a75f8eb463a56256359"
+    },
+    {
+      "path": "data/figure_metadata/sgdp_metadata.txt",
+      "sha256": "1e4f0076ddadc57ce9feb252c1f9a782ea9d5ba4e6606627fcd60e9c5bf2ef33"
+    },
+    {
+      "path": "results/unassigned_lineages_calls_2026-10-28.tsv",
+      "sha256": "20013924682972fc83beac04cc5be8342e2ae678522f2a2dce6324937b3e24d2"
+    },
+    {
+      "path": "scripts/cohort_lineages.py",
+      "sha256": "1c0701b62c39077ea07ebf5ff103ee1a75c46ffbeaa5ef8438c502d41c5df684"
+    }
+  ],
+  "satellite_estimates_changed": false,
+  "SNP_tree_changed": false
+}

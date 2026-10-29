@@ -1,0 +1,20 @@
+{
+  "calls_joined": 21,
+  "existing_assigned_lineages_preserved": true,
+  "map_excluded_records": 8,
+  "unique_map_individuals": 2298,
+  "reported_locations": 132,
+  "pending_map_calls": [
+    "HGDP00119",
+    "SGDP_HGDP00725"
+  ],
+  "legend_counts_match_metadata": true,
+  "all_delivered_calls_in_partial_cohort_join": true,
+  "primary_and_candidate_cohort_hashes_unchanged": true,
+  "assembly_reference_new_call_overlaps": 0,
+  "PDF_builds": {
+    "main": "42 pages, no LaTeX warnings",
+    "extended": "42 pages, no LaTeX warnings"
+  },
+  "figure2_visual_review": true
+}

@@ -9,9 +9,8 @@ COLOR='#303d43'
 
 def paired(a,b):
     left={r['sample']:r for r in a};right={r['sample']:r for r in b}
-    assert left.keys()==right.keys()
     result=[]
-    for sample in sorted(left):
+    for sample in sorted(left.keys()&right.keys()):   # males with both references (HG01261 has no DYZ2 reference)
         x,y=left[sample],right[sample]
         if 'fold' in x:assert x['fold']==y['fold']
         ref=x['reference_bp']/y['reference_bp']
@@ -30,7 +29,7 @@ def augment(cv,lo,depth):
     lo={**lo,KEY:{g:paired(lo['dyz1'][g],lo['dyz2'][g]) for g in lo['dyz1']}}
     depth={f:{**groups,KEY:{r:paired(groups['dyz1'][r],groups['dyz2'][r]) for r in groups['dyz1']}}
            for f,groups in depth.items()}
-    assert len(cv[KEY])==10 and all(len(rows)==82 for rows in cv[KEY].values())
+    assert len(cv[KEY])==10 and all(len(rows)==81 for rows in cv[KEY].values())
     return cv,lo,depth
 
 
@@ -48,7 +47,7 @@ def summary(cv,lo,depth,coverage):
     med=[np.median(np.abs([r['signed'] for r in rows])) for rows in cv[KEY].values()]
     pooled=np.abs([r['signed'] for rows in cv[KEY].values() for r in rows])
     errors=np.abs([r['signed'] for rows in lo[KEY].values() for r in rows])
-    s=dict(target=KEY,label=LABEL,cv_n=82,cv_repeats=10,cv_mean_median_absolute_pct=float(np.mean(med)),
+    s=dict(target=KEY,label=LABEL,cv_n=len({r['sample'] for rows in cv[KEY].values() for r in rows}),cv_repeats=10,cv_mean_median_absolute_pct=float(np.mean(med)),
            cv_min_median_absolute_pct=float(min(med)),cv_max_median_absolute_pct=float(max(med)),
            lolo_n=len(errors),lolo_median_absolute_pct=float(np.median(errors)),
            cv_mean_absolute_pct=float(np.mean(pooled)),cv_p90_absolute_pct=float(np.percentile(pooled,90)),

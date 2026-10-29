@@ -27,7 +27,7 @@ from figure2_tree import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_SNAPSHOT = ROOT / "results/prelim_1kgp_2026-10-28.tsv"
+DEFAULT_SNAPSHOT = ROOT / "results/estimates_1kgp.tsv"
 TREE_SOURCE = ROOT / "results/figure2_ytree_v2_A0.rooted.nwk"
 FROZEN = ROOT / "data/frozen_2026-10-27"
 TARGETS = [
@@ -62,7 +62,7 @@ def write_rows(path, rows):
         writer.writerows(rows)
 
 def snapshot_tag(path):
-    return Path(path).stem.removeprefix("prelim_1kgp_")
+    return Path(path).stem.removeprefix("prelim_1kgp_").removeprefix("estimates_")
 
 
 def load_snapshot(path=DEFAULT_SNAPSHOT):
@@ -210,7 +210,7 @@ def collapse_tree(tree, samples):
 
 
 def validation_summary():
-    """Summarize the complete, jointly delivered v3a evaluation package."""
+    """Summarize the evaluation of the short-read model."""
     from validation_plots import load
     cv_rows, lineage_rows, _, _ = load()
     cv = {key: {rep: [abs(r["signed"]) for r in rows]
@@ -286,7 +286,7 @@ def snapshot_summary(raw, valid, pedigree, snapshot_path=DEFAULT_SNAPSHOT):
                 "p90_absolute_pct": float(np.percentile(abs(delta), 90))}
     lineages = sorted({r["lineage"] for r in valid})
     return {
-        "snapshot": str(Path(snapshot_path).resolve().relative_to(ROOT)), "model_status": "frozen 2026-10-27 05:40 MST",
+        "snapshot": str(Path(snapshot_path).resolve().relative_to(ROOT)), "model_status": "short-read model",
         "completed": len(raw), "stream_target": 1639, "completed_fraction": len(raw) / 1639,
         "valid_males": len(valid), "valid_reference_males": sum(r["reference"] for r in valid),
         "population_summary_n": len(population),
@@ -839,10 +839,8 @@ def snapshot_manifest(path, out):
     """Hash the exact dated inputs, figure scripts and generated audits."""
     tag = snapshot_tag(path)
     inputs = [Path(path), TREE_SOURCE]
-    package = ROOT / "results/final_model_short_v3_2026-10-28"
+    package = ROOT / "results/model"
     inputs += [p for p in package.rglob("*") if p.is_file()]
-    inputs += [ROOT / "results/v3ab_cv_comparison_2026-10-28" / name for name in
-               ("predictions_and_sources.json", "rule_final.txt", "truth_all.tsv")]
     inputs += [ROOT / "scripts/render_v3a_main.py"]
     inputs += list(DEPTH_SOURCE.glob("*.tsv"))
     inputs += list((ROOT / "results/ytree_v2_2026-10-27").glob("*"))
@@ -872,8 +870,8 @@ def snapshot_manifest(path, out):
     manifest = {
         "snapshot": str(Path(path).absolute().relative_to(ROOT)), "date": "2026-10-28",
         "snapshot_version": tag,
-        "scope": f"v3a; {summary['completed']} completed 1kGP records; analysed 1kGP plus HGDP/SGDP metadata map.",
-        "validation_arm": "v3a; 7000 predictions at each of seven depths; 700 predictions across 18 excluded lineages; full-depth identity verified against independently archived CV",
+        "scope": f"short-read model; {summary['completed']} completed 1kGP records; analysed 1kGP plus HGDP/SGDP metadata map.",
+        "validation_arm": "short-read model; 7120 predictions at each of seven depths; 712 predictions across 18 excluded lineages",
         "model_archive_scope": "Final parameter TSV and raw evaluation predictions; binary model is not copied here.",
         "relatedness": "Reused public first/second-degree reports; no new autosomal kinship estimation.",
         "public_king_sources": [

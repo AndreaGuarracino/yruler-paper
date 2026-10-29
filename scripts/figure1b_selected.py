@@ -60,7 +60,7 @@ def main():
                   'cv_predictions':sum(len(rows) for x in data.CV.values() for rows in x.values()),
                   'lineage_out_predictions':sum(len(rows) for x in data.LO.values() for rows in x.values()),
                   'depth_predictions':sum(len(rows) for x in data.DEP.values() for y in x.values() for rows in y.values()),
-                  'base_cv_predictions':7000,'derived_ratio_cv_predictions':820,'base_depth_predictions':49000,'derived_ratio_depth_predictions':5740,'base_lineage_out_predictions':700,'derived_ratio_lineage_out_predictions':82,'cv_repeats':10,'cv_boxplots':9,'lineage_out_boxplots_main':0,'lineage_out_boxplots_supplement':9,'depth_boxplots':63,'fold_supplement_boxplots':450,
+                  'base_cv_predictions':7120,'derived_ratio_cv_predictions':810,'base_depth_predictions':49840,'derived_ratio_depth_predictions':5670,'base_lineage_out_predictions':712,'derived_ratio_lineage_out_predictions':81,'cv_repeats':10,'cv_boxplots':9,'lineage_out_boxplots_main':0,'lineage_out_boxplots_supplement':9,'depth_boxplots':63,'fold_supplement_boxplots':450,
                   'box_percentiles':[25,50,75],'whisker_percentiles':[10,90],'tails':'all individuals plotted',
                   'annotated_samples':top,'lineages':data.GROUPS,'depth_repeats':data.depth_reps(),
                   'source_files':[{'path':str(p.relative_to(data.ROOT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
