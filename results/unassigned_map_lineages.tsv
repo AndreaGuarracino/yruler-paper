@@ -1,3 +1,0 @@
-individual_id	cohorts	cohort_sample_ids	population	latitude	longitude	lineage	lineage_source	lineage_identifiers	coordinate_source	coordinate_sample	coordinate_rule
-HGDP00119	HGDP	HGDP:HGDP00119	Hazara	33.5	70.0	Unassigned	no matched published assignment		IGSR population metadata	HGDP:HGDP00119	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained
-SGDP_HGDP00725	SGDP	SGDP:SGDP_HGDP00725	Palestinian	32.0	35.0	Unassigned	no matched published assignment		IGSR population metadata	SGDP:SGDP_HGDP00725	first available cohort: 1kGP, HGDP, SGDP; reported coordinates retained
