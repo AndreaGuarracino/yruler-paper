@@ -55,7 +55,7 @@ def read_tsv(path):
 
 
 def save(fig, out, name):
-    for extension in ("pdf", "svg", "png"):
+    for extension in ("pdf",):
         fig.savefig(out / f"{name}.{extension}", dpi=240, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
@@ -662,7 +662,8 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
 
     locations = read_tsv(locations_path)
     land = json.loads(Path(land_path).read_text())
-    pie_samples = read_tsv(ROOT / "data/figure_metadata/cohort_combined_samples.tsv")
+    from cohort_lineages import load_combined_samples
+    pie_samples = load_combined_samples()
     lineage_counts = Counter(row["lineage"] for row in pie_samples)
     with (out / "figure2_lineage_counts.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")

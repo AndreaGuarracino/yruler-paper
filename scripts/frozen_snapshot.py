@@ -623,7 +623,8 @@ def population_figure(valid, out, snapshot_path, completed):
     tree = prune_tree(parse_newick(TREE_SOURCE), set(samples))
     root, leaves = collapse_tree(tree, samples)
     assert all(n == 1 for n in Counter(leaf["group"] for leaf in leaves).values())
-    map_samples = read_tsv(ROOT / "data/figure_metadata/cohort_combined_samples.tsv")
+    from cohort_lineages import load_combined_samples
+    map_samples = load_combined_samples()
     land = json.loads((ROOT / "data/figure_metadata/world_land.geojson").read_text())
     fig = plt.figure(figsize=(10.6, 9.35))
     # Remove 0.65 inches between panels while retaining their physical sizes.
@@ -853,11 +854,13 @@ def snapshot_manifest(path, out):
         "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
         "scripts/manuscript_figures.py", "scripts/figure2_tree.py",
         "scripts/frozen_snapshot.py", "scripts/prepare_cohort_pies.py", "scripts/prepare_population_tree_v2.py",
+        "scripts/cohort_lineages.py", "results/unassigned_lineages_calls_2026-10-28.tsv",
         "scripts/figure1b_selected.py", "scripts/validation_plots.py", "scripts/depth_benchmark.py",
         "scripts/pedigree_plots.py", "scripts/validation_ratio.py",
         "scripts/cluster/ytree_1kgp.sh")]
     inputs += [p for p in (ROOT / "data/figure_metadata").iterdir()
                if p.suffix in {".tsv", ".kin0", ".psam", ".xlsx", ".geojson"} or p.name == "sgdp_metadata.txt"]
+    inputs += list((ROOT / "results/cohort_metadata_2026-10-28").glob("*.tsv"))
     outputs = [p for p in out.glob("*.tsv") if not p.name.startswith("snapshot_")]
     outputs += [out / f"snapshot_{tag}_samples.tsv"]
     outputs += list((ROOT / "results").glob(Path(path).stem + ".*.tsv"))
