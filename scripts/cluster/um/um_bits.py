@@ -1,6 +1,6 @@
 # Per assembly: superset k-mers present in whole Y and in each class region
 import sys, os, subprocess as sp, numpy as np, tempfile
-P = '/path/to/project'; O = f'{P}/markers_u'; D = '/path/to/scratch/umk/db'; K = '/path/to/conda/kmc/3.2.4/bin'
+P = '/path/to/project'; O = f'{P}/{os.environ.get("UM", "markers_u")}'; D = '/path/to/scratch/umk/db'; K = '/path/to/conda/kmc/3.2.4/bin'
 LUT = np.full(256, 255, np.uint8); LUT[[65, 67, 71, 84]] = [0, 1, 2, 3]
 def enc(f):   # KMC dump (31-mer, tab, count 1) -> sorted uint64
     b = np.fromfile(f, np.uint8)

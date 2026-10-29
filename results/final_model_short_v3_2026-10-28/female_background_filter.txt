@@ -1,9 +1,0 @@
-females filter: 185 of 186; Y ruler mean count / (chr2 depth / 2): median 0.004545, max 0.018566
-dyz3: background bp median 310, p90 4576, max 11263; as % of the median truth length 739319: median 0.0420%, max 1.5234%
-yq12: background bp median 24720, p90 134408, max 250199; as % of the median truth length 26055126: median 0.0949%, max 0.9603%
-dyz1: background bp median 10169, p90 93911, max 183572; as % of the median truth length 14777918: median 0.0688%, max 1.2422%
-dyz2: background bp median 9637, p90 30738, max 64130; as % of the median truth length 10305388: median 0.0935%, max 0.6223%
-dyz18s: background bp median 1873, p90 3184, max 5280; as % of the median truth length 305662: median 0.6129%, max 1.7274%
-yq2k7: background bp median 773, p90 1505, max 2333; as % of the median truth length 121829: median 0.6343%, max 1.9154%
-dyz18sub: background bp median 2313, p90 4194, max 6897; as % of the median truth length 431576: median 0.5359%, max 1.5982%
-dyz19: background bp median 68, p90 1947, max 4440; as % of the median truth length 321886: median 0.0212%, max 1.3794%

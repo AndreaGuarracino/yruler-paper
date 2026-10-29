@@ -1,9 +1,0 @@
-females heldout: 65 of 66; Y ruler mean count / (chr2 depth / 2): median 0.004792, max 0.022176
-dyz3: background bp median 369, p90 4456, max 11532; as % of the median truth length 739319: median 0.0499%, max 1.5599%
-yq12: background bp median 26720, p90 140344, max 365148; as % of the median truth length 26055126: median 0.1026%, max 1.4014%
-dyz1: background bp median 11041, p90 98203, max 260102; as % of the median truth length 14777918: median 0.0747%, max 1.7601%
-dyz2: background bp median 9645, p90 27809, max 81735; as % of the median truth length 10305388: median 0.0936%, max 0.7931%
-dyz18s: background bp median 1897, p90 3477, max 7630; as % of the median truth length 305662: median 0.6205%, max 2.4962%
-yq2k7: background bp median 810, p90 1618, max 2769; as % of the median truth length 121829: median 0.6652%, max 2.2732%
-dyz18sub: background bp median 2366, p90 4508, max 9877; as % of the median truth length 431576: median 0.5481%, max 2.2885%
-dyz19: background bp median 69, p90 2217, max 5364; as % of the median truth length 321886: median 0.0214%, max 1.6663%
