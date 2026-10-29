@@ -117,7 +117,7 @@ HG02233	HG02234	parent_offspring	HG02233	HG02234	father	IBS060	IBS060	True	ok	ok
 HG02258	HG02314	parent_offspring	HG02314	HG02258	father	BB22	BB22	True	ok	ok	yes	no	documented pedigree; compare separate precomputed public KING audit
 HG02259	HG02261	parent_offspring	HG02259	HG02261	father	PEL42	PEL42	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG02277	HG02279	parent_offspring	HG02277	HG02279	father	PEL48	PEL48	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
-HG02299	HG02300	parent_offspring	HG02299	HG02300	father	PEL52	PEL52	False	ok	no_estimate	no	no	documented pedigree; compare separate precomputed public KING audit
+HG02299	HG02300	parent_offspring	HG02299	HG02300	father	PEL52	PEL52	False	ok	female	no	no	documented pedigree; compare separate precomputed public KING audit
 HG02316	HG02317	parent_offspring	HG02317	HG02316	father	BB27	BB27	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG02461	HG02463	parent_offspring	HG02461	HG02463	father	GB15	GB15	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit
 HG02464	HG02466	parent_offspring	HG02464	HG02466	father	GB16	GB16	True	ok	ok	no	no	documented pedigree; compare separate precomputed public KING audit

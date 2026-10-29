@@ -39,7 +39,7 @@
   "inputs": [
     {
       "path": "results/estimates_1kgp.tsv",
-      "sha256": "12c3a1335b25342ed19eae3f46646249823e8f716a764da84c141b0231df8731"
+      "sha256": "954b0db4e3e641918f7ca2a2e1503eff00f1d83d22cc34ca350b7dd93f770fbe"
     },
     {
       "path": "data/markers_u/truth_regions.tsv",
@@ -63,7 +63,7 @@
     },
     {
       "path": "results/model/depth/depth_f1.tsv",
-      "sha256": "88234d4ad4ebcbc41504a05f15cc51366cc74dc9f9da3fc058222dae5ee6e8f9"
+      "sha256": "4e001582a16ce416be5caf8705cab24f657d3747961270964815064a9a30abcf"
     },
     {
       "path": "data/method/truth_qc/x/rule_w4.txt",

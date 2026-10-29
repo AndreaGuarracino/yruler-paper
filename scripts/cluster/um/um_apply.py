@@ -23,16 +23,17 @@ S = sorted(f.split('/')[-3] for f in glob.glob(f'{D}/*/whole/counts.col.zst')); 
 with mp.Pool(int(os.environ.get('SLURM_CPUS_PER_TASK', 8))) as p: R = p.map(one, S)
 ref = set().union(*[set(x) for x in truth_cl.load(O).values()])
 ped = {l.split()[1]: l.split() for l in open(f'{P}/yhaplo/ped3202.txt') if not l.startswith('FamilyID')}
+for l in list(open(f'{P}/lists/1kGP.3202_samples.pedigree_info.txt'))[1:]: x = l.split(); ped[x[0]][4] = x[3]   # sex from the corrected 1kGP pedigree (Byrska-Bishop 2022): HG02300 female
 hg = dict(l.rstrip('\n').split('\t')[:2] for l in open(f'{O}/lineage.tsv') if l.strip()); bat = {l.split('\t')[0]: l.split('\t')[3] for l in open(f'{P}/lists/pass1kgp.tsv')}
-YS = {x[0]: x[2:6] for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/results/ystate_1kgp.tsv'))[1:])}   # Yp, Yq, state, ruler bias
+YS = {x[0]: x[2:8] for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/results/ystate_1kgp.tsv'))[1:])}   # Yp, Yq, state, ruler bias
 NM = {'dyz3': 'DYZ3', 'yq12': 'Yq12', 'dyz1': 'DYZ1', 'dyz2': 'DYZ2', 'dyz18s': 'DYZ18S', 'yq2k7': 'YqHet2.7', 'dyz18sub': 'DYZ18sub', 'dyz19': 'DYZ19'}
 cls = [m['class'] for m in M if m['length'] != 'none']; lin = lambda h: '.' if h == '.' else h[:3] if h.startswith('R1') else h[0]; n = {}
 with open(OUT, 'w') as o:
-    o.write('\t'.join(['sample', 'sex_ped', 'population', 'superpopulation', 'batch', 'haplogroup', 'lineage', 'y_dose'] + [f'{NM[c]}_bp' for c in cls] + ['reference_male', 'flag', 'yp_ruler_dose', 'yq_ruler_dose', 'y_state', 'yp_deletion_bias_pct']) + '\n')
+    o.write('\t'.join(['sample', 'sex_ped', 'population', 'superpopulation', 'batch', 'haplogroup', 'lineage', 'y_dose'] + [f'{NM[c]}_bp' for c in cls] + ['reference_male', 'flag', 'yp_ruler_dose', 'yq_ruler_dose', 'y_state', 'yp_deletion_bias_pct', 'x_dose', 'sex_chromosomes']) + '\n')
     for s, dose, e in R:
         pd = ped.get(s, ['.'] * 7); h = hg.get(s, '.')
         f = 'female' if pd[4] == '2' else 'no_counts' if dose is None else 'no_estimate' if e is None else 'y_dose_below_0.9' if dose < 0.9 else 'ok'; n[f] = n.get(f, 0) + 1
-        o.write('\t'.join([s, pd[4], pd[5], pd[6], bat.get(s, '.'), h, lin(h), 'nan' if dose is None else f'{dose:.4f}'] + [f'{e[c]:.0f}' if e else 'nan' for c in cls] + ['yes' if s in ref else 'no', f] + (YS[s][:3] + [YS[s][3] if YS[s][2] == 'yp_deletion' else '.'] if s in YS else ['.'] * 4)) + '\n')
+        o.write('\t'.join([s, pd[4], pd[5], pd[6], bat.get(s, '.'), h, lin(h), 'nan' if dose is None else f'{dose:.4f}'] + [f'{e[c]:.0f}' if e else 'nan' for c in cls] + ['yes' if s in ref else 'no', f] + (YS[s][:3] + [YS[s][3] if YS[s][2] == 'yp_deletion' else '.'] + (YS[s][4:6] if len(YS[s]) >= 6 else ['.', '.']) if s in YS else ['.'] * 6)) + '\n')
 print(f'written {OUT}: {len(R)} samples, flags {n}', flush=True)
 ok = [e for s, d, e in R if e and d >= 0.9 and ped.get(s, ['.'] * 7)[4] != '2']
 for c in cls: q = np.percentile([e[c] for e in ok], [25, 50, 75]); print(f'{NM[c]}: {len(ok)} males y_dose >= 0.9, median {q[1]:,.0f} bp (IQR {q[0]:,.0f}-{q[2]:,.0f})', flush=True)

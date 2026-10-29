@@ -106,7 +106,7 @@ HG03033	E1b1a1a1a1c1b2a	E	GB108	no	normal	True	results/estimates_1kgp.tsv
 HG03035	E1b1a1a1a1c1b2a	E	GB108	no	normal	True	results/estimates_1kgp.tsv
 HG03077	E1b1a1a1a1c1b2a4	E	HG03077	no	normal	True	results/estimates_1kgp.tsv
 HG03454	E1b1a1a1a1c1b2a	E	SL51	no	normal	True	results/estimates_1kgp.tsv
-HG03456	E1b1a1a1a1c1b2a	E	SL51	no	XYY	True	results/estimates_1kgp.tsv
+HG03456	E1b1a1a1a1c1b2a	E	SL51	no	Y_gain	True	results/estimates_1kgp.tsv
 HG03556	E1b1a1a1a1c1b1b	E	HG03556	no	normal	True	results/estimates_1kgp.tsv
 HG03574	E1b1a1a1a1c1b1	E	SL71	no	normal	True	results/estimates_1kgp.tsv
 HG03582	E1b1a1a1a1c1b1	E	SL73	no	normal	True	results/estimates_1kgp.tsv
@@ -491,7 +491,7 @@ HG02634	E1a2b1a2a	E	GB35	no	normal	True	results/estimates_1kgp.tsv
 HG02636	E1a2b1a2a	E	GB35	no	normal	True	results/estimates_1kgp.tsv
 HG02819	E1a2b1b	E	GB67	no	normal	True	results/estimates_1kgp.tsv
 HG02821	E1a2b1b	E	GB67	no	normal	True	results/estimates_1kgp.tsv
-HG02869	E1a2b1	E	GB84	no	XYY	True	results/estimates_1kgp.tsv
+HG02869	E1a2b1	E	GB84	no	Y_gain	True	results/estimates_1kgp.tsv
 HG02810	E1a2b	E	GB64	no	normal	True	results/estimates_1kgp.tsv
 HG02812	E1a2b	E	GB64	no	normal	True	results/estimates_1kgp.tsv
 HG02771	E2b1a2	E	GB58	no	normal	True	results/estimates_1kgp.tsv
@@ -831,7 +831,7 @@ HG03742	NO [K2a]	NO*	IT015	yes	normal	True	results/estimates_1kgp.tsv
 HG00182	N1a1a1a1a2a1a1a1a2c	N	HG00182	no	normal	True	results/estimates_1kgp.tsv
 HG00183	N1a1a1a1a2a1a1a1a2b	N	HG00183	no	normal	True	results/estimates_1kgp.tsv
 HG00311	N1a1a1a1a2a1a1a1a2a	N	HG00311	no	normal	True	results/estimates_1kgp.tsv
-HG00185	N1a1a1a1a2a1a1a1a1a1a2	N	HG00185	no	partial	False	results/estimates_1kgp.tsv
+HG00185	N1a1a1a1a2a1a1a1a1a1a2	N	HG00185	no	yq_loss	False	results/estimates_1kgp.tsv
 HG00271	N1a1a1a1a2a1a1a1a1a1a1d	N	HG00271	no	normal	True	results/estimates_1kgp.tsv
 HG00273	N1a1a1a1a2a1a1a1a1a1a1	N	HG00273	no	normal	True	results/estimates_1kgp.tsv
 HG00290	N1a1a1a1a2a1a1a1a1a1a1a2	N	HG00290	yes	normal	True	results/estimates_1kgp.tsv
@@ -1298,7 +1298,7 @@ HG01502	R1b1a1b1a1a2c1a4b2c1a	R1b	IBS001	no	normal	True	results/estimates_1kgp.t
 NA06984	R1b1a1b1a1a2c1a4b2c1a1b1b1	R1b	1328	no	normal	True	results/estimates_1kgp.tsv
 NA11831	R1b1a1b1a1a2c1a1e	R1b	1350	no	normal	True	results/estimates_1kgp.tsv
 NA19789	R1b1a1b1a1a2c1a1e	R1b	m037	no	normal	True	results/estimates_1kgp.tsv
-HG00246	R1b1a1b1a1a2c1a4a1	R1b	HG00246	no	no_Y	True	results/estimates_1kgp.tsv
+HG00246	R1b1a1b1a1a2c1a4a1	R1b	HG00246	no	mosaic_loss	True	results/estimates_1kgp.tsv
 NA12762	R1b1a1b1a1a2c1a4a1	R1b	1447	no	normal	True	results/estimates_1kgp.tsv
 NA12335	R1b1a1b1a1a2c1a1b	R1b	1330	no	normal	True	results/estimates_1kgp.tsv
 NA12340	R1b1a1b1a1a2c1a1b	R1b	1330	no	normal	True	results/estimates_1kgp.tsv
@@ -1428,7 +1428,7 @@ NA20538	R1b1a1b1a1a2b2b1	R1b	NA20538	no	normal	True	results/estimates_1kgp.tsv
 NA20806	R1b1a1b1a1a2b2b1	R1b	NA20806	no	partial	False	results/estimates_1kgp.tsv
 NA20798	R1b1a1b1a1a2b2b1	R1b	NA20798	no	normal	True	results/estimates_1kgp.tsv
 NA20803	R1b1a1b1a1a2b2b1	R1b	NA20803	no	normal	True	results/estimates_1kgp.tsv
-NA20754	R1b1a1b1a1a2b	R1b	NA20754	no	no_Y	True	results/estimates_1kgp.tsv
+NA20754	R1b1a1b1a1a2b	R1b	NA20754	no	mosaic_loss	True	results/estimates_1kgp.tsv
 NA20755	R1b1a1b1a1a2b	R1b	NA20755	no	normal	True	results/estimates_1kgp.tsv
 HG00142	R1b1a1b1a1a2b1c1a1a1a1	R1b	HG00142	no	normal	True	results/estimates_1kgp.tsv
 NA12829	R1b1a1b1a1a2b1c1a1a1a2a	R1b	1456	no	normal	True	results/estimates_1kgp.tsv
