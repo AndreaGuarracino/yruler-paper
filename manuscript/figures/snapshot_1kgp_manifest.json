@@ -180,8 +180,8 @@
     },
     {
       "path": "results/model/README.md",
-      "bytes": 4789,
-      "sha256": "f48c4c92c30b2ebd9130346428e6cedc26b0e8356a15b0c30a6d10c9350acc83"
+      "bytes": 5245,
+      "sha256": "515d64e794e263443e2463d8c7f201a3413e524aa221228954bed71bcc20d910"
     },
     {
       "path": "results/model/depth/depth_f0.033.tsv",
@@ -474,16 +474,6 @@
       "path": "manuscript/figures/snapshot_1kgp_summary.json",
       "bytes": 9453,
       "sha256": "dcb15e04dc3f1c501f23e971c706186fb996dd0bf9e70a8f3904f9d09ac4352c"
-    },
-    {
-      "path": "manuscript/figures/v3a_depth_summary.tsv",
-      "bytes": 4940,
-      "sha256": "2acd93e7995c7dc683f8c8a14e8b68827f087d861f553d35b9f7eac0eb726ca5"
-    },
-    {
-      "path": "manuscript/figures/v3a_validation_summary.tsv",
-      "bytes": 790,
-      "sha256": "3608a37ebb5c37dbb6262d0fb870401c1b45df66fac18f9fcddbb2e4b102f457"
     },
     {
       "path": "results/estimates_1kgp.kinship.tsv",
