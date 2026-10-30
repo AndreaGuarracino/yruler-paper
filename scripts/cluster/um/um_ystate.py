@@ -1,16 +1,15 @@
 # Y state per male: 4-class rule
-# usage: python3 um_ystate.py <yprofile.tsv> <pass dir> <out.tsv> <xdose.tsv>; X dose = chrX (no PAR) / chr2 MQ20 reads over the median of males with Y dose 0.95-1.05
+# usage: python3 um_ystate.py <yprofile.tsv> <pass dir> <out.tsv> <um_sexprof summary.tsv>; X dose = x_kmer (CHM13 X-specific 31-mers, alignment-free), PAR1/PAR2 doses = X + Y copies (1 = 2)
 import sys, re, os
 YP, D, OUT, XD = sys.argv[1:5]; n = {}
-XR = {x[0]: int(x[2]) / int(x[1]) for x in (l.split('\t') for l in list(open(XD))[1:]) if int(x[1]) > 0}
+H = open(XD).readline().rstrip('\n').split('\t'); XR = {r['sample']: r for r in (dict(zip(H, l.rstrip('\n').split('\t'))) for l in list(open(XD))[1:])}
 YD = {}
 for l in list(open(YP))[1:]:
     s = l.split('\t')[0]; f = f'{D}/{s}/whole/run.log'; m = re.search(r'y_dose (\S+)', open(f).read()) if os.path.exists(f) else None
     if m: YD[s] = float(m.group(1).rstrip(';'))
-import statistics; XREF = statistics.median(XR[s] for s, y in YD.items() if 0.95 <= y <= 1.05 and s in XR)
-print(f'X reference ratio {XREF:.6f} from {sum(1 for s, y in YD.items() if 0.95 <= y <= 1.05 and s in XR)} samples', file=sys.stderr)
+print(f'k-mer X and PAR doses for {len(XR)} samples, Y doses for {len(YD)}; without X dose: {sum(1 for s in YD if s not in XR)}', file=sys.stderr)
 with open(OUT, 'w') as o:
-    o.write('sample\ty_dose\typ_ruler_dose\tyq_ruler_dose\ty_state\truler_bias_pct\tx_dose\tsex_chromosomes\n')
+    o.write('sample\ty_dose\typ_ruler_dose\tyq_ruler_dose\ty_state\truler_bias_pct\tx_dose\tsex_chromosomes\tpar1_dose\tpar2_dose\n')
     for l in list(open(YP))[1:]:
         s, p, q = l.split('\t'); p, q = float(p), float(q); f = f'{D}/{s}/whole/run.log'
         m = re.search(r'y_dose (\S+)', open(f).read()) if os.path.exists(f) else None
@@ -24,7 +23,7 @@ with open(OUT, 'w') as o:
         elif y >= 1.25: st = 'mosaic_gain'
         elif y < 0.9: st = 'mosaic_loss'
         else: st = 'normal'
-        x = XR[s] / XREF if s in XR else float('nan'); nx, ny = round(x) if x == x else 0, round(y)   # X and Y copies when both near integers
+        x = float(XR[s]['x_kmer']) if s in XR else float('nan'); pa = [XR[s][c] if s in XR else 'nan' for c in ('par1', 'par2')]; nx, ny = round(x) if x == x else 0, round(y)   # X and Y copies when both near integers
         sc = 'X' * nx + 'Y' * ny if x == x and abs(x - nx) <= 0.15 and abs(y - ny) <= 0.15 and nx > 0 else 'mosaic' if x == x else '.'
-        n[st] = n.get(st, 0) + 1; n[sc] = n.get(sc, 0) + 1; o.write(f'{s}\t{y:.4f}\t{p:.4f}\t{q:.4f}\t{st}\t{100 * (q / y - 1):+.2f}\t{x:.4f}\t{sc}\n')   # estimate bias if ruler lost
+        n[st] = n.get(st, 0) + 1; n[sc] = n.get(sc, 0) + 1; o.write(f'{s}\t{y:.4f}\t{p:.4f}\t{q:.4f}\t{st}\t{100 * (q / y - 1):+.2f}\t{x:.4f}\t{sc}\t{pa[0]}\t{pa[1]}\n')   # estimate bias if ruler lost
 print(n, file=sys.stderr)

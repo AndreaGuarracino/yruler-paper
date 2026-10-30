@@ -96,7 +96,7 @@ def load_snapshot(path=DEFAULT_SNAPSHOT):
         status = supplied or reported_status.get(row["sample"], {}).get("y_status", "not_reported")
         status = {"riarrangiamento": "rearrangement", "mosaico": "mosaic"}.get(status.lower(), status)
         row["y_status"] = status
-        row["y_status_source"] = str(path) if supplied else reported_status.get(row["sample"], {}).get("source", "not_reported")
+        row["y_status_source"] = (str(Path(path).resolve().relative_to(ROOT)) if Path(path).resolve().is_relative_to(ROOT) else Path(path).name) if supplied else reported_status.get(row["sample"], {}).get("source", "not_reported")
         row["population_included"] = status.lower() not in {"rearrangement", "partial", "yp_deletion", "yq_loss"}
         valid.append(row)
     return raw, valid, pedigree
