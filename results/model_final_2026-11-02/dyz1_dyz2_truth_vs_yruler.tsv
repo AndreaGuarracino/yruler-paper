@@ -1,0 +1,15 @@
+measure	men	mean	median	p10	p90	min	max
+truth_hallast_unit_ratio	80	1.006	0.977	0.842	1.230	0.587	1.633
+yruler_cv_prediction_unit_ratio	80	1.010	0.978	0.844	1.249	0.528	1.732
+yruler_over_truth_minus_1_pct	80	0.274	-0.146	-5.020	5.788	-10.197	23.930
+spearman_yruler_cv_vs_truth	80	0.9528					
+sd_log_ratio_cv_error	80	0.0501					
+sd_log_ratio_1kgp_included	1583	0.1493					
+sd_log_ratio_truth_assemblies	80	0.1734					
+error_variance_share_of_1kgp	80	0.1125					
+lineage_E_truth_unit_ratio	16		1.046				
+lineage_E_yruler_cv_unit_ratio	16		1.035				
+lineage_O_truth_unit_ratio	13		0.923				
+lineage_O_yruler_cv_unit_ratio	13		0.958				
+lineage_R1b_truth_unit_ratio	12		0.950				
+lineage_R1b_yruler_cv_unit_ratio	12		0.949				

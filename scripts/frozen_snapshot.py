@@ -9,6 +9,7 @@ import ast
 import csv
 import hashlib
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -103,7 +104,7 @@ def load_snapshot(path=DEFAULT_SNAPSHOT):
 
 def in_summary(row, key):
     """Population summary of one target: a PAR2 gain leaves Yq12, DYZ1, DYZ2 and their ratio."""
-    return row["population_included"] and not (row["y_status"] == "par2_gain" and key in {"Yq12_bp", "DYZ1_bp", "DYZ2_bp", "ratio_bp"})
+    return row["population_included"] and not (row["y_status"] == "par2_gain" and key in {"Yq12_bp", "DYZ1_bp", "DYZ2_bp", "ratio_bp", "unit_ratio"})
 
 
 def population_rows(rows):
@@ -532,7 +533,7 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
                            "n_population_summary": int(included.sum()), "n_excluded_arm_profile": int((~included).sum()),
                            "n_reference": int(references.sum()), "median": float(median * scale),
                            "q25": float(q1 * scale), "q75": float(q3 * scale),
-                           "units": "relative dosage" if key == "y_dose" else "bp/bp" if key == "ratio_bp" else "bp"})
+                           "units": "relative dosage" if key == "y_dose" else "bp/bp" if key == "ratio_bp" else "units/units" if key == "unit_ratio" else "bp"})
     ax.set_ylim(len(leaves) - .4, -.7)
     ax.set_xlim(0, limit)
     ax.set_xticks(ticks)
@@ -622,6 +623,64 @@ def annotate_population_extremes(ax, key):
     return audit
 
 
+def biology_panels(fig, height):
+    """Fig. 2b-e: DYZ19 and DYZ3 states with replication, read density, DYZ1 and DYZ2 variability."""
+    R = ROOT / "results/model_final_2026-11-02"; GREY, INK, MUTED, ORANGE = "#a9b4ba", "#22313a", "#55666f", "#d9622b"
+    C = read_tsv(R / "cohort_1kgp.tsv"); Q = read_tsv(R / "hgsg_calls.tsv"); N = {r["item"]: r["value"] for r in read_tsv(R / "biology_tests.tsv")}
+    keep = ("normal", "mosaic_loss", "mosaic_gain", "Y_gain", "par2_gain"); inc = [r for r in C if r["sex"] == "male" and r["estimate_basis"] == "ruler" and r["y_state"] in keep]
+    box = lambda x0, x1: fig.add_axes([x0, .72 / height, x1 - x0, 3.33 / height])
+    def strip(ax, x, v, color, s=4, a=.55, seed=0, horizontal=False, cap=.3):
+        j = np.random.default_rng(seed).uniform(-cap, cap, len(v))
+        ax.scatter(*((v, x + j) if horizontal else (x + j, v)), s=s, c=color, lw=0, alpha=a, rasterized=True)
+        m = np.median(v); (ax.plot([m, m], [x - .4, x + .4], color=INK, lw=1.3) if horizontal else ax.plot([x - .4, x + .4], [m, m], color=INK, lw=1.3))
+    def style(ax, letter):
+        ax.spines[["top", "right"]].set_visible(False); ax.tick_params(labelsize=7, length=2.5); fig.text({"b": .012, "c": .232, "d": .412, "e": .762}[letter], 4.2 / height, letter, fontsize=15, fontweight="bold")
+    # short DYZ19 of J2a1a1, by cohort
+    ax = box(.05, .2); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/model_checks_2026-11-02/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
+    Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: own[r["sample"]].startswith("J2a1a1"); kb = lambda R_: np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_])
+    G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
+    G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
+    assert [(len(a), len(b)) for _, a, b in G] == [(42, 44), (16, 29), (6, 12)], [(len(a), len(b)) for _, a, b in G]
+    for i, (c, a, b) in enumerate(G):
+        strip(ax, 2.6 * i, a, PURPLE, s=6, a=.8, seed=i, cap=.32); strip(ax, 2.6 * i + 1, b, GREY, s=6, a=.8, seed=i + 5, cap=.32); ax.text(2.6 * i + .5, -.13, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7)
+    ax.set_xticks([x for i in range(3) for x in (2.6 * i, 2.6 * i + 1)], [f"{len(v)}" for _, a, b in G for v in (a, b)], fontsize=6.1); ax.set_xlim(-.7, 6.9); ax.set_ylim(0, 350); ax.set_ylabel("DYZ19 length (kb)", fontsize=8); style(ax, "b")
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=PURPLE, label="J2a1a1"), Line2D([], [], ls="none", marker="o", ms=3.5, color=GREY, label="Other J")], frameon=False, fontsize=6.2, loc="center", bbox_to_anchor=(.5, .52), handletextpad=.1, ncol=2, columnspacing=.8)
+    # unit ratio by lineage
+    ax = box(.275, .41); U = read_tsv(R / "dyz1_dyz2_lineages.tsv"); A = {r["measure"].split("_")[1]: float(r["median"]) for r in read_tsv(R / "dyz1_dyz2_truth_vs_yruler.tsv") if r["measure"].startswith("lineage_") and "_truth_" in r["measure"]}
+    for i, r in enumerate(U):
+        c = GREEN if r["lineage"] == "E" else (BLUE if float(r["ci95_high"]) < 1 else MUTED); ax.plot([float(r["ci95_low"]), float(r["ci95_high"])], [i, i], color=c, lw=1.2); ax.plot(float(r["unit_ratio_median"]), i, "o", ms=3.5, color=c)
+        if r["lineage"] in A: ax.plot(A[r["lineage"]], i, "D", ms=3.5, mfc="none", mec=ORANGE, mew=1)
+    ax.axvline(1, color=MUTED, lw=.8, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U], fontsize=6.1); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio", fontsize=8); style(ax, "c")
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=MUTED, label="Men"), Line2D([], [], ls="none", marker="D", ms=3.5, mfc="none", mec=ORANGE, label="Assemblies")], frameon=False, fontsize=6.2, loc="center right", bbox_to_anchor=(1, .42), borderaxespad=0, handletextpad=.2)
+    # DYZ3 states, by cohort
+    ax = box(.455, .745); by = {"1kGP": [(r["haplogroup"], float(r["DYZ3_bp"]) / 1e6) for r in inc], "HGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "HGDP"], "SGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "SGDP"]}
+    ticks, labels = [], []
+    for g, (p1, p2, name, x0) in enumerate((("R1b", None, "R1b, other men", 0), ("O2a2b1a1", "O2a2b1a2", "O2a2b1a1, O2a2b1a2", 9.4))):
+        for i, c in enumerate(by):
+            v1 = np.array([v for h, v in by[c] if h.startswith(p1)]); v2 = np.array([v for h, v in by[c] if (h.startswith(p2) if p2 else not h.startswith(p1))]); x = x0 + 2.9 * i
+            strip(ax, x, v1, BLUE, s=4, a=.7, seed=i, cap=.32); strip(ax, x + 1.25, v2, GREY, s=4, a=.45 if len(v2) > 100 else .85, seed=i + 5, cap=.32); ticks += [x, x + 1.25]; labels += [f"{len(v1)}", f"{len(v2):,}"]
+            ax.text(x + .6, -.13, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7)
+        ax.text(x0 + 3.5, .985, name, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7, color=INK)
+    ax.set_xticks(ticks, labels, fontsize=5.6); ax.set_xlim(-.7, 17.6); ax.set_ylim(0, 3); ax.axvline(8.6, color="#d8dee2", lw=.8); ax.set_ylabel("DYZ3 length (Mb)", fontsize=8); style(ax, "d")
+    # DYZ2 varies more than DYZ1
+    ax = box(.805, .968); T = {r["assembly"]: r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}; lin = {r["sample"]: r["lineage"] for r in C}
+    kin = {r["sample"]: r["kinship_component_id"] for r in read_tsv(ROOT / "results/estimates_1kgp.relatedness_samples.tsv")}; rep = {}
+    for r in sorted((r for r in inc if r["y_state"] != "par2_gain"), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)
+    def centred(P):
+        a = np.log2([p[0] for p in P]); b = np.log2([p[1] for p in P]); l = np.array([p[2] for p in P])
+        for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
+        return b, a
+    men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in rep.values() if r["reference_male"] != "yes"]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
+    assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
+    ax.scatter(*men, s=4, c=GREY, lw=0, alpha=.6, label="1kGP men (1,196)", rasterized=True); ax.scatter(*asm, s=9, c=ORANGE, lw=0, alpha=.9, label="Assemblies (75)", rasterized=True)
+    L = 1.5; sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.9, ls="--", label="Equal variation"); ax.plot([-L, L], [-L * sd("composition_sd_1kgp"), L * sd("composition_sd_1kgp")], color=INK, lw=1.2, label="SD ratio 0.762")
+    ax.set_xlim(-L, L); ax.set_ylim(-1.2, 1.2); ax.set_xlabel("log2 DYZ2 (centred within lineage)", fontsize=8); ax.set_ylabel("log2 DYZ1 (centred within lineage)", fontsize=8); ax.legend(frameon=False, fontsize=6.2, loc="upper left", borderaxespad=0, handletextpad=.4); style(ax, "e")
+    ins = ax.inset_axes([.74, .09, .25, .29]); S = [("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp"), ("Assembly", "assemblies")]
+    for i, (n, k) in enumerate(S):
+        m_ = re.search(r"ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)", N[f"composition_sd_{k}"]); v, lo, hi = map(float, m_.groups()); ins.plot([lo, hi], [3 - i, 3 - i], color=INK, lw=1); ins.plot(v, 3 - i, "o", ms=3, color=ORANGE if k == "assemblies" else INK)
+    ins.axvline(1, color=MUTED, lw=.8, ls="--"); ins.set_yticks(range(4), [n for n, _ in S[::-1]], fontsize=5.4); ins.set_xlim(.55, 1.05); ins.set_xticks([.6, .8, 1]); ins.tick_params(labelsize=5.4, length=2, pad=1); ins.set_xlabel("SD ratio", fontsize=5.4, labelpad=1); ins.spines[["top", "right"]].set_visible(False); ins.patch.set_alpha(.85)
+
+
 def population_figure(valid, out, snapshot_path, completed):
     samples = {r["sample"]: r for r in valid}
     tree = prune_tree(parse_newick(TREE_SOURCE), set(samples))
@@ -630,29 +689,23 @@ def population_figure(valid, out, snapshot_path, completed):
     from cohort_lineages import load_combined_samples
     map_samples = load_combined_samples()
     land = json.loads((ROOT / "data/figure_metadata/world_land.geojson").read_text())
-    fig = plt.figure(figsize=(10.6, 9.35))
-    # Remove 0.65 inches between panels while retaining their physical sizes.
+    fig = plt.figure(figsize=(10.6, 9.9))
     height = fig.get_figheight()
-    map_height = .91 * fig.get_figwidth() / fig.get_figheight() * (142 / 360)
-    ax = fig.add_axes([.055, 5.85 / height, .91, map_height])
-    pie_map(ax, None, map_samples, land, size_legend=True)
-    ax.set_title(f"Geographic coverage of 1kGP, HGDP and SGDP  (n={len(map_samples):,} individuals)", fontsize=10, pad=8)
-    ax.text(-.025, 1.035, "a", transform=ax.transAxes, fontsize=15, fontweight="bold")
-    map_legend=lineage_legend(fig, map_samples, 6.44 / height, x=.65)
-    align_map_legend_titles(ax,map_legend)
-    grid = fig.add_gridspec(1, 6, left=.055, right=.965, bottom=1.2 / height, top=5.4 / height,
+    grid = fig.add_gridspec(1, 6, left=.055, right=.965, bottom=5.05 / height, top=9.45 / height,
                             width_ratios=[1.85, .85, .85, .85, 1, .85], wspace=.08)
     axes = [fig.add_subplot(grid[0, i]) for i in range(6)]
-    draw_collapsed_tree(axes[0], root, leaves)
+    draw_collapsed_tree(axes[0], root, leaves, panel="a")
     stats = frozen_trait(axes[1], leaves, "DYZ3_bp", BLUE, 1e6, 3, [0, 1, 2, 3],
                          "DYZ3", "c", "Length (Mb)", lambda g: g == "R1b", show_panel=False)
     stats += frozen_trait(axes[2], leaves, "Yq12_bp", GREEN, 1e6, 60, [0, 20, 40, 60],
                           "Yq12", "d", "Length (Mb)", lambda g: False, show_panel=False)
     stats += frozen_trait(axes[3], leaves, "DYZ19_bp", PURPLE, 1e3, 550, [0, 250, 500],
                           "DYZ19", "e", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)
-    ratio_limit = max(2.5, .5 * np.ceil(max(r["ratio_bp"] for r in valid) / .5))
-    stats += frozen_trait(axes[4], leaves, "ratio_bp", "#8c7139", 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
-                          "DYZ1 / DYZ2", "f", "Length ratio", lambda g: False, show_panel=False)
+    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
+    ratio_limit = max(2.5, .5 * np.ceil(max(r["unit_ratio"] for r in valid) / .5))
+    stats += frozen_trait(axes[4], leaves, "unit_ratio", "#8c7139", 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
+                          "DYZ1:DYZ2", "f", "Unit ratio", lambda g: False, show_panel=False)
+    axes[4].axvline(1, color="#8c7139", linestyle="--", linewidth=.8, zorder=1)
     dosage_limit = max(1.5, .25 * np.ceil(max(r["y_dose"] for r in valid) / .25))
     stats += frozen_trait(axes[5], leaves, "y_dose", "#526774", 1, dosage_limit, [.5, 1, 1.5, 2],
                           "Y dosage", "g", "Relative dosage", lambda g: False, show_panel=False)
@@ -664,12 +717,13 @@ def population_figure(valid, out, snapshot_path, completed):
         Line2D([], [], linestyle="none", marker="D", markerfacecolor="none", markeredgecolor="#886333",
                markersize=4, label="Yq satellite depletion"),
     ]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.54, .67 / height), ncol=2,
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.8, 4.62 / height), ncol=2,
                frameon=False, fontsize=7.4, handletextpad=.4)
     annotations = []
-    for axis, key in zip(axes[1:], ["DYZ3_bp", "Yq12_bp", "DYZ19_bp", "ratio_bp", "y_dose"]):
+    for axis, key in zip(axes[1:], ["DYZ3_bp", "Yq12_bp", "DYZ19_bp", "unit_ratio", "y_dose"]):
         annotations.extend(annotate_population_extremes(axis, key))
     write_rows(out / "figure2_labelled_samples.tsv", annotations)
+    biology_panels(fig, height)
     save(fig, out, "figure2_draft")
     write_rows(out / "figure2_tree_summary.tsv", stats)
     membership = [{"sample": r["sample"], "haplogroup_2019": r["haplogroup"],
