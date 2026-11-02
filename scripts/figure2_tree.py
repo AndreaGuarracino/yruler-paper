@@ -266,7 +266,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
             ax.set_title(f"{title} difference", color=color, fontsize=9.8, pad=10)
         ax.text(-0.12, 1.065, panel_labels[2 * target_index + 1], transform=ax.transAxes,
                 fontsize=15, fontweight="bold")
-        ax.set_xlabel("Signed son/father difference (%)", fontsize=8.2)
+        ax.set_xlabel("Signed offspring/parent difference (%)", fontsize=8.2)
     if scatter_axes is not None:
         styles = {"Cross batch": ("o", None, 0.43), "Same batch": ("^", "#cf9036", 0.85),
                   "Reverse cross batch": ("D", "#435460", 0.9)}
@@ -301,8 +301,8 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
             ax.set_xticks(ticks)
             ax.set_yticks(ticks)
             ax.tick_params(labelsize=7, length=2.5)
-            ax.set_xlabel("Father (Mb)", fontsize=8.2)
-            ax.set_ylabel("Son (Mb)", fontsize=8.2, labelpad=2)
+            ax.set_xlabel("Parent (Mb)", fontsize=8.2)
+            ax.set_ylabel("Offspring (Mb)", fontsize=8.2, labelpad=2)
             ax.spines[["right", "top"]].set_visible(False)
             ax.set_title(title, color=color, fontsize=9.8, pad=10)
             ax.text(-0.25, 1.065, panel_labels[2 * target_index], transform=ax.transAxes,
@@ -317,7 +317,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
                                   markeredgecolor="#536c79", markersize=4.5, label="Open: reference involved"))
         header.figure.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.53, legend_y),
                              ncol=4 if compact_legend else 3,
-                             title=None if compact_legend else "Father–son pairs", title_fontsize=8,
+                             title=None if compact_legend else "Parent–offspring pairs", title_fontsize=8,
                              fontsize=6.8 if compact_legend else 7.4, frameon=False,
                              handletextpad=0.4, columnspacing=1.3 if compact_legend else 1.7)
     summaries = []

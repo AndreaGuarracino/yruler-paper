@@ -90,8 +90,8 @@ def scatter(ax,rows,key,compact=False):
     ax.set_xlim(0,upper);ax.set_ylim(0,upper);ax.set_aspect('equal',adjustable='box')
     ax.xaxis.set_major_locator(MaxNLocator(3 if compact else 4));ax.yaxis.set_major_locator(MaxNLocator(3 if compact else 4))
     suffix=f' ({unit})' if unit else ''
-    ax.set_xlabel('Father'+suffix,fontsize=7 if compact else 8)
-    ax.set_ylabel('Son'+suffix,fontsize=7 if compact else 8,labelpad=1)
+    ax.set_xlabel('Parent'+suffix,fontsize=7 if compact else 8)
+    ax.set_ylabel('Offspring'+suffix,fontsize=7 if compact else 8,labelpad=1)
     style(ax)
     return med
 
@@ -120,7 +120,7 @@ def differences(ax,rows,key,compact=False,reverse=True):
     ax.set_xticks(ticks,[str(x) for x in ticks]);ax.set_ylim(len(groups)-.55,-.55)
     short=['Cross\nbatch','Same\nbatch','Reverse\ncross batch'] if compact else GROUPS
     ax.set_yticks(range(len(groups)),short[:len(groups)],fontsize=6 if compact else 7)
-    ax.tick_params(axis='y',length=0);ax.set_xlabel('Son/father difference (%)',fontsize=7 if compact else 8)
+    ax.tick_params(axis='y',length=0);ax.set_xlabel('Offspring/parent difference (%)',fontsize=7 if compact else 8)
     style(ax);ax.spines['left'].set_visible(False)
 
 
@@ -146,7 +146,7 @@ def supplement(rows,out):
             for ax in axes.flat[len(MEASUREMENTS):]:ax.set_visible(False)   # unused grid cells
             legend(fig,rows,y=.985)
             fig.subplots_adjust(left=.075,right=.98,bottom=.12,top=.91,wspace=.42,hspace=.49)
-            fig.text(.5,.018,f'{len(rows)//len(MEASUREMENTS)} father–son pairs; all profiles retained. Ratio is DYZ1/DYZ2. No batch correction.',ha='center',fontsize=8,color=INK)
+            fig.text(.5,.018,f'{len(rows)//len(MEASUREMENTS)} parent–offspring pairs; all profiles retained. Ratio is DYZ1/DYZ2. No batch correction.',ha='center',fontsize=8,color=INK)
             if kind=='differences':fig.text(.5,.04,'Median and interquartile range; difference axes linear within ±5% and logarithmic outside.',ha='center',fontsize=8,color=INK)
             fig.savefig(out/f'figureS8_pedigree_{kind}.pdf',dpi=170,bbox_inches='tight')
             pdf.savefig(fig,bbox_inches='tight');plt.close(fig)

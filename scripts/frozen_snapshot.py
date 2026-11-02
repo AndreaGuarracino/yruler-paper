@@ -651,11 +651,11 @@ def biology_panels(fig, height):
         c = GREEN if r["lineage"] == "E" else (BLUE if float(r["ci95_high"]) < 1 else MUTED); ax.plot([float(r["ci95_low"]), float(r["ci95_high"])], [i, i], color=c, lw=1.2); ax.plot(float(r["unit_ratio_median"]), i, "o", ms=3.5, color=c)
         if r["lineage"] in A: ax.plot(A[r["lineage"]], i, "D", ms=3.5, mfc="none", mec=ORANGE, mew=1)
     ax.axvline(1, color=MUTED, lw=.8, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U], fontsize=6.1); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio", fontsize=8); style(ax, "c")
-    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=MUTED, label="Men"), Line2D([], [], ls="none", marker="D", ms=3.5, mfc="none", mec=ORANGE, label="Assemblies")], frameon=False, fontsize=6.2, loc="center right", bbox_to_anchor=(1, .42), borderaxespad=0, handletextpad=.2)
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=MUTED, label="Males"), Line2D([], [], ls="none", marker="D", ms=3.5, mfc="none", mec=ORANGE, label="Assemblies")], frameon=False, fontsize=6.2, loc="center right", bbox_to_anchor=(1, .42), borderaxespad=0, handletextpad=.2)
     # DYZ3 states, by cohort
     ax = box(.455, .745); by = {"1kGP": [(r["haplogroup"], float(r["DYZ3_bp"]) / 1e6) for r in inc], "HGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "HGDP"], "SGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "SGDP"]}
     ticks, labels = [], []
-    for g, (p1, p2, name, x0) in enumerate((("R1b", None, "R1b, other men", 0), ("O2a2b1a1", "O2a2b1a2", "O2a2b1a1, O2a2b1a2", 9.4))):
+    for g, (p1, p2, name, x0) in enumerate((("R1b", None, "R1b, other males", 0), ("O2a2b1a1", "O2a2b1a2", "O2a2b1a1, O2a2b1a2", 9.4))):
         for i, c in enumerate(by):
             v1 = np.array([v for h, v in by[c] if h.startswith(p1)]); v2 = np.array([v for h, v in by[c] if (h.startswith(p2) if p2 else not h.startswith(p1))]); x = x0 + 2.9 * i
             strip(ax, x, v1, BLUE, s=4, a=.7, seed=i, cap=.32); strip(ax, x + 1.25, v2, GREY, s=4, a=.45 if len(v2) > 100 else .85, seed=i + 5, cap=.32); ticks += [x, x + 1.25]; labels += [f"{len(v1)}", f"{len(v2):,}"]
@@ -672,7 +672,7 @@ def biology_panels(fig, height):
         return b, a
     men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in rep.values() if r["reference_male"] != "yes"]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
     assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
-    ax.scatter(*men, s=4, c=GREY, lw=0, alpha=.6, label="1kGP men (1,196)", rasterized=True); ax.scatter(*asm, s=9, c=ORANGE, lw=0, alpha=.9, label="Assemblies (75)", rasterized=True)
+    ax.scatter(*men, s=4, c=GREY, lw=0, alpha=.6, label="1kGP males (1,196)", rasterized=True); ax.scatter(*asm, s=9, c=ORANGE, lw=0, alpha=.9, label="Assemblies (75)", rasterized=True)
     L = 1.5; sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.9, ls="--", label="Equal variation"); ax.plot([-L, L], [-L * sd("composition_sd_1kgp"), L * sd("composition_sd_1kgp")], color=INK, lw=1.2, label="SD ratio 0.762")
     ax.set_xlim(-L, L); ax.set_ylim(-1.2, 1.2); ax.set_xlabel("log2 DYZ2 (centred within lineage)", fontsize=8); ax.set_ylabel("log2 DYZ1 (centred within lineage)", fontsize=8); ax.legend(frameon=False, fontsize=6.2, loc="upper left", borderaxespad=0, handletextpad=.4); style(ax, "e")
     ins = ax.inset_axes([.74, .09, .25, .29]); S = [("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp"), ("Assembly", "assemblies")]

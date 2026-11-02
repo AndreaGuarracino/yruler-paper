@@ -1,0 +1,67 @@
+class	measure	men	mean_or_rho	median	p90	max
+yq12	San Roman DYZ1 depth, one K on all truth men	32	28.3135	26.4328	45.0740	85.7627
+yq12	San Roman DYZ1 depth, one K on all truth men, men with a yruler final estimate	32	28.3135	26.4328	45.0740	85.7627
+yq12	yruler final model, trained on all truth men (men with San Roman DYZ1 depth)	32	1.9071	1.5606	3.8799	5.3624
+yq12	Spearman vs truth: yruler final model (men with San Roman DYZ1 depth)	32	0.9828			
+yq12	scale-free CV of truth / relative value: San Roman DYZ1 depth (men with San Roman DYZ1 depth)	32	28.7647			
+yq12	scale-free CV of truth / relative value: yruler final model (men with San Roman DYZ1 depth)	32	2.3754			
+yq12	Spearman vs truth: San Roman DYZ1 depth, men with a yruler final estimate	32	0.3497			
+yq12	San Roman DYZ1 depth, K per fold, per-man mean |error|	32	29.4868	27.7597	46.3196	91.1376
+yq12	San Roman DYZ1 depth, K per fold, all predictions	32	29.4868	26.6944	46.2154	99.1920
+yq12	yruler CV, per-man mean |error| (men with San Roman DYZ1 depth)	30	1.9634	1.7222	3.8936	5.1077
+yq12	yruler CV, all predictions (men with San Roman DYZ1 depth)	30	1.9634	1.7369	4.1263	5.7476
+yq12	Spearman vs truth: San Roman DYZ1 depth	32	0.3497			
+yq12	Spearman vs truth: yruler CV prediction (men with San Roman DYZ1 depth)	30	0.9826			
+yq12	Spearman San Roman DYZ1 depth vs yruler Yq12_bp (1kGP men, final model)	1196	0.5979			
+yq12	San Roman measure on 30x CRAMs, one K on all truth men	83	5.7610	4.1832	12.5812	25.1698
+yq12	San Roman measure on 30x CRAMs, one K on all truth men, men with a yruler final estimate	83	5.7610	4.1832	12.5812	25.1698
+yq12	yruler final model, trained on all truth men (men with San Roman measure on 30x CRAMs)	83	1.9721	1.7134	3.8887	7.4940
+yq12	Spearman vs truth: yruler final model (men with San Roman measure on 30x CRAMs)	83	0.9890			
+yq12	scale-free CV of truth / relative value: San Roman measure on 30x CRAMs (men with San Roman measure on 30x CRAMs)	83	7.7307			
+yq12	scale-free CV of truth / relative value: yruler final model (men with San Roman measure on 30x CRAMs)	83	2.5028			
+yq12	Spearman vs truth: San Roman measure on 30x CRAMs, men with a yruler final estimate	83	0.9344			
+yq12	San Roman measure on 30x CRAMs, K per fold, per-man mean |error|	83	5.8151	4.2096	12.6543	25.2336
+yq12	San Roman measure on 30x CRAMs, K per fold, all predictions	83	5.8151	4.3066	12.7583	25.8431
+yq12	yruler CV, per-man mean |error| (men with San Roman measure on 30x CRAMs)	80	2.0086	1.7387	4.1680	7.7155
+yq12	yruler CV, all predictions (men with San Roman measure on 30x CRAMs)	80	2.0086	1.7157	4.2281	8.0390
+yq12	Spearman vs truth: San Roman measure on 30x CRAMs	83	0.9344			
+yq12	Spearman vs truth: yruler CV prediction (men with San Roman measure on 30x CRAMs)	80	0.9892			
+yq12	Spearman San Roman measure on 30x CRAMs vs yruler Yq12_bp (1kGP men, final model)	126	0.9458			
+dyz1	San Roman DYZ1 depth, one K on all truth men	32	26.0022	21.9239	41.5418	83.5308
+dyz1	San Roman DYZ1 depth, one K on all truth men, men with a yruler final estimate	32	26.0022	21.9239	41.5418	83.5308
+dyz1	yruler final model, trained on all truth men (men with San Roman DYZ1 depth)	32	2.8598	2.7036	5.1180	7.3670
+dyz1	Spearman vs truth: yruler final model (men with San Roman DYZ1 depth)	32	0.9644			
+dyz1	scale-free CV of truth / relative value: San Roman DYZ1 depth (men with San Roman DYZ1 depth)	32	26.4169			
+dyz1	scale-free CV of truth / relative value: yruler final model (men with San Roman DYZ1 depth)	32	3.4937			
+dyz1	Spearman vs truth: San Roman DYZ1 depth, men with a yruler final estimate	32	0.4157			
+dyz1	San Roman DYZ1 depth, K per fold, per-man mean |error|	32	27.0942	22.5042	42.8493	88.8090
+dyz1	San Roman DYZ1 depth, K per fold, all predictions	32	27.0942	23.2016	47.1863	95.0648
+dyz1	yruler CV, per-man mean |error| (men with San Roman DYZ1 depth)	30	3.0401	2.8386	5.0057	7.2862
+dyz1	yruler CV, all predictions (men with San Roman DYZ1 depth)	30	3.0401	2.8105	5.5895	7.8712
+dyz1	Spearman vs truth: San Roman DYZ1 depth	32	0.4157			
+dyz1	Spearman vs truth: yruler CV prediction (men with San Roman DYZ1 depth)	30	0.9666			
+dyz1	Spearman San Roman DYZ1 depth vs yruler DYZ1_bp (1kGP men, final model)	1196	0.6179			
+dyz1	San Roman measure on 30x CRAMs, one K on all truth men	83	2.7660	2.4755	5.5219	12.3608
+dyz1	San Roman measure on 30x CRAMs, one K on all truth men, men with a yruler final estimate	83	2.7660	2.4755	5.5219	12.3608
+dyz1	yruler final model, trained on all truth men (men with San Roman measure on 30x CRAMs)	83	2.5082	2.1207	5.1036	9.6056
+dyz1	Spearman vs truth: yruler final model (men with San Roman measure on 30x CRAMs)	83	0.9862			
+dyz1	scale-free CV of truth / relative value: San Roman measure on 30x CRAMs (men with San Roman measure on 30x CRAMs)	83	3.5370			
+dyz1	scale-free CV of truth / relative value: yruler final model (men with San Roman measure on 30x CRAMs)	83	3.1865			
+dyz1	Spearman vs truth: San Roman measure on 30x CRAMs, men with a yruler final estimate	83	0.9810			
+dyz1	San Roman measure on 30x CRAMs, K per fold, per-man mean |error|	83	2.7942	2.5002	5.6190	12.5112
+dyz1	San Roman measure on 30x CRAMs, K per fold, all predictions	83	2.7942	2.3946	5.6350	12.8690
+dyz1	yruler CV, per-man mean |error| (men with San Roman measure on 30x CRAMs)	80	2.6157	2.2308	4.9286	9.9526
+dyz1	yruler CV, all predictions (men with San Roman measure on 30x CRAMs)	80	2.6157	2.2717	5.0723	10.4822
+dyz1	Spearman vs truth: San Roman measure on 30x CRAMs	83	0.9810			
+dyz1	Spearman vs truth: yruler CV prediction (men with San Roman measure on 30x CRAMs)	80	0.9864			
+dyz1	Spearman San Roman measure on 30x CRAMs vs yruler DYZ1_bp (1kGP men, final model)	126	0.9922			
+yq12	yruler final model on phase 3 runs (same men)	30	19.9715	11.1971	52.4204	94.8213
+yq12	yruler on phase 3 runs, one K on these men	30	14.6401	10.9376	28.0202	63.6334
+yq12	San Roman DYZ1 depth (phase 3), one K on these men	30	27.5648	24.9606	39.6893	90.6859
+yq12	Spearman vs truth: yruler final model on phase 3 runs	30	0.8002			
+yq12	Spearman vs truth: San Roman DYZ1 depth (phase 3), same men	30	0.4002			
+dyz1	yruler final model on phase 3 runs (same men)	30	48.2924	29.3534	113.1961	175.4878
+dyz1	yruler on phase 3 runs, one K on these men	30	23.8844	20.5208	43.8190	85.8402
+dyz1	San Roman DYZ1 depth (phase 3), one K on these men	30	25.1246	20.1474	36.5126	88.2426
+dyz1	Spearman vs truth: yruler final model on phase 3 runs	30	0.5386			
+dyz1	Spearman vs truth: San Roman DYZ1 depth (phase 3), same men	30	0.4745			

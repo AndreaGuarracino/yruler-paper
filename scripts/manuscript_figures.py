@@ -236,7 +236,7 @@ def biology_figure(catalog, pairs_path, dyz19, out):
     ax.set_yscale("symlog", linthresh=5)
     ax.set_yticks([-50, -20, -5, 0, 5, 20, 50])
     ax.set_yticklabels(["−50", "−20", "−5", "0", "5", "20", "50"])
-    ax.set_ylabel("Signed son/father difference (%)")
+    ax.set_ylabel("Signed offspring/parent difference (%)")
     panel(ax, "d", "Pedigree differences before correction")
     ax.legend(handles=[Patch(facecolor=BLUE, label="DYZ3"), Patch(facecolor=GREEN, label="Yq12")],
               frameon=False, loc="upper right", fontsize=8.5)

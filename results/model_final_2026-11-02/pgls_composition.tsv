@@ -1,0 +1,11 @@
+item	value
+pgls_one_per_component	1271 men, lambda 0.972, slope -0.289 (95% -0.319 to -0.259), P 6.59e-70, terms 2
+pgls_outside_panel	1196 men, lambda 0.974, slope -0.300 (95% -0.331 to -0.269), P 1.16e-70, terms 2
+pgls_one_per_component_lineage_terms	1271 men, lambda 0.970, slope -0.289 (95% -0.319 to -0.259), P 2.08e-69, terms 15
+pgls_outside_panel_lineage_terms	1196 men, lambda 0.972, slope -0.301 (95% -0.332 to -0.270), P 2.78e-70, terms 15
+pgls_assemblies	75 men, lambda 1.000, slope -0.330 (95% -0.446 to -0.213), P 3.09e-07, terms 2
+pgls_assemblies_geomean	75 men, lambda 1.000, slope -0.330 (95% -0.436 to -0.224), P 2.88e-08, terms 2
+pgls_outside_panel_geomean	1196 men, lambda 0.974, slope -0.309 (95% -0.338 to -0.281), P 1.61e-86, terms 2
+pgls_outside_panel_dyz3	1196 men, lambda 0.972, slope 0.006 (95% -0.025 to 0.037), P 0.693, terms 2
+pgls_outside_panel_rest	1196 men, lambda 0.974, slope 0.276 (95% 0.185 to 0.367), P 3.43e-09, terms 2
+pgls_outside_panel_geomean_tree_v3	1196 men, lambda 0.979, slope -0.309 (95% -0.337 to -0.280), P 2.17e-86, terms 2
