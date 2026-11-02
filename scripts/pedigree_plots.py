@@ -143,11 +143,12 @@ def supplement(rows,out):
                 if kind=='scatter':scatter(ax,rows,key)
                 else:differences(ax,rows,key)
                 ax.set_title(f'{chr(97+i)}   {label}',loc='left',color=color,fontsize=11,pad=7)
+            for ax in axes.flat[len(MEASUREMENTS):]:ax.set_visible(False)   # unused grid cells
             legend(fig,rows,y=.985)
-            fig.subplots_adjust(left=.075,right=.98,bottom=.075,top=.91,wspace=.42,hspace=.49)
+            fig.subplots_adjust(left=.075,right=.98,bottom=.12,top=.91,wspace=.42,hspace=.49)
             fig.text(.5,.018,f'{len(rows)//len(MEASUREMENTS)} father–son pairs; all profiles retained. Ratio is DYZ1/DYZ2. No batch correction.',ha='center',fontsize=8,color=INK)
             if kind=='differences':fig.text(.5,.04,'Median and interquartile range; difference axes linear within ±5% and logarithmic outside.',ha='center',fontsize=8,color=INK)
-            for ext in ('png','pdf','svg'):fig.savefig(out/f'figureS8_pedigree_{kind}.{ext}',dpi=170,bbox_inches='tight')
+            fig.savefig(out/f'figureS8_pedigree_{kind}.pdf',dpi=170,bbox_inches='tight')
             pdf.savefig(fig,bbox_inches='tight');plt.close(fig)
 
 

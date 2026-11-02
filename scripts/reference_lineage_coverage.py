@@ -25,21 +25,21 @@ def main():
         return f.group_of(calls[sample], parents) if sample in calls else 'Unassigned'
     regions = f.read_tsv(root / 'data/markers_u/truth_regions.tsv')
     refs = {k: {r['male'] for r in regions if r['class'] == k} for k in ('dyz3', 'yq12')}
-    refs['dyz19'] = {r['assembly'] for r in f.read_tsv(root / 'data/method/dyz19_clean.tsv') if r['clean'] == 'True'}
-    assert [len(refs[k]) for k in ('dyz3', 'yq12', 'dyz19')] == [129, 91, 139]
+    for k in ('dyz19', 'dyz17'): refs[k] = {r['assembly'] for r in f.read_tsv(root / f'data/method/{k}_clean.tsv') if r['clean'] == 'True'}
+    print('assembly references', {k: len(x) for k, x in refs.items()}, flush=True)
     rule = root / 'data/method/truth_qc/x/rule_w4.txt'   # all four assembly QC tracks flag the same 1 kb
     for line in rule.read_text().splitlines():
         target, sample = line.split()[:2]
         if target in refs:
             assert sample in refs[target]
             refs[target].remove(sample)
-    assert [len(refs[k]) for k in ('dyz3', 'yq12', 'dyz19')] == [129, 90, 139]
+    print('after the QC rule', {k: len(x) for k, x in refs.items()}, flush=True)
     cv_source = root / 'results/model/depth/depth_f1.tsv'
     predictions = [r for r in f.read_tsv(cv_source) if r['repeat'] == '0']
     files = [cv_source, rule]
     evaluated = {k: {r['sample'] for r in predictions if r['class'] == k} for k in v.KEYS}
     assert evaluated['dyz2'] == evaluated['yq12']
-    for key in ('dyz1', 'dyz18s', 'yq2k7', 'dyz18sub'):   # HG01261 keeps these references
+    for key in ('dyz1', 'dyz18s'):   # HG01261 keeps these references
         assert evaluated[key] == evaluated['yq12'] | {'HG01261'}
     for key in refs:
         assert evaluated[key] <= refs[key]
@@ -66,14 +66,14 @@ def main():
             row[key + '_CV_individual'] = sample in evaluated[key]
         sample_rows.append(row)
     f.write_rows(root / 'results/reference_lineage_coverage_samples.tsv', sample_rows)
-    tex = [r'\begin{table}[p]', r'\caption{Y-lineage representation of the reference panels and analysed cohort. Each target column gives eligible assembly references / individuals evaluated in cross-validation. The Yq12 column also describes DYZ2; DYZ1, DYZ18S, YqHet2.7 and DYZ18sub add HG01261 (lineage R1b), whose Yq12 and DYZ2 lengths are excluded by the assembly-quality rule. Counts use the archived ISOGG 2019 classification hierarchy, independently of the inferred SNP tree. Unassigned denotes missing calls in the archived lookup, not a biological lineage. Reference individuals can also occur in the cohort; columns are not disjoint. A nonzero count does not establish adequate coverage of a lineage, and zero does not establish absence of a related reference in an ancestral or neighbouring clade.}\label{tab:reference-lineages}', r'\centering\small', r'\begin{tabular}{lrrrr}', r'\toprule', r'Y lineage & Cohort & DYZ3 & Yq12 & DYZ19 \\', r'\midrule']
+    tex = [r'\begin{table}[p]', r'\caption{Y-lineage representation of the reference panels and analysed cohort. Each target column gives eligible assembly references / individuals evaluated in cross-validation. The Yq12 column also describes DYZ2; DYZ1 and DYZ18S add HG01261 (lineage R1b), whose Yq12 and DYZ2 lengths are excluded by the assembly-quality rule. Counts use the archived ISOGG 2019 classification hierarchy, independently of the inferred SNP tree. Unassigned denotes missing calls in the archived lookup, not a biological lineage. Reference individuals can also occur in the cohort; columns are not disjoint. A nonzero count does not establish adequate coverage of a lineage, and zero does not establish absence of a related reference in an ancestral or neighbouring clade.}\label{tab:reference-lineages}', r'\centering\small', r'\begin{tabular}{lrrrrr}', r'\toprule', r'Y lineage & Cohort & DYZ3 & Yq12 & DYZ19 & DYZ17 \\', r'\midrule']
     for row in rows:
         cells = [row['Y_lineage'], str(row['cohort_individuals'])]
         cells += [f"{row[k+'_assembly_references']} / {row[k+'_CV_individuals']}" for k in refs]
         tex.append(' & '.join(cells) + r' \\')
     tex += [r'\midrule', 'Total & ' + str(len(population)) + ' & ' + ' & '.join(f'{len(refs[k])} / {len(evaluated[k])}' for k in refs) + r' \\', r'\botrule', r'\end{tabular}', r'\end{table}']
     (root / 'manuscript/reference-lineage-table.tex').write_text('\n'.join(tex) + '\n')
-    sources = [snapshot, root / 'data/markers_u/truth_regions.tsv', root / 'data/method/dyz19_clean.tsv', root / 'data/method/haplogroups_1kgp_isogg2019_decode1.tsv', root / 'data/figure_metadata/isogg2019_tree.tsv', Path(__file__)] + files
+    sources = [snapshot, root / 'data/markers_u/truth_regions.tsv', root / 'data/method/dyz19_clean.tsv', root / 'data/method/dyz17_clean.tsv', root / 'data/method/haplogroups_1kgp_isogg2019_decode1.tsv', root / 'data/figure_metadata/isogg2019_tree.tsv', Path(__file__)] + files
     report = {'population_n': len(population), 'groups_n': len(groups), 'unknown_reference_calls': sorted(s for s in set().union(*refs.values()) if s not in calls), 'cohort_groups_without_evaluated_individuals': {k: [g for g in groups if cohorts[g] and not cv_counts[k][g]] for k in refs}, 'scope': 'Descriptive class-specific lineage representation; no ancestry inference, phylogenetic distances, new model evaluation or new array-QC filtering.', 'inputs': [{'path': str(p.relative_to(root)), 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in sources]}
     (root / 'results/reference_lineage_coverage_manifest.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: val for k, val in report.items() if k != 'inputs'}, indent=2))

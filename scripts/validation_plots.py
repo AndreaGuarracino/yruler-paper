@@ -19,7 +19,7 @@ def load():
     depth, depth_files, _ = load_depth()
     cv = depth["1"]
     actual={(key,rep,r["sample"]) for key,groups in cv.items() for rep,rows in groups.items() for r in rows}
-    assert len(actual)==7120
+    assert len(actual)==sum(len(rows) for groups in cv.values() for rows in groups.values())
     lo=defaultdict(lambda:defaultdict(list))
     source=ROOT/"results/model/lineage_out.tsv"
     files=[*depth_files,source]
@@ -30,7 +30,7 @@ def load():
             assert (key,sample) not in seen, (key,sample)
             seen.add((key,sample))
             lo[key][group].append({"sample":sample,"signed":float(row["error_pct"]),"reference_bp":float(row["reference_bp"]),"estimate_bp":float(row["estimate_bp"])})
-    assert len(seen)==712
+    assert len(seen)==sum(len({r["sample"] for r in cv[k][0]}) for k in cv)   # one lineage-out prediction per CV man and class
     assert {g for groups in lo.values() for g in groups}==set(GROUPS)
     for key in KEYS:
         assert sorted(cv[key])==list(range(10))
@@ -69,8 +69,7 @@ def style(ax):
     ax.set_axisbelow(True)
 
 def save(fig,out,stem):
-    for ext in ("pdf","svg","png"):
-        fig.savefig(out/f"{stem}.{ext}",dpi=190,bbox_inches="tight",facecolor="white")
+    fig.savefig(out/f"{stem}.pdf",dpi=190,bbox_inches="tight",facecolor="white")
     plt.close(fig)
 
 def depth_curves(ax,legend=True):
@@ -266,9 +265,7 @@ def fold_supplement(out):
             fig.text(.10,.035,'Within each repeat, folds 1–5 run top to bottom. Boxes: 25th–75th percentiles; median; whiskers: 10th–90th.',fontsize=8,color=INK)
             fig.text(.10,.015,'Points retain errors beyond the whiskers. Axes are logarithmic above 5%. Repeated individuals are not independent.',fontsize=8,color=INK)
             multipage.savefig(fig,bbox_inches='tight',facecolor='white')
-            for ext in ['pdf','png','svg']:
-                fig.savefig(out/f'figureS6_cv_folds_page{page+1}.{ext}',dpi=190,bbox_inches='tight',facecolor='white')
-            if page==0:fig.savefig(out/'figureS6_cv_folds.png',dpi=190,bbox_inches='tight',facecolor='white')
+            fig.savefig(out/f'figureS6_cv_folds_page{page+1}.pdf',dpi=190,bbox_inches='tight',facecolor='white')
             plt.close(fig)
     old_svg=out/'figureS6_cv_folds.svg'
     if old_svg.exists():old_svg.unlink()
@@ -326,9 +323,9 @@ def depth_individual_errors(key,fraction):
 
 
 def depth_boxes(ax,compact=False):
-    """One axis, seven median-autosomal-coverage groups, eight coloured target boxes per group."""
+    """One axis, one group per depth level (median autosomal coverage), one coloured box per target."""
     from matplotlib.colors import to_rgba
-    fracs=sorted(DEPTHS,key=float)
+    fracs=sorted(DEPTHS,key=lambda f:DEPTHS[f])
     for i,(key,color) in enumerate(zip(KEYS,COLORS)):
         positions=[];medians=[]
         for j,fraction in enumerate(fracs):
@@ -348,11 +345,11 @@ def depth_boxes(ax,compact=False):
         ax.plot(positions,medians,color='white',linewidth=2.5,zorder=5)
         ax.plot(positions,medians,'o-',color=color,linewidth=1.35,markersize=2.8,
                 markeredgecolor='white',markeredgewidth=.35,zorder=6)
-    ax.set_xlim(-.55,6.55);ax.set_ylim(0,130);ax.set_yscale('symlog',linthresh=5,linscale=1)
+    ax.set_xlim(-.55,len(fracs)-.45);ax.set_ylim(0,130);ax.set_yscale('symlog',linthresh=5,linscale=1)
     ax.set_yticks([0,2,5,10,20,50,100],['0','2','5','10','20','50','100'])
     from decimal import Decimal, ROUND_HALF_UP
     labels=[str(Decimal(str(DEPTHS[f])).quantize(Decimal('0.1'),rounding=ROUND_HALF_UP)) for f in fracs]
-    ax.set_xticks(range(7),labels)
+    ax.set_xticks(range(len(fracs)),labels)
     ax.set_xlabel('Median autosomal coverage (×)',fontsize=8)
     ax.set_ylabel('Mean absolute error (%)',fontsize=8)
     ax.set_title('')

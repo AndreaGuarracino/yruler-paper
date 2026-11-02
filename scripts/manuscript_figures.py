@@ -30,14 +30,13 @@ DRAFT = "#914119"
 
 # target, available assembly references, measurement definition
 REFERENCES = [
-    ("DYZ3", 129, "active array span"),
-    ("Yq12", 91, "region span"),
-    ("DYZ1", 91, "assigned unit bases"),
-    ("DYZ2", 91, "assigned unit bases"),
-    ("DYZ18S", 91, "assigned unit bases"),
-    ("DYZ18sub", 91, "DYZ18S plus YqHet2.7 assigned bases; overlapping output"),
-    ("DYZ19", 139, "main array span"),
-    ("YqHet2.7", 91, "assigned unit bases"),
+    ("DYZ3", 129, "Hallast 2026 array coordinates"),
+    ("Yq12", 91, "Hallast 2026 region span"),
+    ("DYZ1", 91, "sum of Hallast 2026 HMMER block lengths"),
+    ("DYZ2", 91, "sum of Hallast 2026 HMMER block lengths"),
+    ("DYZ18S", 91, "sum of Hallast 2026 HMMER block lengths (DYZ18 and YqHet3.1)"),
+    ("DYZ19", 140, "Hallast 2026 array span, assembly QC"),
+    ("DYZ17", 140, "longest run of DYZ17 unit hits (gaps <= 10 kb), assembly QC"),
 ]
 
 
@@ -48,8 +47,6 @@ def read_tsv(path):
 
 def save(fig, out, name):
     fig.savefig(out / f"{name}.pdf", bbox_inches="tight")
-    fig.savefig(out / f"{name}.svg", bbox_inches="tight")
-    fig.savefig(out / f"{name}.png", dpi=220, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -91,7 +88,7 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
     box(0.37, 0.66, 0.27, 0.24, "Training families\nselect markers and fit scale", "#e7f1f7")
     box(0.72, 0.66, 0.26, 0.24, "Test families\nassess prediction error", "#f9eee7")
     box(0.02, 0.15, 0.27, 0.24, "BAM/CRAM or SAM\nall eligible read sequences", "#eef3f5")
-    box(0.37, 0.15, 0.27, 0.24, "Count marker k-mers\narray, single-copy Y, chr2", "#e7f1f7")
+    box(0.37, 0.15, 0.27, 0.24, "Count marker k-mers\narray, single-copy Y, chr8 window", "#e7f1f7")
     box(0.72, 0.15, 0.26, 0.24, "Array lengths and composition\nY dosage", "#eaf4ef")
     arrow((0.30, 0.78), (0.355, 0.78))
     arrow((0.30, 0.27), (0.355, 0.27))

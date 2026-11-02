@@ -28,7 +28,7 @@ from figure2_tree import (
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SNAPSHOT = ROOT / "results/estimates_1kgp.tsv"
-TREE_SOURCE = ROOT / "results/figure2_ytree_v2_A0.rooted.nwk"
+TREE_SOURCE = ROOT / "results/ytree_v4_2026-11-01/ytree_v4.rooted.nwk"
 FROZEN = ROOT / "data/frozen_2026-10-27"
 TARGETS = [
     ("dyz3", "DYZ3_bp", "DYZ3", 1e3, "kb"),
@@ -36,9 +36,8 @@ TARGETS = [
     ("dyz1", "DYZ1_bp", "DYZ1", 1e6, "Mb"),
     ("dyz2", "DYZ2_bp", "DYZ2", 1e6, "Mb"),
     ("dyz18s", "DYZ18S_bp", "DYZ18S", 1e3, "kb"),
-    ("yq2k7", "YqHet2.7_bp", "YqHet2.7", 1e3, "kb"),
-    ("dyz18sub", "DYZ18sub_bp", "DYZ18sub", 1e3, "kb"),
     ("dyz19", "DYZ19_bp", "DYZ19", 1e3, "kb"),
+    ("dyz17", "DYZ17_bp", "DYZ17", 1e3, "kb"),
 ]
 CUT = {
     "A00", "A0", "A1a", "A1b1", "B", "C", "D", "E", "F1", "F2", "F3", "F4",
@@ -100,6 +99,11 @@ def load_snapshot(path=DEFAULT_SNAPSHOT):
         row["population_included"] = status.lower() not in {"rearrangement", "partial", "yp_deletion", "yq_loss"}
         valid.append(row)
     return raw, valid, pedigree
+
+
+def in_summary(row, key):
+    """Population summary of one target: a PAR2 gain leaves Yq12, DYZ1, DYZ2 and their ratio."""
+    return row["population_included"] and not (row["y_status"] == "par2_gain" and key in {"Yq12_bp", "DYZ1_bp", "DYZ2_bp", "ratio_bp"})
 
 
 def population_rows(rows):
@@ -499,7 +503,7 @@ def draw_collapsed_tree(ax, root, leaves, individual=False, panel="b"):
     bar_y, label_y = (-.012, -.025) if individual else (-.045, -.085)
     ax.plot([0, scale], [bar_y, bar_y], transform=transform, clip_on=False,
             color="#60717a", linewidth=1.1)
-    ax.text(scale / 2, label_y, f"{scale:g} binary substitutions/site",
+    ax.text(scale / 2, label_y, f"{scale:g} substitutions/site",
             transform=transform, ha="center", va="top", fontsize=6.4, color="#60717a")
 
 
@@ -514,7 +518,7 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
         values = np.array([row[key] / scale for row in members])
         jitter = y + rng.uniform(-.16, .16, len(members))
         references = np.array([row["reference"] for row in members])
-        included = np.array([row["population_included"] for row in members])
+        included = np.array([in_summary(row, key) for row in members])
         flagged = np.array([r["sample"] in {"HG01967", "HG02966"} for r in members]) & (key in {"Yq12_bp", "DYZ19_bp"})
         ax.scatter(values[~flagged], jitter[~flagged], s=4.5, color=color, alpha=.34, linewidths=0, zorder=3)
         if flagged.any():
@@ -550,12 +554,12 @@ def annotate_population_extremes(ax, key):
     from matplotlib.transforms import Bbox
 
     points = ax._sample_positions
-    q1, q3 = np.percentile([r[key] for r, _, _ in points if r["population_included"]], [25, 75])
+    q1, q3 = np.percentile([r[key] for r, _, _ in points if in_summary(r, key)], [25, 75])
     iqr = q3 - q1
     low, high = q1 - 1.5 * iqr, q3 + 1.5 * iqr
     by_clade = defaultdict(list)
     for row, _, _ in points:
-        if row["population_included"]:
+        if in_summary(row, key):
             by_clade[row["display_group"]].append(row[key])
     medians = {group: float(np.median(values)) for group, values in by_clade.items()}
 
@@ -710,7 +714,7 @@ def population_supplement(valid, out):
             values = np.array([r[key] / scale for r in selected])
             jitter = x + rng.uniform(-.23, .23, len(selected))
             reference = np.array([r["reference"] for r in selected])
-            included = np.array([r["population_included"] for r in selected])
+            included = np.array([in_summary(r, key) for r in selected])
             ax.scatter(jitter[~reference & included], values[~reference & included], s=5, color=BLUE, alpha=.35, linewidths=0)
             ax.scatter(jitter[reference & included], values[reference & included], s=10, facecolors="none", edgecolors=BLUE, linewidths=.45, alpha=.75)
             ax.scatter(jitter[~included], values[~included], s=19, marker="D", facecolors="none", edgecolors="#886333", linewidths=.8)
@@ -722,7 +726,9 @@ def population_supplement(valid, out):
         ax.text(-.12, 1.045, chr(ord("a") + panel), transform=ax.transAxes,
                 fontsize=12, fontweight="bold")
         ax.grid(axis="y", color="#e8edef", linewidth=.5)
-    ax = axes.flat[-1]
+    for ax in axes.flat[len(TARGETS) + 1:]:
+        ax.set_visible(False)   # unused grid cells
+    ax = axes.flat[len(TARGETS)]
     for group in order:
         selected = [r for r in valid if r["lineage_display"] == group]
         for reference in (False, True):
@@ -736,7 +742,7 @@ def population_supplement(valid, out):
                s=22, marker="D", facecolors="none", edgecolors="#886333", linewidths=.8)
     rho = spearmanr([r["DYZ1_bp"] for r in population_rows(valid)], [r["DYZ2_bp"] for r in population_rows(valid)]).statistic
     ax.set_title(f"DYZ1 versus DYZ2 (Spearman {rho:.2f})", loc="left", fontsize=9.5)
-    ax.text(-.12, 1.045, "i", transform=ax.transAxes, fontsize=12, fontweight="bold")
+    ax.text(-.12, 1.045, chr(ord("a") + len(TARGETS)), transform=ax.transAxes, fontsize=12, fontweight="bold")
     ax.set_xlabel("DYZ1 (Mb)", fontsize=8)
     ax.set_ylabel("DYZ2 (Mb)", fontsize=8)
     ax.grid(color="#e8edef", linewidth=.5)
@@ -745,7 +751,7 @@ def population_supplement(valid, out):
         ax.set_axisbelow(True)
         ax.tick_params(axis="y", labelsize=7)
     fig.subplots_adjust(left=.06, right=.98, top=.92, bottom=.135)
-    fig.suptitle(f"Eight Y satellite measurements in {len(valid)} 1000 Genomes males", fontsize=11, color="#243d49")
+    fig.suptitle(f"{ {7: 'Seven', 8: 'Eight'}[len(TARGETS)]} Y satellite measurements in {len(valid)} 1000 Genomes males", fontsize=11, color="#243d49")
     counts = [f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order]
     fig.text(.5, .058, "n per lineage — " + ";  ".join(counts[:10]), ha="center", fontsize=8.8)
     fig.text(.5, .035, ";  ".join(counts[10:]), ha="center", fontsize=8.8)
@@ -770,13 +776,14 @@ def depth_supplement(depth, out):
                         [r["min_median_absolute_pct"] for r in rows], [r["max_median_absolute_pct"] for r in rows],
                         color=color, alpha=.15, linewidth=0)
         ax.set_xscale("log")
-        ax.set_xticks([.9, 2, 5, 10, 30], [".9","2","5","10","30"])
+        ax.set_xticks([1, 2, 5, 10, 20, 34], ["1","2","5","10","20","34"])
         ax.set_title(label, loc="left", fontsize=10)
         ax.grid(color="#e8edef", linewidth=.5)
         ax.spines[["right", "top"]].set_visible(False)
-        ax.set_xlabel("Autosomal depth (×)", fontsize=8)
+        ax.set_xlabel("Median autosomal coverage (×)", fontsize=8)
         ax.set_ylabel("Absolute error (%)", fontsize=8)
         ax.tick_params(labelsize=7)
+    for ax in axes.flat[len(TARGETS):]: ax.set_visible(False)
     fig.subplots_adjust(wspace=.4, hspace=.45, top=.88, bottom=.13)
     fig.suptitle("Sequencing depth and prediction accuracy", fontsize=11, color="#243d49")
     fig.text(.5, .025, "Points: mean of ten repeat-specific medians. Shading: range across repeats. Training reads remain at full depth.",
@@ -825,11 +832,11 @@ def assembly_supplement(out):
     calls = {r["ID"]: r["Haplogroup"] for r in read_tsv(ROOT / "data/method/haplogroups_1kgp_isogg2019_decode1.tsv")}
     parents, children = tree_data(ROOT / "data/figure_metadata/isogg2019_tree.tsv")
     groups = defaultdict(list)
-    for row in read_tsv(ROOT / "data/catalog_d376/out_rule/catalog.tsv"):
-        if row["sample"] not in {"HG02300", "NA19226"} and float(row["y_dosage"]) >= .9:
+    for row in load_snapshot()[1]:   # display groups from the current 1kGP estimates (dose >= 0.9)
+        if row["y_dose"] >= .9:
             groups[clade_of(calls[row["sample"]], parents)].append(row)
     _, order = pruned_tree(groups, parents, children)
-    rows = load_composition(ROOT / "data/method/indep_setB.tsv", ROOT / "data/markers_u/truth_regions.tsv",
+    rows = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                             calls, parents, groups)
     composition_supplement(rows, order, out)
     write_rows(out / "figureS2_composition_samples.tsv", rows)
@@ -839,23 +846,19 @@ def snapshot_manifest(path, out):
     """Hash the exact dated inputs, figure scripts and generated audits."""
     tag = snapshot_tag(path)
     inputs = [Path(path), TREE_SOURCE]
-    package = ROOT / "results/model"
-    inputs += [p for p in package.rglob("*") if p.is_file()]
-    inputs += [ROOT / "scripts/render_v3a_main.py"]
+    inputs += [ROOT / "results/model/lineage_out.tsv"]
     inputs += list(DEPTH_SOURCE.glob("*.tsv"))
-    inputs += list((ROOT / "results/ytree_v2_2026-10-27").glob("*"))
     inputs = [p for p in inputs if p.is_file()]
     inputs += [ROOT / name for name in (
         "data/catalog_d376/ped.txt", "data/catalog_d376/fs_pairs.tsv",
-        "data/catalog_d376/out_rule/catalog.tsv", "data/method/dyz19_clean.tsv",
+        "data/method/dyz19_clean.tsv",
         "data/method/indep_setB.tsv", "data/markers_u/truth_regions.tsv",
         "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
         "scripts/manuscript_figures.py", "scripts/figure2_tree.py",
-        "scripts/frozen_snapshot.py", "scripts/prepare_cohort_pies.py", "scripts/prepare_population_tree_v2.py",
+        "scripts/frozen_snapshot.py", "scripts/prepare_cohort_pies.py",
         "scripts/cohort_lineages.py", "results/unassigned_lineages_calls_2026-10-28.tsv",
         "scripts/figure1b_selected.py", "scripts/validation_plots.py", "scripts/depth_benchmark.py",
-        "scripts/pedigree_plots.py", "scripts/validation_ratio.py",
-        "scripts/cluster/ytree_1kgp.sh")]
+        "scripts/pedigree_plots.py", "scripts/validation_ratio.py")]
     inputs += [p for p in (ROOT / "data/figure_metadata").iterdir()
                if p.suffix in {".tsv", ".kin0", ".psam", ".xlsx", ".geojson"} or p.name == "sgdp_metadata.txt"]
     inputs += list((ROOT / "results/cohort_metadata_2026-10-28").glob("*.tsv"))
@@ -871,7 +874,7 @@ def snapshot_manifest(path, out):
         "snapshot": str(Path(path).absolute().relative_to(ROOT)), "date": "2026-10-28",
         "snapshot_version": tag,
         "scope": f"short-read model; {summary['completed']} completed 1kGP records; analysed 1kGP plus HGDP/SGDP metadata map.",
-        "validation_arm": "short-read model; 7120 predictions at each of seven depths; 712 predictions across 18 excluded lineages",
+        "validation_arm": "short-read model; per-depth CV predictions and lineage-out predictions in results/model (depth/, lineage_out.tsv)",
         "model_archive_scope": "Final parameter TSV and raw evaluation predictions; binary model is not copied here.",
         "relatedness": "Reused public first/second-degree reports; no new autosomal kinship estimation.",
         "public_king_sources": [

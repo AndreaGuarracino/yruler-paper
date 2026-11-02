@@ -8,6 +8,7 @@
 \definecolor{draftink}{RGB}{145,65,25}
 \newif\ifdraftnotes
 \draftnotesfalse % Author queries remain in the source and can be enabled for review.
+\newcommand{\vsette}[1]{\textcolor{red}{#1}} % numbers of the final model (2026-11-02: Hallast annotation as truth, seven classes) to check
 \newcommand{\draftnote}[1]{\ifdraftnotes\par\smallskip{\noindent\color{draftink}\small\textbf{Author query:} #1\par}\smallskip\fi}
 % Keep back-matter headings at a consistent level in the PDF outline.
 \makeatletter\def\toclevel@subparagraph{2}\makeatother
@@ -27,7 +28,7 @@
 \affil[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
 
 % The red closing sentence is provisional pending the final biological analyses.
-\abstract{The human Y pangenome reveals extensive satellite variation that conventional genome analyses leave unmeasured. We developed yruler to estimate satellite array length, repeat composition and Y dosage from sequencing reads. Using markers calibrated on complete arrays, yruler measures centromeric and heterochromatic satellites in a single pass. \textcolor{red}{Preliminary population profiling identifies short DYZ19 arrays in sampled J2a1a1 chromosomes beyond the assembly calibration panel.}}
+\abstract{The human Y pangenome reveals extensive satellite variation that conventional genome analyses leave unmeasured. We developed yruler to estimate satellite array length, repeat composition and Y dosage from sequencing reads. Using markers calibrated on complete arrays, yruler measures centromeric and heterochromatic satellites in a single pass. \textcolor{red}{Population profiling identifies short DYZ19 arrays in J2a1a1 chromosomes beyond the men with assemblies, and DYZ2 varies more than DYZ1 in length, in reads and in assemblies, after accounting for the Y phylogeny.}}
 
 \maketitle
 
@@ -51,7 +52,7 @@
 \section*{Declarations}
 
 \bmhead{Authors' contributions}
-\draftnote{Specify the contributions of Alejandro Ortigas-Vasquez and Andrea Guarracino.}
+A.G. conceived and designed the study, implemented the method, generated and analysed the estimates and wrote the manuscript. A.O.-V. wrote the manuscript, made the figures and analysed the estimates.
 
 \bmhead{Competing interests}
 \draftnote{Obtain the authors' declarations.}

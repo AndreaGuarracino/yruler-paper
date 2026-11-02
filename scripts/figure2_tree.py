@@ -517,7 +517,7 @@ def load_composition(annotations_path, regions_path, calls, parents, displayed_g
             "dyz1": int(annotation["dyz1_units"]),
             "dyz2": int(annotation["dyz2_units"]),
             "minor": sum(int(annotation[key]) for key in ("dyz18_units", "q3k1_units", "q2k7_units")),
-            "unannotated": int(annotation["non_dyz"]),
+            "unannotated": int(annotation["non_dyz"]) if "non_dyz" in annotation else span - sum(int(annotation[k]) for k in ("dyz1_units", "dyz2_units", "dyz18_units", "q3k1_units", "q2k7_units")),   # Hallast table: span minus annotated bases
         }
         if span <= 0 or min(components.values()) < 0 or sum(components.values()) != span:
             raise ValueError(f"Yq12 components do not partition the annotated span: {assembly}")

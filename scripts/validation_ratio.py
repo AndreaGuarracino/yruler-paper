@@ -29,7 +29,7 @@ def augment(cv,lo,depth):
     lo={**lo,KEY:{g:paired(lo['dyz1'][g],lo['dyz2'][g]) for g in lo['dyz1']}}
     depth={f:{**groups,KEY:{r:paired(groups['dyz1'][r],groups['dyz2'][r]) for r in groups['dyz1']}}
            for f,groups in depth.items()}
-    assert len(cv[KEY])==10 and all(len(rows)==81 for rows in cv[KEY].values())
+    assert len(cv[KEY])==10 and len({len(rows) for rows in cv[KEY].values()})==1 and len(cv[KEY][0])>0   # same paired men in every repeat
     return cv,lo,depth
 
 

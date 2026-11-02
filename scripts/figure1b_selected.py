@@ -55,12 +55,12 @@ def main():
         data.fold_supplement(out)
         data.lineage_supplement(out)
         top=data.write_top_samples(out);data.write_depth_individuals(out)
-        manifest={'design':'One point per individual and one box per class/condition; CV means over ten absolute errors, lineage single errors, depth means over ten repeats at each of seven fractions. Main: vertical CV boxes by class and grouped vertical coverage boxes with matching left error axes versus median autosomal coverage (×), with lines connecting the boxplot medians; central shared legend and unframed top-three CV labels placed near their points; lineage comparison with top-three labels in Supplementary Fig. S7.',
+        manifest={'design':'One point per individual and one box per class/condition; CV means over ten absolute errors, lineage single errors, depth means over ten repeats at each depth level. Main: vertical CV boxes by class and grouped vertical coverage boxes with matching left error axes versus median autosomal coverage (×), with lines connecting the boxplot medians; central shared legend and unframed top-three CV labels placed near their points; lineage comparison with top-three labels in Supplementary Fig. S7.',
                   'colors':dict(zip(data.KEYS,data.COLORS)),
                   'cv_predictions':sum(len(rows) for x in data.CV.values() for rows in x.values()),
                   'lineage_out_predictions':sum(len(rows) for x in data.LO.values() for rows in x.values()),
                   'depth_predictions':sum(len(rows) for x in data.DEP.values() for y in x.values() for rows in y.values()),
-                  'base_cv_predictions':7120,'derived_ratio_cv_predictions':810,'base_depth_predictions':49840,'derived_ratio_depth_predictions':5670,'base_lineage_out_predictions':712,'derived_ratio_lineage_out_predictions':81,'cv_repeats':10,'cv_boxplots':9,'lineage_out_boxplots_main':0,'lineage_out_boxplots_supplement':9,'depth_boxplots':63,'fold_supplement_boxplots':450,
+                  'cv_repeats':10,
                   'box_percentiles':[25,50,75],'whisker_percentiles':[10,90],'tails':'all individuals plotted',
                   'annotated_samples':top,'lineages':data.GROUPS,'depth_repeats':data.depth_reps(),
                   'source_files':[{'path':str(p.relative_to(data.ROOT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
