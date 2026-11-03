@@ -10,3 +10,4 @@ __pycache__/
 !manuscript/figures/*/*.pdf
 manuscript/figures/**/*.png
 manuscript/figures/**/*.svg
+!manuscript/figures/main/*.svg
