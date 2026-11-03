@@ -780,26 +780,8 @@ def population_supplement(valid, out):
         ax.text(-.12, 1.045, chr(ord("a") + panel), transform=ax.transAxes,
                 fontsize=12, fontweight="bold")
         ax.grid(axis="y", color="#e8edef", linewidth=.5)
-    for ax in axes.flat[len(TARGETS) + 1:]:
+    for ax in axes.flat[len(TARGETS):]:
         ax.set_visible(False)   # unused grid cells
-    ax = axes.flat[len(TARGETS)]
-    for group in order:
-        selected = [r for r in valid if r["lineage_display"] == group]
-        for reference in (False, True):
-            s = [r for r in population_rows(selected) if r["reference"] == reference]
-            color = LINEAGE_COLORS.get(group, LINEAGE_COLORS.get(group[0], BLUE))
-            ax.scatter([r["DYZ1_bp"]/1e6 for r in s], [r["DYZ2_bp"]/1e6 for r in s],
-                       s=8, facecolors="none" if reference else color,
-                       edgecolors=color if reference else "none", linewidths=.5, alpha=.65)
-    flagged = [r for r in valid if not r["population_included"]]
-    ax.scatter([r["DYZ1_bp"]/1e6 for r in flagged], [r["DYZ2_bp"]/1e6 for r in flagged],
-               s=22, marker="D", facecolors="none", edgecolors="#886333", linewidths=.8)
-    rho = spearmanr([r["DYZ1_bp"] for r in population_rows(valid)], [r["DYZ2_bp"] for r in population_rows(valid)]).statistic
-    ax.set_title(f"DYZ1 versus DYZ2 (Spearman {rho:.2f})", loc="left", fontsize=9.5)
-    ax.text(-.12, 1.045, chr(ord("a") + len(TARGETS)), transform=ax.transAxes, fontsize=12, fontweight="bold")
-    ax.set_xlabel("DYZ1 (Mb)", fontsize=8)
-    ax.set_ylabel("DYZ2 (Mb)", fontsize=8)
-    ax.grid(color="#e8edef", linewidth=.5)
     for ax in axes.flat:
         ax.spines[["right", "top"]].set_visible(False)
         ax.set_axisbelow(True)

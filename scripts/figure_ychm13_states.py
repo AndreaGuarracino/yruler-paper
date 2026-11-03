@@ -104,6 +104,7 @@ for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))
 for y, lab in ((2.25, 'Cytoband'), (1.3, 'Sequence class'), (0.55, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=6.5, color=INK)
 ax0.set_xlim(0, xmax); ax0.set_ylim(-0.45, 4.6); ax0.axis('off')
 M = np.array([X[s] for s in rows]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect='auto', cmap=cm, norm=nrm, interpolation='nearest', extent=(0, xmax, n, 0))
+ax2.hlines(np.arange(1, n), 0, xmax, color='white', lw=0.5)   # thin gap between rows
 nd = np.isnan(M).astype(float); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
 ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels([s + (f'  ({NOTE[s]})' if s in NOTE else '') for s in rows], fontsize=7.5)
 for t, s in zip(ax2.get_yticklabels(), rows): t.set_color('#8a8984' if s in relrow else INK)   # relatives outside the groups in grey

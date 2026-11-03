@@ -361,14 +361,15 @@ def depth_boxes(ax,compact=False):
 
 
 def lineage_supplement(out):
-    fig,axes=plt.subplots(1,2,figsize=(10.4,5.7))
-    fig.subplots_adjust(left=.15,right=.85,bottom=.13,top=.83,wspace=.62)
-    for ax,kind,title in zip(axes,['cv','lo'],['Random five-fold CV, ten repeats','Leave one lineage out, 18 lineages']):
-        individual_boxes(ax,kind);annotate_top_samples(ax,kind)
-        ax.set_title(title,loc='left',fontsize=10,pad=12)
-        ax.set_yticklabels(rowlabels() if kind=='cv' else [],fontsize=9)
-    fig.text(.15,.94,'One point per individual: mean of ten CV errors (left); one excluded-lineage error (right).',fontsize=9,color=INK)
-    fig.text(.15,.035,'Boxes: 25th–75th percentiles; median; whiskers: 10th–90th. Labels identify the three highest errors per target.',fontsize=8,color=INK)
+    fig,ax=plt.subplots(figsize=(6.4,5.7))
+    fig.subplots_adjust(left=.24,right=.74,bottom=.18,top=.82)
+    individual_boxes(ax,'lo');annotate_top_samples(ax,'lo')
+    for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
+        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'D',color=INK,markersize=4,zorder=6)
+    ax.set_title('Leave one lineage out, 18 lineages',loc='left',fontsize=10,pad=12)
+    ax.set_yticklabels(rowlabels(),fontsize=9)
+    fig.text(.24,.985,'One point per individual: error with its whole lineage excluded.\nDiamonds: median of the per-individual mean CV errors.',fontsize=8.5,color=INK,va='top')
+    fig.text(.24,.015,'Boxes: 25th–75th percentiles; median; whiskers: 10th–90th.\nLabels identify the three highest errors per target.',fontsize=8,color=INK)
     save(fig,out,'figureS7_lineage_validation')
 
 
