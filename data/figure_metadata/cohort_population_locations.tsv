@@ -1,0 +1,210 @@
+cohort	population_id	population	description	latitude	longitude	coordinate_scope	source
+1kGP	FIN	Finnish	Finnish in Finland	60.17	24.93	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	CHS	Southern Han Chinese	Han Chinese South	23.13333	113.266667	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	KHV	Kinh Vietnamese	Kinh in Ho Chi Minh City, Vietnam	10.78	106.68	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	BEB	Bengali	Bengali in Bangladesh	23.7	90.35	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	PUR	Puerto Rican	Puerto Rican in Puerto Rico	18.4	-66.1	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	ACB	African Caribbean	African Caribbean in Barbados	13.1	-59.62	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BalochiHGDP	Balochi	Balochi in Pakistan (HGDP)	30.5	66.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BantuKenyaHGDP	Bantu Kenya	Bantu in Kenya (HGDP)	-3.0	37.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BantuSouthAfricaHGDP	Bantu South Africa	Bantu in South Africa (HGDP)	-25.6	24.25	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BergamoItalianHGDP	Bergamo Italian	Bergamo Italian in Bergamo, Italy (HGDP)	46.0	10.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	ColombianHGDP	Colombian	Colombian in Colombia (HGDP)	3.0	-68.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	DaurHGDP	Daur	Daur in China (HGDP)	48.5	124.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BengaliSGDP	Bengali	Bengali in Bangladesh (SGDP)	23.7	90.4	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BiakaSGDP	Biaka	Biaka in Central African Republic (SGDP)	4.0	17.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	ASW	African Ancestry SW	African Ancestry in Southwest US	35.483	-97.53333	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MansiSGDP	Mansi	Mansi in Russia (SGDP)	63.725	61.775	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	AdygeiHGDP	Adygei	Adygei in Caucasus, Russia (HGDP)	44.0	39.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	HazaraSGDP	Hazara	Hazara in Pakistan (SGDP)	33.5	70.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BasqueHGDP	Basque	Basque in France (HGDP)	43.0	0.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ThaiSGDP	Thai	Thai in Thailand (SGDP)	13.8	100.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BedouinHGDP	Bedouin	Bedouin in Negev, Israel (HGDP)	31.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TurkishSGDP	Turkish	Turkish in Turkey (SGDP)	38.7	35.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BurushoHGDP	Burusho	Burusho in Pakistan (HGDP)	36.5	74.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MixtecSGDP	Mixtec	Mixtec in Mexico (SGDP)	17.0	-97.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KapuSGDP	Kapu	Kapu in India (SGDP)	17.7	83.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	KalashHGDP	Kalash	Kalash in Pakistan (HGDP)	36.0	71.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	OroqenHGDP	Oroqen	Oroqen in China (HGDP)	50.4	126.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	PapuanSepikHGDP	Papuan Sepik	Papuan Sepik in New Guinea (HGDP)	-4.0	143.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	SanHGDP	San	San in Namibia (HGDP)	-21.0	20.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	SardinianHGDP	Sardinian	Sardinian in Italy (HGDP)	40.0	9.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	SindhiHGDP	Sindhi	Sindhi in Pakistan (HGDP)	25.5	69.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	SuruiHGDP	Surui	Surui in Brazil (HGDP)	-11.0	-62.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	TuHGDP	Tu	Tu in China (HGDP)	36.0	101.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	TujiaHGDP	Tujia	Tujia in China (HGDP)	29.0	109.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	TuscanHGDP	Tuscan	Tuscan in Italy (HGDP)	43.0	11.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	XiboHGDP	Xibo	Xibo in China (HGDP)	43.5	81.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MozabiteSGDP	Mozabite	Mozabite in Algeria (SGDP)	32.0	3.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	YakutHGDP	Yakut	Yakut in Siberia (HGDP)	63.0	129.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ArmenianSGDP	Armenian	Armenian in Armenia (SGDP)	40.2	44.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PimaSGDP	Pima	Pima in Mexico (SGDP)	29.0	-108.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EvenSGDP	Even	Even in Russia (SGDP)	57.53	135.88	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	LuhyaSGDP	Luhya	Luhya in Kenya (SGDP)	1.3	36.8	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	JuhoanNorthSGDP	Ju|'hoan North	Ju|'hoan North in Namibia (SGDP)	-18.909314	21.488112	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	RussianSGDP	Russian	Russian in Russia (SGDP)	61.0	40.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	UygurSGDP	Uygur	Uygur in China (SGDP)	44.0	81.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	GreekSGDP	Greek	Greek in Greece (SGDP)	38.0	23.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KyrgyzSGDP	Kyrgyz	Kyrgyz in Kyrgyzystan (SGDP)	42.9	74.6	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BedouinBSGDP	Bedouin B	Bedouin B in Israel(Negev) (SGDP)	31.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	YiSGDP	Yi	Yi in China (SGDP)	28.0	103.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AbkhasianSGDP	Abkhasian	Abkhasian in Abkhazia or Russia (SGDP)	43.0	41.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PunjabiSGDP	Punjabi	Punjabi in Pakistan (SGDP)	31.5	74.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	DaiSGDP	Dai	Dai in China (SGDP)	21.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BulgarianSGDP	Bulgarian	Bulgarian in Bulgaria (SGDP)	42.2	24.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MixeSGDP	Mixe	Mixe in Mexico (SGDP)	16.95	-96.58	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BurmeseSGDP	Burmese	Burmese in Myanmar (SGDP)	17.0	96.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MbutiSGDP	Mbuti	Mbuti in Congo (SGDP)	1.0	29.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	UlchiSGDP	Ulchi	Ulchi in Russia (SGDP)	52.4	140.435	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BrahuiSGDP	Brahui	Brahui in Pakistan (SGDP)	30.5	66.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ChukchiSGDP	Chukchi	Chukchi in Russia (SGDP)	69.0	169.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	CambodianSGDP	Cambodian	Cambodian in Cambodia (SGDP)	12.0	105.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	HawaiianSGDP	Hawaiian	Hawaiian in USA (SGDP)	21.3	-157.8	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EskimoNaukanSGDP	Eskimo Naukan	Eskimo Naukan in Russia (SGDP)	66.02	169.71	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	GambianSGDP	Gambian	Gambian in Gambia (SGDP)	13.4	-16.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MaoriSGDP	Maori	Maori in New Zealand (SGDP)	-41.3	174.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	YadavaSGDP	Yadava	Yadava in India (SGDP)	17.7	83.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SaharawiSGDP	Saharawi	Saharawi in Western Sahara (Morocco) (SGDP)	27.3	-8.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BrahminSGDP	Brahmin	Brahmin in India (SGDP)	17.7	83.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	JapaneseSGDP	Japanese	Japanese in Japan (SGDP)	38.0	138.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MiaoSGDP	Miao	Miao in China (SGDP)	28.0	109.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	HanSGDP	Han	Han in China (SGDP)	32.288556	114.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EskimoSirenikiSGDP	Eskimo Sireniki	Eskimo Sireniki in Russia (SGDP)	64.4	173.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	HungarianSGDP	Hungarian	Hungarian in Hungary (SGDP)	47.5	19.1	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AltaianSGDP	Altaian	Altaian in Russia (SGDP)	51.9	86.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	FinnishSGDP	Finnish	Finnish in Finland (SGDP)	60.2	24.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	IgorotSGDP	Igorot	Igorot in Philippines (SGDP)	17.1	121.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AmiSGDP	Ami	Ami in Taiwan (SGDP)	22.843145	121.185356	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	HezhenSGDP	Hezhen	Hezhen in China (SGDP)	47.5	133.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	OrcadianSGDP	Orcadian	Orcadian in Orkney Islands (SGDP)	59.0	-3.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KusundaSGDP	Kusunda	Kusunda in Nepal (SGDP)	28.072453	83.373633	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AustralianSGDP	Australian	Australian in Australia (SGDP)	-13.0	143.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TlingitSGDP	Tlingit	Tlingit in Russia (SGDP)	54.09	162.325	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	QuechuaSGDP	Quechua	Quechua in Peru (SGDP)	-13.5	-72.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	IraqiJewSGDP	Iraqi Jew	Iraqi Jew in Iraq (SGDP)	33.3	44.4	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BougainvilleSGDP	Bougainville	Bougainville in Papua New Guinea (SGDP)	-6.0	155.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	DruzeSGDP	Druze	Druze in Israel(Carmel) (SGDP)	32.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	NorwegianSGDP	Norwegian	Norwegian in Norway (SGDP)	60.3943	5.3258	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MongolaSGDP	Mongola	Mongola in China (SGDP)	45.0	111.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	LahuHGDP	Lahu	Lahu in China (HGDP)	22.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MakraniHGDP	Makrani	Makrani in Pakistan (HGDP)	26.0	64.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	NaxiHGDP	Naxi	Naxi in China (HGDP)	26.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MandenkaSGDP	Mandenka	Mandenka in Senegal (SGDP)	12.0	-12.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AlbanianSGDP	Albanian	Albanian in Albania (SGDP)	41.3	19.8	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	YRI	Yoruba	Yoruba in Ibadan, Nigeria	7.4	3.92	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	GWD	Gambian Mandinka	Gambian in Western Division, The Gambia - Mandinka	13.454876	-16.579032	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	JPT	Japanese	Japanese in Tokyo, Japan	35.68	139.68	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	MSL	Mende	Mende in Sierra Leone	8.48	-13.23	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	CEU	CEPH	Utah residents (CEPH) with Northern and Western European ancestry	40.767	-111.8904	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	ESN	Esan	Esan in Nigeria	9.06666	7.483333	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	CHB	Han Chinese	Han Chinese in Beijing, China	39.916666	116.383333	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	CLM	Colombian	Colombian in Medellin, Colombia	4.58333	-74.066666	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	CDX	Dai Chinese	Chinese Dai in Xishuangbanna, China	22.0	100.78	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	PEL	Peruvian	Peruvian in Lima, Peru	-12.04	-77.03	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	PJL	Punjabi	Punjabi in Lahore, Pakistan	31.554606	74.357158	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	IBS	Iberian	Iberian populations in Spain	40.38	-3.72	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	TSI	Toscani	Toscani in Italy	42.1	12.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	MXL	Mexican Ancestry	Mexican Ancestry in Los Angeles, California	34.0544	-118.2439	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BougainvilleHGDP	Bougainville	Bougainville in Bougainville (HGDP)	-6.0	155.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	FrenchHGDP	French	French in France (HGDP)	46.0	2.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MiaoHGDP	Miao	Miao in China (HGDP)	28.0	109.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	HanHGDP	Han	Han in China (HGDP)	32.3	114.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MozabiteHGDP	Mozabite	Mozabite in Mzab, Algeria (HGDP)	32.0	3.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	NorthernHanHGDP	Northern Han	Northern Han in China (HGDP)	32.3	114.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	PapuanHighlandsHGDP	Papuan Highlands	Papuan Highlands in New Guinea (HGDP)	-4.0	143.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	PathanHGDP	Pathan	Pathan in Pakistan (HGDP)	33.5	70.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	LWK	Luhya	Luhya in Webuye, Kenya	-1.27	36.61	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EnglishSGDP	English	English in England (SGDP)	51.2	0.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	JapaneseHGDP	Japanese	Japanese in Japan (HGDP)	38.0	138.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TuscanSGDP	Tuscan	Tuscan in Italy(Tuscany) (SGDP)	43.0	11.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	KaritianaHGDP	Karitiana	Karitiana in Brazil (HGDP)	-10.0	-63.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SomaliSGDP	Somali	Somali in Kenya (SGDP)	5.6	48.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MayaHGDP	Maya	Maya in Mexico (HGDP)	19.0	-91.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	LuoSGDP	Luo	Luo in Kenya (SGDP)	-0.1	34.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MbutiHGDP	Mbuti	Mbuti in Democratic Republic of Congo (HGDP)	1.0	29.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BantuHereroSGDP	Bantu Herero	Bantu Herero in Botswana Or Namibia (SGDP)	-22.0	19.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	PalestinianHGDP	Palestinian	Palestinian in Central, Israel (HGDP)	32.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MayanSGDP	Mayan	Mayan in Mexico (SGDP)	19.0	-91.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	PimaHGDP	Pima	Pima in Mexico (HGDP)	29.0	-108.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TuSGDP	Tu	Tu in China (SGDP)	36.0	101.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PolishSGDP	Polish	Polish in Poland (SGDP)	52.2	21.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	DaurSGDP	Daur	Daur in China (SGDP)	48.5	124.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	YakutSGDP	Yakut	Yakut in Russia (SGDP)	63.0	129.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KaritianaSGDP	Karitiana	Karitiana in Brazil (SGDP)	-10.0	-63.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ChechenSGDP	Chechen	Chechen in Russia (SGDP)	43.3	45.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EskimoChaplinSGDP	Eskimo Chaplin	Eskimo Chaplin in Russia (SGDP)	64.48	172.86	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PapuanSGDP	Papuan	Papuan in Papua New Guinea (SGDP)	-4.0	143.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	YorubaSGDP	Yoruba	Yoruba in Nigeria (SGDP)	7.4	3.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	DusunSGDP	Dusun	Dusun in Brunei (SGDP)	4.7	114.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	GIH	Gujarati	Gujarati Indians in Houston, TX	29.7589	-95.3677	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BantuTswanaSGDP	Bantu Tswana	Bantu Tswana in Botswana Or Namibia (SGDP)	-28.0	24.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ChaneSGDP	Chane	Chane in Argentina (SGDP)	-25.0	-60.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	GeorgianSGDP	Georgian	Georgian in Georgia (SGDP)	42.5	41.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PalestinianSGDP	Palestinian	Palestinian in Israel(Central) (SGDP)	32.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PathanSGDP	Pathan	Pathan in Pakistan (SGDP)	33.5	70.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TajikSGDP	Tajik	Tajik in Tajikistan (SGDP)	37.6	71.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KoreanSGDP	Korean	Korean in Korea (SGDP)	37.6	127.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SaamiSGDP	Saami	Saami in Finland (SGDP)	69.9	27.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SuruiSGDP	Surui	Surui in Brazil (SGDP)	-11.0	-62.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	PiapocoSGDP	Piapoco	Piapoco in Colombia (SGDP)	3.0	-68.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	XiboSGDP	Xibo	Xibo in China (SGDP)	43.5	81.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TujiaSGDP	Tujia	Tujia in China (SGDP)	29.0	109.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	SheHGDP	She	She in China (HGDP)	27.0	119.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	YorubaHGDP	Yoruba	Yoruba in Nigeria (HGDP)	8.0	5.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	UygurHGDP	Uygur	Uygur in China (HGDP)	44.0	81.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AdygeiSGDP	Adygei	Adygei in Russia(Caucasus) (SGDP)	44.0	39.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	CreteSGDP	Crete	Crete in Greece (SGDP)	35.341846	25.148254	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AleutSGDP	Aleut	Aleut in Russia (SGDP)	55.18	166.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BiakaHGDP	Biaka	Biaka in Central African Republic (HGDP)	4.0	17.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MadigaSGDP	Madiga	Madiga in India (SGDP)	17.7	83.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	HazaraHGDP	Hazara	Hazara in Pakistan (HGDP)	33.5	70.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SheSGDP	She	She in China (SGDP)	27.0	119.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	STU	Tamil	Sri Lankan Tamil in the UK	52.486243	-1.890401	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	ITU	Telugu	Indian Telugu in the UK	52.486243	-1.890401	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+1kGP	GBR	British	British in England and Scotland	52.486243	-1.890401	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	BrahuiHGDP	Brahui	Brahui in Pakistan (HGDP)	30.5	66.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	CambodianHGDP	Cambodian	Cambodian in Cambodia (HGDP)	12.0	105.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	DaiHGDP	Dai	Dai in China (HGDP)	21.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	DruzeHGDP	Druze	Druze in Carmel, Israel (HGDP)	32.0	35.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SamaritanSGDP	Samaritan	Samaritan in Israel (SGDP)	32.2	35.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KalashSGDP	Kalash	Kalash in Pakistan (SGDP)	36.0	71.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	TubalarSGDP	Tubalar	Tubalar in Russia (SGDP)	51.133333	87.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	NorthOssetianSGDP	North Ossetian	North Ossetian in Russia (SGDP)	43.0	44.7	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MendeSGDP	Mende	Mende in Sierra Leone (SGDP)	8.5	-13.2	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	LezginSGDP	Lezgin	Lezgin in Russia (SGDP)	42.1	48.2	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BalochiSGDP	Balochi	Balochi in Pakistan (SGDP)	30.5	66.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KhomaniSanSGDP	Khomani San	Khomani San in South Africa (SGDP)	-27.0	20.8	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ZapotecSGDP	Zapotec	Zapotec in Mexico (SGDP)	16.5	-97.2	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	CzechSGDP	Czech	Czech in Czechoslovakia(pre1989) (SGDP)	50.1	14.4	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	LahuSGDP	Lahu	Lahu in China (SGDP)	22.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BasqueSGDP	Basque	Basque in France (SGDP)	43.0	0.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KhondaDoraSGDP	Khonda Dora	Khonda Dora in India (SGDP)	18.3	82.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EstonianSGDP	Estonian	Estonian in Estonia (SGDP)	58.5	24.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MKK	Masai	Masai in Kenya	-1.5	35.2	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	HezhenHGDP	Hezhen	Hezhen in China (HGDP)	47.5	133.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MandenkaHGDP	Mandenka	Mandenka in Senegal (HGDP)	12.0	-12.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	MongolianHGDP	Mongolian	Mongolian in China (HGDP)	48.5	119.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	OrcadianHGDP	Orcadian	Orcadian in Orkney (HGDP)	59.0	-3.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	RussianHGDP	Russian	Russian in Russia (HGDP)	61.0	40.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	AtayalSGDP	Atayal	Atayal in Taiwan (SGDP)	24.611712	121.296444	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	IrulaSGDP	Irula	Irula in India (SGDP)	13.5	80.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	IcelandicSGDP	Icelandic	Icelandic in Iceland (SGDP)	64.1	-21.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BantuKenyaSGDP	Bantu Kenya	Bantu Kenya in Kenya (SGDP)	-3.0	37.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	RelliSGDP	Relli	Relli in India (SGDP)	17.7	83.3	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SardinianSGDP	Sardinian	Sardinian in Italy (SGDP)	40.0	9.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	DinkaSGDP	Dinka	Dinka in Sudan (SGDP)	8.794444	27.4	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	NaxiSGDP	Naxi	Naxi in China (SGDP)	26.0	100.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+HGDP	YiHGDP	Yi	Yi in China (HGDP)	28.0	103.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BurushoSGDP	Burusho	Burusho in Pakistan (SGDP)	36.5	74.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	MakraniSGDP	Makrani	Makrani in Pakistan (SGDP)	26.0	64.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SpanishSGDP	Spanish	Spanish in Spain (SGDP)	39.9	-4.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	YemeniteJewSGDP	Yemenite Jew	Yemenite Jew in Yemen (SGDP)	15.4	44.2	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	OroqenSGDP	Oroqen	Oroqen in China (SGDP)	50.4	126.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	FrenchSGDP	French	French in France (SGDP)	46.0	2.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	JordanianSGDP	Jordanian	Jordanian in Jordan (SGDP)	32.1	35.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	SindhiSGDP	Sindhi	Sindhi in Pakistan (SGDP)	25.5	69.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	KinhSGDP	Kinh	Kinh in Vietnam (SGDP)	21.0	105.9	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	IranianSGDP	Iranian	Iranian in Iran (SGDP)	35.6	51.5	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	ItelmanSGDP	Itelman	Itelman in Russia (SGDP)	57.0	157.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	EsanSGDP	Esan	Esan in Nigeria (SGDP)	6.5	6.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp
+SGDP	BergamoSGDP	Bergamo	Bergamo in Italy(Bergamo) (SGDP)	46.0	10.0	population metadata; not individual residence	IGSR population metadata, archived in stephenturner/kgp

@@ -2,7 +2,7 @@
 """Tests on the final estimates: lineages, arrays, father-son ratio, composition, HGDP/SGDP DYZ19, quantiles of one CV score per man, sister pairs, annotation floor.
 
 usage: python3 scripts/biology_tests.py <results dir> <ours indep.tsv> <hallast indep.tsv> <out.tsv> [Dunn pairs out.tsv]
-inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units,holdout_21_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, manuscript/figures/figureS8_pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx, both Y trees
+inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units,holdout_21_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, manuscript/figures/figureS8_pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx (downloaded if missing), both Y trees
 """
 import sys, csv, re, math, collections as co, itertools
 from pathlib import Path
@@ -64,7 +64,7 @@ E = co.defaultdict(lambda: co.defaultdict(list))
 for r in rd(D / 'cv_units.tsv'): E[r['class']][r['male']].append(float(r['error_pct']))
 s = {c: np.std([np.mean(np.log1p(np.array(v) / 100)) for v in E[c].values()], ddof=1) for c in ('dyz1', 'dyz2')}; put('composition_error_sd', f"CV SD of log error DYZ1 {s['dyz1']:.4f}, DYZ2 {s['dyz2']:.4f}")
 sys.path.insert(0, 'scripts'); import prepare_cohort_pies as pc, openpyxl
-tb = list(openpyxl.load_workbook(pc.META / 'hallast2021_supplement.xlsx', read_only=True, data_only=True)['Suppl2'].values); H = {}
+tb = list(pc.hallast_book()['Suppl2'].values); H = {}
 for f in tb[2:]:
     r = dict(zip(tb[1], f))
     for k in ('Sample_ID', 'vcf_ID'):

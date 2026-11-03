@@ -8,6 +8,9 @@ The combined map counts shared individuals once, using documented identifiers.
 """
 
 import csv
+import hashlib
+import sys
+import urllib.request
 from collections import Counter, defaultdict
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -19,6 +22,20 @@ ROOT = Path(__file__).resolve().parents[1]
 META = ROOT / "data/figure_metadata"
 ALIAS_FIELDS = ("Sample_ID", "Sample_ID(Aliases)", "SGDP_ID", "Illumina_ID")
 COHORT_PRIORITY = {"1kGP": 0, "HGDP": 1, "SGDP": 2}
+HALLAST_URL = "https://static-content.springer.com/esm/art%3A10.1007%2Fs00439-020-02204-9/MediaObjects/439_2020_2204_MOESM2_ESM.xlsx"
+HALLAST_SHA = "b8ceb96ffbcba51254d9e86735daa178cf7a2397204a2c902167115798d171b3"
+
+
+def hallast_book():
+    # Hallast 2021 Table S2, fetched once
+    path = META / "hallast2021_supplement.xlsx"
+    if not path.exists():
+        print(f"downloading {HALLAST_URL} -> {path}", file=sys.stderr)
+        urllib.request.urlretrieve(HALLAST_URL, path)
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != HALLAST_SHA:
+        sys.exit(f"ERROR: {path} sha256 {digest}, expected {HALLAST_SHA}")
+    return openpyxl.load_workbook(path, read_only=True, data_only=True)
 
 
 def read_tsv(path, encoding="utf-8"):
@@ -107,7 +124,7 @@ def prepare(snapshot_path=None):
         for key in ALIAS_FIELDS:
             if valid_key(row[key]):
                 sgdp_aliases[norm(row[key])].append(row)
-    workbook = openpyxl.load_workbook(META / "hallast2021_supplement.xlsx", read_only=True, data_only=True)
+    workbook = hallast_book()
     table = list(workbook["Suppl2"].values)
     published = defaultdict(set)
     for fields in table[2:]:
