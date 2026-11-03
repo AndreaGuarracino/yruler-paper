@@ -5,14 +5,14 @@ from palette import NAMES, TITLE, MM, save
 import palette as PL
 import sys, csv, textwrap, warnings, collections as co, numpy as np, matplotlib
 warnings.filterwarnings('ignore', 'Mean of empty slice')
-matplotlib.use('Agg'); import matplotlib.pyplot as plt; plt.rcParams['hatch.color'] = '#a9a8a4'; plt.rcParams['hatch.linewidth'] = 0.4
+matplotlib.use('Agg'); import matplotlib.pyplot as plt; plt.rcParams['hatch.color'] = PL.STAIN['gpos50']; plt.rcParams['hatch.linewidth'] = 0.4
 from matplotlib.colors import ListedColormap, BoundaryNorm
 from scipy.cluster.hierarchy import linkage, leaves_list, optimal_leaf_ordering
-D, OUT = sys.argv[1:3]; MODE = sys.argv[3] if len(sys.argv) > 3 else 'unusual'; KM = sys.argv[5] if len(sys.argv) > 5 and sys.argv[4] == 'kmer' else None; MB = 1e6; INK = '#3d3c39'   # MODE pairs: father-son pairs only
+D, OUT = sys.argv[1:3]; MODE = sys.argv[3] if len(sys.argv) > 3 else 'unusual'; KM = sys.argv[5] if len(sys.argv) > 5 and sys.argv[4] == 'kmer' else None; MB = 1e6; INK = PL.INK   # MODE pairs: father-son pairs only
 BANDS = [('p11.32', 0, 127522, 'gneg'), ('p11.31', 127522, 454425, 'gpos50'), ('p11.2', 454425, 10568667, 'gneg'), ('p11.1', 10568667, 10703039, 'acen'), ('cen', 10703039, 10726286, 'acen'),   # KaryoScope-ISCN chm13v2.0 cytobands.bed
          ('q11.1', 10726286, 10883195, 'acen'), ('q11.21', 10883195, 13307633, 'gneg'), ('q11.221', 13307633, 18006534, 'gpos50'), ('q11.222', 18006534, 20506564, 'gneg'),
          ('q11.223', 20506564, 25062557, 'gpos50'), ('q11.23', 25062557, 27449937, 'gneg'), ('q12', 27449937, 62460029, 'gvar')]
-STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6d5d1'}
+STAIN = PL.STAIN
 GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp deletion', 'yp_deletion'), ('Mosaic loss', 'mosaic_loss'), ('Mosaic gain', 'mosaic_gain'), ('Y gain (XYY)', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
 EXTRA = [('X gain (XXY)', ['HG01683']), ('Unusual array estimates', ['HG01527', 'HG01529', 'NA18910', 'NA18911', 'HG04006', 'HG02804', 'HG02684', 'HG02686', 'NA18952'])]
 NOTE = {'NA19226': 'Y lost; offspring XY', 'HG02966': 'parent without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
@@ -79,8 +79,8 @@ print('row notes not drawn (for the caption):', {x: NOTE[x] for x in rows if x i
 C = co.defaultdict(lambda: np.zeros(nw))
 for r in rd(f'{D}/ychm13_flagged_100kb.classes.tsv'): C[r['class']][int(r['start']) // step] = int(r['positions'])
 BOUND = [0, 0.25, 0.75, 0.9, 1.1, 1.25, 1.75, 2.5]   # 0, about 0.5, slight loss, 1, slight gain, about 1.5, 2
-cm = ListedColormap(['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']); cm.set_bad('#ffffff'); nrm = BoundaryNorm(BOUND, cm.N)
-n = len(rows); ROW, HEAD, BOT, TOP = 2.5, 25, 11, 1   # mm: row pitch, tracks, bottom, top margins
+cm = ListedColormap(PL.HEAT); cm.set_bad('white'); nrm = BoundaryNorm(BOUND, cm.N)
+n = len(rows); ROW, HEAD, BOT, TOP = 2.5, 25, 8, 1   # mm: row pitch, tracks, bottom, top margins
 FW, FH = 180, TOP + HEAD + 1 + n * ROW + BOT; fig = plt.figure(figsize=(FW * MM, FH * MM))
 ax_mm = lambda x0, x1, y0, y1: fig.add_axes([x0 / FW, y0 / FH, (x1 - x0) / FW, (y1 - y0) / FH])
 hb = BOT + n * ROW   # heatmap top
@@ -94,7 +94,7 @@ for l in open(f'{A}/chm13v2.0Y_inverted_repeats_v1.bed'):
     if x[0] == 'chrY' and x[3].startswith('P'): PAL[x[3].strip()].append((int(x[1]), int(x[2])))
 NMC = {'PAR1': 'PAR', 'PAR2': 'PAR', 'XTR1': 'XTR', 'XTR2': 'XTR', 'X-DEG': 'X-degenerate', 'AMPL': 'Ampliconic', 'SAT': 'Satellite', 'DYZ17': 'Satellite', 'DYZ19': 'Satellite', 'CEN': 'Centromere', 'HET': 'Heterochromatin', 'OTHER': 'Other'}
 for nm, a, b, st in BANDS:   # tracks in mm: cytobands 10.8-13.8, names above on two rows
-    ax0.add_patch(plt.Rectangle((a / MB, 10.8), (b - a) / MB, 3, fc=STAIN[st], ec='#5d5c58', lw=0.5, hatch='////' if st == 'gvar' else None))
+    ax0.add_patch(plt.Rectangle((a / MB, 10.8), (b - a) / MB, 3, fc=STAIN[st], ec=PL.STAIN['acen'], lw=0.5, hatch='////' if st == 'gvar' else None))
 for i, (nm, a, b, st) in enumerate(B for B in BANDS if B[2] - B[1] > 1e6):
     y = 14.4 + 2.8 * (i % 2); ax0.plot([(a + b) / 2 / MB] * 2, [13.8, y - 0.2], color=INK, lw=0.4); ax0.text((a + b) / 2 / MB, y, nm, ha='center', va='bottom', fontsize=PL.FS["label"], color=INK)
 for lab, a, b in (('Yp', 0, 10.71), ('Yq', 10.71, 62.46)):   # arms
@@ -113,12 +113,12 @@ M = np.array([X[s] for s in rows]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect=
 ax2.hlines(np.arange(1, n), 0, xmax, color='white', lw=0.5)   # thin gap between rows
 nd = np.isnan(M).astype(float); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
 ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels(rows)
-for t, s in zip(ax2.get_yticklabels(), rows): t.set_color('#8a8984' if s in relrow else INK)   # relatives outside the groups in grey
+for t, s in zip(ax2.get_yticklabels(), rows): t.set_color(PL.GREY if s in relrow else INK)   # relatives outside the groups in grey
 ax2.set_xlabel('CHM13v2 chrY position (Mb)'); ax2.set_xlim(0, xmax)
 for a_, lab, col in ((ay, 'Y dose', 1), (ax, 'X dose', 2)):   # dose bars with numbers
-    v = [info[s][col] for s in rows]; a_.barh(np.arange(n) + 0.5, v, height=0.62, color='#8a8984', lw=0)
+    v = [info[s][col] for s in rows]; a_.barh(np.arange(n) + 0.5, v, height=0.62, color=PL.GREY, lw=0)
     for i, x in enumerate(v): a_.text(min(x, 2.25) + 0.05, i + 0.5, f'{x:.2f}', va='center', ha='left', fontsize=PL.FS["point"], color=INK)
-    for g in (1, 2): a_.axvline(g, color='#b9b8b3', lw=0.5, ls=':')
+    for g in (1, 2): a_.axvline(g, color=PL.GREY, lw=0.5, ls=':')
     a_.set_xlim(0, 2.9); a_.set_ylim(n, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.set_xlabel(lab)
     for sp_ in ('top', 'right'): a_.spines[sp_].set_visible(False)
 axg.set_ylim(n, 0); axg.set_xlim(0, 1); axg.set_autoscale_on(False); axg.axis('off')

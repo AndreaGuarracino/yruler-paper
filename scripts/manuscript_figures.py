@@ -52,14 +52,14 @@ def panel(ax, label, title):
 def clean_axes(ax):
     ax.spines[["top", "right"]].set_visible(False)
     ax.set_axisbelow(True)
-    ax.grid(axis="y", color="#e8ebed", linewidth=0.7)
+    ax.grid(axis="y")
 
 
 def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapshot_label=None):
     from figure2_tree import father_son_panels
 
-    from palette import MM, FS, letter
-    fig = plt.figure(figsize=(180 * MM, 180 * MM))
+    from palette import MM, FS, letter, MUTED, SCHEME
+    fig = plt.figure(figsize=(180 * MM, 176 * MM))
     diagram = fig.add_axes([0.035, 0.865, 0.95, 0.125])
     diagram.set_xlim(0, 1)
     diagram.set_ylim(0, 1)
@@ -69,28 +69,26 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
     def box(x, y, width, height, text, color):
         diagram.add_patch(FancyBboxPatch(
             (x, y), width, height, boxstyle="round,pad=0.012,rounding_size=0.018",
-            facecolor=color, edgecolor="#52646e", linewidth=0.5))
+            facecolor=color, edgecolor=MUTED, linewidth=0.5))
         diagram.text(x + width / 2, y + height / 2, text,
                      ha="center", va="center", fontsize=FS["label"], linespacing=1.3)
 
     def arrow(start, end):
         diagram.add_patch(FancyArrowPatch(
             start, end, arrowstyle="-|>", mutation_scale=7,
-            color="#52646e", linewidth=0.6))
+            color=MUTED, linewidth=0.6))
 
-    box(0.02, 0.66, 0.27, 0.24, "Y pangenome references\narray spans and unit labels", "#eef3f5")
-    box(0.37, 0.66, 0.27, 0.24, "Training families\nselect markers and fit scale", "#e7f1f7")
-    box(0.72, 0.66, 0.26, 0.24, "Test families\nassess prediction error", "#f9eee7")
-    box(0.02, 0.15, 0.27, 0.24, "BAM/CRAM or SAM\nall eligible read sequences", "#eef3f5")
-    box(0.37, 0.15, 0.27, 0.24, "Count marker k-mers\narray, single-copy Y, chr8 window", "#e7f1f7")
-    box(0.72, 0.15, 0.26, 0.24, "Array lengths and composition\nY dosage", "#eaf4ef")
+    box(0.02, 0.66, 0.27, 0.24, "Y pangenome references\narray spans and unit labels", SCHEME["reference"])
+    box(0.37, 0.66, 0.27, 0.24, "Training families\nselect markers and fit scale", SCHEME["train"])
+    box(0.72, 0.66, 0.26, 0.24, "Test families\nassess prediction error", SCHEME["test"])
+    box(0.02, 0.15, 0.27, 0.24, "BAM/CRAM or SAM\nall eligible read sequences", SCHEME["reference"])
+    box(0.37, 0.15, 0.27, 0.24, "Count marker k-mers\narray, single-copy Y, chr8 window", SCHEME["train"])
+    box(0.72, 0.15, 0.26, 0.24, "Array lengths and composition\nY dosage", SCHEME["output"])
     arrow((0.30, 0.78), (0.355, 0.78))
     arrow((0.30, 0.27), (0.355, 0.27))
     arrow((0.65, 0.27), (0.705, 0.27))
     arrow((0.505, 0.645), (0.505, 0.405))
     arrow((0.85, 0.405), (0.85, 0.645))
-    diagram.text(0.50, 0.04, "Marker selection and scale fitting use training families only",
-                 ha="center", fontsize=FS["point"], color="#43525b")
 
     if benchmarks is None:
         validation = fig.add_axes([0.055, 0.40, 0.90, 0.25])
@@ -121,7 +119,7 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
     from palette import ORDER
     shown=sorted((k for k in LOOKUP if LOOKUP[k][2] not in ("DYZ17","DYZ18S")),key=lambda k:ORDER.index(LOOKUP[k][2]))
     for row,keys in enumerate((shown[:3],shown[3:])):
-        bottom,top=(.285,.43) if row==0 else (.07,.215)
+        bottom,top=(.285,.43) if row==0 else (.05,.215)
         grid=fig.add_gridspec(1,6,left=.07,right=.93,bottom=bottom,top=top,
                              width_ratios=[1.35,1.15]*3,wspace=.75)
         for col,key in enumerate(keys):

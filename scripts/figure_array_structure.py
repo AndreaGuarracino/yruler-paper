@@ -12,7 +12,7 @@ import sys, csv, collections as co, numpy as np
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, leaves_list
 IN, OUT, TR, D19, D17, RX = sys.argv[1:7]; MINBP = 10000
-from palette import CLASS, SOURCE, TITLE, NAMES, FS, save, ORDER
+from palette import CLASS, SOURCE, TITLE, NAMES, FS, save, ORDER, CONTIG
 COL = {k: CLASS[k] for k in ('DYZ3', 'DYZ17', 'DYZ19', 'DYZ1', 'DYZ2', 'DYZ18S')}
 PANEL = ['dyz3', 'dyz17', 'dyz19', 'yq12']; NAME = {'dyz3': 'DYZ3', 'dyz17': 'DYZ17', 'dyz19': 'DYZ19', 'yq12': 'Yq12'}
 rd = lambda p: csv.DictReader(open(p), delimiter='\t')
@@ -71,7 +71,7 @@ for j, rr in enumerate(cols):
         y = n - 1 - i
         if a is None: ax.text(-0.115 * xmax, y + 0.15, lab, fontsize=FS['tick'], fontweight='bold', va='bottom', clip_on=False); continue
         ax.add_patch(plt.Rectangle((-0.03 * xmax, y + 0.1), 0.018 * xmax, 0.8, fc=SRC['HPRC R2' if a.endswith('_R2') else 'Hallast'], lw=0, clip_on=False))
-        s0 = SH[a] / 1e6; ax.add_patch(plt.Rectangle((s0, y + 0.1), L[a] / 1e6, 0.8, fc='#f0f0f0', ec='#bbbbbb', lw=0.25))
+        s0 = SH[a] / 1e6; ax.add_patch(plt.Rectangle((s0, y + 0.1), L[a] / 1e6, 0.8, fc=CONTIG['face'], ec=CONTIG['edge'], lw=0.25))
         for c in ('dyz3', 'dyz17', 'dyz19'):
             if c in A[a]: _, s, e = A[a][c]; ax.add_patch(plt.Rectangle((s0 + s / 1e6, y + 0.1), max((e - s) / 1e6, 0.1), 0.8, fc=COL[NAME[c]], lw=0))
         for k, s, e, _ in sorted(Q[a], key=lambda x: x[0] == 'DYZ18S'): ax.add_patch(plt.Rectangle((s0 + s / 1e6, y + 0.1), max((e - s) / 1e6, 0.05), 0.8, fc=COL[k], lw=0))

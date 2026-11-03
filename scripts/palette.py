@@ -5,16 +5,43 @@ RATIO = '#8c564b'   # DYZ1:DYZ2
 SOURCE = {'Hallast': '#17becf', 'HPRC R2': '#bcbd22'}
 KEY = {k.lower(): v for k, v in CLASS.items()}   # dyz3, yq12, ... -> colour
 TITLE = lambda size: {'weight': 'bold', 'size': size}   # legend titles: bold, same size as labels
-NAMES = {'class': 'Classes', 'source': 'Pangenome', 'lineage': 'Y lineages', 'annotation': 'Annotation'}   # legend titles in every figure
+REF = {'marker': 'D', 's': 5, 'facecolors': 'none', 'linewidths': 0.8, 'alpha': 0.8}   # male with a reference assembly; edge in panel colour
+REF_HANDLE = {'marker': 'D', 'markersize': 5 ** 0.5, 'markerfacecolor': 'none', 'markeredgewidth': 0.8, 'linestyle': 'none'}
+BATCH = {'Cross batch': 'o', 'Same batch': '^', 'Reverse cross batch': 's'}   # parent-offspring batch groups
+NAMES = {'class': 'Classes', 'source': 'Pangenome', 'lineage': 'Y lineages', 'annotation': 'Annotation', 'superpop': 'Superpopulation'}
+SUPERPOP = {'AFR': '#E69F00', 'AMR': '#CC79A7', 'EAS': '#56B4E9', 'EUR': '#009E73', 'SAS': '#F0E442'}   # Okabe-Ito, colourblind-safe
+SUPERPOP_NAME = {'AFR': 'Africa (AFR)', 'AMR': 'Americas (admixed) (AMR)', 'EAS': 'East Asia (EAS)', 'EUR': 'Europe (EUR)', 'SAS': 'South Asia (SAS)'}   # legend titles in every figure
 import matplotlib as _mpl
 MM = 1 / 25.4   # inches per mm
+GRID = '#e8edef'   # grid lines
 FS = {'tick': 6.5, 'label': 7, 'legend': 7, 'title': 7, 'point': 6.5, 'letter': 8}   # pt per text role, every figure
 _mpl.rcParams.update({'legend.frameon': False, 'legend.handlelength': 1.0, 'legend.handleheight': 0.7, 'legend.handletextpad': 0.4, 'legend.columnspacing': 0.8,   # one legend style
                       'font.family': 'sans-serif', 'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'], 'font.size': FS['point'], 'pdf.fonttype': 42, 'ps.fonttype': 42,
                       'axes.titlesize': FS['title'], 'axes.labelsize': FS['label'], 'xtick.labelsize': FS['tick'], 'ytick.labelsize': FS['tick'], 'legend.fontsize': FS['legend'], 'legend.title_fontsize': FS['legend'],
                       'axes.spines.top': False, 'axes.spines.right': False, 'axes.linewidth': 0.5, 'xtick.major.width': 0.5, 'ytick.major.width': 0.5,
                       'xtick.major.size': 2, 'ytick.major.size': 2, 'xtick.minor.size': 1.2, 'ytick.minor.size': 1.2, 'xtick.minor.width': 0.4, 'ytick.minor.width': 0.4, 'xtick.major.pad': 2, 'ytick.major.pad': 2, 'axes.labelpad': 2, 'axes.titlepad': 3,
-                      'lines.linewidth': 0.75, 'grid.linewidth': 0.4, 'patch.linewidth': 0.5, 'hatch.linewidth': 0.4, 'savefig.dpi': 600, 'savefig.facecolor': 'white'})   # journal style: 5-7 pt, 0.25-1 pt lines
+                      'lines.linewidth': 0.75, 'grid.linewidth': 0.4, 'grid.color': GRID, 'patch.linewidth': 0.5, 'hatch.linewidth': 0.4, 'savefig.dpi': 600, 'savefig.facecolor': 'white'})   # journal style: 5-7 pt, 0.25-1 pt lines
+
+
+DOSE = '#526774'   # Y dosage
+INK, MUTED, LINE, GREY, ORANGE = '#22313a', '#55666f', '#60717a', '#a9b4ba', '#d9622b'   # text, guides, tree lines, other males, assemblies
+J2 = '#bd6078'   # J2a1a1 in ED5
+BAND = {'DYZ3': '#e8f1f7', 'DYZ19': '#f8e9ec'}   # highlighted rows
+LAND = {'face': '#ebeff1', 'edge': '#bbc5ca'}
+CONTIG = {'face': '#f0f0f0', 'edge': '#bbbbbb'}   # ED1 contigs
+UNITS = {'Other units': '#a584b9', 'Unannotated': '#dbe1e5'}   # ED2 Yq12 composition
+SCHEME = {'reference': '#eef3f5', 'train': '#e7f1f7', 'test': '#f9eee7', 'output': '#eaf4ef'}   # Fig. 1a boxes
+LINEAGE = {'A': '#a73945', 'B': '#d3b183', 'C': '#2684b2', 'D': '#789bac', 'E': '#de915b', 'F': '#94a6ad', 'G': '#b6a14b', 'H': '#b3a1c8',
+           'I': '#8b6baa', 'J': '#439a88', 'L': '#83b955', 'M': '#68a5a7', 'NO': '#b0b6bf', 'N': '#9bbc59', 'O': '#62b9b5', 'Q': '#d8bb51',
+           'R': '#77628f', 'S': '#b78d69', 'T': '#c4d39e', 'Unassigned': '#dddddd'}   # Y lineages
+HEAT = ['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']   # ED8 copy-number classes
+STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6d5d1'}   # cytoband stains
+COLOR = {**CLASS, 'DYZ1:DYZ2': RATIO, 'Y dosage': DOSE}   # every panel title colour
+
+
+def head(ax, text):
+    """Panel title, centred, in its class colour."""
+    ax.set_title(text, color=COLOR.get(text, 'black'), pad=3)
 
 
 def letter(fig, s, x, y):

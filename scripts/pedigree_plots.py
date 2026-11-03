@@ -6,19 +6,18 @@ from collections import Counter
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import MaxNLocator
 import numpy as np
 import figures_1kgp as f
 from validation_plots import COLORS,INK
-from palette import FS, MM, save, letter
+from palette import FS, MM, save, letter, REF, REF_HANDLE, BATCH, MUTED, head
 from validation_ratio import KEY as RATIO, LABEL as RATIO_LABEL, COLOR as RATIO_COLOR
 
 MEASUREMENTS=[(key,col,label,scale,unit,color) for (key,col,label,scale,unit),color in zip(f.TARGETS,COLORS)]
 MEASUREMENTS.append((RATIO,'ratio_bp',RATIO_LABEL,1,'',RATIO_COLOR))
 LOOKUP={row[0]:row for row in MEASUREMENTS}
 GROUPS=['Cross batch','Same batch','Reverse cross batch']
-MARKERS=['o','^','D']
+MARKERS=[BATCH[g] for g in GROUPS]
 
 
 def collect(valid):
@@ -58,21 +57,20 @@ def stats(rows):
 
 def style(ax):
     ax.spines[['right','top']].set_visible(False)
-    ax.grid(color='#edf1f3',linewidth=.5);ax.set_axisbelow(True)
+    ax.grid(True);ax.set_axisbelow(True)
 
 
 def scatter(ax,rows,key,compact=False):
     _,_,label,scale,unit,color=LOOKUP[key];s=[r for r in rows if r['target']==key]
     upper=1.08*max(max(r['father_value'],r['son_value']) for r in s)
-    ax.plot([0,upper],[0,upper],'--',color='#6f8490',linewidth=.65,zorder=1)
+    ax.plot([0,upper],[0,upper],'--',color=MUTED,linewidth=.65,zorder=1)
     for group,marker in zip(GROUPS,MARKERS):
         for ref in (False,True):
             subset=[r for r in s if r['batch_group']==group and
                     (r['father_reference']=='yes' or r['son_reference']=='yes')==ref]
-            ax.scatter([r['father_value'] for r in subset],[r['son_value'] for r in subset],
-                marker=marker,s=(4 if group=='Cross batch' else 9) if compact else (6 if group=='Cross batch' else 12),
-                facecolors='none' if ref else color,edgecolors=color if ref else 'white',
-                linewidths=.5 if ref else .2,alpha=.75 if ref else .50,zorder=3)
+            ax.scatter([r['father_value'] for r in subset],[r['son_value'] for r in subset],zorder=3,
+                **(dict(edgecolors=color,**REF) if ref else dict(marker=marker,s=(4 if group=='Cross batch' else 9) if compact else (6 if group=='Cross batch' else 12),
+                color=color,linewidths=0,alpha=.5)))
     worst=sorted(s,key=lambda r:-abs(r['signed_difference_pct']))[:1 if compact else 2]
     if compact:
         for r in s:
@@ -106,14 +104,12 @@ def differences(ax,rows,key,compact=False,reverse=True):
         values=np.array([r['signed_difference_pct'] for r in s]);ys=i+rng.uniform(-.17,.17,len(s))
         for ref in (False,True):
             mask=np.array([(r['father_reference']=='yes' or r['son_reference']=='yes')==ref for r in s])
-            ax.scatter(values[mask],ys[mask],s=4 if compact else 6,marker=MARKERS[i],
-                facecolors='none' if ref else color,edgecolors=color if ref else 'none',
-                linewidths=.45,alpha=.65 if ref else .35,zorder=3)
+            ax.scatter(values[mask],ys[mask],zorder=3,**(dict(edgecolors=color,**REF) if ref else dict(s=4 if compact else 6,marker=MARKERS[i],color=color,linewidths=0,alpha=.35)))
         lo,median,hi=np.percentile(values,[25,50,75])
         ax.barh(i,hi-lo,left=lo,height=.14,color=color,linewidth=0,zorder=4)
         ax.plot(median,i,'|',color=INK,markersize=6,markeredgewidth=1,zorder=5)
         ax.annotate(f'{median:+.2f}%',(median,i),xytext=(3,4),textcoords='offset points',fontsize=FS['point'],color=INK)
-    ax.axvline(0,color='#738793',linestyle='--',linewidth=.65)
+    ax.axvline(0,color=MUTED,linestyle='--',linewidth=.65)
     ax.set_xscale('symlog',linthresh=5);ax.set_xlim(-maximum,maximum)
     tick_pool=([-100,0,100] if maximum>=100 else [-20,0,20] if maximum>=20 else [-10,0,10]) if compact else [-100,-20,-5,0,5,20,100]
     ticks=[x for x in tick_pool if abs(x)<=maximum]
@@ -126,29 +122,23 @@ def differences(ax,rows,key,compact=False,reverse=True):
 
 def legend(fig,rows,y=1.0,compact=False):
     first=[r for r in rows if r['target']=='dyz3'];counts=Counter(r['batch_group'] for r in first)
-    h=[Line2D([],[],marker=m,linestyle='none',color='#58717e',markersize=3,
+    h=[Line2D([],[],marker=m,linestyle='none',color=MUTED,markersize=3,
        label=f'{g} (n={counts[g]})') for g,m in zip(GROUPS,MARKERS)]
-    h.append(Line2D([],[],marker='o',linestyle='none',markerfacecolor='none',markeredgecolor='#58717e',markersize=3,
-        label='Open: reference involved'))
+    h.append(Line2D([],[],markeredgecolor=MUTED,label='Pair with a truth-set male',**REF_HANDLE))
     fig.legend(handles=h,loc='upper center',bbox_to_anchor=(.5,y),ncol=4)
 
 
 def supplement(rows,out):
-    with PdfPages(out/'ed/ed7_pedigrees.pdf') as pdf:
-        for kind in ('scatter','differences'):
-            S=kind=='scatter';fig,axes=plt.subplots(3,3,figsize=(180*MM,(190 if S else 150)*MM))
-            for i,(ax,meta) in enumerate(zip(axes.flat,MEASUREMENTS)):
-                key,_,label,_,_,color=meta
-                if S:scatter(ax,rows,key)
-                else:differences(ax,rows,key)
-                ax.set_title(label,loc='left',color=color)
-            for ax in axes.flat[len(MEASUREMENTS):]:ax.set_visible(False)   # unused grid cells
-            legend(fig,rows,y=.997)
-            fig.subplots_adjust(left=.07 if S else .135,right=.98,bottom=.05 if S else .07,top=.92,wspace=.38 if S else .62,hspace=.38 if S else .55)
-            fig.canvas.draw()   # equal-aspect axes settle
-            for i,ax in enumerate(axes.flat[:len(MEASUREMENTS)]):letter(fig,chr(97+i),[.002,.34,.67][i%3],ax.get_position().y1+5*MM/fig.get_figheight())
-            fig.savefig(f.ROOT/f'results/figures/pedigree_{kind}.pdf')
-            save(fig,out/f'ed/ed7_pedigrees.pdf ({kind} page)',pdf);plt.close(fig)
+    fig=plt.figure(figsize=(180*MM,205*MM))   # one page: scatter and differences per measurement
+    g=fig.add_gridspec(4,4,left=.065,right=.985,bottom=.04,top=.935,width_ratios=[1,1.2,1,1.2],wspace=.55,hspace=.5)
+    pairs=[]
+    for i,(key,_,label,_,_,color) in enumerate(MEASUREMENTS):
+        r,c=divmod(i,2);a,b=fig.add_subplot(g[r,2*c]),fig.add_subplot(g[r,2*c+1])
+        scatter(a,rows,key,compact=True);differences(b,rows,key,compact=True);head(a,label);pairs.append((a,c))
+    legend(fig,rows,y=.997)
+    fig.canvas.draw()   # equal-aspect axes settle
+    for i,(a,c) in enumerate(pairs):letter(fig,chr(97+i),[.002,.5][c],a.get_position().y1+5*MM/fig.get_figheight())
+    save(fig,out/'ed/ed7_pedigrees.pdf');plt.close(fig)
 
 
 def main():

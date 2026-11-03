@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from figures_1kgp import ROOT, FROZEN, TARGETS, DEPTHS
 
-BLUE="#287da7"; GOLD="#c08332"; INK="#263f4b"
+from palette import INK, MUTED
+BLUE="#287da7"; GOLD="#c08332"   # error_cloud only
 GROUPS=["A","B","C","D","E","F","G","H","I","J","L","N","O","Q","R1a","R1b","R","T"]
 KEYS=[row[0] for row in TARGETS]
 from palette import KEY as _K, TITLE, NAMES, FS, MM
@@ -85,7 +86,7 @@ def depth_curves(ax,legend=True):
     ax.set_ylabel("Absolute error (%)",fontsize=8.5)
     ax.set_xlabel("Median autosomal depth (×)",fontsize=8.5)
     ax.set_title("Depth: every repeat, all targets",loc="left",fontsize=10.5,pad=10)
-    ax.grid(color="#e8edf0",linewidth=.6)
+    ax.grid(True)
     if legend:ax.legend(loc="lower left",bbox_to_anchor=(0,1.02),ncol=4,frameon=False,
                         fontsize=6.8,title=NAMES['class'],title_fontproperties=TITLE(6.8),alignment='left')
     style(ax)
@@ -116,7 +117,7 @@ def error_cloud(ax,kind,target_colors=False):
     ax.set_xticks(ticks,[str(v) for v in ticks])
     ax.set_ylim(len(KEYS)-.5,-.5);ax.set_yticks(range(len(KEYS)))
     ax.set_xlabel("Individual absolute error (%)",fontsize=8.5)
-    ax.grid(axis="x",color="#e8edf0",linewidth=.6);style(ax)
+    ax.grid(axis="x");style(ax)
 
 
 def error_box_stats(rows):
@@ -133,7 +134,7 @@ def draw_error_boxes(ax,stats,positions,color,width,vertical=False,showfliers=Tr
                   boxprops=dict(facecolor=color,edgecolor=color,alpha=.48,linewidth=.45),
                   whiskerprops=dict(color=color,alpha=.65,linewidth=.55),
                   medianprops=dict(color=INK,linewidth=.7),
-                  flierprops=dict(marker='o',markersize=2.0,markeredgewidth=.15,
+                  flierprops=dict(marker='o',markersize=2.0,markeredgewidth=.25,
                                   markeredgecolor=INK,markerfacecolor=color,alpha=1))
 
 
@@ -170,7 +171,7 @@ def individual_boxes(ax,kind,vertical=False):
             whisker.set_alpha(1);whisker.set_linewidth(.5)
         jitter=[r['y'] for r in records]
         ax.scatter(jitter if vertical else values,values if vertical else jitter,
-                   s=2.5,color=color,edgecolors=INK,linewidths=.1,alpha=.55,zorder=3)
+                   s=2.5,color=color,linewidths=0,alpha=.55,zorder=3)
         maximum=max(maximum,max(values))
     if vertical:
         ax.set_yscale('symlog',linthresh=5,linscale=1)
@@ -178,7 +179,7 @@ def individual_boxes(ax,kind,vertical=False):
         ax.set_yticks([0,2,5,10,20,50,100],['0','2','5','10','20','50','100'])
         ax.set_xticks(range(len(KEYS)),[f"{LABELS[k].replace(':',':\n')}\n(n={counts(k)})" for k in KEYS])
         ax.set_ylabel('Mean absolute error (%)' if kind=='cv' else 'Absolute error (%)')
-        ax.grid(axis='y',color='#e8edf0',linewidth=.6);style(ax)
+        ax.grid(axis='y');style(ax)
         return
     ax.set_xscale('symlog',linthresh=5,linscale=1)
     print(f'{kind} axis maximum {maximum:.2f}')
@@ -186,7 +187,7 @@ def individual_boxes(ax,kind,vertical=False):
     ax.set_xticks([0,2,5,10,25],['0','2','5','10','25'])
     ax.set_yticks(range(len(KEYS)))
     ax.set_xlabel('Mean absolute CV error (%)' if kind=='cv' else 'Absolute error (%)')
-    ax.grid(axis='x',color='#e8edf0',linewidth=.6);style(ax)
+    ax.grid(axis='x');style(ax)
 
 
 def annotate_vertical_outliers(ax,compact=False):
@@ -243,7 +244,7 @@ def annotate_top_samples(ax,kind,compact=False):
                         xytext=(1.045,label_y),textcoords=ax.get_yaxis_transform(),
                         ha='left',va='center',fontsize=FS['point'],color=INK,
                         annotation_clip=False,
-                        arrowprops=dict(arrowstyle='-',color='#52646e',linewidth=.45,
+                        arrowprops=dict(arrowstyle='-',color=MUTED,linewidth=.45,
                                         shrinkA=1.5,shrinkB=2,
                                         connectionstyle='angle3,angleA=0,angleB=90'))
             ax.scatter([r['value']],[r['y']],s=6,
@@ -290,7 +291,7 @@ def depth_boxes(ax,compact=False):
     ax.set_ylabel('Mean absolute error (%)')
     ax.set_title('')
     ax.yaxis.tick_left();ax.yaxis.set_label_position('left')
-    ax.grid(axis='y',color='#e8edf0',linewidth=.5);style(ax)
+    ax.grid(axis='y');style(ax)
     ax.spines['left'].set_visible(True);ax.spines['right'].set_visible(False)
 
 
@@ -299,7 +300,7 @@ def lineage_supplement(out):
     fig.subplots_adjust(left=.1,right=.82,bottom=.12,top=.98)
     individual_boxes(ax,'lo');annotate_top_samples(ax,'lo')
     for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
-        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'D',color=INK,markersize=3,zorder=6)
+        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'s',color=INK,markersize=3,zorder=6)   # CV median; diamonds mean reference males
     ax.set_yticklabels(rowlabels())
     save(fig,out,'ed/ed6_lineage_validation')
 

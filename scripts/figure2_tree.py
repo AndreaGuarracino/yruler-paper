@@ -23,22 +23,16 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-from palette import CLASS, RATIO, TITLE, NAMES, FS, MM
+from palette import CLASS, RATIO, TITLE, NAMES, FS, MM, LINEAGE, LAND, UNITS, LINE, MUTED
 BLUE, GREEN, PURPLE = CLASS["DYZ3"], CLASS["Yq12"], CLASS["DYZ19"]   # DYZ3, Yq12, DYZ19
 COHORTS = {"1kGP": ("#167dad", "D"), "HGDP": ("#d2942d", "s"), "SGDP": ("#b24c74", "o")}
-LINEAGE_COLORS = {
-    "A": "#a73945", "B": "#d3b183", "C": "#2684b2", "D": "#789bac",
-    "E": "#de915b", "F": "#94a6ad", "G": "#b6a14b", "H": "#b3a1c8",
-    "I": "#8b6baa", "J": "#439a88", "L": "#83b955", "M": "#68a5a7",
-    "NO": "#b0b6bf", "N": "#9bbc59", "O": "#62b9b5", "Q": "#d8bb51",
-    "R": "#77628f", "S": "#b78d69", "T": "#c4d39e", "Unassigned": "#dddddd",
-}
+LINEAGE_COLORS = LINEAGE
 PIE_RADIUS_FACTOR = 0.765  # 10% smaller diameters; areas remain proportional to counts.
 COMPOSITION = [
     ("dyz1", "DYZ1", CLASS["DYZ1"]),
     ("dyz2", "DYZ2", CLASS["DYZ2"]),
-    ("minor", "Other units", "#a584b9"),
-    ("unannotated", "Unannotated", "#dbe1e5"),
+    ("minor", "Other units", UNITS["Other units"]),
+    ("unannotated", "Unannotated", UNITS["Unannotated"]),
 ]
 CUT = {
     "A00", "A0", "A1a", "A1b1", "B", "C", "D", "E", "F1", "F2", "F3", "F4",
@@ -123,9 +117,9 @@ def pie_positions(original, radii):
     return positions
 
 
-def pie_map(ax, cohort, samples, land, size_legend=False):
+def pie_map(ax, cohort, samples, land, size_legend=False, legend_y=-47):
     polygons = [np.asarray(feature["geometry"]["coordinates"][0], float) for feature in land["features"]]
-    ax.add_collection(PolyCollection(polygons, facecolors="#ebeff1", edgecolors="#bbc5ca", linewidths=0.25))
+    ax.add_collection(PolyCollection(polygons, facecolors=LAND["face"], edgecolors=LAND["edge"], linewidths=0.25))
     selected = samples if cohort is None else [row for row in samples if row["cohort"] == cohort]
     grouped = defaultdict(Counter)
     for row in selected:
@@ -138,8 +132,8 @@ def pie_map(ax, cohort, samples, land, size_legend=False):
     centers = pie_positions(original, radii)
     for (key, counts), anchor, center, radius in zip(items, original, centers, radii):
         if np.linalg.norm(center - anchor) > 0.25:
-            ax.plot([anchor[0], center[0]], [anchor[1], center[1]], color="#83949e", linewidth=0.35, zorder=2)
-            ax.plot(*anchor, ".", color="#83949e", markersize=1.5, zorder=2)
+            ax.plot([anchor[0], center[0]], [anchor[1], center[1]], color=LINE, linewidth=0.35, zorder=2)
+            ax.plot(*anchor, ".", color=LINE, markersize=1.5, zorder=2)
         angle, n = 0.0, sum(counts.values())
         for lineage in LINEAGE_COLORS:
             value = counts.get(lineage, 0)
@@ -148,7 +142,7 @@ def pie_map(ax, cohort, samples, land, size_legend=False):
                 ax.add_patch(Wedge(center, radius, angle, end, facecolor=LINEAGE_COLORS[lineage],
                                    edgecolor="white", linewidth=0.25, zorder=3))
                 angle = end
-        ax.add_patch(Circle(center, radius, fill=False, edgecolor="#4a5b65", linewidth=0.3, zorder=4))
+        ax.add_patch(Circle(center, radius, fill=False, edgecolor=MUTED, linewidth=0.3, zorder=4))
     ax.set_xlim(-180, 180)
     ax.set_ylim(-58, 84)
     ax.set_aspect("equal", adjustable="box")
@@ -162,11 +156,11 @@ def pie_map(ax, cohort, samples, land, size_legend=False):
             radius = PIE_RADIUS_FACTOR * np.sqrt(n)
             if previous_radius is not None:
                 longitude += previous_radius + radius + 3.0
-            ax.add_patch(Circle((longitude, -47), radius, facecolor="white",
-                                edgecolor="#73838d", linewidth=0.45, zorder=5))
-            ax.text(longitude, -57, str(n), ha="center", fontsize=FS["legend"], color="#5a6d78")
+            ax.add_patch(Circle((longitude, legend_y), radius, facecolor="white",
+                                edgecolor=MUTED, linewidth=0.45, zorder=5))
+            ax.text(longitude, legend_y - 10, str(n), ha="center", fontsize=FS["legend"], color=MUTED)
             previous_radius = radius
-        ax.text(-159, -42, "Individuals", fontsize=FS["legend"], ha="left", color="#5a6d78")
+        ax.text(-159, legend_y + 5, "Individuals", fontsize=FS["legend"], ha="left", color=MUTED)
 
 
 def lineage_legend(fig, samples, y, x=0.5, fontsize=7.6, title=None):
@@ -193,7 +187,7 @@ def align_map_legend_titles(ax, legend):
     left=fig.transFigure.inverted().transform(ax.transData.transform(heading.get_position()))[0]
     heading.remove()
     baseline=fig.transFigure.inverted().transform((0,top))[1]+4/72/fig.get_figheight()
-    center=fig.transFigure.inverted().transform((bounds.x0+bounds.width/2,0))[0]
+    center=fig.transFigure.inverted().transform((bounds.x0+bounds.width/2,0))[0]+1.5*MM/fig.get_figwidth()   # over the legend columns
     for x,label,alignment in [(left,'Individuals','left'),(center,NAMES['lineage'],'center')]:
         bold=font.copy();bold.set_weight('bold')
         fig.text(x,baseline,label,fontproperties=bold,color='black',ha=alignment,va='baseline')
@@ -255,7 +249,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
         ticks = [x for x in (-100, -20, -5, 0, 5, 20, 100) if abs(x) <= maximum]
         ax.set_xticks(ticks, [str(x) for x in ticks], fontsize=7)
         ax.axvline(0, color="#697d88", linestyle="--", linewidth=0.7)
-        ax.grid(axis="x", color="#edf1f3", linewidth=0.6)
+        ax.grid(axis="x")
         ax.set_axisbelow(True)
         ax.spines[["left", "right", "top"]].set_visible(False)
         ax.tick_params(axis="y", length=0)
@@ -490,7 +484,7 @@ def summaries(ax, order, groups, key, color, scale, limit, ticks, title, panel, 
     ax.set_yticks([])
     ax.tick_params(axis="x", labelsize=8)
     ax.spines[["left", "right", "top"]].set_visible(False)
-    ax.grid(axis="x", color="#e4e9ec", linewidth=0.65)
+    ax.grid(axis="x")
     ax.set_axisbelow(True)
     ax.set_title(title, loc="center", fontsize=10.5, pad=10, color=color)
     ax.text(-0.06, 1.035, panel, fontsize=15, fontweight="bold", transform=ax.transAxes, color="#182a34")
@@ -580,7 +574,7 @@ def composition_panel(ax, order, rows, out):
 def composition_supplement(rows, order, out):
     ranks = {group: i for i, group in enumerate(order + ["Unassigned"])}
     ordered = sorted(rows, key=lambda row: (ranks[row["display_group"]], row["dyz1_fraction"], row["sample"]))
-    fig, axes = plt.subplots(2, 1, figsize=(180 * MM, 125 * MM), gridspec_kw={"height_ratios": [1.25, 1], "hspace": 0.45})
+    fig, axes = plt.subplots(2, 1, figsize=(180 * MM, 118 * MM), gridspec_kw={"height_ratios": [1.25, 1], "hspace": 0.38})
     x = np.arange(len(ordered))
     bottom = np.zeros(len(ordered))
     for key, label, color in COMPOSITION:
@@ -606,17 +600,17 @@ def composition_supplement(rows, order, out):
             major = "NO" if group.startswith("NO") else group[0]
             axes[1].scatter([row["annotated_span_bp"] / 1e6 for row in subset],
                             [100 * row["dyz1_fraction"] for row in subset],
-                            color=LINEAGE_COLORS.get(major, "#89959e"), s=8, alpha=0.8,
+                            color=LINEAGE_COLORS.get(major, LINE), s=8, alpha=0.8,
                             edgecolors="white", linewidths=0.25)
     axes[1].set_xlabel("Annotated Yq12 span (Mb)")
     axes[1].set_ylabel("DYZ1 / annotated Yq12 (%)")
-    axes[1].grid(color="#edf1f3", linewidth=0.4)
+    axes[1].grid(True)
     axes[1].set_axisbelow(True)
     for ax in axes:
         ax.spines[["right", "top"]].set_visible(False)
-    fig.subplots_adjust(left=0.07, right=0.99, top=0.9, bottom=0.07)
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.925, bottom=0.07)
     from palette import letter
-    for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.1 if s == "a" else .05))
+    for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.075 if s == "a" else .05))
     save(fig, out, "ed/ed2_yq12_composition")
 
 
