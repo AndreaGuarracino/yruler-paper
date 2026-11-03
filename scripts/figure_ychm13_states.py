@@ -96,7 +96,8 @@ for lab, a, b in (('Yp', 0, 10.71), ('Yq', 10.71, 62.46)):   # arms
 CC = {}   # sequence classes (y 1.0-1.6), one label per class on its widest block, legend at the top right
 for a, b, c, col in SC:
     ax0.add_patch(plt.Rectangle((a / MB, 1.0), (b - a) / MB, 0.6, fc=col, ec='white', lw=0.3)); CC.setdefault(NMC[c], col)
-fig.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), loc='upper right', bbox_to_anchor=(0.997, 0.99), ncol=2, fontsize=7.5, frameon=False, title='Sequence class', title_fontsize=8, handlelength=1.6, handleheight=1.1, columnspacing=1.0, labelspacing=0.35)
+lax = fig.add_subplot(gs[0, 1:]); lax.axis('off')   # legend in its own header cell
+lax.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), loc='center', ncol=2, fontsize=7.5, frameon=False, title='Sequence class', title_fontsize=8, handlelength=1.6, handleheight=1.1, columnspacing=1.0, labelspacing=0.35)
 for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))):   # palindromes (y 0.45-0.7), labels on two rows
     for a, b in arms: ax0.add_patch(plt.Rectangle((a / MB, 0.45), (b - a) / MB, 0.25, fc=INK, lw=0))
     ax0.text(np.mean([v for ab in arms for v in ab]) / MB, 0.32 - 0.32 * (i % 2), p, ha='center', va='top', fontsize=5.5, color=INK)
@@ -119,4 +120,4 @@ for lab, a, b in gl:
     axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 14), va='center', ha='left', fontsize=7.5, color=INK)
 cb = fig.colorbar(im, cax=cax, boundaries=BOUND, ticks=[(a + b) / 2 for a, b in zip(BOUND[:-1], BOUND[1:])]); cb.ax.set_yticklabels(['0', '0.5', 'loss', '1', 'gain', '1.5', '2'])
 cb.ax.tick_params(labelsize=6); cb.set_label('Copies vs 100 reference XY males; hatched white: no data', fontsize=7)
-fig.savefig(OUT); print(f'written {OUT}')
+fig.savefig(OUT, bbox_inches='tight', pad_inches=0.02); print(f'written {OUT}')
