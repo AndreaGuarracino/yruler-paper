@@ -52,10 +52,11 @@ An open-addressing hash table verifies marker membership after a Bloom filter, w
  \widehat L_{i,\mathrm{Yq12}}=
  \widehat L_{i,\mathrm{DYZ1}}+
  \widehat L_{i,\mathrm{DYZ2}}+
+ \widehat L_{i,\mathrm{DYZ18S}}+
  \widehat L_{i,\mathrm{Yq12rest}}.
 \end{equation}}
 
-\vsette{The residual includes DYZ18S, other repeats and unannotated sequence; DYZ18S must therefore not be added again to the total. Inner selection, outer CV, lineage exclusion and held-out evaluation use the same output expression. The standalone Yq12 marker class is retained in the parameter file, but its own scale and marker sum are not the reported total. The released calibration is for Illumina whole-genome reads; other library types require their own evaluation.}
+\vsette{The residual is the annotated Yq12 span minus its DYZ1, DYZ2 and DYZ18S units (other repeats and unannotated sequence) and has its own marker class and scale. On the same 80 males and folds, this sum gave Yq12 cross-validation errors equal to the sum of DYZ1, DYZ2 and a residual that contains DYZ18S (median 1.72\% for both; maximum 8.16\% and 8.04\%) and lower than the standalone Yq12 marker class (median 1.75\%, maximum 9.22\%). Inner selection, outer CV, lineage exclusion and held-out evaluation use the same output expression. The standalone Yq12 marker class is retained in the parameter file, but its own scale and marker sum are not the reported total. The released calibration is for Illumina whole-genome reads; other library types require their own evaluation.}
 
 \subsection{Y dosage}\label{sec:m-dosage}
 Y dosage is
@@ -110,7 +111,7 @@ One hundred and thirty-six estimated individuals have reference assemblies: 115 
 
 Lengths are summarized by broad lineage and finer clades, retaining all represented groups in supplementary plots. R1b is compared with other chromosomes to assess a previously reported DYZ3 association \cite{Hallast2023}. Family and kinship-component sensitivity results accompany all-sample and outside-reference-panel summaries (Table~\ref{tab:relatedness}).
 
-\vsette{Read-based composition uses the calibrated DYZ1 and DYZ2 amounts and their dimensionless length ratio. Both share the Y-ruler denominator. The reported Yq12 total is their sum with a separately calibrated residual; it is therefore not statistically independent of its components. DYZ18S is contained within that residual and must not be added to the total again. Repeat-unit ratios use the unit convention of Hallast et al. \cite{Hallast2026} rather than assuming that base-pair ratios count units.}
+\vsette{Read-based composition uses the calibrated DYZ1 and DYZ2 amounts and their dimensionless length ratio. Both share the Y-ruler denominator. The reported Yq12 total is their sum with DYZ18S and a separately calibrated residual; it is therefore not statistically independent of its components. Repeat-unit ratios use the unit convention of Hallast et al. \cite{Hallast2026} rather than assuming that base-pair ratios count units.}
 
 \vsette{The assembly-composition supplement uses 91 complete Yq12 references (83 primary-resource and eight HPRC release 2), with the published annotation \cite{Hallast2026} or the same procedure on replacements. Annotation records match the exact assembly and contig in the reference manifest. DYZ1, DYZ2, the sum of DYZ18, 3.1 kb and 2.7 kb block lengths, and residual unannotated bases partition each reference-coordinate span; this identity was checked per array.} Individuals follow clade order and are sorted by DYZ1 fraction within clades; seven references without matching lineage metadata remain in the supplement. The length--fraction plot is descriptive and its axes share the annotated span. The unresolved NO [K2a] call of HG03742 is displayed separately as NO in broad-lineage plots and NO* in the tree; its source annotation is retained.
 
