@@ -11,6 +11,7 @@ BATCH = {'Cross batch': 'o', 'Same batch': '^', 'Reverse cross batch': 's'}   # 
 NAMES = {'class': 'Classes', 'source': 'Pangenome', 'lineage': 'Y lineages', 'annotation': 'Annotation', 'superpop': 'Superpopulation'}
 SUPERPOP = {'AFR': '#E69F00', 'AMR': '#CC79A7', 'EAS': '#56B4E9', 'EUR': '#009E73', 'SAS': '#F0E442'}   # Okabe-Ito, colourblind-safe
 SUPERPOP_NAME = {'AFR': 'Africa (AFR)', 'AMR': 'Americas (admixed) (AMR)', 'EAS': 'East Asia (EAS)', 'EUR': 'Europe (EUR)', 'SAS': 'South Asia (SAS)'}   # legend titles in every figure
+import os
 import matplotlib as _mpl
 MM = 1 / 25.4   # inches per mm
 GRID = '#e8edef'   # grid lines
@@ -59,4 +60,6 @@ def save(fig, path, pdf=None):
     out = [s for s, x in T if x.x0 < 0 or x.y0 < 0 or x.x1 > w or x.y1 > h]
     over = {k: round(float(v) / MM, 1) for k, v in (('left', -b.x0), ('bottom', -b.y0), ('right', b.x1 - w), ('top', b.y1 - h)) if v > 0.05 * MM}
     (pdf.savefig(fig) if pdf else fig.savefig(path))
+    if not pdf and '/main/' in str(path):   # main figures: also native SVG, editable text
+        with _mpl.rc_context({'svg.fonttype': 'none'}): fig.savefig(str(path)[:-4] + '.svg'); print(f'written {str(path)[:-4]}.svg', flush=True)
     print(f'written {path} {w / MM:.1f} x {h / MM:.1f} mm' + (f'; WARNING content outside the page (mm): {over}; texts: {out[:4]}' if over else ''), flush=True)

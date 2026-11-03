@@ -9,11 +9,11 @@ cv_median_dyz17	2.24
 cv_median_ratio	2.61
 ratio_per_man_abs_median_p90	2.63 / 7.65
 dyz19_short_truth_men	HG02492 11.34, HG02735 3.12, NA20809 3.79
-lolo_median	dyz3 2.39 (101), yq12 1.86 (80), dyz19 2.63 (115)
+lolo_median	dyz3 2.39 (101), yq12 1.89 (80), dyz19 2.63 (115)
 h21_median	dyz3 1.55 (18), yq12 0.80 (3), dyz19 2.90 (14)
-depth_1x_median	dyz3 3.28, yq12 2.03, dyz19 4.21
-father_son_median_signed	DYZ3 1.86 / -0.68 (309), Yq12 1.83 / -0.09 (309), DYZ19 2.85 / -0.45 (309)
-female_bg_pct_median	dyz3 0.0128, yq12 0.0520, dyz19 0.0093
+depth_1x_median	dyz3 3.28, yq12 2.06, dyz19 4.21
+father_son_median_signed	DYZ3 1.86 / -0.68 (309), Yq12 1.81 / -0.08 (309), DYZ19 2.85 / -0.45 (309)
+female_bg_pct_median	dyz3 0.0128, yq12 0.0202, dyz19 0.0093
 female_bg_pct_max_any	0.74
 men_estimated_included	1597 / 1587
 dyz3_r1b_vs_other	318.8 kb (282) vs 980.9 kb (1305)
@@ -23,9 +23,9 @@ dyz19_na18910_na18911	NA18910 83.2 kb (E1a2a1b2), NA18911 77.4 kb (E1a2a1b2)
 dyz3_O2a2b1a1	median 269.2 kb, 37 men, range 226.2-532.6 kb
 dyz3_O2a2b1a2	median 1045.2 kb, 27 men, range 754.8-1385.5 kb
 sister_pairs_over_25pct	545 pairs: DYZ19 4, DYZ3 44, Yq12 48
-father_son_yq12_over_25pct_with_par2_gain	2 pairs: HG02771-HG02773 Yq12 132.1%, DYZ3 1.1%, DYZ19 3.2%; NA11930-NA10845 Yq12 54.8%, DYZ3 0.1%, DYZ19 0.2%
+father_son_yq12_over_25pct_with_par2_gain	2 pairs: HG02771-HG02773 Yq12 132.2%, DYZ3 1.1%, DYZ19 3.2%; NA11930-NA10845 Yq12 54.8%, DYZ3 0.1%, DYZ19 0.2%
 father_son_yq12_over_25pct_without_par2_gain	2 pairs: NA12056-NA10851 Yq12 37.1%, DYZ3 0.6%, DYZ19 3.0%; HG02317-HG02316 Yq12 29.9%, DYZ3 31.2%, DYZ19 0.8%
-par2_gain_men	HG02773 PAR2 1.4713, Yq12 56.35 Mb, HG02895 PAR2 1.4382, Yq12 49.27 Mb, HG03685 PAR2 1.4494, Yq12 32.20 Mb, NA11930 PAR2 1.4608, Yq12 48.53 Mb
+par2_gain_men	HG02773 PAR2 1.4713, Yq12 56.37 Mb, HG02895 PAR2 1.4382, Yq12 49.27 Mb, HG03685 PAR2 1.4494, Yq12 32.19 Mb, NA11930 PAR2 1.4608, Yq12 48.54 Mb
 hg02966_xdr_doses	blocks 1-5 1.91-1.94, blocks 6-8 0.0034-0.0039
 dyz1_dyz2_spearman_included	0.82
 unit_ratio_median_p1_p99	0.967 (0.678-1.462)
@@ -44,8 +44,8 @@ dyz19_assemblies_below_100kb	4 of 140 (62.3-63.5 kb)
 dyz18s_lineage_A_signed	-14.41% (4 men)
 same_male_DYZ19_SGDP_vs_1kGP_NYGC	10 pairs, median signed +9.80%, median |diff| 9.80%, max |diff| 17.16%, 10 positive
 same_male_DYZ19_SGDP_vs_HGDP	11 pairs, median signed -3.47%, median |diff| 6.83%, max |diff| 25.48%, 1 positive
-same_male_Yq12_SGDP_vs_1kGP_NYGC	10 pairs, median signed -2.52%, median |diff| 3.71%, max |diff| 11.44%, 4 positive
-same_male_Yq12_SGDP_vs_HGDP	11 pairs, median signed +14.75%, median |diff| 14.75%, max |diff| 55.61%, 11 positive
+same_male_Yq12_SGDP_vs_1kGP_NYGC	10 pairs, median signed -2.53%, median |diff| 3.70%, max |diff| 11.41%, 4 positive
+same_male_Yq12_SGDP_vs_HGDP	11 pairs, median signed +14.70%, median |diff| 14.70%, max |diff| 55.52%, 11 positive
 same_male_DYZ2_SGDP_vs_1kGP_NYGC	10 pairs, median signed -3.27%, median |diff| 4.55%, max |diff| 17.65%, 1 positive
 same_male_DYZ2_SGDP_vs_HGDP	11 pairs, median signed +55.96%, median |diff| 55.96%, max |diff| 82.49%, 10 positive
 same_male_DYZ3_SGDP_vs_1kGP_NYGC	10 pairs, median signed +1.06%, median |diff| 3.54%, max |diff| 9.51%, 6 positive

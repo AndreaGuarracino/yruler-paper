@@ -10,7 +10,7 @@ import numpy as np
 from scipy.stats import spearmanr
 
 def log(*a): print(*a, flush=True)
-S6, REG, IND, DROP, PED, CVU, COH, OUT = sys.argv[1:9]; D30 = sys.argv[9] if len(sys.argv) > 9 else None   # D30: their measure on our 30x CRAMs (um_srdepth.sh)
+S6, REG, IND, DROP, PED, CVU, COH, OUT = sys.argv[1:9]; D30 = sys.argv[9] if len(sys.argv) > 9 and sys.argv[9] != '-' else None   # D30: their measure on our 30x CRAMs (um_srdepth.sh)
 P3 = sys.argv[10] if len(sys.argv) > 10 else None   # P3: yruler final model on the 1kGP phase 3 low-coverage runs (um_apply.py table, samples <id>_phase3)
 SIG = {'San Roman DYZ1 depth': {l.split('\t')[0]: float(l.split('\t')[3]) for l in list(open(S6))[1:]}}
 if D30: SIG['San Roman measure on 30x CRAMs'] = {l.split('\t')[0]: float(l.split('\t')[5]) for l in open(D30)}

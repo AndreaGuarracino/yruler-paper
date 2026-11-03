@@ -1,6 +1,6 @@
 class	cv_predictions	half_width_80_pct	half_width_90_pct	half_width_95_pct	holdout21_n	holdout21_within_90
 dyz3	1010	3.66	5.17	7.31	18	17
-yq12	800	3.14	4.23	5.31	3	3
+yq12	800	3.23	4.14	5.14	3	3
 dyz1	810	4.04	5.45	6.43	3	3
 dyz2	800	4.66	6.40	7.50	3	3
 dyz18s	810	6.80	10.69	12.94	3	3

@@ -1,67 +1,63 @@
-class	measure	men	mean_or_rho	median	p90	max
-yq12	San Roman DYZ1 depth, one K on all truth men	32	28.3135	26.4328	45.0740	85.7627
-yq12	San Roman DYZ1 depth, one K on all truth men, men with a yruler final estimate	32	28.3135	26.4328	45.0740	85.7627
-yq12	yruler final model, trained on all truth men (men with San Roman DYZ1 depth)	32	1.9071	1.5606	3.8799	5.3624
-yq12	Spearman vs truth: yruler final model (men with San Roman DYZ1 depth)	32	0.9828			
-yq12	scale-free CV of truth / relative value: San Roman DYZ1 depth (men with San Roman DYZ1 depth)	32	28.7647			
-yq12	scale-free CV of truth / relative value: yruler final model (men with San Roman DYZ1 depth)	32	2.3754			
-yq12	Spearman vs truth: San Roman DYZ1 depth, men with a yruler final estimate	32	0.3497			
-yq12	San Roman DYZ1 depth, K per fold, per-man mean |error|	32	29.4868	27.7597	46.3196	91.1376
-yq12	San Roman DYZ1 depth, K per fold, all predictions	32	29.4868	26.6944	46.2154	99.1920
-yq12	yruler CV, per-man mean |error| (men with San Roman DYZ1 depth)	30	1.9634	1.7222	3.8936	5.1077
-yq12	yruler CV, all predictions (men with San Roman DYZ1 depth)	30	1.9634	1.7369	4.1263	5.7476
-yq12	Spearman vs truth: San Roman DYZ1 depth	32	0.3497			
-yq12	Spearman vs truth: yruler CV prediction (men with San Roman DYZ1 depth)	30	0.9826			
-yq12	Spearman San Roman DYZ1 depth vs yruler Yq12_bp (1kGP men, final model)	1196	0.5979			
-yq12	San Roman measure on 30x CRAMs, one K on all truth men	83	5.7610	4.1832	12.5812	25.1698
-yq12	San Roman measure on 30x CRAMs, one K on all truth men, men with a yruler final estimate	83	5.7610	4.1832	12.5812	25.1698
-yq12	yruler final model, trained on all truth men (men with San Roman measure on 30x CRAMs)	83	1.9721	1.7134	3.8887	7.4940
-yq12	Spearman vs truth: yruler final model (men with San Roman measure on 30x CRAMs)	83	0.9890			
-yq12	scale-free CV of truth / relative value: San Roman measure on 30x CRAMs (men with San Roman measure on 30x CRAMs)	83	7.7307			
-yq12	scale-free CV of truth / relative value: yruler final model (men with San Roman measure on 30x CRAMs)	83	2.5028			
-yq12	Spearman vs truth: San Roman measure on 30x CRAMs, men with a yruler final estimate	83	0.9344			
-yq12	San Roman measure on 30x CRAMs, K per fold, per-man mean |error|	83	5.8151	4.2096	12.6543	25.2336
-yq12	San Roman measure on 30x CRAMs, K per fold, all predictions	83	5.8151	4.3066	12.7583	25.8431
-yq12	yruler CV, per-man mean |error| (men with San Roman measure on 30x CRAMs)	80	2.0086	1.7387	4.1680	7.7155
-yq12	yruler CV, all predictions (men with San Roman measure on 30x CRAMs)	80	2.0086	1.7157	4.2281	8.0390
-yq12	Spearman vs truth: San Roman measure on 30x CRAMs	83	0.9344			
-yq12	Spearman vs truth: yruler CV prediction (men with San Roman measure on 30x CRAMs)	80	0.9892			
-yq12	Spearman San Roman measure on 30x CRAMs vs yruler Yq12_bp (1kGP men, final model)	126	0.9458			
-dyz1	San Roman DYZ1 depth, one K on all truth men	32	26.0022	21.9239	41.5418	83.5308
-dyz1	San Roman DYZ1 depth, one K on all truth men, men with a yruler final estimate	32	26.0022	21.9239	41.5418	83.5308
-dyz1	yruler final model, trained on all truth men (men with San Roman DYZ1 depth)	32	2.8598	2.7036	5.1180	7.3670
-dyz1	Spearman vs truth: yruler final model (men with San Roman DYZ1 depth)	32	0.9644			
-dyz1	scale-free CV of truth / relative value: San Roman DYZ1 depth (men with San Roman DYZ1 depth)	32	26.4169			
-dyz1	scale-free CV of truth / relative value: yruler final model (men with San Roman DYZ1 depth)	32	3.4937			
-dyz1	Spearman vs truth: San Roman DYZ1 depth, men with a yruler final estimate	32	0.4157			
-dyz1	San Roman DYZ1 depth, K per fold, per-man mean |error|	32	27.0942	22.5042	42.8493	88.8090
-dyz1	San Roman DYZ1 depth, K per fold, all predictions	32	27.0942	23.2016	47.1863	95.0648
-dyz1	yruler CV, per-man mean |error| (men with San Roman DYZ1 depth)	30	3.0401	2.8386	5.0057	7.2862
-dyz1	yruler CV, all predictions (men with San Roman DYZ1 depth)	30	3.0401	2.8105	5.5895	7.8712
-dyz1	Spearman vs truth: San Roman DYZ1 depth	32	0.4157			
-dyz1	Spearman vs truth: yruler CV prediction (men with San Roman DYZ1 depth)	30	0.9666			
-dyz1	Spearman San Roman DYZ1 depth vs yruler DYZ1_bp (1kGP men, final model)	1196	0.6179			
-dyz1	San Roman measure on 30x CRAMs, one K on all truth men	83	2.7660	2.4755	5.5219	12.3608
-dyz1	San Roman measure on 30x CRAMs, one K on all truth men, men with a yruler final estimate	83	2.7660	2.4755	5.5219	12.3608
-dyz1	yruler final model, trained on all truth men (men with San Roman measure on 30x CRAMs)	83	2.5082	2.1207	5.1036	9.6056
-dyz1	Spearman vs truth: yruler final model (men with San Roman measure on 30x CRAMs)	83	0.9862			
-dyz1	scale-free CV of truth / relative value: San Roman measure on 30x CRAMs (men with San Roman measure on 30x CRAMs)	83	3.5370			
-dyz1	scale-free CV of truth / relative value: yruler final model (men with San Roman measure on 30x CRAMs)	83	3.1865			
-dyz1	Spearman vs truth: San Roman measure on 30x CRAMs, men with a yruler final estimate	83	0.9810			
-dyz1	San Roman measure on 30x CRAMs, K per fold, per-man mean |error|	83	2.7942	2.5002	5.6190	12.5112
-dyz1	San Roman measure on 30x CRAMs, K per fold, all predictions	83	2.7942	2.3946	5.6350	12.8690
-dyz1	yruler CV, per-man mean |error| (men with San Roman measure on 30x CRAMs)	80	2.6157	2.2308	4.9286	9.9526
-dyz1	yruler CV, all predictions (men with San Roman measure on 30x CRAMs)	80	2.6157	2.2717	5.0723	10.4822
-dyz1	Spearman vs truth: San Roman measure on 30x CRAMs	83	0.9810			
-dyz1	Spearman vs truth: yruler CV prediction (men with San Roman measure on 30x CRAMs)	80	0.9864			
-dyz1	Spearman San Roman measure on 30x CRAMs vs yruler DYZ1_bp (1kGP men, final model)	126	0.9922			
-yq12	yruler final model on phase 3 runs (same men)	30	19.9715	11.1971	52.4204	94.8213
-yq12	yruler on phase 3 runs, one K on these men	30	14.6401	10.9376	28.0202	63.6334
-yq12	San Roman DYZ1 depth (phase 3), one K on these men	30	27.5648	24.9606	39.6893	90.6859
-yq12	Spearman vs truth: yruler final model on phase 3 runs	30	0.8002			
-yq12	Spearman vs truth: San Roman DYZ1 depth (phase 3), same men	30	0.4002			
-dyz1	yruler final model on phase 3 runs (same men)	30	48.2924	29.3534	113.1961	175.4878
-dyz1	yruler on phase 3 runs, one K on these men	30	23.8844	20.5208	43.8190	85.8402
-dyz1	San Roman DYZ1 depth (phase 3), one K on these men	30	25.1246	20.1474	36.5126	88.2426
-dyz1	Spearman vs truth: yruler final model on phase 3 runs	30	0.5386			
-dyz1	Spearman vs truth: San Roman DYZ1 depth (phase 3), same men	30	0.4745			
+# yq12: 30 males; K-free spread of truth/estimate (CV %): San Roman 27.52, yruler final 16.24; Spearman vs truth: San Roman 0.400, yruler final 0.800; San Roman bp use one K fitted on these males, yruler bp use the released model
+# dyz1: 30 males; K-free spread of truth/estimate (CV %): San Roman 25.15, yruler final 23.57; Spearman vs truth: San Roman 0.475, yruler final 0.539; San Roman bp use one K fitted on these males, yruler bp use the released model
+male	class	truth_bp	san_roman_relative	san_roman_bp	san_roman_error_pct	yruler_final_bp	yruler_final_error_pct
+HG00126	dyz1	13854065	238.6551	18538438	+33.81	29049022	+109.68
+HG00140	dyz1	17250870	250.6665	19471468	+12.87	27501336	+59.42
+HG00280	dyz1	17406052	158.8812	12341695	-29.10	19922201	+14.46
+HG00290	dyz1	19066006	197.4799	15339993	-19.54	20744299	+8.80
+HG00358	dyz1	18991695	441.4894	34294350	+80.58	51147609	+169.32
+HG00731	dyz1	15382848	166.5280	12935687	-15.91	18055884	+17.38
+HG01167	dyz1	18010022	186.3018	14471697	-19.65	21026242	+16.75
+HG01530	dyz1	9679220	117.6792	9141172	-5.56	12419136	+28.31
+HG01596	dyz1	23374541	220.0453	17092847	-26.87	29729983	+27.19
+HG02040	dyz1	18499561	209.1591	16247219	-12.18	25947971	+40.26
+HG02391	dyz1	13011922	210.4833	16350081	+25.65	23550340	+80.99
+HG02392	dyz1	14300948	217.4634	16892289	+18.12	24132476	+68.75
+HG02554	dyz1	15756773	225.7799	17538306	+11.31	24438790	+55.10
+HG02666	dyz1	16666021	171.2275	13300745	-20.19	18234915	+9.41
+HG03009	dyz1	17743278	232.0142	18022582	+1.57	26834073	+51.24
+HG03225	dyz1	15738698	325.8328	25310290	+60.82	38536589	+144.85
+NA18522	dyz1	16219003	174.3884	13546274	-16.48	21608213	+33.23
+NA18608	dyz1	17073369	263.9783	20505509	+20.10	29875072	+74.98
+NA18747	dyz1	16830986	407.8731	31683085	+88.24	46367321	+175.49
+NA18879	dyz1	12941994	200.4251	15568777	+20.30	22352355	+72.71
+NA18971	dyz1	19151244	209.0911	16241941	-15.19	22670809	+18.38
+NA18983	dyz1	18457071	176.1347	13681928	-25.87	21620673	+17.14
+NA19043	dyz1	14298317	142.5265	11071281	-22.57	15337924	+7.27
+NA19331	dyz1	20521024	190.9220	14830585	-27.73	22589354	+10.08
+NA19682	dyz1	12785541	117.9526	9162413	-28.34	14516854	+13.54
+NA20752	dyz1	13873974	144.6649	11237390	-19.00	16037591	+15.59
+NA20809	dyz1	13070684	184.0562	14297260	+9.38	15457625	+18.26
+NA20850	dyz1	14840559	129.6162	10068427	-32.16	17785377	+19.84
+NA20870	dyz1	12890462	125.7558	9768553	-24.22	16809123	+30.40
+NA20905	dyz1	12131353	139.8814	10865817	-10.43	16978884	+39.96
+HG00126	yq12	24631978	238.6551	32487727	+31.89	37429425	+51.95
+HG00140	yq12	30589632	250.6665	34122818	+11.55	36216995	+18.40
+HG00280	yq12	29521922	158.8812	21628231	-26.74	28073482	-4.91
+HG00290	yq12	32208990	197.4799	26882604	-16.54	33876438	+5.18
+HG00358	yq12	32212610	441.4894	60099210	+86.57	61867907	+92.06
+HG00731	yq12	26790165	166.5280	22669174	-15.38	28210224	+5.30
+HG01167	yq12	33322471	186.3018	25360958	-23.89	37811495	+13.47
+HG01530	yq12	19760995	117.6792	16019467	-18.93	22669491	+14.72
+HG01596	yq12	41703746	220.0453	29954398	-28.17	44231792	+6.06
+HG02040	yq12	36529896	209.1591	28472475	-22.06	38927450	+6.56
+HG02391	yq12	21724698	210.4833	28652735	+31.89	28194814	+29.78
+HG02392	yq12	22052848	217.4634	29602929	+34.24	28754170	+30.39
+HG02554	yq12	25946885	225.7799	30735043	+18.45	30909783	+19.13
+HG02666	yq12	26059959	171.2275	23308920	-10.56	26599728	+2.07
+HG03009	yq12	29709793	232.0142	31583713	+6.31	34466215	+16.01
+HG03225	yq12	29673679	325.8328	44355074	+49.48	45423391	+53.08
+NA18522	yq12	26933673	174.3884	23739198	-11.86	33536942	+24.52
+NA18608	yq12	27562865	263.9783	35934925	+30.37	36114788	+31.03
+NA18747	yq12	29117572	407.8731	55523092	+90.69	56829578	+95.17
+NA18879	yq12	21648646	200.4251	27283538	+26.03	27290934	+26.06
+NA18971	yq12	34988398	209.0911	28463226	-18.65	38205253	+9.19
+NA18983	yq12	33518387	176.1347	23976926	-28.47	35111636	+4.75
+NA19043	yq12	31600142	142.5265	19401891	-38.60	31681560	+0.26
+NA19331	yq12	37106569	190.9220	25989892	-29.96	39807126	+7.28
+NA19682	yq12	22408914	117.9526	16056690	-28.35	21031570	-6.15
+NA20752	yq12	24324209	144.6649	19692989	-19.04	23840792	-1.99
+NA20809	yq12	21930213	184.0562	25055265	+14.25	21686731	-1.11
+NA20850	yq12	25346822	129.6162	17644438	-30.39	26593957	+4.92
+NA20870	yq12	20476706	125.7558	17118922	-16.40	23213325	+13.36
+NA20905	yq12	21454911	139.8814	19041826	-11.25	22759112	+6.08
