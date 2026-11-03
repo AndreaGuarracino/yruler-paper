@@ -181,8 +181,9 @@ def individual_boxes(ax,kind,vertical=False):
         ax.grid(axis='y',color='#e8edf0',linewidth=.6);style(ax)
         return
     ax.set_xscale('symlog',linthresh=5,linscale=1)
-    ax.set_xlim(0,max(30,maximum*1.05));ax.set_ylim(len(KEYS)-.5,-.5)
-    ax.set_xticks([0,2,5,10,20,30],['0','2','5','10','20','30'])
+    print(f'{kind} axis maximum {maximum:.2f}')
+    ax.set_xlim(0,max(25,maximum*1.02));ax.set_ylim(len(KEYS)-.5,-.5)   # 25 covers every point (max 23.93)
+    ax.set_xticks([0,2,5,10,25],['0','2','5','10','25'])
     ax.set_yticks(range(len(KEYS)))
     ax.set_xlabel('Mean absolute CV error (%)' if kind=='cv' else 'Absolute error (%)',fontsize=8.5)
     ax.grid(axis='x',color='#e8edf0',linewidth=.6);style(ax)

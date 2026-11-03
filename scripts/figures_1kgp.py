@@ -836,7 +836,7 @@ def depth_supplement(depth, out):
         ax.spines[["right", "top"]].set_visible(False)
         ax.set_xlabel("Median autosomal coverage (×)", fontsize=8)
         ax.set_ylabel("Absolute error (%)", fontsize=8)
-        ax.tick_params(labelsize=7)
+        ax.tick_params(labelsize=7, labelbottom=True)   # sharex hides upper-row labels
     for ax in axes.flat[len(TARGETS):]: ax.set_visible(False)
     fig.subplots_adjust(wspace=.4, hspace=.45, top=.88, bottom=.13)
     fig.suptitle("Sequencing depth and prediction accuracy", fontsize=11, color="#243d49")
