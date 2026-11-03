@@ -77,7 +77,7 @@ We additionally excluded each of 18 broad Y lineages in turn, removing its eligi
 
 For sequencing-depth sensitivity, test reads were thinned to \vsette{30, 25, 20, 15, 10, 5, 2 and 1$\times$ of base coverage}; training reads remained at full depth. All ten repeats and five folds were retained at every \vsette{level}, with the same test assignments as full-depth CV. Each \vsette{level} contains \vsette{6,530} predictions across the \vsette{seven} targets. All \vsette{6,530} full-depth predictions match the main CV in sample, repeat, fold and error. Coverage was measured from chromosome 2 \vsette{31-mer} counts in each thinned run\vsette{ and converted to base coverage (150/120)}; group coordinates are medians across the \vsette{115} unique evaluated individuals, each counted once. The seven \vsette{displayed} median coverages \vsette{are 1.0, 2.0, 5.0, 10.0, 15.0, 20.0 and 34.1$\times$. HG02953, below 30$\times$ at full depth, keeps its full-depth counts at the 30$\times$ level. The 30 and 25$\times$ levels are in the results table and are not displayed.}
 
-Estimates showed no clear length-dependent bias: slopes of log estimate on log reference length, one value per male, were 1.000 for DYZ3 (bootstrap 95\% interval 0.985--1.013), 1.008 for Yq12, 0.997 for DYZ1, 1.025 for DYZ2 (0.999--1.051), 0.970 for DYZ19, 0.949 for DYZ17 and 0.899 for DYZ18S (0.734--1.056). Absolute relative error is $100|\widehat L_i/L_i-1|$, and signed relative error is $100(\widehat L_i/L_i-1)$. Figure~\ref{fig:method}b gives each individual equal weight: each point is the arithmetic mean of ten absolute out-of-fold percentage errors, one per repeat. Errors are made absolute before averaging. Boxes span the 25th--75th percentiles, central lines show medians and whiskers end at the 10th and 90th percentiles; all individual points remain visible. Labels identify the three highest individual mean errors per target, with ties resolved by sample identifier. In the coverage panel, each point likewise averages ten absolute errors for one individual at one depth fraction. Curves connect the medians of these individual means. Boxes at different coverages are equally spaced and labelled by measured median autosomal coverage, rather than by the thinning fraction. Error axes are linear through 5\% and logarithmic above. Supplementary Fig.~\ref{fig:cv-folds} retains every test-fold distribution. Table~\ref{tab:accuracy} reports the median of all out-of-fold errors, which differs from the median of the displayed individual means; maxima refer to single out-of-fold predictions. Repeated predictions are not independent biological individuals.
+Estimates showed no clear length-dependent bias: slopes of log estimate on log reference length, one value per male, were 1.000 for DYZ3 (bootstrap 95\% interval 0.985--1.013), 1.008 for Yq12, 0.997 for DYZ1, 1.025 for DYZ2 (0.999--1.051), 0.970 for DYZ19, 0.949 for DYZ17 and 0.899 for DYZ18S (0.734--1.056). Absolute relative error is $100|\widehat L_i/L_i-1|$, and signed relative error is $100(\widehat L_i/L_i-1)$. Figure~\ref{fig:method}b gives each individual equal weight: each point is the arithmetic mean of ten absolute out-of-fold percentage errors, one per repeat. Errors are made absolute before averaging. Boxes span the 25th--75th percentiles, central lines show medians and whiskers end at the 10th and 90th percentiles; all individual points remain visible. Labels identify the three highest individual mean errors per target, with ties resolved by sample identifier. In the coverage panel, each point likewise averages ten absolute errors for one individual at one depth fraction. Curves connect the medians of these individual means. Boxes at different coverages are equally spaced and labelled by measured median autosomal coverage, rather than by the thinning fraction. Error axes are linear through 5\% and logarithmic above. Medians of the 50 test folds ranged from 1.48\% to 3.37\% for DYZ3 and from 0.80\% to 2.50\% for Yq12. Table~\ref{tab:accuracy} reports the median of all out-of-fold errors, which differs from the median of the displayed individual means; maxima refer to single out-of-fold predictions. Repeated predictions are not independent biological individuals.
 
 The DYZ1:DYZ2 length ratio is a derived, dimensionless measurement rather than an additional satellite class. Its validation pairs the two component predictions for the same individual, repeat and test fold; fold assignments were checked to match. Ratio error is $100| (\widehat L_{\mathrm{DYZ1}}/\widehat L_{\mathrm{DYZ2}})/(L_{\mathrm{DYZ1}}/L_{\mathrm{DYZ2}})-1|$, calculated before summarizing. The paired set contains the \vsette{80} individuals with both references, with \vsette{800} full-depth predictions and ten repeats at each reduced coverage. Each excluded-lineage ratio likewise uses the two component predictions from the same held-out lineage. The ratio has no separately fitted calibration or marker set.
 
@@ -318,7 +318,7 @@ These comparisons require a distinction between reference-panel observations and
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{figures/figureS2_yq12_composition.pdf}
-\caption{\textbf{Individual composition of complete Yq12 assembly references.} \textbf{a}, Per-individual composition of all 91 complete reference arrays, grouped by Y clade and sorted by DYZ1 fraction within each clade. Counts below groups give the number of references. The final seven references lack matching lineage metadata. DYZ1, DYZ2, other units (DYZ18, 3.1 kb and 2.7 kb) and residual unannotated bases sum to the annotated Yq12 span. \textbf{b}, DYZ1 fraction against annotated Yq12 span in the same 91 references. Colours denote broad Y lineages as in Extended Data Fig.~\ref{fig:map}; grey marks references without lineage metadata. The plot is descriptive and both axes use the same span. These are assembly annotations; the read-based population estimates are shown separately in Extended Data Fig.~\ref{fig:s-population}.}\label{fig:yq12-composition}
+\caption{\textbf{Individual composition of complete Yq12 assembly references.} \textbf{a}, Per-individual composition of all 91 complete reference arrays, grouped by Y clade and sorted by DYZ1 fraction within each clade. Counts below groups give the number of references. The final seven references lack matching lineage metadata. DYZ1, DYZ2, other units (DYZ18, 3.1 kb and 2.7 kb) and residual unannotated bases sum to the annotated Yq12 span. \textbf{b}, DYZ1 fraction against annotated Yq12 span in the same 91 references. Colours denote broad Y lineages as in Supplementary Fig.~\ref{fig:map}; grey marks references without lineage metadata. The plot is descriptive and both axes use the same span. These are assembly annotations; the read-based population estimates are shown separately in Extended Data Fig.~\ref{fig:s-population}.}\label{fig:yq12-composition}
 \end{figure}
 \endgroup
 
@@ -350,44 +350,16 @@ These comparisons require a distinction between reference-panel observations and
 \endgroup
 
 \clearpage
-\begingroup
-\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
-\begin{figure}[p]
-\centering
-\includegraphics[page=1,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS6_cv_folds.pdf}
-\caption{\textbf{Prediction-error variability in every cross-validation fold.} \textbf{a,b}, DYZ3 and Yq12. Each target shows all five test-fold distributions within each of ten repeats, with folds 1--5 running from top to bottom. Boxes span the 25th--75th percentiles, central lines mark medians and whiskers end at the 10th and 90th percentiles; points retain errors beyond the whiskers. Axes are linear through 5\% and logarithmic above. Repeated predictions of the same individual are not independent biological observations.}\label{fig:cv-folds}
-\end{figure}
-\endgroup
+
 
 \clearpage
-\begingroup
-\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
-\begin{figure}[p]
-\centering
-\includegraphics[page=2,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS6_cv_folds.pdf}
-\caption{\textbf{Prediction-error variability in every cross-validation fold (continued).} \textbf{c,d}, DYZ1 and DYZ2. Each target shows all five test-fold distributions within each of ten repeats, with folds 1--5 running from top to bottom. Boxes span the 25th--75th percentiles, central lines mark medians and whiskers end at the 10th and 90th percentiles; points retain errors beyond the whiskers. Axes are linear through 5\% and logarithmic above. Repeated predictions of the same individual are not independent biological observations.}
-\end{figure}
-\endgroup
+
 
 \clearpage
-\begingroup
-\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
-\begin{figure}[p]
-\centering
-\includegraphics[page=3,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS6_cv_folds.pdf}
-\caption{\textbf{Prediction-error variability in every cross-validation fold (continued).} \textbf{e,f}, DYZ18S and DYZ19. Each target shows all five test-fold distributions within each of ten repeats, with folds 1--5 running from top to bottom. Boxes span the 25th--75th percentiles, central lines mark medians and whiskers end at the 10th and 90th percentiles; points retain errors beyond the whiskers. Axes are linear through 5\% and logarithmic above. Repeated predictions of the same individual are not independent biological observations.}
-\end{figure}
-\endgroup
+
 
 \clearpage
-\begingroup
-\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
-\begin{figure}[p]
-\centering
-\includegraphics[page=4,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS6_cv_folds.pdf}
-\caption{\textbf{Prediction-error variability in every cross-validation fold (continued).} \textbf{g,h}, DYZ17 and the derived DYZ1:DYZ2 ratio; each ratio error pairs the component predictions of the same individual, repeat and fold. Each target shows all five test-fold distributions within each of ten repeats, with folds 1--5 running from top to bottom. Boxes span the 25th--75th percentiles, central lines mark medians and whiskers end at the 10th and 90th percentiles; points retain errors beyond the whiskers. Axes are linear through 5\% and logarithmic above. Repeated predictions of the same individual are not independent biological observations.}
-\end{figure}
-\endgroup
+
 \clearpage
 
 \clearpage
@@ -435,21 +407,21 @@ These comparisons require a distinction between reference-panel observations and
 
 \endgroup
 \begingroup
-\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{2}
+\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth]{figures/figureS10_chrY_pairs.pdf}
 \caption{\textbf{chrY profiles of the \vsette{16} parent--offspring pairs with an unusual member.} Panels as in Extended Data Fig.~\ref{fig:chrY-unusual}; in each block the parent is above its offspring, and the label gives the state of the unusual member.}\label{fig:chrY-pairs}
 \end{figure}
 
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{8}
+\renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{2}
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{figures/figureS10_world_map.pdf}
 \caption{\textbf{Geographic coverage of the cohorts.} 1,597 1kGP individuals with estimates and HGDP/SGDP cohort manifests: 2,302 unique individuals after deduplication. Coordinates are cohort-reported population locations. Pie area scales with sample counts; sectors and legend counts show paternal Y lineages. Grey marks two individuals without a lineage call; seven SGDP records reported as female and one additional record without Y signal are excluded (Online Methods).}\label{fig:map}
 \end{figure}
 
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{9}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{8}
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.6\textwidth]{figures/figureS11_aligner_depth.pdf}
