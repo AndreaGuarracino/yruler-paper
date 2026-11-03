@@ -2180,7 +2180,7 @@ SGDP	SGDP_HGDP01240	Hezhen	47.5	133.5	O	Hallast 2021 Supplementary Table 2	HGDP0
 SGDP	SGDP_HGDP00887	Russian	61.0	40.0	I	Hallast 2021 Supplementary Table 2	HGDP00887;LP6005441-DNA_G10	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01179	Yi	28.0	103.0	O	Hallast 2021 Supplementary Table 2	HGDP01179;LP6005442-DNA_G01	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_NA11200	Quechua	-13.5	-72.0	Q	Hallast 2021 Supplementary Table 2	LP6005677-DNA_E01;NA11200	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
-SGDP	SGDP_Peru60	Quechua	-13.5	-72.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no Y signal (y_dose below 0.01, few informative sites)	1040	12	F	False	female in public SGDP metadata; no Y signal in delivered chrY audit
+SGDP	SGDP_Peru60	Quechua	-13.5	-72.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no Y signal (y_dose below 0.01, few informative sites)	1040	12	F	False	female in public SGDP metadata; no Y signal in the delivered chrY calls
 SGDP	SGDP_Sir19	Chukchi	69.0	169.0	R	Hallast 2021 Supplementary Table 2	LP6005443-DNA_C03;Sir19	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_IraqiJew4291	Iraqi_Jew	33.3	44.4	J	Hallast 2021 Supplementary Table 2	IraqiJew4291;LP6005592-DNA_E01	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01364	Basque	43.0	0.0	R	Hallast 2021 Supplementary Table 2	HGDP01364;LP6005441-DNA_C02	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
@@ -2314,7 +2314,7 @@ SGDP	SGDP_HG00190	Finnish	60.2	24.9	I	Hallast 2021 Supplementary Table 2	HG00190
 SGDP	SGDP_HGDP01344	Naxi	26.0	100.0	N	HaploGrouper ISOGG 2019; delivered chrY genotype calls 2026-10-28	SGDP_HGDP01344	IGSR population metadata	planned manifest before final QC	N1b2	called	67154	1209	not reported	True	
 SGDP	SGDP_HGDP01338	Naxi	26.0	100.0	O	Hallast 2021 Supplementary Table 2	HGDP01338;LP6005443-DNA_E09	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01228	Mongola	45.0	111.0	O	Hallast 2021 Supplementary Table 2	HGDP01228;LP6005441-DNA_E08	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
-SGDP	SGDP_NOR111	Norwegian	60.3943	5.3258	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no Y signal (y_dose below 0.01, few informative sites)	923	7	U	False	no Y signal in delivered chrY audit
+SGDP	SGDP_NOR111	Norwegian	60.3943	5.3258	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no Y signal (y_dose below 0.01, few informative sites)	923	7	U	False	no Y signal in the delivered chrY calls
 SGDP	SGDP_ND15865	Polish	52.2	21.0	R	Hallast 2021 Supplementary Table 2	LP6005592-DNA_E02;ND15865	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_NA17386	Maori	-41.3	174.5	I	Hallast 2021 Supplementary Table 2	LP6005592-DNA_B02;NA17386	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP00216	Pathan	33.5	70.5	R	Hallast 2021 Supplementary Table 2	HGDP00216;LP6005441-DNA_C10	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	

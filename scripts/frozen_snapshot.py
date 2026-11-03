@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Auditable figures and summaries for the dated frozen-model 1kGP snapshot.
+"""Traceable figures and summaries for the dated frozen-model 1kGP snapshot.
 
 Population estimates, calibration references and validation predictions remain
 separate. Reading this module never changes the frozen model or stream inputs.
@@ -346,12 +346,12 @@ def pedigree_relationships(raw, pedigree):
                     "both_valid_males": first["flag"] == second["flag"] == "ok",
                     "sample1_flag": first["flag"], "sample2_flag": second["flag"],
                     "sample1_reference": first["reference_male"], "sample2_reference": second["reference_male"],
-                    "evidence": "documented pedigree; compare separate precomputed public KING audit",
+                    "evidence": "documented pedigree; compare separate precomputed public KING estimates",
                 })
     return relationships
 
 
-def autosomal_audit(raw, valid, pedigree):
+def autosomal_check(raw, valid, pedigree):
     """Reuse public KING reports; no autosomal kinship is estimated here."""
     metadata = ROOT / "data/figure_metadata"
     sample_ids = {r["sample"] for r in raw}
@@ -432,12 +432,12 @@ def autosomal_audit(raw, valid, pedigree):
             related[row["sample1"]].append(row)
             related[row["sample2"]].append(row)
     chosen = {row["sample"] for row in choose(components)}
-    sample_audit = []
+    sample_rows = []
     for row in valid:
         sample = row["sample"]
         component = components[root(sample)]
         links = related[sample]
-        sample_audit.append({
+        sample_rows.append({
             "sample": sample, "family": row["family"],
             "recorded_father": pedigree[sample]["FatherID"],
             "recorded_mother": pedigree[sample]["MotherID"],
@@ -454,7 +454,7 @@ def autosomal_audit(raw, valid, pedigree):
             "reference_male": row["reference_male"],
             "scope": "first/second-degree public reports; no inference of absence of distant kinship",
         })
-    return result, sensitivities, info, qc, sample_audit
+    return result, sensitivities, info, qc, sample_rows
 
 
 def validation_panels(fig, summaries, depth_rows):
@@ -594,7 +594,7 @@ def annotate_population_extremes(ax, key):
     bounds = ax.get_window_extent(renderer)
     font = FontProperties(size=5.2)
     anchors = [ax.transData.transform((x, y)) for (r, x, y), _ in selected.values()]
-    occupied, audit = [], []
+    occupied, placed = [], []
     for (row, value, y), reason in selected.values():
         px, py = ax.transData.transform((value, y))
         width, height, descent = renderer.get_text_width_height_descent(row["sample"], font, False)
@@ -616,11 +616,11 @@ def annotate_population_extremes(ax, key):
                     textcoords=ax.transAxes, ha="center", va="center", fontsize=5.2, color="#243d49", zorder=8,
                     bbox=dict(boxstyle="square,pad=0.1", facecolor="white", edgecolor="none"),
                     arrowprops=dict(arrowstyle="-", color="#647780", linewidth=.5, shrinkA=2, shrinkB=1))
-        audit.append(dict(target=key, sample=row["sample"], value=row[key], reason=reason,
+        placed.append(dict(target=key, sample=row["sample"], value=row[key], reason=reason,
                           lower_fence=low, upper_fence=high, clade_median=medians[row["display_group"]],
                           relative_deviation=abs(row[key] / medians[row["display_group"]] - 1),
                           dosage_label_threshold=1.30 if key == "y_dose" else ""))
-    return audit
+    return placed
 
 
 def biology_panels(fig, height):
@@ -897,7 +897,7 @@ def assembly_supplement(out):
 
 
 def snapshot_manifest(path, out):
-    """Hash the exact dated inputs, figure scripts and generated audits."""
+    """Hash the exact dated inputs, figure scripts and generated tables."""
     tag = snapshot_tag(path)
     inputs = [Path(path), TREE_SOURCE]
     inputs += [ROOT / "results/model/lineage_out.tsv"]
@@ -937,7 +937,7 @@ def snapshot_manifest(path, out):
             "https://www.dropbox.com/s/elf7pk7siurlyak/deg2_hg38.kin0?dl=1",
             "https://www.dropbox.com/scl/fi/u5udzzaibgyvxzfnjcvjc/hg38_corrected.psam?rlkey=oecjnk4vmbhc8b1p202l0ih4x&dl=1"],
         "inputs": [record(p) for p in sorted(set(inputs))],
-        "derived_audits": [record(p) for p in sorted(set(outputs))],
+        "derived_outputs": [record(p) for p in sorted(set(outputs))],
     }
     (out / f"snapshot_{tag}_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -945,7 +945,7 @@ def snapshot_manifest(path, out):
 def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     tag = snapshot_tag(path)
     summary = snapshot_summary(raw, valid, pedigree, path)
-    kinship, sensitivities, info, qc, sample_audit = autosomal_audit(raw, valid, pedigree)
+    kinship, sensitivities, info, qc, sample_rows = autosomal_check(raw, valid, pedigree)
     summary["relatedness"] = info
     root, leaves = population_figure(valid, out, path, len(raw))
     population_supplement(valid, out)
@@ -965,7 +965,7 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     write_rows(Path(path).with_suffix(".kinship.tsv"), kinship)
     write_rows(Path(path).with_suffix(".sensitivity.tsv"), sensitivities)
     write_rows(Path(path).with_suffix(".sample_qc.tsv"), qc)
-    write_rows(Path(path).with_suffix(".relatedness_samples.tsv"), sample_audit)
+    write_rows(Path(path).with_suffix(".relatedness_samples.tsv"), sample_rows)
     write_rows(Path(path).with_suffix(".population_inclusion.tsv"), [
         {k: r[k] for k in ("sample", "y_status", "y_status_source", "population_included")}
         for r in valid])

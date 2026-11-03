@@ -127,7 +127,7 @@ def main():
     p.add_argument('--out',type=Path,default=f.ROOT/'results/biology_followup_2026-10-28/phylogeny')
     p.add_argument('--tree',type=Path,default=f.TREE_SOURCE);args=p.parse_args();args.out.mkdir(parents=True,exist_ok=True)
     kin={r['sample']:r['kinship_component_id'] for r in read(f.ROOT/'results/estimates_1kgp.relatedness_samples.tsv')}
-    tree=f.parse_newick(args.tree);cache={};summary=[];profiles=[];pairs=[];states_summary=[];states_edges=[];audits=[];inputs=[]
+    tree=f.parse_newick(args.tree);cache={};summary=[];profiles=[];pairs=[];states_summary=[];states_edges=[];checks=[];inputs=[]
     with threadpool_limits(limits=2):
         for spec in args.cohort:
             label,path=spec.split('=',1);path=Path(path);_,valid,_=f.load_snapshot(path);pop=[r for r in f.population_rows(valid) if r['y_status']!='par2_gain']
@@ -138,7 +138,7 @@ def main():
             for scope in ['one_per_kinship_component','one_per_kinship_outside_reference']:
                 rows=sorted(group[scope],key=lambda r:r['sample']);names=tuple(r['sample'] for r in rows)
                 if names not in cache:cache[names]=covariance(tree,names)
-                diag,eig,q,audit=cache[names];audits.append(dict(model=label,scope=scope,**audit))
+                diag,eig,q,check=cache[names];checks.append(dict(model=label,scope=scope,**check))
                 y=np.column_stack([np.log2(values(rows,key)) for key in METRICS])
                 for j,key in enumerate(METRICS):
                     s,grid=profile(diag,eig,q,y[:,j]);summary.append(dict(model=label,scope=scope,measurement=key,n=len(rows),**s))
@@ -170,7 +170,7 @@ def main():
     for ext in ['pdf']:fig.savefig(args.out/('phylogeny_first_look.'+ext),dpi=180,bbox_inches='tight')
     plt.close(fig)
     manifest=dict(inputs=inputs,tree=dict(path=str(args.tree),sha256=hashlib.sha256(args.tree.read_bytes()).hexdigest(),status='A0-rooted v4, branch lengths retained; no clock calibration'),
-        covariance_audits=audits,lambda_range=[0,CAP],method='Gaussian ML with Cij=shared root-to-MRCA branch length, diagonal=root-to-tip length; V(lambda)=lambda*C+(1-lambda)*diag(C). Spectral whitening; all means/variances reprofiled.',
+        covariance_checks=checks,lambda_range=[0,CAP],method='Gaussian ML with Cij=shared root-to-MRCA branch length, diagonal=root-to-tip length; V(lambda)=lambda*C+(1-lambda)*diag(C). Spectral whitening; all means/variances reprofiled.',
         numerical_note='Upper bound below one avoids singular covariance for identical SNP haplotypes. Lambda=1 is not asserted to have been fitted.',
         limitations=['No separation of biological residual variance from measurement error.','No dates, rates per generation, selection claims, or formal tests of satellite turnover.','Parsimony treats the declared length screen as a binary character with equal costs. The minimum refers only to this tree and is not a count of independently proven deletions.'],
         primary_method_reference='https://www.phytools.org/phytools-manual.pdf',script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())

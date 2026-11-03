@@ -17,7 +17,7 @@ HGDP01097	HGDP	O2a2b1a1a1a1a1a1a1	1086	1087	1	67101	1.0523	called	Unassigned	O		
 HGDP01226	HGDP	D1a1b1a	1201	1202	1	67091	1.0626	called	Unassigned	D		True	
 HGDP01371	HGDP	R1b1a1b1a1a2a1a1a1a	1268	1268	0	67157	1.0408	called	Unassigned	R		True	
 HGDP01413	HGDP	E1b1b1b2b2a1	1296	1296	0	67074	1.0461	called	Unassigned	E		True	
-SGDP_Peru60	SGDP	NA	12	14	2	1040	0.0053	no Y signal (y_dose below 0.01, few informative sites)	Unassigned	Unassigned	F	False	female in public SGDP metadata; no Y signal in delivered chrY audit
+SGDP_Peru60	SGDP	NA	12	14	2	1040	0.0053	no Y signal (y_dose below 0.01, few informative sites)	Unassigned	Unassigned	F	False	female in public SGDP metadata; no Y signal in the delivered chrY calls
 SGDP_Utsa21	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
 SGDP_NA_SAMEA3302803	SGDP	J2b2a2b2b1b	1204	1204	0	67140	1.0006	called	Unassigned	J	not reported	True	
 SGDP_SA0722	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
@@ -29,4 +29,4 @@ SGDP_ALB212	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	
 SGDP_NA_SAMEA3302821	SGDP	R1a1a1b2a1a1a1f	1247	1248	1	67166	1.0134	called	Unassigned	R	not reported	True	
 SGDP_NA_SAMEA3302788	SGDP	H3b	1055	1055	0	67151	1.0108	called	Unassigned	H	not reported	True	
 SGDP_HGDP01344	SGDP	N1b2	1209	1211	2	67154	0.9108	called	Unassigned	N	not reported	True	
-SGDP_NOR111	SGDP	NA	7	8	1	923	0.0044	no Y signal (y_dose below 0.01, few informative sites)	Unassigned	Unassigned	U	False	no Y signal in delivered chrY audit
+SGDP_NOR111	SGDP	NA	7	8	1	923	0.0044	no Y signal (y_dose below 0.01, few informative sites)	Unassigned	Unassigned	U	False	no Y signal in the delivered chrY calls

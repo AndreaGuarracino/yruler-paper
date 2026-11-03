@@ -165,12 +165,12 @@ def main():
         assert abs(float(r['signed_difference_pct'])-new['signed_difference_pct'])<1e-10
     summary=stats(rows);f.write_rows(out/'figureS8_pedigree_pairs.tsv',rows);f.write_rows(out/'figureS8_pedigree_summary.tsv',summary)
     supplement(rows,out)
-    audit={'cohort':str(f.DEFAULT_SNAPSHOT.relative_to(f.ROOT)),'cohort_sha256':hashlib.sha256(f.DEFAULT_SNAPSHOT.read_bytes()).hexdigest(),
+    inputs={'cohort':str(f.DEFAULT_SNAPSHOT.relative_to(f.ROOT)),'cohort_sha256':hashlib.sha256(f.DEFAULT_SNAPSHOT.read_bytes()).hexdigest(),
            'pairs_per_measurement':npairs,'measurement_records':len(rows),'measurements':[m[2] for m in MEASUREMENTS],
            'batch_counts':dict(Counter(r['batch_group'] for r in rows if r['target']=='dyz3')),
            'reference_involved_pairs':sum(r['father_reference']=='yes' or r['son_reference']=='yes' for r in rows if r['target']=='dyz3'),
            'existing_main_differences_matched':len(previous),'profile_policy':'All complete profiles retained, including flagged arm imbalance; no dosage cutoff; no batch correction.'}
-    (out/'figureS8_pedigree_audit.json').write_text(json.dumps(audit,indent=2)+'\n')
+    (out/'figureS8_pedigree_inputs.json').write_text(json.dumps(inputs,indent=2)+'\n')
     print(json.dumps([r for r in summary if r['batch_group']=='All pairs'],indent=2))
 
 

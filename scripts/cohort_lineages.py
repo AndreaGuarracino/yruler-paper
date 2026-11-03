@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Overlay delivered chrY calls on archived cohort metadata, retaining provenance.
+"""Overlay delivered chrY calls on archived cohort metadata, keeping the sources.
 
 Source metadata are read only. Known SGDP females and samples reported to lack
-Y signal are excluded from the paternal-lineage map, with an exclusion audit.
+Y signal are excluded from the paternal-lineage map, with a list of exclusions.
 The full metadata join remains available for QC of those samples elsewhere.
 """
 import argparse
@@ -31,7 +31,7 @@ def build_metadata(calls_path=CALLS):
         for key in ALIAS_FIELDS:
             if valid_key(r[key]):
                 genders.setdefault(norm(r[key]), set()).add(r['Gender'])
-    updated, excluded, audit = [], [], []
+    updated, excluded, changes = [], [], []
     for original in base:
         row = dict(original)
         row.update(haplogroup_isogg2019='', genotype_call_status='not supplemented',
@@ -58,12 +58,12 @@ def build_metadata(calls_path=CALLS):
         if row['reported_sex'] == 'F':
             reasons.append('female in public SGDP metadata')
         if call and call['status'].startswith('no Y signal'):
-            reasons.append('no Y signal in delivered chrY audit')
+            reasons.append('no Y signal in the delivered chrY calls')
         if reasons:
             row.update(map_included=False, map_exclusion_reason='; '.join(reasons))
             excluded.append(row)
         if call:
-            audit.append(dict(call, previous_lineage=original['lineage'], updated_lineage=row['lineage'],
+            changes.append(dict(call, previous_lineage=original['lineage'], updated_lineage=row['lineage'],
                               reported_sex=row['reported_sex'], map_included=row['map_included'],
                               map_exclusion_reason=row['map_exclusion_reason']))
         updated.append(row)
@@ -87,7 +87,7 @@ def build_metadata(calls_path=CALLS):
                    lineage_counts=dict(Counter(r['lineage'] for r in combined)),
                    remaining_unassigned=[r['individual_id'] for r in combined if r['lineage'] == 'Unassigned'])
     return dict(updated=updated, included=included, combined=combined, all_combined=all_combined,
-                overlaps=overlaps, excluded=excluded, call_audit=audit, summary=summary)
+                overlaps=overlaps, excluded=excluded, call_changes=changes, summary=summary)
 
 
 def load_combined_samples(include_excluded=False):
@@ -103,7 +103,7 @@ def main():
     for key, name in [('updated', 'cohort_pie_samples_all'), ('included', 'cohort_pie_samples'),
                       ('combined', 'cohort_combined_samples'), ('all_combined', 'cohort_combined_samples_all'),
                       ('overlaps', 'cohort_shared_individuals'), ('excluded', 'map_exclusions'),
-                      ('call_audit', 'lineage_call_audit')]:
+                      ('call_changes', 'lineage_call_changes')]:
         write_rows(args.out / (name + '.tsv'), data[key])
     locations = defaultdict(list)
     for row in data['combined']:
