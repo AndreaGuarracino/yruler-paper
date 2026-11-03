@@ -23,7 +23,8 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BLUE, GREEN, PURPLE = "#277da8", "#338565", "#9663a0"
+from palette import CLASS, RATIO, TITLE, NAMES, FS, MM
+BLUE, GREEN, PURPLE = CLASS["DYZ3"], CLASS["Yq12"], CLASS["DYZ19"]   # DYZ3, Yq12, DYZ19
 COHORTS = {"1kGP": ("#167dad", "D"), "HGDP": ("#d2942d", "s"), "SGDP": ("#b24c74", "o")}
 LINEAGE_COLORS = {
     "A": "#a73945", "B": "#d3b183", "C": "#2684b2", "D": "#789bac",
@@ -34,8 +35,8 @@ LINEAGE_COLORS = {
 }
 PIE_RADIUS_FACTOR = 0.765  # 10% smaller diameters; areas remain proportional to counts.
 COMPOSITION = [
-    ("dyz1", "DYZ1", "#27858a"),
-    ("dyz2", "DYZ2", "#e2af52"),
+    ("dyz1", "DYZ1", CLASS["DYZ1"]),
+    ("dyz2", "DYZ2", CLASS["DYZ2"]),
     ("minor", "Other units", "#a584b9"),
     ("unannotated", "Unannotated", "#dbe1e5"),
 ]
@@ -55,8 +56,8 @@ def read_tsv(path):
 
 
 def save(fig, out, name):
-    for extension in ("pdf",):
-        fig.savefig(out / f"{name}.{extension}", dpi=240, bbox_inches="tight", facecolor="white")
+    from palette import save as put
+    put(fig, out / f"{name}.pdf")
     plt.close(fig)
 
 
@@ -87,8 +88,8 @@ def world_map(ax, locations, land, label="a"):
                       markeredgecolor=COHORTS[c][0], markersize=6,
                       label=f"{c} ({counts[c]})") for c in COHORTS]
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.025), ncol=3,
-              title="Populations with coordinates", title_fontsize=8.5,
-              fontsize=9, frameon=False, handletextpad=0.45, columnspacing=2.0)
+              title="Populations with coordinates", title_fontproperties=TITLE(8.5),
+              fontsize=9, frameon=False, columnspacing=2.0)
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():
@@ -145,16 +146,14 @@ def pie_map(ax, cohort, samples, land, size_legend=False):
             if value:
                 end = angle + 360 * value / n
                 ax.add_patch(Wedge(center, radius, angle, end, facecolor=LINEAGE_COLORS[lineage],
-                                   edgecolor="white", linewidth=0.18, zorder=3))
+                                   edgecolor="white", linewidth=0.25, zorder=3))
                 angle = end
         ax.add_patch(Circle(center, radius, fill=False, edgecolor="#4a5b65", linewidth=0.3, zorder=4))
     ax.set_xlim(-180, 180)
     ax.set_ylim(-58, 84)
     ax.set_aspect("equal", adjustable="box")
     ax.axis("off")
-    if cohort is None:
-        ax.set_title(f"1kGP + HGDP + SGDP  (n={len(selected):,} unique individuals)", fontsize=10.5, pad=7)
-    else:
+    if cohort is not None:
         stage = "current catalog" if cohort == "1kGP" else "planned samples"
         ax.set_title(f"{cohort}  (n={len(selected):,})\n{stage}", fontsize=8.7, pad=4)
     if size_legend:
@@ -163,14 +162,14 @@ def pie_map(ax, cohort, samples, land, size_legend=False):
             radius = PIE_RADIUS_FACTOR * np.sqrt(n)
             if previous_radius is not None:
                 longitude += previous_radius + radius + 3.0
-            ax.add_patch(Circle((longitude, -44), radius, facecolor="white",
+            ax.add_patch(Circle((longitude, -47), radius, facecolor="white",
                                 edgecolor="#73838d", linewidth=0.45, zorder=5))
-            ax.text(longitude, -54, str(n), ha="center", fontsize=7, color="#5a6d78")
+            ax.text(longitude, -57, str(n), ha="center", fontsize=FS["legend"], color="#5a6d78")
             previous_radius = radius
-        ax.text(-159, -39, "Individuals", fontsize=7, ha="left", color="#5a6d78")
+        ax.text(-159, -42, "Individuals", fontsize=FS["legend"], ha="left", color="#5a6d78")
 
 
-def lineage_legend(fig, samples, y, x=0.5, fontsize=7.6):
+def lineage_legend(fig, samples, y, x=0.5, fontsize=7.6, title=None):
     counts = Counter(row["lineage"] for row in samples)
     handles = [Patch(facecolor=color, edgecolor="none", label=f"{name} (n={counts[name]:,})")
                for name, color in LINEAGE_COLORS.items() if counts[name]]
@@ -178,8 +177,7 @@ def lineage_legend(fig, samples, y, x=0.5, fontsize=7.6):
     if len(handles)==20:
         handles.insert(-1,Patch(facecolor="none",edgecolor="none",label=""))
     return fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(x, y), ncol=7,
-               fontsize=fontsize, frameon=False, handlelength=0.85, handletextpad=0.3,
-               columnspacing=0.8, labelspacing=0.6, borderaxespad=0.15)
+               fontsize=fontsize, frameon=False, labelspacing=0.6, borderaxespad=0.15, title=title, title_fontproperties=TITLE(fontsize))
 
 
 def align_map_legend_titles(ax, legend):
@@ -196,8 +194,9 @@ def align_map_legend_titles(ax, legend):
     heading.remove()
     baseline=fig.transFigure.inverted().transform((0,top))[1]+4/72/fig.get_figheight()
     center=fig.transFigure.inverted().transform((bounds.x0+bounds.width/2,0))[0]
-    for x,label,alignment in [(left,'Individuals','left'),(center,'Y lineages','center')]:
-        fig.text(x,baseline,label,fontproperties=font,color='black',ha=alignment,va='baseline')
+    for x,label,alignment in [(left,'Individuals','left'),(center,NAMES['lineage'],'center')]:
+        bold=font.copy();bold.set_weight('bold')
+        fig.text(x,baseline,label,fontproperties=bold,color='black',ha=alignment,va='baseline')
     for text in ax.texts:
         if text.get_text() in {'1','5','10','25','50'}:
             text.set_fontproperties(font);text.set_color('black')
@@ -226,7 +225,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
                                  "father_reference": f.get("reference_male", "unknown"),
                                  "son_reference": s.get("reference_male", "unknown"),
                                  "signed_difference_pct": 100 * (float(s[target]) / denominator - 1)})
-    with (out / f"{output_prefix}_pairs.tsv").open("w") as stream:
+    with (ROOT / f"results/figures/{output_prefix}_pairs.tsv").open("w") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(observations[0]), delimiter="\t")
         writer.writeheader()
         writer.writerows(observations)
@@ -318,8 +317,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
         header.figure.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.53, legend_y),
                              ncol=4 if compact_legend else 3,
                              title=None if compact_legend else "Parent–offspring pairs", title_fontsize=8,
-                             fontsize=6.8 if compact_legend else 7.4, frameon=False,
-                             handletextpad=0.4, columnspacing=1.3 if compact_legend else 1.7)
+                             fontsize=6.8 if compact_legend else 7.4, frameon=False, columnspacing=1.3 if compact_legend else 1.7)
     summaries = []
     for target in ("dyz3_bp", "yq12_bp"):
         values = [abs(row["signed_difference_pct"]) for row in observations if row["target"] == target]
@@ -335,7 +333,7 @@ def father_son_panels(axes, catalog, pairs_path, out, scatter_axes=None,
                               "n_sons": len({row["son"] for row in selected}),
                               "median_signed_pct": np.median(signed), "median_absolute_pct": np.median(abs(signed)),
                               "within_5pct_n": int((abs(signed) <= 5).sum()), "within_10pct_n": int((abs(signed) <= 10).sum())})
-    with (out / f"{output_prefix}_summary.tsv").open("w") as stream:
+    with (ROOT / f"results/figures/{output_prefix}_summary.tsv").open("w") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(summaries[0]), delimiter="\t")
         writer.writeheader()
         writer.writerows(summaries)
@@ -567,14 +565,13 @@ def composition_panel(ax, order, rows, out):
     ax.set_title("Yq12 composition", fontsize=10, pad=10, color="#315b60")
     ax.text(-0.06, 1.035, "f", transform=ax.transAxes, fontsize=15, fontweight="bold", color="#182a34")
     ax.text(1.03, 1.01, "n", transform=ax.transAxes, fontsize=8, color="#70808a")
-    ax.legend(handles=[Patch(facecolor=color, label=label) for _, label, color in COMPOSITION],
-              loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2, fontsize=6.7,
-              handlelength=0.8, handletextpad=0.3, columnspacing=0.8, frameon=False)
-    with (out / "figure2_composition_samples.tsv").open("w") as stream:
+    ax.legend(handles=[Patch(facecolor=color, label=label) for _, label, color in COMPOSITION], title=NAMES["class"], title_fontproperties=TITLE(6.7),
+              loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2, fontsize=6.7, frameon=False)
+    with (ROOT / "results/figures/figure2_composition_samples.tsv").open("w") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]), delimiter="\t")
         writer.writeheader()
         writer.writerows(rows)
-    with (out / "figure2_composition_summary.tsv").open("w") as stream:
+    with (ROOT / "results/figures/figure2_composition_summary.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["haplogroup", "component", "n", "mean_pct", "median_pct", "q25_pct", "q75_pct"])
         writer.writerows(summaries)
@@ -583,7 +580,7 @@ def composition_panel(ax, order, rows, out):
 def composition_supplement(rows, order, out):
     ranks = {group: i for i, group in enumerate(order + ["Unassigned"])}
     ordered = sorted(rows, key=lambda row: (ranks[row["display_group"]], row["dyz1_fraction"], row["sample"]))
-    fig, axes = plt.subplots(2, 1, figsize=(11.8, 7.6), gridspec_kw={"height_ratios": [1.25, 1], "hspace": 0.52})
+    fig, axes = plt.subplots(2, 1, figsize=(180 * MM, 125 * MM), gridspec_kw={"height_ratios": [1.25, 1], "hspace": 0.45})
     x = np.arange(len(ordered))
     bottom = np.zeros(len(ordered))
     for key, label, color in COMPOSITION:
@@ -596,36 +593,31 @@ def composition_supplement(rows, order, out):
         if indices:
             centers.append(np.mean(indices))
             labels.append(f"{group} ({len(indices)})" if group != "Unassigned" else f"No lineage ({len(indices)})")
-            axes[0].axvline(indices[0] - 0.5, color="white", linewidth=1.1)
-    axes[0].set_xticks(centers, labels, rotation=90, fontsize=7.6)
+            if len(centers) > 1: centers[-1] = max(centers[-1], centers[-2] + 1.6)   # labels of adjacent single bars apart
+            axes[0].axvline(indices[0] - 0.5, color="white", linewidth=0.8)
+    axes[0].set_xticks(centers, labels, rotation=90)
     axes[0].set_xlim(-1, len(ordered))
     axes[0].set_ylim(0, 100)
     axes[0].set_ylabel("Annotated Yq12 bases (%)")
-    axes[0].set_title("Individual composition of the 91 complete Yq12 references", loc="left", fontsize=11)
-    axes[0].text(-0.06, 1.04, "a", transform=axes[0].transAxes, fontsize=14, fontweight="bold")
-    axes[0].legend(loc="lower left", bbox_to_anchor=(0, 1.13), ncol=4, frameon=False, fontsize=8)
+    axes[0].legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=4, title=NAMES["class"], title_fontproperties=TITLE(FS["legend"]), alignment="left", borderaxespad=0.3)
     for group in order + ["Unassigned"]:
         subset = [row for row in ordered if row["display_group"] == group]
         if subset:
             major = "NO" if group.startswith("NO") else group[0]
             axes[1].scatter([row["annotated_span_bp"] / 1e6 for row in subset],
                             [100 * row["dyz1_fraction"] for row in subset],
-                            color=LINEAGE_COLORS.get(major, "#89959e"), s=23, alpha=0.8,
-                            edgecolors="white", linewidths=0.3)
+                            color=LINEAGE_COLORS.get(major, "#89959e"), s=8, alpha=0.8,
+                            edgecolors="white", linewidths=0.25)
     axes[1].set_xlabel("Annotated Yq12 span (Mb)")
     axes[1].set_ylabel("DYZ1 / annotated Yq12 (%)")
-    axes[1].set_title("Composition and total array length", loc="left", fontsize=11)
-    axes[1].text(-0.06, 1.04, "b", transform=axes[1].transAxes, fontsize=14, fontweight="bold")
-    axes[1].grid(color="#edf1f3", linewidth=0.6)
+    axes[1].grid(color="#edf1f3", linewidth=0.4)
     axes[1].set_axisbelow(True)
     for ax in axes:
         ax.spines[["right", "top"]].set_visible(False)
-    fig.subplots_adjust(left=0.08, right=0.97, top=0.86, bottom=0.13)
-    fig.suptitle("Assembly annotations — read-based population profiles are shown separately",
-                 color="#914119", fontsize=10, y=0.98)
-    fig.text(0.5, 0.025, "Other units combine DYZ18, 3.1 kb and 2.7 kb. Unannotated denotes residual bases, not missing Y lineage.",
-             ha="center", fontsize=8, color="#4d606b")
-    save(fig, out, "figureS2_yq12_composition")
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.9, bottom=0.07)
+    from palette import letter
+    for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.1 if s == "a" else .05))
+    save(fig, out, "ed/ed2_yq12_composition")
 
 
 def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, dyz19_path, out):
@@ -665,7 +657,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     from cohort_lineages import load_combined_samples
     pie_samples = load_combined_samples()
     lineage_counts = Counter(row["lineage"] for row in pie_samples)
-    with (out / "figure2_lineage_counts.tsv").open("w") as stream:
+    with (ROOT / "results/figures/figure2_lineage_counts.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["lineage", "n_unique_individuals", "percent"])
         for lineage in LINEAGE_COLORS:
@@ -677,7 +669,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     map_ax = fig.add_axes([0.045, 0.61, 0.91, 0.37])
     pie_map(map_ax, None, pie_samples, land, size_legend=True)
     map_ax.text(-0.025, 1.035, "a", transform=map_ax.transAxes, fontsize=15, fontweight="bold")
-    lineage_legend(fig, pie_samples, 0.595)
+    lineage_legend(fig, pie_samples, 0.595, title=NAMES["lineage"])
     grid = fig.add_gridspec(1, 5, left=0.055, right=0.96, bottom=0.12, top=0.49,
                             width_ratios=[1.98, 1.03, 1.03, 1.12, 1.45], wspace=0.22)
     tree_ax = fig.add_subplot(grid[0, 0])
@@ -697,14 +689,14 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     fig.text(0.39, 0.033, "c–e: interquartile ranges and medians.  f: mean composition; points, individual DYZ1 fractions.",
              ha="center", fontsize=7.5, color="#4d606b")
     fig.text(0.39, 0.012, "Haplogroup branches are schematic.  * Unresolved within NO.", ha="center", fontsize=7.5, color="#4d606b")
-    save(fig, out, "figure2")
+    save(fig, out, "main/fig2_biology")
     composition_supplement(composition, order, out)
 
     map_fig, map_ax = plt.subplots(figsize=(10.0, 4.5))
     world_map(map_ax, locations, land, label=None)
     map_fig.text(0.5, -0.015, "Public cohort population metadata; final sample inclusion and quality filters pending.",
                  ha="center", color="#657780", fontsize=9)
-    save(map_fig, out, "cohort_population_coverage")
+    save(map_fig, ROOT / "results/figures", "cohort_population_coverage")
 
     pie_fig, pie_ax = plt.subplots(figsize=(12.5, 6.3))
     pie_map(pie_ax, None, pie_samples, land, size_legend=True)
@@ -714,13 +706,13 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
                  ha="center", fontsize=9, color="#4d606b")
     pie_fig.text(0.5, 0.035, "Shared individuals are counted once. Leaders connect displaced pies to reported coordinates. HGDP/SGDP final QC is pending.",
                  ha="center", fontsize=9, color="#4d606b")
-    save(pie_fig, out, "cohort_world_map")
+    save(pie_fig, ROOT / "results/figures", "cohort_world_map")
 
-    with (out / "figure2_tree_summary.tsv").open("w") as stream:
+    with (ROOT / "results/figures/figure2_tree_summary.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["haplogroup", "target", "n", "median_bp", "q25_bp", "q75_bp"])
         writer.writerows(stats)
-    with (out / "figure2_tree_membership.tsv").open("w") as stream:
+    with (ROOT / "results/figures/figure2_tree_membership.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["sample", "haplogroup_2019", "display_group", "source"])
         for group in order:
@@ -746,7 +738,6 @@ def main():
     parser.add_argument("--out", type=Path, default=ROOT / "manuscript/figures")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
-    plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "pdf.fonttype": 42, "svg.fonttype": "none"})
     make_figure(args.catalog, args.calls, args.tree, args.locations, args.land, args.dyz19, args.out)
 
 

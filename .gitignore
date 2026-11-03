@@ -7,6 +7,6 @@
 __pycache__/
 *.pyc
 /data
-!manuscript/figures/*.pdf
-manuscript/figures/*.png
-manuscript/figures/*.svg
+!manuscript/figures/*/*.pdf
+manuscript/figures/**/*.png
+manuscript/figures/**/*.svg

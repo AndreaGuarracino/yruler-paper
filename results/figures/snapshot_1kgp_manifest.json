@@ -1,0 +1,469 @@
+{
+  "snapshot": "results/estimates_1kgp.tsv",
+  "date": "2026-10-28",
+  "snapshot_version": "1kgp",
+  "scope": "short-read model; 1639 completed 1kGP records; analysed 1kGP plus HGDP/SGDP metadata map.",
+  "validation_arm": "short-read model; per-depth CV predictions and lineage-out predictions in results/model (depth/, lineage_out.tsv)",
+  "model_archive_scope": "Final parameter TSV and raw evaluation predictions; binary model is not copied here.",
+  "relatedness": "Reused public first/second-degree reports; no new autosomal kinship estimation.",
+  "public_king_sources": [
+    "https://www.cog-genomics.org/plink/2.0/resources",
+    "https://www.dropbox.com/s/xry2angmvmk629j/deg2_hg38.kin0?dl=1",
+    "https://www.dropbox.com/s/elf7pk7siurlyak/deg2_hg38.kin0?dl=1",
+    "https://www.dropbox.com/scl/fi/u5udzzaibgyvxzfnjcvjc/hg38_corrected.psam?rlkey=oecjnk4vmbhc8b1p202l0ih4x&dl=1"
+  ],
+  "inputs": [
+    {
+      "path": "data/catalog_d376/fs_pairs.tsv",
+      "bytes": 4976,
+      "sha256": "71a0c0f7ec28c314c7605e7c113b9155730ccead7436c003add206fff03959c2"
+    },
+    {
+      "path": "data/catalog_d376/ped.txt",
+      "bytes": 97483,
+      "sha256": "4e164b717433fc9bfc16e29b20e5b4659b4216185b3275322d421fe3d323c132"
+    },
+    {
+      "path": "data/figure_metadata/cohort_combined_counts.tsv",
+      "bytes": 10306,
+      "sha256": "e28b44debb68d02ecb0de9c50d5a670cbced186e59da8277f6696211f9167d86"
+    },
+    {
+      "path": "data/figure_metadata/cohort_combined_samples.tsv",
+      "bytes": 468631,
+      "sha256": "373d193c01a69da678ac3bd8bf79f56b56735045d90d220ffbb7af6192982ee4"
+    },
+    {
+      "path": "data/figure_metadata/cohort_pie_counts.tsv",
+      "bytes": 13916,
+      "sha256": "502e6ce4e43c2b341352ab93ae19f4c98ad4a44232eb6fc33dc2e9d7c991296c"
+    },
+    {
+      "path": "data/figure_metadata/cohort_pie_samples.tsv",
+      "bytes": 345895,
+      "sha256": "6374f29bc8d3e2c9900de566753652f9daf987f26cf3d4e9a0790a9ef540e0db"
+    },
+    {
+      "path": "data/figure_metadata/cohort_population_locations.tsv",
+      "bytes": 34576,
+      "sha256": "4949e6c26a044df40a9a8b79a21769c9086b5fe927cca1d1d110acf5284424ae"
+    },
+    {
+      "path": "data/figure_metadata/cohort_shared_individuals.tsv",
+      "bytes": 6339,
+      "sha256": "7949f450c5ad6cb613388f2e4aa7af6a757ebd5bf035fde4012c2c38271ab88d"
+    },
+    {
+      "path": "data/figure_metadata/hallast2021_supplement.xlsx",
+      "bytes": 145226,
+      "sha256": "b8ceb96ffbcba51254d9e86735daa178cf7a2397204a2c902167115798d171b3"
+    },
+    {
+      "path": "data/figure_metadata/igsr_populations.tsv",
+      "bytes": 32384,
+      "sha256": "67f3ed10ef1cf7e9ac9a015ebd3d02bd2de23e817a4a9745a9e97215e0db9279"
+    },
+    {
+      "path": "data/figure_metadata/isogg2019_tree.tsv",
+      "bytes": 312624,
+      "sha256": "a9c6ad470de33227263d5578321ce8a404c7a500d61ca9a27d813c4fe940753d"
+    },
+    {
+      "path": "data/figure_metadata/planned_hgdp_sgdp_samples.tsv",
+      "bytes": 147575,
+      "sha256": "95d760145368b04fc6ded405dd00c80b53c37719998c5c905819bb656b86619b"
+    },
+    {
+      "path": "data/figure_metadata/plink2_deg2_hg38_a.kin0",
+      "bytes": 70678,
+      "sha256": "c78225b410d595a2e14104a935f532b69896ca1259cfcaccfa4a6cb227058cc2"
+    },
+    {
+      "path": "data/figure_metadata/plink2_deg2_hg38_b.kin0",
+      "bytes": 70558,
+      "sha256": "e05faf1f1ef6c888e53c0ad7962a720e05f413c0bc9fb8a48bb6678b5a476908"
+    },
+    {
+      "path": "data/figure_metadata/plink2_hg38_corrected.psam",
+      "bytes": 77820,
+      "sha256": "727a01b637d5e1ef02516a53069dc552b1fa46f442004ad50ea3d069c7741cdd"
+    },
+    {
+      "path": "data/figure_metadata/sgdp_metadata.txt",
+      "bytes": 54485,
+      "sha256": "1e4f0076ddadc57ce9feb252c1f9a782ea9d5ba4e6606627fcd60e9c5bf2ef33"
+    },
+    {
+      "path": "data/figure_metadata/world_land.geojson",
+      "bytes": 138160,
+      "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9"
+    },
+    {
+      "path": "data/figure_metadata/y_status_reported.tsv",
+      "bytes": 826,
+      "sha256": "2c876c6c473e727117e90c69635a5e01bed5ef0f861244dd2eeea808a87d3cd7"
+    },
+    {
+      "path": "data/markers_u/truth_regions.tsv",
+      "bytes": 13389,
+      "sha256": "48e42d97b7f43771078d1d25679c3c0e144928b9163d59b13b6f4e68118e3f9c"
+    },
+    {
+      "path": "data/method/dyz19_clean.tsv",
+      "bytes": 9714,
+      "sha256": "d5366a64a7c57d2a89933d1ecbb7525493f28832bdd1e135731a47193aeb46ae"
+    },
+    {
+      "path": "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
+      "bytes": 157713,
+      "sha256": "643a0d8c41fc82e51fdfca386b689f74ee3ffd23acf43210ab5c81fee0ef257f"
+    },
+    {
+      "path": "data/method/indep_setB.tsv",
+      "bytes": 21266,
+      "sha256": "5dba5b6226691f0d9fff5b5f67ffd3d123e5d73cce4ca4fc9668b5828e2818f0"
+    },
+    {
+      "path": "results/cohorts/cohort_combined_counts.tsv",
+      "bytes": 9583,
+      "sha256": "9316be3a7d8e7453da53553be70eed27161f1176e4a1c12cc76d421f6d95c419"
+    },
+    {
+      "path": "results/cohorts/cohort_combined_samples.tsv",
+      "bytes": 467676,
+      "sha256": "df8925ebda76006d5c02d1a5b31bc111c2420226a36a8e806d734f709de8163f"
+    },
+    {
+      "path": "results/cohorts/cohort_combined_samples_all.tsv",
+      "bytes": 483575,
+      "sha256": "8f9b0a4fd60c1748b6c2f255ba231bb41f5d6e72af4b9a7c0b3b9e05a383e1c0"
+    },
+    {
+      "path": "results/cohorts/cohort_pie_samples.tsv",
+      "bytes": 408824,
+      "sha256": "3cb88776eae27d5fd0cfc051317f157e264b388e58e341bb66e9be641eca7463"
+    },
+    {
+      "path": "results/cohorts/cohort_pie_samples_all.tsv",
+      "bytes": 410601,
+      "sha256": "941cac376debf3cffa712c43bdc288e2f59896118afc61338419aede26b9e5a1"
+    },
+    {
+      "path": "results/cohorts/cohort_shared_individuals.tsv",
+      "bytes": 6339,
+      "sha256": "7949f450c5ad6cb613388f2e4aa7af6a757ebd5bf035fde4012c2c38271ab88d"
+    },
+    {
+      "path": "results/cohorts/lineage_call_changes.tsv",
+      "bytes": 3194,
+      "sha256": "136708cb826ddde31438d2c0795e7fe6174494948e21558366e215159274e86d"
+    },
+    {
+      "path": "results/cohorts/lineage_calls.tsv",
+      "bytes": 2017,
+      "sha256": "20013924682972fc83beac04cc5be8342e2ae678522f2a2dce6324937b3e24d2"
+    },
+    {
+      "path": "results/cohorts/map_exclusions.tsv",
+      "bytes": 2016,
+      "sha256": "e0282fc810e5cf12320884113a0f43c7fff2a947e100a3738c3aa41d004a4241"
+    },
+    {
+      "path": "results/estimates_1kgp.tsv",
+      "bytes": 289899,
+      "sha256": "5b03783a2b6532cf6e1f86c938d97a481dcff53bbf825612f1c37ba8a9bca0da"
+    },
+    {
+      "path": "results/model/depth/depth_f1.tsv",
+      "bytes": 605776,
+      "sha256": "4ee986e9f2e58075610b46d50059a6e3e706a6b5139ab6b97dd744dade6cc22e"
+    },
+    {
+      "path": "results/model/depth/depth_fd10x.tsv",
+      "bytes": 601490,
+      "sha256": "eac4bc58b1daa8cc68bfb754e1d685f1796d11dd4ad4e19c3d0d83f08a901a1a"
+    },
+    {
+      "path": "results/model/depth/depth_fd15x.tsv",
+      "bytes": 607680,
+      "sha256": "ee6cd579f29a9a6a4fb816263816e63c1eb4030c74ef8959ea52f2b7ba1f4d18"
+    },
+    {
+      "path": "results/model/depth/depth_fd1x.tsv",
+      "bytes": 608498,
+      "sha256": "b6c2446f056bd2a1c363255ac08f2db69593e6d5ca3ffffd6a7984fe47483ce0"
+    },
+    {
+      "path": "results/model/depth/depth_fd20x.tsv",
+      "bytes": 607018,
+      "sha256": "195a62b0bfb0b3c26079f240e3a976ee340675cb8498b6b8260cb0a6bfb9dd71"
+    },
+    {
+      "path": "results/model/depth/depth_fd25x.tsv",
+      "bytes": 605422,
+      "sha256": "c70158e024be6a214ea0f5b7d7fab0afe6c8a4378dcffb93dfbb9d8382c59085"
+    },
+    {
+      "path": "results/model/depth/depth_fd2x.tsv",
+      "bytes": 607475,
+      "sha256": "4fe8ee55df43f7939880e0acd50acf7cdfa8ab51c095436bb51231575e0deecd"
+    },
+    {
+      "path": "results/model/depth/depth_fd30x.tsv",
+      "bytes": 605827,
+      "sha256": "d951c21496892bca7693bd1cd77b9bce1bb1372d2b6398d6069e40cbe94a5e24"
+    },
+    {
+      "path": "results/model/depth/depth_fd5x.tsv",
+      "bytes": 603549,
+      "sha256": "caab4f2f209e7fd3831f693bbed8749008ffc637cc365dbde78b1f4370fb1d7f"
+    },
+    {
+      "path": "results/model/depth/summary.tsv",
+      "bytes": 2941,
+      "sha256": "fb6bf20541f57366d33babfe9c45e32fe63cbe8a936844c6a86406eee3b4d57c"
+    },
+    {
+      "path": "results/model/lineage_out.tsv",
+      "bytes": 47558,
+      "sha256": "b560cd427c7fd655315343107d669ca57e2f577b1307a4bdd451d6e27a5cdf1d"
+    },
+    {
+      "path": "results/tree/tree.rooted.nwk",
+      "bytes": 63512,
+      "sha256": "71778196aca5177c1fe4ad36e323710f98ed6fd9eebd306313b37969a043e4a0"
+    },
+    {
+      "path": "scripts/cohort_lineages.py",
+      "bytes": 7739,
+      "sha256": "c826e48a77ca8a09d79407c3f5a7bfec7fe49401cf0d99d9a5993a35ada1da98"
+    },
+    {
+      "path": "scripts/depth_benchmark.py",
+      "bytes": 2548,
+      "sha256": "d8c94408121c6bc2b16c8458593e1287d0b367885ada9713c5bc2ddbee8cebdf"
+    },
+    {
+      "path": "scripts/figure1b_selected.py",
+      "bytes": 1778,
+      "sha256": "e2a58d6193e3542fd914818299b6b342944dc86b03ad1315a4682d4fa6c7ad5f"
+    },
+    {
+      "path": "scripts/figure2_tree.py",
+      "bytes": 41613,
+      "sha256": "ddb1cc7328391708cdc89d0cb2a208499e82ec89bf3a9a58be770c4f99f0820a"
+    },
+    {
+      "path": "scripts/figures_1kgp.py",
+      "bytes": 60451,
+      "sha256": "95efebefc2c4f869dd3090db5824641e5682d8d37dc2e0e326578da71fca9449"
+    },
+    {
+      "path": "scripts/manuscript_figures.py",
+      "bytes": 8355,
+      "sha256": "7105c9518a8c2b172bd88b5eadabd08df0b69792119af641ddbcbf50ab12e675"
+    },
+    {
+      "path": "scripts/pedigree_plots.py",
+      "bytes": 10119,
+      "sha256": "a04b3bdac764076352be57ae7b57893e43e14c5dd101d83566fd82b005f9be86"
+    },
+    {
+      "path": "scripts/prepare_cohort_pies.py",
+      "bytes": 12068,
+      "sha256": "31c5ccb2230c7475f767bea97d1672cc09ba9d7568322c686e0aa767a791efbe"
+    },
+    {
+      "path": "scripts/validation_plots.py",
+      "bytes": 16065,
+      "sha256": "40d0f5cf4d0a3f44563095faa6457d75b192435ea1ef30e1f00ca0030510acdb"
+    },
+    {
+      "path": "scripts/validation_ratio.py",
+      "bytes": 3086,
+      "sha256": "9fc90fd164d16370328c3885484d41a739684863feea1a2e21e6a05c223a7064"
+    }
+  ],
+  "derived_outputs": [
+    {
+      "path": "manuscript/figures/ed/ed1_array_structure.pdf",
+      "bytes": 166975,
+      "sha256": "108f2095ab9427bb420dbd141c786c182c5ef9f86abd181ffb64c975df4966f7"
+    },
+    {
+      "path": "manuscript/figures/ed/ed2_yq12_composition.pdf",
+      "bytes": 48837,
+      "sha256": "a0309e5aab63a5eaa0058633fef1992c3ff10487f19fcb7134c7e647cb60c960"
+    },
+    {
+      "path": "manuscript/figures/ed/ed3_population.pdf",
+      "bytes": 333046,
+      "sha256": "26463d236d0cb494093c658e801894cde1a359681b7d760740f1ea5a7899e856"
+    },
+    {
+      "path": "manuscript/figures/ed/ed4_depth.pdf",
+      "bytes": 27471,
+      "sha256": "6b1b057bba83dfee44ef5d162b2e27585b4bc80a142e7b5d60755abdc5f99612"
+    },
+    {
+      "path": "manuscript/figures/ed/ed5_J_DYZ19.pdf",
+      "bytes": 162214,
+      "sha256": "118fc8cd8bfd27da9a0c088d5b7f134cb4393934bf6fdabe7d8c2b608b838e9d"
+    },
+    {
+      "path": "manuscript/figures/ed/ed6_lineage_validation.pdf",
+      "bytes": 37431,
+      "sha256": "a117095561e0d8c14cc137e12d08c704b871c101513ff27883983a8cd2af8820"
+    },
+    {
+      "path": "manuscript/figures/ed/ed7_pedigrees.pdf",
+      "bytes": 141597,
+      "sha256": "293cfa0f4288d868008ffe8fc7af998e47aa37653e49812d1b6b07133f4fce1d"
+    },
+    {
+      "path": "manuscript/figures/ed/ed8_chrY_unusual_males.pdf",
+      "bytes": 58338,
+      "sha256": "e3e052b7759a0341a6f4a43afd1ecca9ee6905f4b0cc46ff81c4e76d64a312fd"
+    },
+    {
+      "path": "manuscript/figures/ed/ed9_aligner_depth.pdf",
+      "bytes": 28756,
+      "sha256": "d0c7e422911cd66e99e40aa3b6f0a33631d1138d77cfa353c84ef89faa0a0fd9"
+    },
+    {
+      "path": "manuscript/figures/main/fig1_method.pdf",
+      "bytes": 372644,
+      "sha256": "d8b5fd3ad7b65ff16e2c2c2a5404262a9fb868321e2b2e5463d5824c15f5792f"
+    },
+    {
+      "path": "manuscript/figures/main/fig2_biology.pdf",
+      "bytes": 299750,
+      "sha256": "e6d2cef6ba776f24a9a1648ea30b09f2e03086d650d8d25c78b74030a7d8b834"
+    },
+    {
+      "path": "manuscript/figures/supp/suppfig1_world_map.pdf",
+      "bytes": 181332,
+      "sha256": "189658331a61599d875dedb7f713210dded7482a2c959d6cb63155a68404d220"
+    },
+    {
+      "path": "results/estimates_1kgp.follow_up.tsv",
+      "bytes": 1931,
+      "sha256": "915cdaab2ce439a499c42951a1b70f108ef16af87a8bc9f5e5bc058c839066fb"
+    },
+    {
+      "path": "results/estimates_1kgp.kinship.tsv",
+      "bytes": 49534,
+      "sha256": "fafdbdd8a214fb456b8a10ce6fcb4ad038e68493574c57abf034bfde77d7aec4"
+    },
+    {
+      "path": "results/estimates_1kgp.population_inclusion.tsv",
+      "bytes": 76845,
+      "sha256": "94bb55aa84a59ad880a7a84c33806d45dd1be358223970ee2159b9b640f04992"
+    },
+    {
+      "path": "results/estimates_1kgp.relatedness_samples.tsv",
+      "bytes": 226862,
+      "sha256": "2ccbf2a810271ebfe48e5d210da91d73876684ea2166b0d0add175e107d6d9c1"
+    },
+    {
+      "path": "results/estimates_1kgp.relationships.tsv",
+      "bytes": 49287,
+      "sha256": "4d7ee623c00fb907bff4f697ca347eb2adc0c0aa5a9d23117598b48ce5010ac9"
+    },
+    {
+      "path": "results/estimates_1kgp.sample_qc.tsv",
+      "bytes": 304704,
+      "sha256": "82f19fb0cf66c510354dcbfabf804c9608d076d1b0b81645d5e30d40d32fbc6f"
+    },
+    {
+      "path": "results/estimates_1kgp.sensitivity.tsv",
+      "bytes": 657,
+      "sha256": "3063cf5fa686d1b32beb938fe7edb70d714352ae96d13e7839fc21c323edc94f"
+    },
+    {
+      "path": "results/figures/figure1_depth_summary.tsv",
+      "bytes": 3383,
+      "sha256": "3fbddc0f2d6068197829ae475640aed719fb068ecf1d510e832887742b36b8c6"
+    },
+    {
+      "path": "results/figures/figure1_validation_summary.tsv",
+      "bytes": 545,
+      "sha256": "1bdce458fd85c195662abf7d702483ffae569a830114b6367d7123ce1574e956"
+    },
+    {
+      "path": "results/figures/figure2_composition_samples.tsv",
+      "bytes": 18693,
+      "sha256": "8e1ad3d88c462dc4f587e654bc88b43cf4c33ef8ed634d0058190641fb796895"
+    },
+    {
+      "path": "results/figures/figure2_composition_summary.tsv",
+      "bytes": 7340,
+      "sha256": "5903a8881e667447fb97c0d9dd91c346a62bbc580b92237ea89c8f81b068a903"
+    },
+    {
+      "path": "results/figures/figure2_labelled_samples.tsv",
+      "bytes": 3229,
+      "sha256": "47aa9c4253446a772490d10e22032fc1a0784a79c7ce286ea8acb4d72b37a2d0"
+    },
+    {
+      "path": "results/figures/figure2_lineage_counts.tsv",
+      "bytes": 549,
+      "sha256": "a54af3928444603a8de35f710e0c17a4930eaed4364eb91cc902ca73f34b0033"
+    },
+    {
+      "path": "results/figures/figure2_tree_membership.tsv",
+      "bytes": 121515,
+      "sha256": "231181b76ffb30ef56e21cd1129848709a3909c42961f9a3369aa29f790cdc7c"
+    },
+    {
+      "path": "results/figures/figure2_tree_summary.tsv",
+      "bytes": 9121,
+      "sha256": "2a9b3c8799932fbe838dff70116d673fa448960bc54dec772be28d3a02b6eb97"
+    },
+    {
+      "path": "results/figures/figure2b_o2a_summary.tsv",
+      "bytes": 453,
+      "sha256": "19856e4cabb947f16c50ed6f2b7aa83216b4979cd72a59ffc063affbb3bb479a"
+    },
+    {
+      "path": "results/figures/figure2b_subtree_summary.tsv",
+      "bytes": 2081,
+      "sha256": "1581c75432b6a332f44dc6f2901e08fb2124ff6de30d90d49722b4a0dc621266"
+    },
+    {
+      "path": "results/figures/figureS2_composition_samples.tsv",
+      "bytes": 18686,
+      "sha256": "1add1ed67152ad233957ddb17931ee16d0bc999af4a9685d50e84b95efd18ed9"
+    },
+    {
+      "path": "results/figures/figureS5_J_membership.tsv",
+      "bytes": 3729,
+      "sha256": "36184597d8570ce137a71eee93859dea490af8d0465ca70c5f628f7521b14008"
+    },
+    {
+      "path": "results/figures/pedigree_pairs.tsv",
+      "bytes": 311191,
+      "sha256": "4820896dc4955a559aed1b783399e4b658c5854f07fe9fccddf247cb987d77e8"
+    },
+    {
+      "path": "results/figures/pedigree_summary.tsv",
+      "bytes": 4150,
+      "sha256": "bc82c98f691392b286863c921e197882552b2de96b6cc19448090a7f1ebab2e7"
+    },
+    {
+      "path": "results/figures/reference_targets.tsv",
+      "bytes": 407,
+      "sha256": "76e28fd86448a761d6837d211e1e00af63bcfe5b89ca5de8277a49f26b128384"
+    },
+    {
+      "path": "results/figures/snapshot_1kgp_samples.tsv",
+      "bytes": 458454,
+      "sha256": "034c148d60e45c3767761807905e69c4ade38068d06a6ac80b42ab4ba42b5237"
+    },
+    {
+      "path": "results/figures/snapshot_1kgp_summary.json",
+      "bytes": 8766,
+      "sha256": "2f1c8ce2626f10ac715116f37d54559cceb3c08701237f3db2448d39edad054f"
+    }
+  ]
+}

@@ -17,10 +17,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from matplotlib.patches import Polygon
+from matplotlib.patches import Patch, Polygon
+from matplotlib.colors import to_rgba
 import numpy as np
 from scipy.stats import spearmanr
 
+from palette import RATIO, FS, MM, letter, ORDER
 from figure2_tree import (
     BLUE, GREEN, PURPLE, LINEAGE_COLORS, read_tsv, save,
     tree_data, pie_map, lineage_legend, align_map_legend_titles, clade_of, pruned_tree,
@@ -28,6 +30,7 @@ from figure2_tree import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+AUX = ROOT / "results/figures"   # figure tables, not figures
 DEFAULT_SNAPSHOT = ROOT / "results/estimates_1kgp.tsv"
 TREE_SOURCE = ROOT / "results/tree/tree.rooted.nwk"
 FROZEN = ROOT / "data/frozen_2026-10-27"
@@ -40,15 +43,16 @@ TARGETS = [
     ("dyz19", "DYZ19_bp", "DYZ19", 1e3, "kb"),
     ("dyz17", "DYZ17_bp", "DYZ17", 1e3, "kb"),
 ]
+TARGETS.sort(key=lambda t: ORDER.index(t[2]))   # one class order
 CUT = {
     "A00", "A0", "A1a", "A1b1", "B", "C", "D", "E", "F1", "F2", "F3", "F4",
     "G", "H", "I", "J1", "J2a1a1a", "J2a1a1b", "J2a1a2", "J2a2", "J2b", "L", "T",
-    "N", "O1a", "O1b", "O2a", "O2b", "Q", "R1a", "R1b", "R2", "M", "S",
+    "N", "O1a", "O1b", "O2a", "O2a1", "O2a2a", "O2a2b1a1", "O2a2b1a2", "O2a2b2", "O2b", "Q", "R1a", "R1b", "R2", "M", "S",
 }
 ORDER = [
     "A00", "A0", "A1a", "A1b1", "B", "D", "E", "C", "F1", "F2", "F3", "F4",
     "G", "H", "I", "J1", "J2a1*", "J2a1a1a", "J2a1a1b", "J2a1a2", "J2a2", "J2b",
-    "L", "T", "NO*", "N", "O1a", "O1b", "O2a", "O2b", "M", "S", "Q",
+    "L", "T", "NO*", "N", "O1a", "O1b", "O2a", "O2a1", "O2a2a", "O2a2b1a1", "O2a2b1a2", "O2a2b2", "O2b", "M", "S", "Q",
     "R1a", "R1b", "R2",
 ]
 from depth_benchmark import SOURCE as DEPTH_SOURCE, load as load_depth_benchmark
@@ -463,7 +467,7 @@ def validation_panels(fig, summaries, depth_rows):
     draw(fig, compact=True)
 
 
-def draw_collapsed_tree(ax, root, leaves, individual=False, panel="b"):
+def draw_collapsed_tree(ax, root, leaves, individual=False, panel="b", room=1.55, counts=None):
     maximum = max(n["x"] + n["extent"] for n in leaves)
     label_x = maximum * 1.04
 
@@ -482,30 +486,42 @@ def draw_collapsed_tree(ax, root, leaves, individual=False, panel="b"):
             end = node["x"] + node["extent"]
             if node["extent"] > 1e-8:
                 ax.add_patch(Polygon([[node["x"], y], [end, y - .27], [end, y + .27]],
-                                     facecolor=color, edgecolor=color, alpha=.35, linewidth=.45))
+                                     facecolor=color, edgecolor=color, alpha=.35, linewidth=.3))
             else:
-                ax.plot(end, y, "o", color=color, markersize=2)
+                ax.plot(end, y, "o", color=color, markersize=1.5)
             ax.plot([end, label_x], [y, y], color="#dce3e7", linewidth=.5, linestyle=":")
             label = (f"{node['members'][0]['sample']}   {group[:10]}" if individual else
-                     f"{group} ({len(node['members'])})")
-            ax.text(label_x, y, label, va="center", fontsize=7.7,
-                    color=color, fontweight="bold" if group.startswith("J2a1a1") or group == "R1b" else "normal")
+                     f"{group} ({counts[group] if counts else len(node['members'])})")
+            ax.text(label_x, y, label, va="center", fontsize=FS['point'],
+                    color=color, fontweight="bold" if group.startswith("J2a1a1") or group in ("R1b", "O2a2b1a1") else "normal")
     draw(root)
-    ax.set_xlim(-maximum * .025, maximum * (2.4 if individual else 1.50))
+    ax.set_xlim(-maximum * .025, maximum * (2.4 if individual else room))
     ax.set_ylim(len(leaves) - .4, -.7)
     ax.axis("off")
-    ax.set_title("J SNP subtree; sample / call" if individual else "Y SNP tree; clade (n)",
-                 loc="left", fontsize=9.6, pad=11)
-    ax.text(-.10, 1.035, panel, transform=ax.transAxes, fontsize=15, fontweight="bold")
     # A scale bar makes the retained sequence-divergence lengths interpretable.
     magnitude = 10 ** np.floor(np.log10(maximum / 3))
     scale = min((magnitude * n for n in (1, 2, 5, 10)), key=lambda v: abs(v - maximum / 3))
     transform = ax.get_xaxis_transform()
-    bar_y, label_y = (-.012, -.025) if individual else (-.045, -.085)
+    bar_y = -.012 if individual else 1.025   # Fig. 2: header row
     ax.plot([0, scale], [bar_y, bar_y], transform=transform, clip_on=False,
-            color="#60717a", linewidth=1.1)
-    ax.text(scale / 2, label_y, f"{scale:g} substitutions/site",
-            transform=transform, ha="center", va="top", fontsize=6.4, color="#60717a")
+            color="#60717a", linewidth=.75)
+    ax.text(*((0, -.025) if individual else (scale * 1.15, bar_y)), f"{scale:g} substitutions/site",
+            transform=transform, ha="left", va="top" if individual else "center", fontsize=FS["point"], color="#60717a")
+
+
+def truth_males():
+    """Males in each class truth set after QC."""
+    out = defaultdict(set); drop = {tuple(l.split()[:2]) for l in open(ROOT / "data/method/truth_qc/x/rule_w4.txt") if l.strip()}
+    for r in read_tsv(ROOT / "data/markers_u/truth_regions.tsv"):
+        m = r["male"].removesuffix("_R2")
+        if (r["class"], m) not in drop: out[r["class"]].add(m)
+    out["dyz19"] = {r["assembly"].removesuffix("_R2") for r in read_tsv(ROOT / "data/method/dyz19_clean.tsv") if r["clean"] == "True"}
+    print("truth males per class:", {k: len(v) for k, v in out.items()}, flush=True)
+    return out
+
+
+TRUTH = truth_males()
+TRUTH_OF = {"DYZ3_bp": "dyz3", "Yq12_bp": "yq12", "DYZ19_bp": "dyz19", "unit_ratio": "yq12"}   # ratio: Yq12 assemblies
 
 
 def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, units, highlight, show_panel=True):
@@ -520,14 +536,13 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
         jitter = y + rng.uniform(-.16, .16, len(members))
         references = np.array([row["reference"] for row in members])
         included = np.array([in_summary(row, key) for row in members])
-        flagged = np.array([r["sample"] in {"HG01967", "HG02966"} for r in members]) & (key in {"Yq12_bp", "DYZ19_bp"})
-        ax.scatter(values[~flagged], jitter[~flagged], s=4.5, color=color, alpha=.34, linewidths=0, zorder=3)
-        if flagged.any():
-            ax.scatter(values[flagged], jitter[flagged], s=19, marker="D", facecolors="none",
-                       edgecolors="#886333", linewidths=.85, zorder=6, clip_on=False)
+        truth = np.array([row["sample"] in TRUTH[TRUTH_OF[key]] for row in members])
+        ax.scatter(values[~truth], jitter[~truth], s=1.5, color=color, alpha=.34, linewidths=0, zorder=3)
+        ax.scatter(values[truth], jitter[truth], s=5, marker="D", facecolors="none", edgecolors=color, linewidths=.8, alpha=.8, zorder=3)   # truth-set males
+        ax._triangles = getattr(ax, "_triangles", 0) + int(truth.sum())
         q1, median, q3 = np.percentile(values[included], [25, 50, 75]) if included.any() else [np.nan]*3
-        ax.plot([q1, q3], [y, y], linewidth=2.8, color=color, zorder=4)
-        ax.plot(median, y, "|", color="#243d49", markersize=7, markeredgewidth=1.1, zorder=5)
+        ax.barh(y, q3 - q1, left=q1, height=.3, color=color, linewidth=0, zorder=4)
+        ax.plot(median, y, "|", color="#243d49", markersize=5, markeredgewidth=1, zorder=5)
         ax._sample_positions.extend((row, value, position) for row, value, position in zip(members, values, jitter))
         statistics.append({"group": group, "target": key, "n": len(members),
                            "n_population_summary": int(included.sum()), "n_excluded_arm_profile": int((~included).sum()),
@@ -535,150 +550,151 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
                            "q25": float(q1 * scale), "q75": float(q3 * scale),
                            "units": "relative dosage" if key == "y_dose" else "bp/bp" if key == "ratio_bp" else "units/units" if key == "unit_ratio" else "bp"})
     ax.set_ylim(len(leaves) - .4, -.7)
-    ax.set_xlim(0, limit)
-    ax.set_xticks(ticks)
-    ax.tick_params(labelsize=7)
-    ax.set_yticks([])
-    ax.spines[["left", "right", "top"]].set_visible(False)
-    ax.grid(axis="x", color="#e7ecef", linewidth=.55)
-    ax.set_axisbelow(True)
-    ax.set_title(title, fontsize=9.5, color=color, pad=11)
-    if show_panel:
-        ax.text(-.09, 1.035, panel, transform=ax.transAxes, fontsize=15, fontweight="bold", color="#182a34")
-    ax.set_xlabel(units, fontsize=7.8)
+    column_axis(ax, title, color, units, limit, ticks)
     return statistics
 
 
-def annotate_population_extremes(ax, key):
-    """Label substantial deviations, with an absolute dosage threshold."""
-    from matplotlib.font_manager import FontProperties
-    from matplotlib.transforms import Bbox
-
-    points = ax._sample_positions
-    q1, q3 = np.percentile([r[key] for r, _, _ in points if in_summary(r, key)], [25, 75])
-    iqr = q3 - q1
-    low, high = q1 - 1.5 * iqr, q3 + 1.5 * iqr
-    by_clade = defaultdict(list)
-    for row, _, _ in points:
-        if in_summary(row, key):
-            by_clade[row["display_group"]].append(row[key])
-    medians = {group: float(np.median(values)) for group, values in by_clade.items()}
-
-    def substantial(point):
-        row = point[0]
-        if row["display_group"] not in medians:
-            return False
-        return abs(row[key] / medians[row["display_group"]] - 1) >= .50
-
-    selected = {}
-    if key == "y_dose":
-        for point in sorted(points, key=lambda p: -p[0][key]):
-            if point[0][key] > 1.30:
-                selected[point[0]["sample"]] = (point, "dosage >1.30; descriptive review threshold")
-    else:
-        for candidates, reverse, reason in [
-            ([p for p in points if p[0][key] < low and substantial(p)], False,
-             "lower pooled 1.5-IQR tail and >=50% from clade median; up to three smallest"),
-            ([p for p in points if p[0][key] > high and substantial(p)], True,
-             "upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest"),
-        ]:
-            for point in sorted(candidates, key=lambda p: p[0][key], reverse=reverse)[:3]:
-                selected[point[0]["sample"]] = (point, reason)
-        if key in {"Yq12_bp", "DYZ19_bp"}:
-            for point in points:
-                if point[0]["sample"] in ({"HG01967", "HG02966", "NA18910", "NA18911"} if key == "DYZ19_bp" else {"HG01967", "HG02966"}) and substantial(point):
-                    selected.setdefault(point[0]["sample"], (point, "satellite follow-up candidate; >=50% from clade median"))
-
-    ax.figure.canvas.draw()
-    renderer = ax.figure.canvas.get_renderer()
-    bounds = ax.get_window_extent(renderer)
-    font = FontProperties(size=5.2)
-    anchors = [ax.transData.transform((x, y)) for (r, x, y), _ in selected.values()]
-    occupied, placed = [], []
-    for (row, value, y), reason in selected.values():
-        px, py = ax.transData.transform((value, y))
-        width, height, descent = renderer.get_text_width_height_descent(row["sample"], font, False)
-        width += 4
-        height = max(height + descent + 3, 5.2 * ax.figure.dpi / 72 + 2)
-        options = []
-        for level in range(9):
-            for direction in (1, -1):
-                for shift in (0, -.4, .4, -.8, .8):
-                    cx = np.clip(px + shift * width, bounds.x0 + width/2 + 1, bounds.x1 - width/2 - 1)
-                    cy = np.clip(py + direction * (.8 + level) * height, bounds.y0 + height/2 + 1, bounds.y1 - height/2 - 1)
-                    box = Bbox.from_bounds(cx-width/2, cy-height/2, width, height)
-                    score = 1e6 * sum(box.overlaps(b) for b in occupied) + 1e4 * sum(box.contains(*p) for p in anchors) + (cx-px)**2 + (cy-py)**2
-                    options.append((score, cx, cy, box))
-        _, cx, cy, box = min(options, key=lambda option: option[0])
-        assert not any(box.overlaps(other) for other in occupied), (key, row["sample"])
-        occupied.append(box)
-        ax.annotate(row["sample"], (value, y), xytext=ax.transAxes.inverted().transform((cx, cy)),
-                    textcoords=ax.transAxes, ha="center", va="center", fontsize=5.2, color="#243d49", zorder=8,
-                    bbox=dict(boxstyle="square,pad=0.1", facecolor="white", edgecolor="none"),
-                    arrowprops=dict(arrowstyle="-", color="#647780", linewidth=.5, shrinkA=2, shrinkB=1))
-        placed.append(dict(target=key, sample=row["sample"], value=row[key], reason=reason,
-                          lower_fence=low, upper_fence=high, clade_median=medians[row["display_group"]],
-                          relative_deviation=abs(row[key] / medians[row["display_group"]] - 1),
-                          dosage_label_threshold=1.30 if key == "y_dose" else ""))
-    return placed
+def column_axis(ax, title, color, units, limit, ticks):
+    """One style for every trait column."""
+    ax.set_xlim(0, limit)
+    ax.set_xticks(ticks); ax.set_xticks(np.arange(0, limit + 1e-9, (ticks[1] - ticks[0]) / 2), minor=True)   # minor: half steps
+    ax.set_yticks([])
+    ax.spines[["left", "right", "top"]].set_visible(False)
+    ax.grid(axis="x", color="#e7ecef", linewidth=.4)
+    ax.set_axisbelow(True)
+    ax.set_title(title, color=color, pad=3)
+    ax.set_xlabel(units)
 
 
-def biology_panels(fig, height):
-    """Fig. 2b-e: DYZ19 and DYZ3 states with replication, read density, DYZ1 and DYZ2 variability."""
-    R = ROOT / "results/model"; GREY, INK, MUTED, ORANGE = "#a9b4ba", "#22313a", "#55666f", "#d9622b"
+GREY, INK, MUTED, ORANGE = "#a9b4ba", "#22313a", "#55666f", "#d9622b"
+TITLE_Y = 5.0   # mm below the axes: axis titles, cohort row
+
+
+def biology_inputs():
+    """1kGP males on the ruler, HGDP/SGDP calls, test results."""
+    R = ROOT / "results/model"
     C = read_tsv(R / "cohort_1kgp.tsv"); Q = read_tsv(R / "hgsg_calls.tsv"); N = {r["item"]: r["value"] for r in read_tsv(R / "biology_tests.tsv")}
     keep = ("normal", "mosaic_loss", "mosaic_gain", "Y_gain", "par2_gain"); inc = [r for r in C if r["sex"] == "male" and r["estimate_basis"] == "ruler" and r["y_state"] in keep]
-    box = lambda x0, x1: fig.add_axes([x0, .72 / height, x1 - x0, 3.33 / height])
-    def strip(ax, x, v, color, s=4, a=.55, seed=0, horizontal=False, cap=.3):
-        j = np.random.default_rng(seed).uniform(-cap, cap, len(v))
-        ax.scatter(*((v, x + j) if horizontal else (x + j, v)), s=s, c=color, lw=0, alpha=a, rasterized=True)
-        m = np.median(v); (ax.plot([m, m], [x - .4, x + .4], color=INK, lw=1.3) if horizontal else ax.plot([x - .4, x + .4], [m, m], color=INK, lw=1.3))
-    def style(ax, letter):
-        ax.spines[["top", "right"]].set_visible(False); ax.tick_params(labelsize=7, length=2.5); fig.text({"b": .012, "c": .232, "d": .412, "e": .762}[letter], 4.2 / height, letter, fontsize=15, fontweight="bold")
-    # short DYZ19 of J2a1a1, by cohort
-    ax = box(.05, .2); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/checks/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
-    Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: own[r["sample"]].startswith("J2a1a1"); kb = lambda R_: np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_])
-    G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
-    G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
-    assert [(len(a), len(b)) for _, a, b in G] == [(42, 44), (16, 29), (6, 12)], [(len(a), len(b)) for _, a, b in G]
-    for i, (c, a, b) in enumerate(G):
-        strip(ax, 2.6 * i, a, PURPLE, s=6, a=.8, seed=i, cap=.32); strip(ax, 2.6 * i + 1, b, GREY, s=6, a=.8, seed=i + 5, cap=.32); ax.text(2.6 * i + .5, -.13, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7)
-    ax.set_xticks([x for i in range(3) for x in (2.6 * i, 2.6 * i + 1)], [f"{len(v)}" for _, a, b in G for v in (a, b)], fontsize=6.1); ax.set_xlim(-.7, 6.9); ax.set_ylim(0, 350); ax.set_ylabel("DYZ19 length (kb)", fontsize=8); style(ax, "b")
-    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=PURPLE, label="J2a1a1"), Line2D([], [], ls="none", marker="o", ms=3.5, color=GREY, label="Other J")], frameon=False, fontsize=6.2, loc="center", bbox_to_anchor=(.5, .52), handletextpad=.1, ncol=2, columnspacing=.8)
-    # unit ratio by lineage
-    ax = box(.275, .41); U = read_tsv(R / "dyz1_dyz2_lineages.tsv"); A = {r["measure"].split("_")[1]: float(r["median"]) for r in read_tsv(R / "dyz1_dyz2_truth_vs_yruler.tsv") if r["measure"].startswith("lineage_") and "_truth_" in r["measure"]}
-    for i, r in enumerate(U):
-        c = GREEN if r["lineage"] == "E" else (BLUE if float(r["ci95_high"]) < 1 else MUTED); ax.plot([float(r["ci95_low"]), float(r["ci95_high"])], [i, i], color=c, lw=1.2); ax.plot(float(r["unit_ratio_median"]), i, "o", ms=3.5, color=c)
-        if r["lineage"] in A: ax.plot(A[r["lineage"]], i, "D", ms=3.5, mfc="none", mec=ORANGE, mew=1)
-    ax.axvline(1, color=MUTED, lw=.8, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U], fontsize=6.1); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio", fontsize=8); style(ax, "c")
-    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=3.5, color=MUTED, label="Males"), Line2D([], [], ls="none", marker="D", ms=3.5, mfc="none", mec=ORANGE, label="Assemblies")], frameon=False, fontsize=6.2, loc="center right", bbox_to_anchor=(1, .42), borderaxespad=0, handletextpad=.2)
-    # DYZ3 states, by cohort
-    ax = box(.455, .745); by = {"1kGP": [(r["haplogroup"], float(r["DYZ3_bp"]) / 1e6) for r in inc], "HGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "HGDP"], "SGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "SGDP"]}
+    return R, C, Q, N, inc
+
+
+def strip(ax, x, v, color, s=4, a=.55, seed=0, cap=.3, ref=None):
+    j = np.random.default_rng(seed).uniform(-cap, cap, len(v)); ref = np.zeros(len(v), bool) if ref is None else np.asarray(ref, bool)
+    ax.scatter(x + j[~ref], v[~ref], s=s, c=color, lw=0, alpha=a, rasterized=True)
+    ax.scatter(x + j[ref], v[ref], s=s * 1.8, marker="D", facecolors="none", edgecolors=color, linewidths=.8, rasterized=True)   # truth-set males
+    m = np.median(v); ax.plot([x - .4, x + .4], [m, m], color=INK, lw=1)
+
+
+def dyz3_cohorts(ax):
+    """DYZ3 of R1b and O2a2b1a1 against neighbours, by cohort."""
+    _, _, Q, _, inc = biology_inputs()
+    by = {"1kGP": [(r["haplogroup"], float(r["DYZ3_bp"]) / 1e6) for r in inc], "HGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "HGDP"], "SGDP": [(r["call"], float(r["DYZ3_bp"]) / 1e6) for r in Q if r["cohort"] == "SGDP"]}
     ticks, labels = [], []
     for g, (p1, p2, name, x0) in enumerate((("R1b", None, "R1b, other males", 0), ("O2a2b1a1", "O2a2b1a2", "O2a2b1a1, O2a2b1a2", 9.4))):
         for i, c in enumerate(by):
-            v1 = np.array([v for h, v in by[c] if h.startswith(p1)]); v2 = np.array([v for h, v in by[c] if (h.startswith(p2) if p2 else not h.startswith(p1))]); x = x0 + 2.9 * i
-            strip(ax, x, v1, BLUE, s=4, a=.7, seed=i, cap=.32); strip(ax, x + 1.25, v2, GREY, s=4, a=.45 if len(v2) > 100 else .85, seed=i + 5, cap=.32); ticks += [x, x + 1.25]; labels += [f"{len(v1)}", f"{len(v2):,}"]
-            ax.text(x + .6, -.13, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7)
-        ax.text(x0 + 3.5, .985, name, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=7, color=INK)
-    ax.set_xticks(ticks, labels, fontsize=5.6); ax.set_xlim(-.7, 17.6); ax.set_ylim(0, 3); ax.axvline(8.6, color="#d8dee2", lw=.8); ax.set_ylabel("DYZ3 length (Mb)", fontsize=8); style(ax, "d")
+            v1 = np.array([v for h, v in by[c] if h.startswith(p1)]); v2 = np.array([v for h, v in by[c] if (h.startswith(p2) if p2 else not h.startswith(p1))]); x = x0 + 3.0 * i
+            strip(ax, x, v1, BLUE, s=2, a=.7, seed=i, cap=.32); strip(ax, x + 1.6, v2, GREY, s=2, a=.45 if len(v2) > 100 else .85, seed=i + 5, cap=.32); ticks += [x, x + 1.6]; labels += [f"{len(v1)}", f"{len(v2):,}"]
+            ax.text(x + .8, -.11, c, transform=ax.get_xaxis_transform(), ha="center", va="top")
+        ax.text(x0 + 3.5, .985, name, transform=ax.get_xaxis_transform(), ha="center", va="top", color=INK)
+    ax.set_xticks(ticks, labels, rotation=90); ax.set_xlim(-.7, 17.6); ax.set_ylim(0, 3); ax.axvline(8.6, color="#d8dee2", lw=.6); ax.set_ylabel("DYZ3 length (Mb)")
+
+
+SUBTREES = {"P": ("Q", "R1a", "R1b", "R2"), "O2a": ("O2a1a", "O2a1b", "O2a2a", "O2a2b1a1", "O2a2b1a2", "O2a2b2")}
+
+
+def subtree_rows(valid, clade):
+    """Males of one clade, grouped by its subclades."""
+    sub = SUBTREES[clade]; group = (lambda r: r["display_group"]) if clade == "P" else (lambda r: next((p for p in sub if r["haplogroup"].startswith(p)), None))
+    return {r["sample"]: dict(r, display_group=group(r)) for r in valid if group(r) in sub}
+
+
+COHORT_SHADE = {"1kGP": BLUE, "HGDP": BLUE, "SGDP": BLUE}   # cohorts by position, top to bottom
+
+
+def subtree_panel(tax, ax, rows, other, highlight, limit, letter):
+    """Fig. 2b: one subtree, DYZ3 per cohort."""
+    from validation_plots import error_box_stats, draw_error_boxes
+    from matplotlib.colors import to_rgba
+    root, leaves = collapse_tree(prune_tree(parse_newick(TREE_SOURCE), set(rows)), rows)
+    assert all(n == 1 for n in Counter(leaf["group"] for leaf in leaves).values()), [leaf["group"] for leaf in leaves]
+    data = {n["group"]: {"1kGP": [(r["DYZ3_bp"] / 1e6, r["sample"] in TRUTH["dyz3"]) for r in n["members"]],
+                         **{c: [(float(r["DYZ3_bp"]) / 1e6, False) for r in other if r["cohort"] == c and r["call"].startswith(n["group"])] for c in ("HGDP", "SGDP")}} for n in leaves}
+    draw_collapsed_tree(tax, root, leaves, panel=letter, room=3.3, counts={g: "/".join(str(len(d[c])) for c in COHORT_SHADE) for g, d in data.items()})
+    stats, rng = [], np.random.default_rng(2710)
+    for y, node in enumerate(leaves):
+        g = node["group"]
+        if g == highlight: ax.axhspan(y - .45, y + .45, facecolor="#e8f1f7", zorder=0)
+        for k, (c, col) in enumerate(COHORT_SHADE.items()):
+            v = np.array([x for x, _ in data[g][c]]); t = np.array([f for _, f in data[g][c]], bool); yy = y + (k - 1) * .3
+            if y == 0: ax.text(limit * .99, yy, c, ha="right", va="center", fontsize=FS["point"], color=INK)   # cohort positions, first row
+            if not len(v): continue
+            art = draw_error_boxes(ax, [error_box_stats([{"signed": x} for x in v])], [yy], col, .2, showfliers=False)
+            for b in art["boxes"]: b.set_alpha(None); b.set_facecolor(to_rgba(col, .25)); b.set_edgecolor(col); b.set_linewidth(.5)
+            for w in art["whiskers"]: w.set_alpha(1); w.set_linewidth(.5)
+            for m in art["medians"]: m.set_linewidth(1); m.set_zorder(4)
+            j = yy + rng.uniform(-.08, .08, len(v))
+            ax.scatter(v[~t], j[~t], s=1.2, color=col, alpha=.5, linewidths=0, zorder=3)
+            ax.scatter(v[t], j[t], s=5, marker="D", facecolors="none", edgecolors=col, linewidths=.8, alpha=.8, zorder=3)   # truth-set males
+            q = np.percentile(v, [10, 25, 50, 75, 90])
+            stats.append({"clade": g, "cohort": c, "n": len(v), "n_truth": int(t.sum()), "median_bp": q[2] * 1e6, "q25_bp": q[1] * 1e6, "q75_bp": q[3] * 1e6, "q10_bp": q[0] * 1e6, "q90_bp": q[4] * 1e6})
+    ax.set_ylim(len(leaves) - .5, -.5); column_axis(ax, "DYZ3", BLUE, "Length (Mb)", limit, list(np.arange(0, limit + .01, .5)))
+    print("Fig. 2b n per clade (1kGP/HGDP/SGDP) and 1kGP DYZ3 truth diamonds:", {g: ("/".join(str(len(d[c])) for c in COHORT_SHADE), sum(f for _, f in d["1kGP"])) for g, d in data.items()}, flush=True)
+    return stats
+
+
+def biology_panels(fig, bottom=10, tall=48, sub=(72, 43)):
+    """Fig. 2b-e: P and O2a DYZ3, J DYZ19 by cohort, unit ratio, DYZ1 and DYZ2 variability."""
+    R, C, Q, N, inc = biology_inputs()
+    H = fig.get_figheight() / MM; box = lambda x0, x1, b=bottom, t=tall: fig.add_axes([x0, b / H, x1 - x0, t / H])
+    def style(ax, letter, t=tall):
+        ax.spines[["top", "right"]].set_visible(False); ax.xaxis.set_label_coords(.5, -TITLE_Y / t)
+    def on_top(ax, left=False, ncol=2):   # c-e legends: first entry on one baseline
+        p = ax.get_position(); return dict(loc="upper left" if left else "upper center", bbox_to_anchor=(p.x0 if left else (p.x0 + p.x1) / 2, (bottom + tall + 4) / H), bbox_transform=fig.transFigure, ncol=ncol, borderaxespad=0, columnspacing=.8)
+    clades = {c: subtree_rows(fig._valid, c) for c in SUBTREES}
+    other = [r for r in Q if r["call"].startswith(sum(SUBTREES.values(), ()))]
+    limit = max(2, .5 * np.ceil(max([r["DYZ3_bp"] for rows in clades.values() for r in rows.values()] + [float(r["DYZ3_bp"]) for r in other]) / 5e5))
+    stats = []
+    for (c, highlight), x0 in zip((("P", "R1b"), ("O2a", "O2a2b1a1")), (.03, .52)):
+        t, d = box(x0, x0 + .18, *sub), box(x0 + .185, x0 + .465, *sub); stats += subtree_panel(t, d, clades[c], other, highlight, limit, "b" if c == "P" else ""); style(d, "", sub[1])
+    # short DYZ19 of J2a1a1, by cohort
+    ax = box(.055, .33); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/checks/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
+    Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: own[r["sample"]].startswith("J2a1a1"); kb = lambda R_: (np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_]), [r["sample"] in TRUTH["dyz19"] for r in R_])
+    G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
+    G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
+    assert [(len(a[0]), len(b[0])) for _, a, b in G] == [(42, 44), (16, 29), (6, 12)], [(len(a[0]), len(b[0])) for _, a, b in G]
+    print("Fig. 2c triangles (DYZ19 truth):", sum(sum(a[1]) + sum(b[1]) for _, a, b in G), flush=True)
+    for i, (c, a, b) in enumerate(G):
+        strip(ax, 2.6 * i, a[0], PURPLE, s=3, a=.8, seed=i, cap=.32, ref=a[1]); strip(ax, 2.6 * i + 1, b[0], GREY, s=3, a=.8, seed=i + 5, cap=.32, ref=b[1]); ax.text(2.6 * i + .5, -TITLE_Y / tall, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=FS["label"])
+    ax.set_xticks([x for i in range(3) for x in (2.6 * i, 2.6 * i + 1)], [f"{len(v[0])}" for _, a, b in G for v in (a, b)]); ax.set_xlim(-.7, 6.9); ax.set_ylim(0, 350); ax.set_ylabel("DYZ19 length (kb)"); style(ax, "c")
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=PURPLE, label="J2a1a1"), Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY, label="Other J")], **on_top(ax))
+    # unit ratio by lineage
+    ax = box(.40, .625); U = read_tsv(R / "dyz1_dyz2_lineages.tsv"); A = {r["measure"].split("_")[1]: float(r["median"]) for r in read_tsv(R / "dyz1_dyz2_truth_vs_yruler.tsv") if r["measure"].startswith("lineage_") and "_truth_" in r["measure"]}
+    for i, r in enumerate(U):
+        c = GREEN if r["lineage"] == "E" else (BLUE if float(r["ci95_high"]) < 1 else MUTED); ax.plot([float(r["ci95_low"]), float(r["ci95_high"])], [i, i], color=c, lw=1); ax.plot(float(r["unit_ratio_median"]), i, "o", ms=2.5, color=c)
+        if r["lineage"] in A: ax.plot(A[r["lineage"]], i, "x", ms=2.5, color=ORANGE, mew=.6)
+    ax.axvline(1, color=MUTED, lw=.6, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U]); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio"); style(ax, "d")
+    ax.legend(handles=[Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6, label="From assemblies"), Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads")], **on_top(ax))
     # DYZ2 varies more than DYZ1
-    ax = box(.805, .968); T = {r["assembly"]: r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}; lin = {r["sample"]: r["lineage"] for r in C}
+    ax = box(.725, .99); T = {r["assembly"]: r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}; lin = {r["sample"]: r["lineage"] for r in C}
     kin = {r["sample"]: r["kinship_component_id"] for r in read_tsv(ROOT / "results/estimates_1kgp.relatedness_samples.tsv")}; rep = {}
     for r in sorted((r for r in inc if r["y_state"] != "par2_gain"), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)
     def centred(P):
         a = np.log2([p[0] for p in P]); b = np.log2([p[1] for p in P]); l = np.array([p[2] for p in P])
         for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
         return b, a
-    men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in rep.values() if r["reference_male"] != "yes"]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
+    P = [r for r in rep.values() if r["reference_male"] != "yes"]; tri = np.array([r["sample"] in TRUTH["yq12"] for r in P]); print("Fig. 2e triangles (Yq12 truth):", int(tri.sum()), flush=True)
+    men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in P]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
     assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
-    ax.scatter(*men, s=4, c=GREY, lw=0, alpha=.6, label="1kGP males (1,196)", rasterized=True); ax.scatter(*asm, s=9, c=ORANGE, lw=0, alpha=.9, label="Assemblies (75)", rasterized=True)
-    L = 1.5; sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.9, ls="--", label="Equal variation"); ax.plot([-L, L], [-L * sd("composition_sd_1kgp"), L * sd("composition_sd_1kgp")], color=INK, lw=1.2, label="SD ratio 0.762")
-    ax.set_xlim(-L, L); ax.set_ylim(-1.2, 1.2); ax.set_xlabel("log2 DYZ2 (centred within lineage)", fontsize=8); ax.set_ylabel("log2 DYZ1 (centred within lineage)", fontsize=8); ax.legend(frameon=False, fontsize=6.2, loc="upper left", borderaxespad=0, handletextpad=.4); style(ax, "e")
-    ins = ax.inset_axes([.74, .09, .25, .29]); S = [("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp"), ("Assembly", "assemblies")]
+    ax.scatter(men[0][~tri], men[1][~tri], s=2, c=GREY, lw=0, alpha=.6, label="From reads (1kGP, 1,196)", rasterized=True); ax.scatter(men[0][tri], men[1][tri], s=4, marker="D", facecolors="none", edgecolors=GREY, linewidths=.8, rasterized=True); ax.scatter(*asm, s=6, marker="x", c=ORANGE, linewidths=.6, alpha=.9, label="From assemblies (75)", rasterized=True)
+    L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2e symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
+    ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2e points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 relative to lineage mean"); ax.set_ylabel("DYZ1 relative to lineage mean"); from matplotlib.legend_handler import HandlerTuple
+    dot, cross, eq = Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY), Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6), Line2D([], [], color=MUTED, lw=.6, ls="--")
+    ax.legend([(Line2D([], [], color=ORANGE, lw=.9), cross), (Line2D([], [], color=INK, lw=.9), dot), eq], [f"From assemblies (75)\n(SD ratio {a:g})", f"From reads (1kGP, 1,196)\n(SD ratio {r:g})", "Equal variation\n(SD ratio 1)"], handler_map={tuple: HandlerTuple(ndivide=1)}, **on_top(ax, left=True, ncol=1)); style(ax, "e")   # points and line share one entry
+    B = [.719, .191, .25, .19]; ins = ax.inset_axes(B); x0, y0 = -L + 2 * L * B[0], -L + 2 * L * B[1]; print("Fig. 2e points under the inset:", int(sum(((x >= x0) & (x <= x0 + 2 * L * B[2]) & (y >= y0) & (y <= y0 + 2 * L * B[3])).sum() for x, y in (men, asm))), flush=True); S = [("Assemblies", "assemblies"), ("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp")]
     for i, (n, k) in enumerate(S):
-        m_ = re.search(r"ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)", N[f"composition_sd_{k}"]); v, lo, hi = map(float, m_.groups()); ins.plot([lo, hi], [3 - i, 3 - i], color=INK, lw=1); ins.plot(v, 3 - i, "o", ms=3, color=ORANGE if k == "assemblies" else INK)
-    ins.axvline(1, color=MUTED, lw=.8, ls="--"); ins.set_yticks(range(4), [n for n, _ in S[::-1]], fontsize=5.4); ins.set_xlim(.55, 1.05); ins.set_xticks([.6, .8, 1]); ins.tick_params(labelsize=5.4, length=2, pad=1); ins.set_xlabel("SD ratio", fontsize=5.4, labelpad=1); ins.spines[["top", "right"]].set_visible(False); ins.patch.set_alpha(.85)
+        m_ = re.search(r"ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)", N[f"composition_sd_{k}"]); v, lo, hi = map(float, m_.groups()); ins.plot([lo, hi], [3 - i, 3 - i], color=INK, lw=.75); ins.plot(v, 3 - i, "x" if k == "assemblies" else "o", ms=2.5 if k == "assemblies" else 2, mew=.6, color=ORANGE if k == "assemblies" else INK)
+    ins.axvline(1, color=MUTED, lw=.6, ls="--"); ins.set_yticks(range(4), [n for n, _ in S[::-1]]); ins.set_xlim(.55, 1.05); ins.set_xticks([.7, 1]); ins.set_xticks([.8, .9], minor=True); ins.set_ylim(-.5, 3.5); ins.tick_params(length=1.5, pad=1); ins.set_xlabel("SD ratio", fontsize=FS["tick"], labelpad=3); ins.spines[["top", "right"]].set_visible(False); ins.patch.set_alpha(.85)
+    return stats
 
 
 def population_figure(valid, out, snapshot_path, completed):
@@ -689,111 +705,84 @@ def population_figure(valid, out, snapshot_path, completed):
     from cohort_lineages import load_combined_samples
     map_samples = load_combined_samples()
     land = json.loads((ROOT / "data/figure_metadata/world_land.geojson").read_text())
-    fig = plt.figure(figsize=(10.6, 9.9))
-    height = fig.get_figheight()
-    grid = fig.add_gridspec(1, 6, left=.055, right=.965, bottom=5.05 / height, top=9.45 / height,
-                            width_ratios=[1.85, .85, .85, .85, 1, .85], wspace=.08)
-    axes = [fig.add_subplot(grid[0, i]) for i in range(6)]
+    from palette import MM
+    H = 210   # mm: c-e 10-58, b 72-115, a 126-203
+    fig = plt.figure(figsize=(180 * MM, H * MM))
+    for s, x, y in (("a", 0, H), ("b", 0, 121.5), ("c", 0, 65), ("d", 64, 65), ("e", 119, 65)): letter(fig, s, (x + 1) / 180, (y - 1) / H)
+    grid = fig.add_gridspec(1, 5, left=.035, right=.99, bottom=126 / H, top=203 / H,
+                            width_ratios=[1.45, .95, .95, .95, 1.1], wspace=.08)
+    axes = [fig.add_subplot(grid[0, i]) for i in range(5)]
     draw_collapsed_tree(axes[0], root, leaves, panel="a")
     stats = frozen_trait(axes[1], leaves, "DYZ3_bp", BLUE, 1e6, 3, [0, 1, 2, 3],
-                         "DYZ3", "c", "Length (Mb)", lambda g: g == "R1b", show_panel=False)
-    stats += frozen_trait(axes[2], leaves, "Yq12_bp", GREEN, 1e6, 60, [0, 20, 40, 60],
+                         "DYZ3", "c", "Length (Mb)", lambda g: g in ("R1b", "O2a2b1a1"), show_panel=False)
+    stats += frozen_trait(axes[3], leaves, "Yq12_bp", GREEN, 1e6, 60, [0, 20, 40, 60],
                           "Yq12", "d", "Length (Mb)", lambda g: False, show_panel=False)
-    stats += frozen_trait(axes[3], leaves, "DYZ19_bp", PURPLE, 1e3, 550, [0, 250, 500],
+    stats += frozen_trait(axes[2], leaves, "DYZ19_bp", PURPLE, 1e3, 550, [0, 200, 400],
                           "DYZ19", "e", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)
     for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
     ratio_limit = max(2.5, .5 * np.ceil(max(r["unit_ratio"] for r in valid) / .5))
-    stats += frozen_trait(axes[4], leaves, "unit_ratio", "#8c7139", 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
+    stats += frozen_trait(axes[4], leaves, "unit_ratio", RATIO, 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
                           "DYZ1:DYZ2", "f", "Unit ratio", lambda g: False, show_panel=False)
-    axes[4].axvline(1, color="#8c7139", linestyle="--", linewidth=.8, zorder=1)
-    dosage_limit = max(1.5, .25 * np.ceil(max(r["y_dose"] for r in valid) / .25))
-    stats += frozen_trait(axes[5], leaves, "y_dose", "#526774", 1, dosage_limit, [.5, 1, 1.5, 2],
-                          "Y dosage", "g", "Relative dosage", lambda g: False, show_panel=False)
-    axes[5].set_xlim(min(.85, .25 * np.floor(min(r["y_dose"] for r in valid) / .25)), dosage_limit)
-    axes[5].axvline(1, color="#526774", linestyle="--", linewidth=.8, zorder=1)
-    handles = [
-        Line2D([], [], linestyle="none", marker="o", color="#637f8d", markersize=4,
-               label="Individual"),
-        Line2D([], [], linestyle="none", marker="D", markerfacecolor="none", markeredgecolor="#886333",
-               markersize=4, label="Yq satellite depletion"),
-    ]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.8, 4.62 / height), ncol=2,
-               frameon=False, fontsize=7.4, handletextpad=.4)
-    annotations = []
-    for axis, key in zip(axes[1:], ["DYZ3_bp", "Yq12_bp", "DYZ19_bp", "unit_ratio", "y_dose"]):
-        annotations.extend(annotate_population_extremes(axis, key))
-    write_rows(out / "figure2_labelled_samples.tsv", annotations)
-    biology_panels(fig, height)
-    save(fig, out, "figure2")
-    write_rows(out / "figure2_tree_summary.tsv", stats)
+    axes[4].axvline(1, color=RATIO, linestyle="--", linewidth=.6, zorder=1)
+    print("Fig. 2a triangles per column:", {a.get_title(): a._triangles for a in axes[1:]}, flush=True)
+    fig._valid = valid; subtrees = biology_panels(fig)
+    save(fig, out, "main/fig2_biology")
+    write_rows(AUX / "figure2b_subtree_summary.tsv", subtrees)
+    write_rows(AUX / "figure2_tree_summary.tsv", stats)
     membership = [{"sample": r["sample"], "haplogroup_2019": r["haplogroup"],
                    "display_group": r["display_group"], "family": r["family"],
                    "reference_male": r["reference_male"],
                    "y_status": r["y_status"], "population_included": r["population_included"],
                    "source": str(Path(snapshot_path).resolve().relative_to(ROOT))}
                   for node in leaves for r in node["members"]]
-    write_rows(out / "figure2_tree_membership.tsv", membership)
+    write_rows(AUX / "figure2_tree_membership.tsv", membership)
     counts = Counter(r["lineage"] for r in map_samples)
-    write_rows(out / "figure2_lineage_counts.tsv", [
+    write_rows(AUX / "figure2_lineage_counts.tsv", [
         {"lineage": group, "n_unique_individuals": n, "percent": 100*n/len(map_samples)}
         for group,n in counts.items()])
-    pie_fig, pie_ax = plt.subplots(figsize=(12.5, 5.7))
+    pie_fig, pie_ax = plt.subplots(figsize=(180 * MM, 75 * MM)); pie_ax.set_anchor("N")
     pie_map(pie_ax, None, map_samples, land, size_legend=True)
-    pie_ax.set_title(f"Geographic coverage of 1kGP, HGDP and SGDP  (n={len(map_samples):,} individuals)",
-                     fontsize=11, pad=10)
-    pie_fig.subplots_adjust(left=.025, right=.975, top=.95, bottom=.16)
+    print(f"Supplementary Fig. 1 map: n={len(map_samples):,} individuals", flush=True)
+    pie_fig.subplots_adjust(left=.005, right=.995, top=.995, bottom=.005)
     pie_fig.canvas.draw()
-    anchor=pie_fig.transFigure.inverted().transform(pie_ax.transData.transform((55.38,-35.63)))
-    legend_font=7.6*(pie_ax.get_position().width*pie_fig.get_figwidth())/(.91*10.6)
-    map_legend=lineage_legend(pie_fig, map_samples, anchor[1], x=anchor[0], fontsize=legend_font)
+    anchor=pie_fig.transFigure.inverted().transform(pie_ax.transData.transform((55.38,-38.63)))
+    map_legend=lineage_legend(pie_fig, map_samples, anchor[1], x=anchor[0], fontsize=FS["legend"])
     align_map_legend_titles(pie_ax,map_legend)
-    pie_fig.text(.5, .047,
-                 "Pie area scales with unique individuals per reported location; sectors show broad Y lineages.",
-                 ha="center", fontsize=9, color="#4d606b")
-    pie_fig.text(.5, .018,
-                 "Shared individuals count once.",
-                 ha="center", fontsize=9, color="#4d606b")
-    save(pie_fig, out, "figureS10_world_map")
+    save(pie_fig, out, "supp/suppfig1_world_map")
     return root, leaves
 
 
 def population_supplement(valid, out):
     order = sorted({r["lineage_display"] for r in valid},
                    key=lambda g: (-sum(r["lineage_display"] == g for r in valid), g))
-    fig, axes = plt.subplots(3, 3, figsize=(12.6, 9.4), gridspec_kw={"hspace": .44, "wspace": .32})
+    print("ED3 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
+    panels = TARGETS + [("y_dose", "y_dose", "Y dosage", 1, "Y dosage (relative)")]
+    fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 200 * MM), gridspec_kw={"hspace": .62, "wspace": .14})
+    fig.subplots_adjust(left=.065, right=.995, top=.975, bottom=.045)
     rng = np.random.default_rng(271)
-    for panel, (ax, (_, key, label, scale, units)) in enumerate(zip(axes.flat, TARGETS)):
+    for panel, (ax, (_, key, label, scale, units)) in enumerate(zip(axes.flat, panels)):
+        color = "#526774" if key == "y_dose" else BLUE
         for x, group in enumerate(order):
             selected = [r for r in valid if r["lineage_display"] == group]
             values = np.array([r[key] / scale for r in selected])
             jitter = x + rng.uniform(-.23, .23, len(selected))
             reference = np.array([r["reference"] for r in selected])
             included = np.array([in_summary(r, key) for r in selected])
-            ax.scatter(jitter[~reference & included], values[~reference & included], s=5, color=BLUE, alpha=.35, linewidths=0)
-            ax.scatter(jitter[reference & included], values[reference & included], s=10, facecolors="none", edgecolors=BLUE, linewidths=.45, alpha=.75)
-            ax.scatter(jitter[~included], values[~included], s=19, marker="D", facecolors="none", edgecolors="#886333", linewidths=.8)
+            ax.scatter(jitter[~reference & included], values[~reference & included], s=2.5, color=color, alpha=.35, linewidths=0)
+            ax.scatter(jitter[reference & included], values[reference & included], s=5, facecolors="none", edgecolors=color, linewidths=.4, alpha=.75)
+            ax.scatter(jitter[~included], values[~included], s=8, marker="D", facecolors="none", edgecolors="#886333", linewidths=.6)
             if included.any():
-                ax.plot([x - .27, x + .27], [np.median(values[included])]*2, color="#263d48", linewidth=1.6)
-        ax.set_xticks(range(len(order)), order, rotation=90, fontsize=7)
-        ax.set_ylabel(units, fontsize=8)
-        ax.set_title(label, loc="left", fontsize=10)
-        ax.text(-.12, 1.045, chr(ord("a") + panel), transform=ax.transAxes,
-                fontsize=12, fontweight="bold")
-        ax.grid(axis="y", color="#e8edef", linewidth=.5)
-    for ax in axes.flat[len(TARGETS):]:
-        ax.set_visible(False)   # unused grid cells
-    for ax in axes.flat:
-        ax.spines[["right", "top"]].set_visible(False)
+                ax.plot([x - .27, x + .27], [np.median(values[included])]*2, color="#263d48", linewidth=1)
+        if key == "y_dose":
+            ax.axhline(1, color=color, linestyle="--", linewidth=.6, zorder=1)
+        ax.set_xticks(range(len(order)), order, rotation=90)
+        ax.set_xlim(-.7, len(order) - .3)
+        ax.set_ylabel(units)
+        ax.set_title(label, loc="left")
+        letter(fig, chr(ord("a") + panel), .002 if panel % 2 == 0 else .505, ax.get_position().y1 + 5 * MM / fig.get_figheight())
+        ax.grid(axis="y", color="#e8edef", linewidth=.4)
         ax.set_axisbelow(True)
-        ax.tick_params(axis="y", labelsize=7)
-    fig.subplots_adjust(left=.06, right=.98, top=.92, bottom=.135)
-    fig.suptitle(f"{ {7: 'Seven', 8: 'Eight'}[len(TARGETS)]} Y satellite measurements in {len(valid)} 1000 Genomes males", fontsize=11, color="#243d49")
-    counts = [f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order]
-    fig.text(.5, .058, "n per lineage — " + ";  ".join(counts[:10]), ha="center", fontsize=8.8)
-    fig.text(.5, .035, ";  ".join(counts[10:]), ha="center", fontsize=8.8)
-    fig.text(.5, .010, "Filled points: outside reference panel; open points: reference individuals. Lines: medians.",
-             ha="center", fontsize=8)
-    save(fig, out, "figureS3_population")
+    save(fig, out, "ed/ed3_population")
 
 
 def depth_supplement(depth, out):
@@ -802,29 +791,25 @@ def depth_supplement(depth, out):
     targets=list(TARGETS);colors=list(COLORS)
     if any(r['target']==KEY for r in depth):
         targets.append((KEY,None,LABEL,1,''));colors.append(COLOR)
-    if len(targets)==9:fig,axes=plt.subplots(3,3,figsize=(11.8,8.4),sharex=True)
-    else:fig,axes=plt.subplots(2,4,figsize=(11.8,5.9),sharex=True)
+    rows=3 if len(targets)==9 else 2
+    fig,axes=plt.subplots(rows,4 if rows==2 else 3,figsize=(180*MM,(150 if rows==3 else 100)*MM),sharex=True)
+    fig.subplots_adjust(left=.06,right=.99,top=.94,bottom=.12,wspace=.32,hspace=.35)
     for ax, (key, _, label, _, _), color in zip(axes.flat, targets, colors):
-        rows = sorted((r for r in depth if r["target"] == key), key=lambda r:r["median_autosomal_depth"])
-        ax.plot([r["median_autosomal_depth"] for r in rows], [r["mean_median_absolute_pct"] for r in rows],
-                "o-", color=color, markersize=3.5, linewidth=1)
-        ax.fill_between([r["median_autosomal_depth"] for r in rows],
-                        [r["min_median_absolute_pct"] for r in rows], [r["max_median_absolute_pct"] for r in rows],
+        rows_ = sorted((r for r in depth if r["target"] == key), key=lambda r:r["median_autosomal_depth"])
+        ax.plot([r["median_autosomal_depth"] for r in rows_], [r["mean_median_absolute_pct"] for r in rows_],
+                "o-", color=color, markersize=2.5, linewidth=.75)
+        ax.fill_between([r["median_autosomal_depth"] for r in rows_],
+                        [r["min_median_absolute_pct"] for r in rows_], [r["max_median_absolute_pct"] for r in rows_],
                         color=color, alpha=.15, linewidth=0)
         ax.set_xscale("log")
         ax.set_xticks([1, 2, 5, 10, 20, 34], ["1","2","5","10","20","34"])
-        ax.set_title(label, loc="left", fontsize=10)
-        ax.grid(color="#e8edef", linewidth=.5)
-        ax.spines[["right", "top"]].set_visible(False)
-        ax.set_xlabel("Median autosomal coverage (×)", fontsize=8)
-        ax.set_ylabel("Absolute error (%)", fontsize=8)
-        ax.tick_params(labelsize=7, labelbottom=True)   # sharex hides upper-row labels
-    for ax in axes.flat[len(TARGETS):]: ax.set_visible(False)
-    fig.subplots_adjust(wspace=.4, hspace=.45, top=.88, bottom=.13)
-    fig.suptitle("Sequencing depth and prediction accuracy", fontsize=11, color="#243d49")
-    fig.text(.5, .025, "Points: mean of ten repeat-specific medians. Shading: range across repeats. Training reads remain at full depth.",
-             ha="center", fontsize=8)
-    save(fig, out, "figureS4_depth")
+        ax.set_title(label, loc="left")
+        ax.grid(color="#e8edef", linewidth=.4)
+        ax.tick_params(labelbottom=True)   # sharex hides upper-row labels
+    for ax in axes[-1]: ax.set_xlabel("Median autosomal coverage (×)")
+    for ax in axes[:, 0]: ax.set_ylabel("Absolute error (%)")
+    for ax in axes.flat[len(targets):]: ax.set_visible(False)
+    save(fig, out, "ed/ed4_depth")
 
 
 def j_subtree_figure(valid, out):
@@ -832,36 +817,32 @@ def j_subtree_figure(valid, out):
     index = {r["sample"]: r for r in members}
     tree = prune_tree(parse_newick(TREE_SOURCE), set(index))
     root, leaves = collapse_tree(tree, index)
-    fig = plt.figure(figsize=(8.2, 10.8))
-    grid = fig.add_gridspec(1, 2, left=.08, right=.96, bottom=.09, top=.91, width_ratios=[3.4,1.2], wspace=.1)
+    fig = plt.figure(figsize=(180 * MM, 212 * MM))
+    grid = fig.add_gridspec(1, 2, left=.03, right=.62, bottom=.05, top=.965, width_ratios=[3.4, 1.6], wspace=.06)
     tree_ax, ax = [fig.add_subplot(grid[0, i]) for i in range(2)]
     draw_collapsed_tree(tree_ax, root, leaves, individual=True, panel="a")
     for node in leaves:
         row=node["members"][0];y=node["y"]
         short = row["haplogroup"].startswith("J2a1a1")
-        ax.plot(row["DYZ19_bp"]/1e3, y, "o", markersize=4,
+        ax.plot(row["DYZ19_bp"]/1e3, y, "o", markersize=2.5,
                 markerfacecolor="none" if row["reference"] else "#bd6078" if short else PURPLE,
-                markeredgecolor="#bd6078" if short else PURPLE, markeredgewidth=.7)
+                markeredgecolor="#bd6078" if short else PURPLE, markeredgewidth=.5)
     ax.set_ylim(len(leaves)-.4,-.7)
     ax.set_xlim(0,350)
     ax.set_xticks([0,100,200,300])
     ax.set_yticks([])
-    ax.set_xlabel("DYZ19 (kb)",fontsize=9)
-    ax.set_title("DYZ19 state",fontsize=10,pad=11)
-    ax.text(-.10,1.035,"b",transform=ax.transAxes,fontsize=15,fontweight="bold")
+    ax.set_xlabel("DYZ19 (kb)")
     ax.spines[["right","left","top"]].set_visible(False)
-    ax.grid(axis="x",color="#e7ecef",linewidth=.6)
+    ax.grid(axis="x",color="#e7ecef",linewidth=.4)
     ax.set_axisbelow(True)
-    fig.suptitle(f"DYZ19 variation across {len(members)} J chromosomes",fontsize=11,color="#243d49",y=.97)
-    fig.text(.5,.04,"Pink: J2a1a1 calls; purple: other J calls. Open points: reference individuals. Labels truncate haplogroup calls.",
-             ha="center",fontsize=7.4)
-    fig.text(.5,.02,"The tree is inferred from SNPs; labels give haplogroup assignments. Branch lengths represent sequence divergence.",
-             ha="center",fontsize=7.2)
-    save(fig,out,"figureS5_J_DYZ19")
-    write_rows(out/"figureS5_J_membership.tsv",[
+    c = fig.add_axes([.71, .62, .28, .345]); dyz3_cohorts(c)   # replication across cohorts
+    for s, x in (("a", .005), ("b", ax.get_position().x0 - .02), ("c", .66)): letter(fig, s, x, .995)
+    save(fig,out,"ed/ed5_J_DYZ19")
+    write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
          "reference_male":r["reference_male"],"DYZ19_bp":r["DYZ19_bp"]}
         for n in leaves for r in n["members"]])
+
 
 def assembly_supplement(out):
     """Preserve the complete-array annotation view, separate from population reads."""
@@ -875,7 +856,7 @@ def assembly_supplement(out):
     rows = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                             calls, parents, groups)
     composition_supplement(rows, order, out)
-    write_rows(out / "figureS2_composition_samples.tsv", rows)
+    write_rows(AUX / "figureS2_composition_samples.tsv", rows)
 
 
 def snapshot_manifest(path, out):
@@ -898,10 +879,10 @@ def snapshot_manifest(path, out):
     inputs += [p for p in (ROOT / "data/figure_metadata").iterdir()
                if p.suffix in {".tsv", ".kin0", ".psam", ".xlsx", ".geojson"} or p.name == "sgdp_metadata.txt"]
     inputs += list((ROOT / "results/cohorts").glob("*.tsv"))
-    outputs = [p for p in out.glob("*.tsv") if not p.name.startswith("snapshot_")]
-    outputs += [out / f"snapshot_{tag}_samples.tsv"]
+    outputs = [p for p in AUX.glob("*.tsv") if not p.name.startswith("snapshot_")] + [p for p in out.rglob("*.pdf")]
+    outputs += [AUX / f"snapshot_{tag}_samples.tsv"]
     outputs += list((ROOT / "results").glob(Path(path).stem + ".*.tsv"))
-    outputs += [out / f"snapshot_{tag}_summary.json"]
+    outputs += [AUX / f"snapshot_{tag}_summary.json"]
     summary = json.loads(outputs[-1].read_text())
     def record(p):
         return {"path": str(p.absolute().relative_to(ROOT)), "bytes": p.stat().st_size,
@@ -921,7 +902,7 @@ def snapshot_manifest(path, out):
         "inputs": [record(p) for p in sorted(set(inputs))],
         "derived_outputs": [record(p) for p in sorted(set(outputs))],
     }
-    (out / f"snapshot_{tag}_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (AUX / f"snapshot_{tag}_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
 
 def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
@@ -931,17 +912,14 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     summary["relatedness"] = info
     root, leaves = population_figure(valid, out, path, len(raw))
     population_supplement(valid, out)
-    from validation_plots import fold_supplement, write_top_samples, write_depth_individuals, lineage_supplement
-    fold_supplement(out)
+    from validation_plots import lineage_supplement
     lineage_supplement(out)
-    write_top_samples(out)
-    write_depth_individuals(out)
     depth_supplement(depth, out)
     j_subtree_figure(valid, out)
     assembly_supplement(out)
-    write_rows(out / "figure1_validation_summary.tsv", benchmarks)
-    write_rows(out / "figure1_depth_summary.tsv", depth)
-    write_rows(out / f"snapshot_{tag}_samples.tsv", [
+    write_rows(AUX / "figure1_validation_summary.tsv", benchmarks)
+    write_rows(AUX / "figure1_depth_summary.tsv", depth)
+    write_rows(AUX / f"snapshot_{tag}_samples.tsv", [
         {**{k:v for k,v in r.items() if k not in {"reference"}}, "reference": r["reference"]} for r in valid])
     write_rows(Path(path).with_suffix(".relationships.tsv"), pedigree_relationships(raw, pedigree))
     write_rows(Path(path).with_suffix(".kinship.tsv"), kinship)
@@ -965,7 +943,7 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
         row = next(r for r in valid if r["sample"] == sample)
         follow.append({k:row[k] for k in ("sample","family","haplogroup","reference_male","y_dose","DYZ3_bp","Yq12_bp","DYZ1_bp","DYZ2_bp","DYZ18S_bp","DYZ19_bp","ratio_bp")}|{"follow_up":reason})
     write_rows(Path(path).with_suffix(".follow_up.tsv"),follow)
-    (out / f"snapshot_{tag}_summary.json").write_text(json.dumps(summary, indent=2)+"\n")
+    (AUX / f"snapshot_{tag}_summary.json").write_text(json.dumps(summary, indent=2)+"\n")
     snapshot_manifest(path, out)
     print("Frozen population:", len(valid), "valid;", summary["valid_reference_males"], "reference;", len(leaves), "SNP-tree rows.")
     return summary

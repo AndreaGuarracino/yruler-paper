@@ -3,7 +3,7 @@
 
 usage: python3 scripts/text_numbers.py <results dir> <out.tsv>
 inputs: <results dir>/{cv,cv_units,lolo,holdout_21,depth,father_son,cv_females,cohort_1kgp,yprofile_1kgp,dyz1_dyz2_lineages,dyz1_dyz2_truth_vs_yruler}.tsv,
-manuscript/figures/figureS8_pedigree_pairs.tsv, results/tree/tree.rooted.nwk, data/method/yq12_truth_hallast.tsv
+results/figures/pedigree_pairs.tsv, results/tree/tree.rooted.nwk, data/method/yq12_truth_hallast.tsv
 """
 import sys, csv, collections
 from pathlib import Path
@@ -49,7 +49,7 @@ def cherries(n, out):   # sister tip pairs among included men
 P = []; cherries(fs.parse_newick(ROOT / 'results/tree/tree.rooted.nwk'), P); P = [(a, s) for a, s in P if 'par2_gain' not in (I[a]['y_state'], I[s]['y_state'])]   # PAR2-gain males left out
 put('sister_pairs_over_25pct', f'{len(P)} pairs: ' + ', '.join(f"{c} {sum(abs(np.log(b(I[a], c) / b(I[s], c))) > np.log(1.25) for a, s in P)}" for c in ('DYZ19', 'DYZ3', 'Yq12')))
 fsr = collections.defaultdict(dict)
-for r in rows(ROOT / 'manuscript/figures/figureS8_pedigree_pairs.tsv'): fsr[(r['father'], r['son'])][r['target']] = abs(float(r['signed_difference_pct']))
+for r in rows(ROOT / 'results/figures/pedigree_pairs.tsv'): fsr[(r['father'], r['son'])][r['target']] = abs(float(r['signed_difference_pct']))
 yq = sorted(((v['yq12'], p, v) for p, v in fsr.items() if 'HG02966' not in p and v['yq12'] > 25), reverse=True); st = {x['sample']: x['y_state'] for x in X}
 for nm, g in (('with_par2_gain', [y for y in yq if 'par2_gain' in (st[y[1][0]], st[y[1][1]])]), ('without_par2_gain', [y for y in yq if 'par2_gain' not in (st[y[1][0]], st[y[1][1]])])):
     put(f'father_son_yq12_over_25pct_{nm}', f'{len(g)} pairs: ' + '; '.join(f'{p[0]}-{p[1]} Yq12 {y:.1f}%, DYZ3 {v["dyz3"]:.1f}%, DYZ19 {v["dyz19"]:.1f}%' for y, p, v in g))

@@ -1,0 +1,22 @@
+target	sample	value	reason	lower_fence	upper_fence	clade_median	relative_deviation	dosage_label_threshold
+DYZ3_bp	HG04006	2767984.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	-500771.75	2094794.25	1349481.0	1.051147070614555	
+DYZ3_bp	HG02686	2578408.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	-500771.75	2094794.25	1349481.0	0.9106663969333395	
+DYZ3_bp	HG02684	2509545.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	-500771.75	2094794.25	1349481.0	0.8596371493929889	
+Yq12_bp	HG02966	38813.0	lower pooled 1.5-IQR tail and >=50% from clade median; up to three smallest	13311249.5	41778341.5	26963910.0	0.998560557426575	
+Yq12_bp	HG01967	5262757.0	lower pooled 1.5-IQR tail and >=50% from clade median; up to three smallest	13311249.5	41778341.5	22629532.5	0.7674385451842631	
+Yq12_bp	HG02804	8031178.0	lower pooled 1.5-IQR tail and >=50% from clade median; up to three smallest	13311249.5	41778341.5	26963910.0	0.702150837916311	
+Yq12_bp	HG02773	56349858.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	13311249.5	41778341.5	26963910.0	1.0898251774316114	
+Yq12_bp	HG00512	53885673.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	13311249.5	41778341.5	32703979.0	0.6476794154007988	
+Yq12_bp	HG00526	53661265.0	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	13311249.5	41778341.5	32703979.0	0.6408176203880267	
+DYZ19_bp	HG02966	266.0	lower pooled 1.5-IQR tail and >=50% from clade median; up to three smallest	35574.0	608610.0	242090.0	0.9989012350778637	
+DYZ19_bp	NA18911	77375.0	satellite follow-up candidate; >=50% from clade median	35574.0	608610.0	242090.0	0.6803874592093849	
+DYZ19_bp	NA18910	83190.0	satellite follow-up candidate; >=50% from clade median	35574.0	608610.0	242090.0	0.6563674666446363	
+DYZ19_bp	HG01967	87370.0	satellite follow-up candidate; >=50% from clade median	35574.0	608610.0	409018.0	0.7863908189859615	
+unit_ratio	HG02804	2.674352660728027	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	0.6465041234230309	1.3062335252049813	1.058463205755936	1.5266373419358028	
+unit_ratio	HG03844	2.0494074286292303	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	0.6465041234230309	1.3062335252049813	0.9912797795685642	1.067435925628581	
+unit_ratio	HG02686	1.8093592092621122	upper pooled 1.5-IQR tail and >=50% from clade median; up to three largest	0.6465041234230309	1.3062335252049813	1.0111639771513237	0.7893825829906282	
+y_dose	HG03456	2.0365	dosage >1.30; descriptive review threshold	0.9642250000000001	1.034425	1.0024	1.031624102154829	1.3
+y_dose	HG02869	1.9107	dosage >1.30; descriptive review threshold	0.9642250000000001	1.034425	1.0024	0.9061252992817239	1.3
+y_dose	NA11917	1.4354	dosage >1.30; descriptive review threshold	0.9642250000000001	1.034425	1.0024	0.43196328810853957	1.3
+y_dose	NA18966	1.3891	dosage >1.30; descriptive review threshold	0.9642250000000001	1.034425	1.0025499999999998	0.3855668046481475	1.3
+y_dose	HG01967	1.315	dosage >1.30; descriptive review threshold	0.9642250000000001	1.034425	0.99715	0.3187584616156045	1.3

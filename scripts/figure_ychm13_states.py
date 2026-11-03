@@ -1,6 +1,8 @@
 # Supplementary figure: chrY dose of unusual males
 # usage: python3 scripts/figure_ychm13_states.py <dir with ychm13_flagged_100kb.tsv, .classes.tsv, ylift_flagged_100kb.tsv> <out.pdf> [unusual|pairs] [kmer <X/PAR summary.tsv> [Y-specific profile.tsv [CRAM-subset profile.tsv:sample,...]]]; 16:9, rows clustered within groups
 # kmer: alignment-free only (marker k-mer dose on Y, no read depth; X dose from um_sexprof.py; PAR and XTR windows: Y = 2 (X + Y) - X from <summary>.chrY_XY.tsv)
+from palette import NAMES, TITLE, MM, save
+import palette as PL
 import sys, csv, textwrap, warnings, collections as co, numpy as np, matplotlib
 warnings.filterwarnings('ignore', 'Mean of empty slice')
 matplotlib.use('Agg'); import matplotlib.pyplot as plt; plt.rcParams['hatch.color'] = '#a9a8a4'; plt.rcParams['hatch.linewidth'] = 0.4
@@ -13,11 +15,11 @@ BANDS = [('p11.32', 0, 127522, 'gneg'), ('p11.31', 127522, 454425, 'gpos50'), ('
 STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6d5d1'}
 GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp deletion', 'yp_deletion'), ('Mosaic loss', 'mosaic_loss'), ('Mosaic gain', 'mosaic_gain'), ('Y gain (XYY)', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
 EXTRA = [('X gain (XXY)', ['HG01683']), ('Unusual array estimates', ['HG01527', 'HG01529', 'NA18910', 'NA18911', 'HG04006', 'HG02804', 'HG02684', 'HG02686', 'NA18952'])]
-NOTE = {'HG03006': 'CRAM', 'NA19226': 'Y lost; offspring XY', 'HG02966': 'parent without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
+NOTE = {'NA19226': 'Y lost; offspring XY', 'HG02966': 'parent without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))
 YP = sys.argv[6] if KM and len(sys.argv) > 6 else None   # um_yprof2.py windows: Y-specific 31-mers
 SUB = sys.argv[7].split(':') if YP and len(sys.argv) > 7 else None; SUBS = set(SUB[1].split(',')) if SUB else set()   # samples whose Y comes from the CRAM subset
-K = [r for r in rd(YP) if r['level'] == 'window' and r['role'] != 'reference' and r['sample'] not in SUBS] + [r for r in rd(SUB[0]) if r['chrom'] == 'chrY' and r['sample'] in SUBS] if YP else [r for r in rd(f'{D}/ychm13_flagged_100kb.tsv') if r['level'] == 'window']; L = [] if KM else rd(f'{D}/ylift_flagged_100kb.tsv')
+K = [r for r in rd(YP) if r['level'] == 'window' and r['role'] != 'reference' and r['sample'] not in SUBS] + ([r for r in rd(SUB[0]) if r['chrom'] == 'chrY' and r['sample'] in SUBS] if SUB else []) if YP else [r for r in rd(f'{D}/ychm13_flagged_100kb.tsv') if r['level'] == 'window']; L = [] if KM else rd(f'{D}/ylift_flagged_100kb.tsv')
 W = sorted({int(r['start']) for r in K}); step = W[1] - W[0]; W = list(range(0, 62460029, step)) if KM else W; nw = len(W); X = {}   # kmer: whole chrY, PAR2 included
 for r in K:   # k-mer dose where >= 50 marker positions
     X.setdefault(r['sample'], np.full(nw, np.nan))[int(r['start']) // step] = float(r['ratio']) if int(r['key_positions']) >= 50 else np.nan
@@ -73,13 +75,16 @@ if MODE == 'pairs':   # every father-son pair with an unusual member, father abo
     BASE.update({'NA19226': 'Y lost in the sample'}); BASE.pop('HG02966', None)
     NOTE = {x: ('parent' if i % 2 == 0 else 'offspring') + (f'; {BASE[x]}' if x in BASE else '') for i, x in enumerate(rows)}
 print(f'{len(rows)} males in {len(gl)} groups; missing {sorted(set(X) - set(rows))}')
+print('row notes not drawn (for the caption):', {x: NOTE[x] for x in rows if x in NOTE}, flush=True)
 C = co.defaultdict(lambda: np.zeros(nw))
 for r in rd(f'{D}/ychm13_flagged_100kb.classes.tsv'): C[r['class']][int(r['start']) // step] = int(r['positions'])
 BOUND = [0, 0.25, 0.75, 0.9, 1.1, 1.25, 1.75, 2.5]   # 0, about 0.5, slight loss, 1, slight gain, about 1.5, 2
 cm = ListedColormap(['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']); cm.set_bad('#ffffff'); nrm = BoundaryNorm(BOUND, cm.N)
-fig = plt.figure(figsize=(13.33, 7.5)); n = len(rows)
-gs = fig.add_gridspec(2, 5, height_ratios=[0.2, 0.8], width_ratios=[1, 0.06, 0.06, 0.14, 0.012], hspace=0.04, wspace=0.03, left=0.215, right=0.925, top=0.97, bottom=0.07)
-ax0, ax2, ay, ax, axg, cax = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1]), fig.add_subplot(gs[1, 2]), fig.add_subplot(gs[1, 3]), fig.add_subplot(gs[1, 4])
+n = len(rows); ROW, HEAD, BOT, TOP = 2.5, 25, 11, 1   # mm: row pitch, tracks, bottom, top margins
+FW, FH = 180, TOP + HEAD + 1 + n * ROW + BOT; fig = plt.figure(figsize=(FW * MM, FH * MM))
+ax_mm = lambda x0, x1, y0, y1: fig.add_axes([x0 / FW, y0 / FH, (x1 - x0) / FW, (y1 - y0) / FH])
+hb = BOT + n * ROW   # heatmap top
+ax0, ax2, ay, ax, axg, cax = ax_mm(14, 126, hb + 1, hb + 1 + HEAD), ax_mm(14, 126, BOT, hb), ax_mm(128, 137, BOT, hb), ax_mm(139, 148, BOT, hb), ax_mm(149.5, 167, BOT, hb), ax_mm(168.5, 170.5, BOT, hb)
 xmax = (W[-1] + step) / MB
 A = 'data/chm13_annot'   # T2T CHM13v2 annotations (github.com/marbl/CHM13)
 SC = [(int(x[1]), int(x[2]), x[3], '#%02x%02x%02x' % tuple(int(v) for v in x[8].split(','))) for x in (l.split('\t') for l in open(f'{A}/chm13v2.0_chrXY_sequence_class_v1.bed')) if x[0] == 'chrY']
@@ -88,37 +93,38 @@ for l in open(f'{A}/chm13v2.0Y_inverted_repeats_v1.bed'):
     x = l.split('\t')
     if x[0] == 'chrY' and x[3].startswith('P'): PAL[x[3].strip()].append((int(x[1]), int(x[2])))
 NMC = {'PAR1': 'PAR', 'PAR2': 'PAR', 'XTR1': 'XTR', 'XTR2': 'XTR', 'X-DEG': 'X-degenerate', 'AMPL': 'Ampliconic', 'SAT': 'Satellite', 'DYZ17': 'Satellite', 'DYZ19': 'Satellite', 'CEN': 'Centromere', 'HET': 'Heterochromatin', 'OTHER': 'Other'}
-for nm, a, b, st in BANDS:   # cytobands (y 1.9-2.6), band names above
-    ax0.add_patch(plt.Rectangle((a / MB, 1.9), (b - a) / MB, 0.7, fc=STAIN[st], ec='#5d5c58', lw=0.5, hatch='////' if st == 'gvar' else None))
-for nm, a, b, st in (B for B in BANDS if B[2] - B[1] > 1e6): ax0.text((a + b) / 2 / MB, 2.68, nm, ha='center', va='bottom', fontsize=6.5, color=INK, rotation=90)
+for nm, a, b, st in BANDS:   # tracks in mm: cytobands 10.8-13.8, names above on two rows
+    ax0.add_patch(plt.Rectangle((a / MB, 10.8), (b - a) / MB, 3, fc=STAIN[st], ec='#5d5c58', lw=0.5, hatch='////' if st == 'gvar' else None))
+for i, (nm, a, b, st) in enumerate(B for B in BANDS if B[2] - B[1] > 1e6):
+    y = 14.4 + 2.8 * (i % 2); ax0.plot([(a + b) / 2 / MB] * 2, [13.8, y - 0.2], color=INK, lw=0.4); ax0.text((a + b) / 2 / MB, y, nm, ha='center', va='bottom', fontsize=PL.FS["label"], color=INK)
 for lab, a, b in (('Yp', 0, 10.71), ('Yq', 10.71, 62.46)):   # arms
-    ax0.plot([a + 0.15, b - 0.15], [4.0, 4.0], color=INK, lw=0.8); ax0.text((a + b) / 2, 4.1, lab, ha='center', va='bottom', fontsize=8, color=INK, fontweight='bold')
-CC = {}   # sequence classes (y 1.0-1.6), one label per class on its widest block, legend at the top right
+    ax0.plot([a + 0.15, b - 0.15], [21.3, 21.3], color=INK, lw=0.8); ax0.text((a + b) / 2, 21.6, lab, ha='center', va='bottom', fontsize=PL.FS["label"], color=INK, fontweight='bold')
+CC = {}   # sequence classes 7.4-9.8, legend at the top right
 for a, b, c, col in SC:
-    ax0.add_patch(plt.Rectangle((a / MB, 1.0), (b - a) / MB, 0.6, fc=col, ec='white', lw=0.3)); CC.setdefault(NMC[c], col)
-lax = fig.add_subplot(gs[0, 1:]); lax.axis('off')   # legend in its own header cell
-lax.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), loc='center', ncol=2, fontsize=7.5, frameon=False, title='Sequence class', title_fontsize=8, handlelength=1.6, handleheight=1.1, columnspacing=1.0, labelspacing=0.35)
-for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))):   # palindromes (y 0.45-0.7), labels on two rows
-    for a, b in arms: ax0.add_patch(plt.Rectangle((a / MB, 0.45), (b - a) / MB, 0.25, fc=INK, lw=0))
-    ax0.text(np.mean([v for ab in arms for v in ab]) / MB, 0.32 - 0.32 * (i % 2), p, ha='center', va='top', fontsize=5.5, color=INK)
-for y, lab in ((2.25, 'Cytoband'), (1.3, 'Sequence class'), (0.55, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=6.5, color=INK)
-ax0.set_xlim(0, xmax); ax0.set_ylim(-0.45, 4.6); ax0.axis('off')
+    ax0.add_patch(plt.Rectangle((a / MB, 7.4), (b - a) / MB, 2.4, fc=col, ec='white', lw=0.3)); CC.setdefault(NMC[c], col)
+lax = ax_mm(128, 180, hb + 1, hb + 1 + HEAD); lax.axis('off')   # legend in its own header cell
+lax.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), loc='center', ncol=2, title=NAMES['annotation'], title_fontproperties=TITLE(PL.FS['legend']), labelspacing=0.35)
+for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))):   # palindromes 5.2-6.4, labels on two rows
+    for a, b in arms: ax0.add_patch(plt.Rectangle((a / MB, 5.2), (b - a) / MB, 1.2, fc=INK, lw=0))
+    ax0.text(np.mean([v for ab in arms for v in ab]) / MB, 4.9 - 2.4 * (i % 2), p, ha='center', va='top', fontsize=PL.FS["point"], color=INK)
+for y, lab in ((12.3, 'Cytoband'), (8.6, 'Sequence\nclass'), (5.8, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=PL.FS["tick"], color=INK, linespacing=1)
+ax0.set_xlim(0, xmax); ax0.set_ylim(0, HEAD); ax0.axis('off')
 M = np.array([X[s] for s in rows]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect='auto', cmap=cm, norm=nrm, interpolation='nearest', extent=(0, xmax, n, 0))
 ax2.hlines(np.arange(1, n), 0, xmax, color='white', lw=0.5)   # thin gap between rows
 nd = np.isnan(M).astype(float); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
-ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels([s + (f'  ({NOTE[s]})' if s in NOTE else '') for s in rows], fontsize=7.5)
+ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels(rows)
 for t, s in zip(ax2.get_yticklabels(), rows): t.set_color('#8a8984' if s in relrow else INK)   # relatives outside the groups in grey
-ax2.set_xlabel('CHM13v2 chrY position (Mb)', fontsize=8.5); ax2.tick_params(labelsize=7.5, length=2); ax2.set_xlim(0, xmax)
+ax2.set_xlabel('CHM13v2 chrY position (Mb)'); ax2.set_xlim(0, xmax)
 for a_, lab, col in ((ay, 'Y dose', 1), (ax, 'X dose', 2)):   # dose bars with numbers
     v = [info[s][col] for s in rows]; a_.barh(np.arange(n) + 0.5, v, height=0.62, color='#8a8984', lw=0)
-    for i, x in enumerate(v): a_.text(min(x, 2.25) + 0.05, i + 0.5, f'{x:.2f}', va='center', ha='left', fontsize=6.5, color=INK)
+    for i, x in enumerate(v): a_.text(min(x, 2.25) + 0.05, i + 0.5, f'{x:.2f}', va='center', ha='left', fontsize=PL.FS["point"], color=INK)
     for g in (1, 2): a_.axvline(g, color='#b9b8b3', lw=0.5, ls=':')
-    a_.set_xlim(0, 2.9); a_.set_ylim(n, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.tick_params(labelsize=6, length=2); a_.set_xlabel(lab, fontsize=7)
+    a_.set_xlim(0, 2.9); a_.set_ylim(n, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.set_xlabel(lab)
     for sp_ in ('top', 'right'): a_.spines[sp_].set_visible(False)
 axg.set_ylim(n, 0); axg.set_xlim(0, 1); axg.set_autoscale_on(False); axg.axis('off')
 for lab, a, b in gl:
     for a_ in (ax2, ay, ax): a_.axhline(a, color=INK, lw=0.6)
-    axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 14), va='center', ha='left', fontsize=7.5, color=INK)
+    axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 12), va='center', ha='left', fontsize=PL.FS["tick"], color=INK)
 cb = fig.colorbar(im, cax=cax, boundaries=BOUND, ticks=[(a + b) / 2 for a, b in zip(BOUND[:-1], BOUND[1:])]); cb.ax.set_yticklabels(['0', '0.5', 'loss', '1', 'gain', '1.5', '2'])
-cb.ax.tick_params(labelsize=6); cb.set_label('Copies vs 100 reference XY males; hatched white: no data', fontsize=7)
-fig.savefig(OUT, bbox_inches='tight', pad_inches=0.02); print(f'written {OUT}')
+cb.set_label('Copies vs 100 reference XY males; hatched white: no data')
+save(fig, OUT)

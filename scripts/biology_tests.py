@@ -2,7 +2,7 @@
 """Tests on the final estimates: lineages, arrays, father-son ratio, composition, HGDP/SGDP DYZ19, quantiles of one CV score per man, sister pairs, annotation floor.
 
 usage: python3 scripts/biology_tests.py <results dir> <ours indep.tsv> <hallast indep.tsv> <out.tsv> [Dunn pairs out.tsv]
-inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units,holdout_21_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, manuscript/figures/figureS8_pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx (downloaded if missing), both Y trees
+inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units,holdout_21_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, results/figures/pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx (downloaded if missing), both Y trees
 """
 import sys, csv, re, math, collections as co, itertools
 from pathlib import Path
@@ -37,7 +37,7 @@ J = [x for x in R1 if x['lineage'] == 'J']; ja = np.array([b(x, 'DYZ19') for x i
 M = np.array([[math.log(b(x, c)) for c in CL] for x in inc]); L = np.array([x['lineage'] for x in inc]); W = M.copy()
 for k in set(L): W[L == k] -= W[L == k].mean(0)
 for i, j in itertools.combinations(range(len(CL)), 2): put(f'corr_{CL[i]}_{CL[j]}', f'all {spearmanr(M[:, i], M[:, j])[0]:+.3f}, within lineage {spearmanr(W[:, i], W[:, j])[0]:+.3f}')
-pairs = {(r['father'], r['son']): r['batch_group'] for r in rd('manuscript/figures/figureS8_pedigree_pairs.tsv')}; I = [p for p in pairs if all(C[s]['y_state'] == 'normal' for s in p)]; u = lambda s: abs(math.log(val(C[s], 'ratio')))
+pairs = {(r['father'], r['son']): r['batch_group'] for r in rd('results/figures/pedigree_pairs.tsv')}; I = [p for p in pairs if all(C[s]['y_state'] == 'normal' for s in p)]; u = lambda s: abs(math.log(val(C[s], 'ratio')))
 for g, S in (('all', I), ('cross', [p for p in I if pairs[p] == 'Cross batch']), ('same', [p for p in I if pairs[p] == 'Same batch'])):
     f, n = np.array([u(p[0]) for p in S]), np.array([u(p[1]) for p in S]); put(f'father_son_ratio_{g}', f'{len(S)} pairs: son closer to 1 in {int((n < f).sum())}, median |log ratio| father {np.median(f):.4f} son {np.median(n):.4f}, Wilcoxon p {wilcoxon(f, n).pvalue:.3g}')
 def within(v, l):   # subtract the lineage means

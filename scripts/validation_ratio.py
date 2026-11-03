@@ -4,7 +4,7 @@ import numpy as np
 
 KEY='dyz1_dyz2_ratio'
 LABEL='DYZ1:DYZ2'
-COLOR='#303d43'
+from palette import RATIO as COLOR
 
 
 def paired(a,b):

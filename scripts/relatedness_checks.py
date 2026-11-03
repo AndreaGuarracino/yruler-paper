@@ -4,7 +4,7 @@
 usage: python3 scripts/relatedness_checks.py results/model results/checks/relatedness/gnomad_related_pairs.tsv results/checks/relatedness.tsv results/checks/relatedness/sgdp_king_pairs.tsv
 (the ID lists gnomad_hgdp_1kg_ids.txt and sgdp_plink_ids.txt sit next to the pair files)
 inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,hgsg_calls}.tsv, <results dir>/depth/depth_f1.tsv, results/estimates_1kgp.relatedness_samples.tsv,
-results/tree/tree.rooted.nwk, data/catalog_d376/ped.txt, data/figure_metadata/sgdp_metadata.txt, manuscript/figures/figureS8_pedigree_pairs.tsv
+results/tree/tree.rooted.nwk, data/catalog_d376/ped.txt, data/figure_metadata/sgdp_metadata.txt, results/figures/pedigree_pairs.tsv
 """
 import sys, csv, math, collections as co
 from pathlib import Path
@@ -109,7 +109,7 @@ ped = [l.split() for l in open('data/catalog_d376/ped.txt')][1:]; fa = co.defaul
 for f_, s, father, mother, sex, *_ in ped:
     if father != '0' and s in IN: fa[(father, mother)].append(s)
 sib = [(v[i], v[j]) for v in fa.values() for i in range(len(v)) for j in range(i + 1, len(v))]
-po = {tuple(sorted((r['father'], r['son']))) for r in rd('manuscript/figures/figureS8_pedigree_pairs.tsv')}
+po = {tuple(sorted((r['father'], r['son']))) for r in rd('results/figures/pedigree_pairs.tsv')}
 inf = [(a, q) for a, q, k, z in GP if a in IN and q in IN and 0.177 <= k < 0.354 and z > 0.1 and tuple(sorted((a, q))) not in po]
 allsib = sorted({tuple(sorted(p)) for p in sib + inf}); put('sibling_pairs', f'{len(sib)} recorded full-sibling male pairs, {len(inf)} inferred first-degree non-parent pairs, {len(allsib)} unique')
 if allsib:

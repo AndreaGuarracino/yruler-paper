@@ -1,0 +1,83 @@
+{
+  "population_n": 1597,
+  "groups_n": 30,
+  "unknown_reference_calls": [
+    "200080",
+    "200084",
+    "200085",
+    "HG002",
+    "HG003",
+    "HG005",
+    "HG02486",
+    "HG03471",
+    "NA12882",
+    "NA12886"
+  ],
+  "cohort_groups_without_evaluated_individuals": {
+    "dyz3": [
+      "J2a1*",
+      "J2a1a2",
+      "J2a2",
+      "O2b"
+    ],
+    "yq12": [
+      "J2a1*",
+      "J2a1a2",
+      "J2a2",
+      "NO*",
+      "O1a",
+      "O2b"
+    ],
+    "dyz19": [
+      "J2a1*",
+      "J2a1a2",
+      "J2a2",
+      "O2b"
+    ],
+    "dyz17": [
+      "J2a1*",
+      "J2a1a2",
+      "J2a2",
+      "O2b"
+    ]
+  },
+  "scope": "Descriptive class-specific lineage representation; no ancestry inference, phylogenetic distances, new model evaluation or new array-QC filtering.",
+  "inputs": [
+    {
+      "path": "results/estimates_1kgp.tsv",
+      "sha256": "5b03783a2b6532cf6e1f86c938d97a481dcff53bbf825612f1c37ba8a9bca0da"
+    },
+    {
+      "path": "data/markers_u/truth_regions.tsv",
+      "sha256": "48e42d97b7f43771078d1d25679c3c0e144928b9163d59b13b6f4e68118e3f9c"
+    },
+    {
+      "path": "data/method/dyz19_clean.tsv",
+      "sha256": "d5366a64a7c57d2a89933d1ecbb7525493f28832bdd1e135731a47193aeb46ae"
+    },
+    {
+      "path": "data/method/dyz17_clean.tsv",
+      "sha256": "b5370d64fd846b405c659b4919b7fc7e4d519365714c7358804f31d44e633fe7"
+    },
+    {
+      "path": "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
+      "sha256": "643a0d8c41fc82e51fdfca386b689f74ee3ffd23acf43210ab5c81fee0ef257f"
+    },
+    {
+      "path": "data/figure_metadata/isogg2019_tree.tsv",
+      "sha256": "a9c6ad470de33227263d5578321ce8a404c7a500d61ca9a27d813c4fe940753d"
+    },
+    {
+      "path": "scripts/reference_lineage_coverage.py",
+      "sha256": "abde374a714ca614fc07d76d67f3bbcaa9edf00f29208d8b1f2769dcdf6bfca8"
+    },
+    {
+      "path": "results/model/depth/depth_f1.tsv",
+      "sha256": "4ee986e9f2e58075610b46d50059a6e3e706a6b5139ab6b97dd744dade6cc22e"
+    },
+    {
+      "path": "data/method/truth_qc/x/rule_w4.txt",
+      "sha256": "2670b7555fe93a8d12f99cac0ada093155f3c7bdf23ecc5ce219c9f0a565a74c"
+    }
+  ]
+}

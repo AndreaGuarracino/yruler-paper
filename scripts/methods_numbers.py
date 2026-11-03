@@ -3,7 +3,7 @@
 
 usage: python3 scripts/methods_numbers.py <results dir> <gc_curves.tsv> <out.tsv>
 inputs: <results dir>/{cv,cv_units,lolo,lolo_units,cv_females,cohort_1kgp,cohort_hgdp_sgdp,same_male_pairs,father_son,x_par_doses}.tsv, results/estimates_1kgp.sensitivity.tsv,
-results/checks/xpar_kmer.summary.tsv, manuscript/figures/figure1_depth_summary.tsv, figureS8_pedigree_pairs.tsv, data/method/dyz19_clean.tsv, data/method/yq12_truth_hallast.tsv
+results/checks/xpar_kmer.summary.tsv, results/figures/figure1_depth_summary.tsv, results/figures/pedigree_pairs.tsv, data/method/dyz19_clean.tsv, data/method/yq12_truth_hallast.tsv
 """
 import sys, csv, collections as co
 import numpy as np
@@ -21,7 +21,7 @@ L = co.defaultdict(dict)
 for r in rd(f'{D}/lolo_units.tsv'): L[r['class']][r['male']] = float(r['error_pct'])
 lr = [abs(100 * ((1 + L['dyz1'][m] / 100) / (1 + L['dyz2'][m] / 100) - 1)) for m in L['dyz1'] if m in L['dyz2']]
 put('table_ratio', f"{len({k[1] for k in R})} & {a.mean():.2f} & {np.median(a):.2f} & {np.percentile(a, 90):.2f} & {a.max():.2f} & {np.median(lr):.2f}; predictions {len(R)}")
-P = rd('manuscript/figures/figure1_depth_summary.tsv'); put('depth_levels', ', '.join(sorted({f"{float(r['median_autosomal_depth']):.1f}" for r in P}, key=float)))
+P = rd('results/figures/figure1_depth_summary.tsv'); put('depth_levels', ', '.join(sorted({f"{float(r['median_autosomal_depth']):.1f}" for r in P}, key=float)))
 Dp = {(r['depth'], r['class']): r for r in rd(f'{D}/depth.tsv')}; put('depth_low', ', '.join(f"{NM[c]} {Dp[('d1x', c)]['median_abs']}" for c in CL))
 F = {r['class']: r for r in rd(f'{D}/cv_females.tsv')}; put('female_bg', '; '.join(f"{c} median {F[c]['median_bp']} max {F[c]['max_bp']}" for c in CL) + f"; predictions {F['dyz3']['n_predictions']}")
 X = rd(f'{D}/cohort_1kgp.tsv'); C = {x['sample']: x for x in X}; b = lambda x, c: float(x[f'{c}_bp']); men = [x for x in X if x['sex'] == 'male' and x['estimate_basis'] == 'ruler']
@@ -55,7 +55,7 @@ S = rd(f'{D}/same_male_pairs.tsv')
 for g2 in ('SGDP vs 1kGP NYGC', 'SGDP vs HGDP'):
     put(f'pairs_{g2}'.replace(' ', '_'), ', '.join(f"{NM[c]} {np.median([abs(float(r['diff_pct'])) for r in S if r['class'] == NM[c] and r['projects'] == g2]):.2f}" for c in CL) + f" ({sum(r['class'] == 'DYZ3' and r['projects'] == g2 for r in S)} pairs)")
 Y = co.defaultdict(dict); B = {}
-for r in rd('manuscript/figures/figureS8_pedigree_pairs.tsv'): Y[(r['father'], r['son'])][r['target']] = float(r['signed_difference_pct']); B[(r['father'], r['son'])] = r['batch_group']
+for r in rd('results/figures/pedigree_pairs.tsv'): Y[(r['father'], r['son'])][r['target']] = float(r['signed_difference_pct']); B[(r['father'], r['son'])] = r['batch_group']
 for g2 in ('Cross batch', 'Same batch'):
     I = [p for p in Y if B[p] == g2]; put(f'signed_{g2}'.replace(' ', '_'), f"{len(I)} pairs: " + ', '.join(f"{c} {np.median([Y[p][c] for p in I]):+.2f}" for c in ('dyz3', 'yq12')))
 AL = list(Y); put('fs_median', ', '.join(f"{c} {np.median([abs(Y[p][c]) for p in AL]):.2f}" for c in ('dyz3', 'yq12', 'dyz19', 'dyz1', 'dyz2', 'dyz18s', 'dyz17')) + f"; ratio {np.median([abs(100 * ((1 + Y[p]['dyz1'] / 100) / (1 + Y[p]['dyz2'] / 100) - 1)) for p in AL]):.2f}")

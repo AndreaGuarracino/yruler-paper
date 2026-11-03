@@ -4,7 +4,7 @@
 
 \vsette{HG03098 failed the gap check for DYZ19. The four-track rule excluded the Yq12 and DYZ2 targets of HG01261; its DYZ1 and DYZ18S annotations remained eligible, and its regions stayed in marker selection (removing them would add 3,698 Yq12-class and 266 DYZ2 markers, remove none, and change Yq12 by a median of 0.0055\%, maximum 0.0267\%, in the 115 calibration males). The resulting reference panels contain 129 DYZ3, 90 Yq12, 91 DYZ1, 90 DYZ2, 91 DYZ18S, 139 DYZ19 and 140 DYZ17 targets. Matching short reads were available for 101, 80, 81, 80, 81, 115 and 115 individuals, respectively, in the reported cross-validation. The 21 held-out males were excluded from model choice and from these evaluated training panels (Accuracy evaluation, below).}
 
-\vsette{Assembly identifiers, contigs, bounds and target-specific decisions are retained in \nolinkurl{data/markers_u/truth_regions.tsv}, \nolinkurl{data/method/dyz19_clean.tsv}, \nolinkurl{data/method/dyz17_clean.tsv} and \nolinkurl{data/method/truth_qc/x/rule_w4.txt}; \nolinkurl{manuscript/figures/reference_targets.tsv} lists the target definitions before the final exclusions. Published Yq12 annotations are archived in \nolinkurl{data/method/yq12_truth_hallast.tsv}. The downloaded annotation release was HGSVC3 chrY analysis 1.0, in \nolinkurl{20260513_chrY_annotations/verkko-v2.2.1}. Inclusion in a pangenome resource or a favourable genome-wide quality metric did not replace array-specific assessment; repetitive Yq remains an assembly limitation in HPRC release 2 \cite{Lucas2026}.}
+\vsette{Assembly identifiers, contigs, bounds and target-specific decisions are retained in \nolinkurl{data/markers_u/truth_regions.tsv}, \nolinkurl{data/method/dyz19_clean.tsv}, \nolinkurl{data/method/dyz17_clean.tsv} and \nolinkurl{data/method/truth_qc/x/rule_w4.txt}; \nolinkurl{results/figures/reference_targets.tsv} lists the target definitions before the final exclusions. Published Yq12 annotations are archived in \nolinkurl{data/method/yq12_truth_hallast.tsv}. The downloaded annotation release was HGSVC3 chrY analysis 1.0, in \nolinkurl{20260513_chrY_annotations/verkko-v2.2.1}. Extended Data Fig.~\ref{fig:array-structure} shows the arrays of the 156 assemblies in these panels. Inclusion in a pangenome resource or a favourable genome-wide quality metric did not replace array-specific assessment; repetitive Yq remains an assembly limitation in HPRC release 2 \cite{Lucas2026}.}
 
 \subsection{Satellite annotation}\label{sec:m-units}
 \vsette{Reference lengths follow the published Hallast annotation \cite{Hallast2026}. For Yq12, we used the HMMER motifs DYZ1\_Yq, DYZ2\_Con, DYZ18\_Yq, Yqhet\_3k1bp and Yqhet\_2k7bp and the script \texttt{filterYq12HMMER.py} of the repository \url{https://github.com/Markloftus/PanYChromosome} \cite{Hallast2026}, with the motifs of \url{https://github.com/core-unit-bioinformatics/project-chrom-y-extended} (commit 6da9f08). Class amounts are sums of end minus start over the retained blocks, rather than numbers of motif hits. This reproduces the published DYZ1 and DYZ2 amounts in Supplementary Table 26 of Hallast et al. \cite{Hallast2026} for all 84 comparable assemblies. Assemblies without a published annotation, including the HPRC replacements, were processed with the same motifs, nhmmer options and filters, using the published database size of 54.195246 Mb \cite{Hallast2026,Wheeler2013}. DYZ1 and DYZ2 targets are their respective block-length sums; DYZ18S is the sum of the DYZ18 and 3.1 kb block lengths. DYZ3 and the complete Yq12 region use the reference array coordinates. DYZ19 uses the main-array span returned by the script \texttt{filterDYZ19HMMER.py} of the same repository \cite{Hallast2026}.}
@@ -143,11 +143,11 @@ Whole-file and restricted-region runs were compared using the same input individ
 \subsubsection{Details of the main results}\label{sec:res-main}
 Among 123 completely assembled Y centromeres, the DYZ3 alpha-satellite array varied 13.8-fold in length, and among 84 complete Yq12 regions the heterochromatin varied from 10.3 to 53.1 Mb \cite{Hallast2026}. Earlier short-read studies measured DYZ3 in 366 males \cite{Miga2014}, DYZ1 in 396 \cite{Altemose2014} and DYZ1 coverage in 1,225 \cite{SanRoman2024}. The autosomal window for Y dosage (chr8:91--101 Mb) has keys taken from its projections into 101 high-quality HPRC haplotypes. Among 2,503 candidate windows ranked on pangenome conservation, single-copy state, copy-number stability, replicate stability, population spread and G+C match to the ruler, it was the best-ranked window that stayed within 1.89\% of the median of five windows in every sample, whereas the two higher-ranked windows, both on chromosome 11, shifted by up to 24.7\% in three males with a chromosome 11 gain.
 
-The DYZ1:DYZ2 ratio had a median error of \vsette{2.61\%}. Short DYZ19 arrays were measured with \vsette{3.12\%} and \vsette{3.79\%} errors in two J2a1a1 males and \vsette{11.34\%} in the third. Parent--offspring signed medians were $-0.68\%$ for DYZ3, \vsette{$-0.09\%$} for Yq12 and $-0.45\%$ for DYZ19. In 243 females held out from training, the median background was 0.0128\% of the median reference DYZ3 array, \vsette{0.0520\%} of Yq12 and \vsette{0.0093\%} of DYZ19. Published DYZ1 coverage values \cite{SanRoman2024} \vsette{come from low-coverage reads. Scaled} to base pairs with one factor fitted on the same males, \vsette{they} matched the assembled arrays with median errors of \vsette{26.43\%} for Yq12 and \vsette{21.92\%} for DYZ1 in 32 males (Spearman $\rho=$ \vsette{0.35} and \vsette{0.42}), against \vsette{1.56\%} and \vsette{2.70\%} for yruler \vsette{on high-coverage reads} ($\rho=$ \vsette{0.98} and \vsette{0.96}). \vsette{On the same low-coverage Phase 3 runs of 30 males, whose libraries were PCR-amplified, each method with its own factor gave errors of 24.96\% and 20.15\% for the published values and 10.94\% and 20.52\% for yruler. These errors come mainly from the libraries, because PCR-free reads thinned to 1$\times$ gave 2.03\% and 2.48\%.} Their measure recomputed on the high-coverage reads of 83 males\vsette{, without their G+C adjustment,} gave \vsette{4.18\%} for Yq12 and \vsette{2.48\%} for DYZ1, against \vsette{1.71\%} and \vsette{2.12\%} for yruler, and for DYZ3 aligned depth gave \vsette{2.29\%} against \vsette{2.27\%}.
+The DYZ1:DYZ2 ratio had a median error of \vsette{2.61\%}. Short DYZ19 arrays were measured with \vsette{3.12\%} and \vsette{3.79\%} errors in two J2a1a1 males and \vsette{11.34\%} in the third. Parent--offspring signed medians were $-0.68\%$ for DYZ3, \vsette{$-0.09\%$} for Yq12 and $-0.45\%$ for DYZ19. In 243 females held out from training, the median background was 0.0128\% of the median reference DYZ3 array, \vsette{0.0520\%} of Yq12 and \vsette{0.0093\%} of DYZ19. Published DYZ1 coverage values \cite{SanRoman2024} come from low-coverage Phase 3 reads. \vsette{On the same Phase 3 runs of 30 males with assembled arrays, whose libraries were PCR-amplified, each method scaled to base pairs with its own factor gave errors of 24.96\% and 20.15\% for the published values and 10.94\% and 20.52\% for yruler. These errors come mainly from the libraries, because PCR-free reads thinned to 1$\times$ gave 2.03\% and 2.48\%.} Their measure recomputed on the high-coverage reads of 83 males\vsette{, without their G+C adjustment,} gave \vsette{4.18\%} for Yq12 and \vsette{2.48\%} for DYZ1, against \vsette{1.71\%} and \vsette{2.12\%} for yruler, and for DYZ3 aligned depth gave \vsette{2.29\%} against \vsette{2.27\%}.
 
 DYZ3 ranges were \vsette{226.2--532.6} kb in O2a2b1a1 and \vsette{754.8} kb--1.386 Mb in O2a2b1a2. In 518 further PCR-free HGDP and SGDP individuals with published calls \cite{Hallast2021}, DYZ3 medians were 364.0 kb in 50 R1b and 879.9 kb in 468 other males, and 265.4 kb in 13 O2a2b1a1 and 1.041 Mb in 14 O2a2b1a2 males. A YRI parent--offspring pair in E1a2a1b2 (NA18910 and NA18911) also carried short DYZ19 arrays (\vsette{83.2} and \vsette{77.4} kb). \vsette{The four PAR2 gains were HG02773, HG02895, HG03685 and NA11930. Independent libraries reproduced them with doses of 1.43--1.58 (Y state section), and the Yq12 of HG03685 was 1.14 times the lineage median. HG02773 had Yq12 of 56.35 Mb against 24.28 Mb in the parent HG02771, and NA11930 had 48.53 Mb against 21.96 Mb in the offspring NA10845, with DYZ3 within 1.1\%. Two further pairs differed in Yq12 by more than 25\%: NA12056--NA10851 by 37.1\% with DYZ3 within 0.6\% and DYZ19 within 3.0\%, and HG02317--HG02316 by 29.9\% with DYZ3 also 31.2\% apart. All four pairs cross sequencing batches, so library effects and changes during cell-line culture cannot be excluded.} Compared with its parent HG02965, HG02966 had near-absent Yq12 and DYZ19 signal and doses of \vsette{1.91--1.94} for X-degenerate blocks 1--5 and 0.0034--0.0039 for blocks 6--8, supporting an isodicentric Y that requires structural confirmation \cite{Porubsky2025}.
 
-One annotated unit (one HMMER hit) spans a median of \vsette{3,478.9} bp of DYZ1 and \vsette{2,404.4} bp of DYZ2 in the 83 annotated assemblies \cite{Hallast2026}, so the base-pair ratio converts into a ratio of unit numbers: \vsette{0.967} in the median male (first to 99th percentile \vsette{0.678--1.462}). \vsette{The median of the 83 assemblies is 0.971 (mean 1.002), close to the published mean of 1.004 \cite{Hallast2026}.} The median unit ratio was \vsette{1.058} in haplogroup E (95\% interval \vsette{1.046--1.068}, resampling kinship components; \vsette{463} males), \vsette{12.5--17.2\%} above that of haplogroups D, I, C, O and R1b (20 to 282 males per haplogroup). The ratio error had a median of \vsette{2.63\%} per male and a 90th percentile of \vsette{7.65\%}, with no lineage bias: median signed ratio errors were \vsette{$-1.12\%$} in E (16 males), \vsette{$+0.11\%$} in O (13 males) and \vsette{$+0.02\%$} in R1b (12 males). Assembly medians were \vsette{1.046} for E, \vsette{0.950} for R1b and \vsette{0.923} for O (16, 12 and 13 assemblies). DYZ19 below 100 kb rests on 4 assemblies (62.3--63.5 kb).
+One annotated unit (one HMMER hit) spans a median of \vsette{3,478.9} bp of DYZ1 and \vsette{2,404.4} bp of DYZ2 in the 83 annotated assemblies \cite{Hallast2026}, so the base-pair ratio converts into a ratio of unit numbers: \vsette{0.967} in the median male (first to 99th percentile \vsette{0.678--1.462}). \vsette{The median of the 83 assemblies is 0.971 (mean 1.002), close to the published mean of 1.004 \cite{Hallast2026}.} The median unit ratio was \vsette{1.058} in haplogroup E (95\% interval \vsette{1.046--1.068}, resampling kinship components; \vsette{463} males), \vsette{12.5--17.2\%} above that of haplogroups D, I, C, O and R1b (20 to 282 males per haplogroup). The ratio error had a median of \vsette{2.63\%} per male and a 90th percentile of \vsette{7.65\%}, with no lineage bias: median signed ratio errors were \vsette{$-1.12\%$} in E (16 males), \vsette{$+0.11\%$} in O (13 males) and \vsette{$+0.02\%$} in R1b (12 males). Assembly medians were \vsette{1.046} for E, \vsette{0.950} for R1b and \vsette{0.923} for O (16, 12 and 13 assemblies). Unit lengths barely differ between lineages: across lineages with at least three of 90 annotated assemblies, the median base pairs per HMMER hit ranged from 3,470.8 to 3,491.3 for DYZ1 and from 2,400.9 to 2,409.8 for DYZ2, so lineage-specific unit lengths would change the unit ratio by at most 0.47\%, against lineage differences of \vsette{12.5--17.2\%}. DYZ19 below 100 kb rests on 4 assemblies (62.3--63.5 kb).
 
 \subsubsection{Complete arrays in the Y pangenome define length and composition}\label{sec:res-truth}
 \vsette{Complete arrays from the 142-individual Y pangenome \cite{Hallast2026} and HPRC release 2 \cite{HPRCRelease2} define the reference targets. After the target-specific quality checks, the panels contain 129 DYZ3, 90 Yq12, 91 DYZ1, 90 DYZ2, 91 DYZ18S, 139 DYZ19 and 140 DYZ17 targets. The corresponding evaluated sets contain 101, 80, 81, 80, 81, 115 and 115 individuals with short reads. Reference-panel size and the number of evaluated individuals are distinct (Table~\ref{tab:reference-lineages}).}
@@ -201,7 +201,7 @@ For indexed DRAGEN BAMs, we also tested a reduced set of genomic regions that ca
 
 In a separate 16-thread whole-CRAM optimization experiment on HG00126, the ten-class prototype processed the file in 79--86 s, with peak resident memory of 5.4--6.2 GB depending on buffering. This establishes a computational baseline rather than a final cohort-wide runtime claim.
 
-yruler is calibrated and evaluated on Illumina whole-genome reads. \vsette{The same procedure applied to nanopore reads learns markers, thresholds and scale factors from those reads within the training folds. In ten repeats of five-fold cross-validation on the 84 HPRC males with R10.4.1 reads (dorado super-accuracy base calls) \cite{HPRCRelease2} and assembled arrays, median absolute errors were 6.74\% for DYZ3 (78 males), 5.99\% for Yq12 (62), 4.31\% for DYZ1 (63), 8.95\% for DYZ2 (62), 9.71\% for DYZ18S (63), 7.05\% for DYZ19 (84) and 7.47\% for DYZ17 (84), 1.9 to 3.6 times those of short reads, with 90th percentiles of 12.76--23.79\% and maxima of 22.44--40.58\% (Table~\ref{tab:ont}).} Nanopore estimates are therefore suited to checking unusual short-read results, as for HG01967, HG02895 and HG03685, rather than to fine comparisons between males. Corrected nanopore reads and PacBio HiFi reads remain to be tested.
+yruler is calibrated and evaluated on Illumina whole-genome reads. \provisional{The same procedure applied to nanopore reads learns markers, thresholds and scale factors from those reads within the training folds. In ten repeats of five-fold cross-validation on the 84 HPRC males with R10.4.1 reads (dorado super-accuracy base calls) \cite{HPRCRelease2} and assembled arrays, median absolute errors were 6.74\% for DYZ3 (78 males), 5.99\% for Yq12 (62), 4.31\% for DYZ1 (63), 8.95\% for DYZ2 (62), 9.71\% for DYZ18S (63), 7.05\% for DYZ19 (84) and 7.47\% for DYZ17 (84), 1.9 to 3.6 times those of short reads, with 90th percentiles of 12.76--23.79\% and maxima of 22.44--40.58\% (Table~\ref{tab:ont}).} Nanopore estimates are therefore suited to checking unusual short-read results, as for HG01967, HG02895 and HG03685, rather than to fine comparisons between males. Corrected nanopore reads and PacBio HiFi reads remain to be tested.
 
 \begin{table}[tbp]
 \caption{Cross-validation errors of nanopore estimates. Absolute percentage errors in ten repeats of five-fold cross-validation on HPRC R10.4.1 reads, with markers, thresholds and scale factors learned from nanopore reads in the training folds; short-read medians from Table~\ref{tab:accuracy}.}\label{tab:ont}
@@ -210,13 +210,13 @@ yruler is calibrated and evaluated on Illumina whole-genome reads. \vsette{The s
 \toprule
 Target & Males & Mean & Median & P90 & Max & Short-read median \\
 \midrule
-DYZ3 & \vsette{78} & \vsette{7.85} & \vsette{6.74} & \vsette{14.67} & \vsette{40.58} & 2.32 \\
-Yq12 & \vsette{62} & \vsette{6.97} & \vsette{5.99} & \vsette{16.30} & \vsette{25.95} & 1.72 \\
-DYZ1 & \vsette{63} & \vsette{5.73} & \vsette{4.31} & \vsette{12.76} & \vsette{22.44} & 2.29 \\
-DYZ2 & \vsette{62} & \vsette{11.36} & \vsette{8.95} & \vsette{23.79} & \vsette{36.41} & 2.50 \\
-DYZ18S & \vsette{63} & \vsette{10.94} & \vsette{9.71} & \vsette{22.32} & \vsette{36.85} & 3.92 \\
-DYZ19 & \vsette{84} & \vsette{8.22} & \vsette{7.05} & \vsette{17.22} & \vsette{29.71} & 2.48 \\
-DYZ17 & \vsette{84} & \vsette{8.49} & \vsette{7.47} & \vsette{17.54} & \vsette{25.80} & 2.24 \\
+DYZ3 & \provisional{78} & \provisional{7.85} & \provisional{6.74} & \provisional{14.67} & \provisional{40.58} & 2.32 \\
+Yq12 & \provisional{62} & \provisional{6.97} & \provisional{5.99} & \provisional{16.30} & \provisional{25.95} & 1.72 \\
+DYZ1 & \provisional{63} & \provisional{5.73} & \provisional{4.31} & \provisional{12.76} & \provisional{22.44} & 2.29 \\
+DYZ2 & \provisional{62} & \provisional{11.36} & \provisional{8.95} & \provisional{23.79} & \provisional{36.41} & 2.50 \\
+DYZ18S & \provisional{63} & \provisional{10.94} & \provisional{9.71} & \provisional{22.32} & \provisional{36.85} & 3.92 \\
+DYZ19 & \provisional{84} & \provisional{8.22} & \provisional{7.05} & \provisional{17.22} & \provisional{29.71} & 2.48 \\
+DYZ17 & \provisional{84} & \provisional{8.49} & \provisional{7.47} & \provisional{17.54} & \provisional{25.80} & 2.24 \\
 \botrule
 \end{tabular}
 \end{table}
@@ -317,8 +317,8 @@ These comparisons require a distinction between reference-panel observations and
 \renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{1}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS2_yq12_composition.pdf}
-\caption{\textbf{Individual composition of complete Yq12 assembly references.} \textbf{a}, Per-individual composition of all 91 complete reference arrays, grouped by Y clade and sorted by DYZ1 fraction within each clade. Counts below groups give the number of references. The final seven references lack matching lineage metadata. DYZ1, DYZ2, other units (DYZ18, 3.1 kb and 2.7 kb) and residual unannotated bases sum to the annotated Yq12 span. \textbf{b}, DYZ1 fraction against annotated Yq12 span in the same 91 references. Colours denote broad Y lineages as in Supplementary Fig.~\ref{fig:map}; grey marks references without lineage metadata. The plot is descriptive and both axes use the same span. These are assembly annotations; the read-based population estimates are shown separately in Extended Data Fig.~\ref{fig:s-population}.}\label{fig:yq12-composition}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed1_array_structure.pdf}}
+\caption{\textbf{Satellite arrays of the reference chrY assemblies.} One row per assembly (156), grouped by the arrays that pass quality control and serve for marker selection and training (DYZ3 129, DYZ17 140, DYZ19 139, Yq12 90). Colours mark the DYZ3, DYZ17 and DYZ19 arrays, and the DYZ1, DYZ2 and DYZ18S (DYZ18 and 3.1-kb repeats) clusters of at least 10 kb inside Yq12. The black line marks Yq12. The square left of each row marks the source: Hallast assemblies \citep{Hallast2026} as chromosome-scale contigs in the T2T orientation, and HPRC release 2 contigs, placed at the median position of their first array. Rows in each group are ordered by average-linkage clustering of array lengths and of DYZ1, DYZ2 and DYZ18S content. NA20905 carries the IR1 inversion, which places DYZ3 distal to DYZ17 and DYZ19 \citep{Hallast2026}.}\label{fig:array-structure}
 \end{figure}
 \endgroup
 
@@ -326,8 +326,8 @@ These comparisons require a distinction between reference-panel observations and
 \renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{2}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS3_population.pdf}
-\caption{\textbf{\vsette{Seven} satellite measurements across the analysed population.} \textbf{a--\vsette{g}}, Estimated lengths by broad Y lineage for all 1,597 males with estimates, retaining rare groups. Sample counts are listed below the panels; horizontal lines show medians. Filled points have no reference assembly and open points do. Diamonds identify arm-imbalanced or Yp-depleted profiles, excluded from medians. Reference estimates can be in-sample. \vsette{Yq12 is the sum of DYZ1, DYZ2 and the rest of Yq12.} Uneven sampling and family dependence limit population-frequency interpretation.}\label{fig:s-population}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed2_yq12_composition.pdf}}
+\caption{\textbf{Individual composition of complete Yq12 assembly references.} \textbf{a}, Per-individual composition of all 91 complete reference arrays, grouped by Y clade and sorted by DYZ1 fraction within each clade. Counts below groups give the number of references. The final seven references lack matching lineage metadata. DYZ1, DYZ2, other units (DYZ18, 3.1 kb and 2.7 kb) and residual unannotated bases sum to the annotated Yq12 span. \textbf{b}, DYZ1 fraction against annotated Yq12 span in the same 91 references. Colours denote broad Y lineages as in Supplementary Fig.~\ref{fig:map}; grey marks references without lineage metadata. The plot is descriptive and both axes use the same span. These are assembly annotations; the read-based population estimates are shown separately in Extended Data Fig.~\ref{fig:s-population}.}\label{fig:yq12-composition}
 \end{figure}
 \endgroup
 
@@ -335,8 +335,8 @@ These comparisons require a distinction between reference-panel observations and
 \renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{3}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS4_depth.pdf}
-\caption{\textbf{Depth sensitivity of all \vsette{seven} targets.} Test reads are thinned to \vsette{20, 15, 10, 5, 2 and 1$\times$ of base coverage and shown with full depth (34.1$\times$)}, while training reads retain full depth. The x-axis gives median autosomal \vsette{base coverage}. Points show the mean of ten grouped-CV repeat-specific median absolute percentage errors, with shading showing their range. These ranges are not confidence intervals. Evaluated counts are \vsette{101 for DYZ3, 115 for DYZ19 and DYZ17, 80 for Yq12 and DYZ2, and 81 for DYZ1 and DYZ18S}. Downsampling reuses the same individuals, and its full-depth baseline matches the ten repeats in Table~\ref{tab:accuracy}.}\label{fig:s-depth}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed3_population.pdf}}
+\caption{\textbf{\vsette{Seven} satellite measurements across the analysed population.} \textbf{a--\vsette{g}}, Estimated lengths by broad Y lineage for all 1,597 males with estimates, retaining rare groups. \textbf{h}, Y dosage relative to the median male (dashed line at 1). Males per lineage: E 466, R1b 283, O 248, R1a 102, J 90, H 71, Q 63, I 62, R 40, C 32, N 32, L 31, G 28, D 20, T 11, A 8, B 8, F 1, NO 1; horizontal lines show medians. Filled points have no reference assembly and open points do. Diamonds identify arm-imbalanced or Yp-depleted profiles, excluded from medians. Reference estimates can be in-sample. \vsette{Yq12 is the sum of DYZ1, DYZ2 and the rest of Yq12.} Uneven sampling and family dependence limit population-frequency interpretation.}\label{fig:s-population}
 \end{figure}
 \endgroup
 
@@ -344,8 +344,17 @@ These comparisons require a distinction between reference-panel observations and
 \renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{4}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=.94\textwidth]{figures/figureS5_J_DYZ19.pdf}
-\caption{\textbf{DYZ19 estimates aligned to the SNP tree of all 90 sampled J chromosomes.} \textbf{a}, Pruned tree retaining branch lengths; tips give sample identifiers and abbreviated ISOGG 2019 calls. \textbf{b}, Read-based DYZ19 estimates, with J2a1a1 calls in pink and other J calls in purple; open symbols mark males with reference assemblies. The short-state groups have distinct J2a1a1a and J2a1a1b calls within a single clade; J2a1a2 lies outside it. The tree is used descriptively; the number and timing of state transitions were not inferred.}\label{fig:j-dyz19}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed4_depth.pdf}}
+\caption{\textbf{Depth sensitivity of all \vsette{seven} targets.} Test reads are thinned to \vsette{20, 15, 10, 5, 2 and 1$\times$ of base coverage and shown with full depth (34.1$\times$)}, while training reads retain full depth. The x-axis gives median autosomal \vsette{base coverage}. Points show the mean of ten grouped-CV repeat-specific median absolute percentage errors, with shading showing their range. These ranges are not confidence intervals. Evaluated counts are \vsette{101 for DYZ3, 115 for DYZ19 and DYZ17, 80 for Yq12 and DYZ2, and 81 for DYZ1 and DYZ18S}. Downsampling reuses the same individuals, and its full-depth baseline matches the ten repeats in Table~\ref{tab:accuracy}.}\label{fig:s-depth}
+\end{figure}
+\endgroup
+
+\begingroup
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{5}
+\begin{figure}[tbp]
+\centering
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed5_J_DYZ19.pdf}}
+\caption{\textbf{Lineage-specific array lengths across cohorts: DYZ19 in J, DYZ3 in R1b and O2a2b1a.} \textbf{a}, Pruned tree retaining branch lengths; tips give sample identifiers and abbreviated ISOGG 2019 calls. \textbf{b}, Read-based DYZ19 estimates, with J2a1a1 calls in pink and other J calls in purple; open symbols mark males with reference assemblies. The short-state groups have distinct J2a1a1a and J2a1a1b calls within a single clade; J2a1a2 lies outside it. The tree is used descriptively; the number and timing of state transitions were not inferred. \textbf{c}, DYZ3 of R1b against other males and of O2a2b1a1 against O2a2b1a2 in 1kGP, HGDP and SGDP; numbers give males and bars medians.}\label{fig:j-dyz19}
 \end{figure}
 \endgroup
 
@@ -367,10 +376,10 @@ These comparisons require a distinction between reference-panel observations and
 \clearpage
 
 \begingroup
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{5}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{6}
 \begin{figure}[p]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS7_lineage_validation.pdf}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed6_lineage_validation.pdf}}
 \caption{\textbf{Exclusion of entire Y lineages.} Each point is the single absolute percentage error of one individual when its entire lineage is excluded from training, pooling all 18 excluded-lineage tests; training also excludes any recorded family shared with test individuals. Diamonds give the median of the per-individual mean errors of the random cross-validation (Fig.~\ref{fig:method}b) for comparison. The final row is the derived DYZ1:DYZ2 ratio. Boxes span the 25th--75th percentiles, central lines mark medians and whiskers end at the 10th and 90th percentiles. All individual points are shown; labels identify the three largest errors per target. Axes are linear through 5\% and logarithmic above.}\label{fig:lineage-validation}
 \end{figure}
 \endgroup
@@ -378,10 +387,10 @@ These comparisons require a distinction between reference-panel observations and
 
 \clearpage
 \begingroup
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{6}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{7}
 \begin{figure}[p]
 \centering
-\includegraphics[page=1,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS8_all_pedigrees.pdf}
+\makebox[\textwidth][c]{\includegraphics[page=1]{figures/ed/ed7_pedigrees.pdf}}
 \caption{\textbf{Parent--offspring concordance for every satellite target and the DYZ1:DYZ2 length ratio.} \textbf{a--\vsette{h}}, All 309 pairs with complete estimates, shown for the \vsette{seven} targets and the derived ratio. Each point compares the parent's and offspring's estimates; diagonals mark equality and axes have matching limits. Colours match Fig.~\ref{fig:method}b. Shapes distinguish the 282 original-parent/additional-offspring pairs, 25 same-batch pairs and two reverse cross-batch pairs. Open points identify 78 pairs involving a male with a reference assembly (68 with a calibration male). Annotations give median absolute offspring/parent differences; labels identify offspring in the two pairs with the largest absolute percentage differences when these exceed 10\%. All complete profiles, including arm-imbalanced or Yp-depleted profiles, remain visible. No dosage cutoff or batch correction is applied. Targets use their indicated length units; the ratio is dimensionless. Pedigree pairs can share relatives and are not independent observations.}\label{fig:all-pedigrees}
 \end{figure}
 
@@ -389,20 +398,20 @@ These comparisons require a distinction between reference-panel observations and
 
 \clearpage
 \begingroup
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{6}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{7}
 \begin{figure}[p]
 \centering
-\includegraphics[page=2,width=\textwidth,height=.75\textheight,keepaspectratio]{figures/figureS8_all_pedigrees.pdf}
+\makebox[\textwidth][c]{\includegraphics[page=2]{figures/ed/ed7_pedigrees.pdf}}
 \caption{\textbf{Parent--offspring concordance for every satellite target and the DYZ1:DYZ2 length ratio (continued).} \textbf{a--\vsette{h}}, Signed differences $100(\widehat L_{\mathrm{offspring}}/\widehat L_{\mathrm{parent}}-1)$ for the same measurements and pairs. For the ratio, $\widehat L$ denotes the individual's DYZ1:DYZ2 ratio. Batch contrasts are shown separately, including the two reverse-direction pairs. Points show every pair; horizontal segments span the 25th--75th percentiles, central marks and labels give medians. Difference axes are linear within $\pm5\%$ and logarithmic outside; their ranges retain all observations. Reference-involved pairs remain open. These differences combine technical variation, possible biological changes and flagged structural profiles; they are not mutation-rate estimates.}
 \end{figure}
 \endgroup
 
 \begingroup
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{7}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{8}
 \begin{figure}[p]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS9_chrY_unusual_males.pdf}
-\caption{\textbf{chrY profiles of 1000 Genomes males with an unusual Y state or array estimate.} Each row is one male and each column one of the 625 windows of 100 kb of CHM13v2 chrY; row labels give PAR2 doses of independent libraries where available; colours give, in seven steps, the median dose of the chrY 31-mers that occur on no other CHM13 sequence, relative to the median of 100 XY males with Y state normal. In PAR1 and PAR2 the Y dose is twice the dose of the 31-mers shared by chrX and chrY minus the X dose. Top: arms, cytobands, sequence classes \cite{Rhie2023} and palindromes. Right: Y dosage from the single-copy Y ruler and X dosage from 31-mers found only on chrX. Groups follow the Y state rules; parents and offspring that are both shown are drawn next to each other. In the centromere, DYZ19 and Yq12 the value is the array amount relative to the median male, not a chromosome copy number.}\label{fig:chrY-unusual}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed8_chrY_unusual_males.pdf}}
+\caption{\textbf{chrY profiles of 1000 Genomes males with an unusual Y state or array estimate.} Each row is one male and each column one of the 625 windows of 100 kb of CHM13v2 chrY; colours give, in seven steps, the median dose of the chrY 31-mers that occur on no other CHM13 sequence, relative to the median of 100 XY males with Y state normal. In PAR1 and PAR2 the Y dose is twice the dose of the 31-mers shared by chrX and chrY minus the X dose. Top: arms, cytobands, sequence classes \cite{Rhie2023} and palindromes. Right: Y dosage from the single-copy Y ruler and X dosage from 31-mers found only on chrX. Groups follow the Y state rules; parents and offspring that are both shown are drawn next to each other (HG01982 and HG01984, HG03006 and HG03008, HG02684 and HG02686 of H3b2a, NA18910 and NA18911, HG01527 and HG01529). HG02966 is a parent without the change of its offspring. PAR2 doses in independent data: HG03685 1.58 in nanopore reads (Yq12 and PAR2 on 15p), NA11930 1.43--1.51 in three libraries, HG02895 1.45 and 1.47 in two nanopore runs, HG02773 1.50 in a Polaris library. NA19226 has lost the Y and its offspring is XY. Unusual array estimates: HG02804 (DYZ2), HG04006 and NA18952 (DYZ3), NA18910 and NA18911 (DYZ19), HG01527 and HG01529 (DYZ18S). In the centromere, DYZ19 and Yq12 the value is the array amount relative to the median male, not a chromosome copy number.}\label{fig:chrY-unusual}
 \end{figure}
 
 \endgroup
@@ -411,14 +420,14 @@ These comparisons require a distinction between reference-panel observations and
 \renewcommand{\figurename}{Supplementary Fig.}\renewcommand{\thefigure}{1}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS10_world_map.pdf}
+\makebox[\textwidth][c]{\includegraphics{figures/supp/suppfig1_world_map.pdf}}
 \caption{\textbf{Geographic coverage of the cohorts.} 1,597 1kGP individuals with estimates and HGDP/SGDP cohort manifests: 2,302 unique individuals after deduplication. Coordinates are cohort-reported population locations. Pie area scales with sample counts; sectors and legend counts show paternal Y lineages. Grey marks two individuals without a lineage call; seven SGDP records reported as female and one additional record without Y signal are excluded (Online Methods).}\label{fig:map}
 \end{figure}
 
-\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{8}
+\renewcommand{\figurename}{Extended Data Fig.}\renewcommand{\thefigure}{9}
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=.6\textwidth]{figures/figureS11_aligner_depth.pdf}
+\makebox[\textwidth][c]{\includegraphics{figures/ed/ed9_aligner_depth.pdf}}
 \caption{\textbf{Aligned read density depends on the aligner.} The same reads of 130 males, aligned with BWA and with DRAGEN 3.7.6. Each point is one male and shows the change in read density in the GRCh38 array block relative to chrY:14.5--15.5 Mb; bars show medians. The dashed line marks no change, as obtained for the yruler counts.}\label{fig:aligner}
 \end{figure}
 \endgroup

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Fig. 1b: individual-level CV/lineage summaries and depth-error distributions."""
-import json
-import hashlib
+"""Fig. 1b panels (draw), used by figures_1kgp.py: individual CV and lineage errors, depth-error distributions."""
 import matplotlib.pyplot as plt
 import validation_plots as data
+from palette import TITLE, NAMES, FS, letter
 
 
 def draw(fig, compact=False):
@@ -15,14 +14,12 @@ def draw(fig, compact=False):
 
 def _draw(fig,compact,files):
     if compact:
-        a=fig.add_axes([.085,.53,.37,.285]); b=fig.add_axes([.615,.53,.37,.285])
-        fig.text(.055,.82,'b',fontsize=15,fontweight='bold')
+        a=fig.add_axes([.06,.55,.40,.275]); b=fig.add_axes([.60,.55,.39,.275])
+        letter(fig,'b',.005,.84)
     else:
         a=fig.add_axes([.085,.19,.37,.70]); b=fig.add_axes([.615,.19,.37,.70])
     data.individual_boxes(a,'cv',vertical=True)
     a.set_title('')
-    a.tick_params(labelsize=7 if compact else 8)
-    a.tick_params(axis='x',labelsize=5.7 if compact else 6.1)
     data.depth_boxes(b,compact)
     # Retain every individual error, without reserving space for obsolete >100% tails.
     import math
@@ -35,35 +32,9 @@ def _draw(fig,compact,files):
     ticks=[t for t in (0,2,5,10,20,30,40,50,100) if t<=limit]
     a.set_yticks(ticks,[str(t) for t in ticks])
     from matplotlib.lines import Line2D
-    fig.legend(handles=[Line2D([],[],color=c,marker='o',markersize=3,linewidth=1.2,label=data.LABELS[k])
+    fig.legend(handles=[Line2D([],[],color=c,marker='o',markersize=2.5,linewidth=0.75,label=data.LABELS[k])
                         for k,c in zip(data.KEYS,data.COLORS)],
-               loc='center',bbox_to_anchor=(.505,.672 if compact else .54),ncol=1,
-               frameon=False,fontsize=6.6 if compact else 7,handlelength=1,
-               handletextpad=.4,labelspacing=1.0,borderaxespad=0)
+               loc='center',bbox_to_anchor=(.53,.68 if compact else .54),ncol=1,
+               labelspacing=0.8,borderaxespad=0,title=NAMES['class'],title_fontproperties=TITLE(FS['legend']))
     data.annotate_vertical_outliers(a,compact)
     return a,b,[b],files
-
-
-def main():
-    plt.rcParams.update({'font.family':'DejaVu Sans','font.size':9,'pdf.fonttype':42,'svg.fonttype':'none'})
-    out=data.ROOT/'manuscript/figures'
-    fig=plt.figure(figsize=(10.4,3.3));a,b,axes,files=draw(fig)
-    fig.text(.085,.025,'CV and depth: ten repeats. Boxes: quartiles and median; whiskers: 10th–90th. Both error axes logarithmic above 5%.',fontsize=7.5,color=data.INK)
-    data.save(fig,out,'figure1b_selected')
-    from validation_ratio import view
-    with view(data):
-        data.fold_supplement(out)
-        data.lineage_supplement(out)
-        top=data.write_top_samples(out);data.write_depth_individuals(out)
-        manifest={'design':'One point per individual and one box per class/condition; CV means over ten absolute errors, lineage single errors, depth means over ten repeats at each depth level. Main: vertical CV boxes by class and grouped vertical coverage boxes with matching left error axes versus median autosomal coverage (×), with lines connecting the boxplot medians; central shared legend and unframed top-three CV labels placed near their points; lineage comparison with top-three labels in Supplementary Fig. S7.',
-                  'colors':dict(zip(data.KEYS,data.COLORS)),
-                  'cv_predictions':sum(len(rows) for x in data.CV.values() for rows in x.values()),
-                  'lineage_out_predictions':sum(len(rows) for x in data.LO.values() for rows in x.values()),
-                  'depth_predictions':sum(len(rows) for x in data.DEP.values() for y in x.values() for rows in y.values()),
-                  'cv_repeats':10,
-                  'box_percentiles':[25,50,75],'whisker_percentiles':[10,90],'tails':'all individuals plotted',
-                  'annotated_samples':top,'lineages':data.GROUPS,'depth_repeats':data.depth_reps(),
-                  'source_files':[{'path':str(p.relative_to(data.ROOT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
-    (out/'figure1b_selected_manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-
-if __name__=='__main__':main()

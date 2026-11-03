@@ -38,7 +38,8 @@ def read_tsv(path):
 
 
 def save(fig, out, name):
-    fig.savefig(out / f"{name}.pdf", bbox_inches="tight")
+    from palette import save as put
+    put(fig, out / f"{name}.pdf")
     plt.close(fig)
 
 
@@ -57,24 +58,25 @@ def clean_axes(ax):
 def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapshot_label=None):
     from figure2_tree import father_son_panels
 
-    fig = plt.figure(figsize=(10.5, 9.6))
-    diagram = fig.add_axes([0.055, 0.86, 0.90, 0.13])
+    from palette import MM, FS, letter
+    fig = plt.figure(figsize=(180 * MM, 180 * MM))
+    diagram = fig.add_axes([0.035, 0.865, 0.95, 0.125])
     diagram.set_xlim(0, 1)
     diagram.set_ylim(0, 1)
     diagram.axis("off")
-    fig.text(0.055, 1.0044, "a", fontsize=15, fontweight="bold", va="bottom")
+    letter(fig, "a", .005, .995)
 
     def box(x, y, width, height, text, color):
         diagram.add_patch(FancyBboxPatch(
             (x, y), width, height, boxstyle="round,pad=0.012,rounding_size=0.018",
-            facecolor=color, edgecolor="#52646e", linewidth=0.8))
+            facecolor=color, edgecolor="#52646e", linewidth=0.5))
         diagram.text(x + width / 2, y + height / 2, text,
-                     ha="center", va="center", fontsize=9.8, linespacing=1.4)
+                     ha="center", va="center", fontsize=FS["label"], linespacing=1.3)
 
     def arrow(start, end):
         diagram.add_patch(FancyArrowPatch(
-            start, end, arrowstyle="-|>", mutation_scale=12,
-            color="#52646e", linewidth=1.0))
+            start, end, arrowstyle="-|>", mutation_scale=7,
+            color="#52646e", linewidth=0.6))
 
     box(0.02, 0.66, 0.27, 0.24, "Y pangenome references\narray spans and unit labels", "#eef3f5")
     box(0.37, 0.66, 0.27, 0.24, "Training families\nselect markers and fit scale", "#e7f1f7")
@@ -88,7 +90,7 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
     arrow((0.505, 0.645), (0.505, 0.405))
     arrow((0.85, 0.405), (0.85, 0.645))
     diagram.text(0.50, 0.04, "Marker selection and scale fitting use training families only",
-                 ha="center", fontsize=9.4, color="#43525b")
+                 ha="center", fontsize=FS["point"], color="#43525b")
 
     if benchmarks is None:
         validation = fig.add_axes([0.055, 0.40, 0.90, 0.25])
@@ -116,20 +118,21 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
     # Keep the primary-array and composition comparisons together by target.
     from pedigree_plots import collect, scatter, differences, legend, LOOKUP
     observations=collect(catalog)
-    for row,keys in enumerate((("dyz3","yq12","dyz19"),("dyz1","dyz2","dyz1_dyz2_ratio"))):
+    from palette import ORDER
+    shown=sorted((k for k in LOOKUP if LOOKUP[k][2] not in ("DYZ17","DYZ18S")),key=lambda k:ORDER.index(LOOKUP[k][2]))
+    for row,keys in enumerate((shown[:3],shown[3:])):
         bottom,top=(.285,.43) if row==0 else (.07,.215)
-        grid=fig.add_gridspec(1,6,left=.085,right=.985,bottom=bottom,top=top,
-                             width_ratios=[1.15,1.35]*3,wspace=.72)
+        grid=fig.add_gridspec(1,6,left=.07,right=.93,bottom=bottom,top=top,
+                             width_ratios=[1.35,1.15]*3,wspace=.75)
         for col,key in enumerate(keys):
             scatter_ax=fig.add_subplot(grid[0,col*2]);delta_ax=fig.add_subplot(grid[0,col*2+1])
             scatter(scatter_ax,observations,key,compact=True)
             differences(delta_ax,observations,key,compact=True,reverse=False)
             x0=scatter_ax.get_position().x0;x1=delta_ax.get_position().x1
-            fig.text((x0+x1)/2,top+.006,LOOKUP[key][2],ha="center",fontsize=9,color=LOOKUP[key][-1])
-            if row==0:fig.text(x0-.03,top+.027,chr(ord('c')+col),fontsize=15,fontweight='bold')
-        if row==1:fig.text(.055,top+.027,'f',fontsize=15,fontweight='bold')
-    legend(fig,observations,y=.496,compact=True)
-    save(fig, out, "figure1")
+            fig.text((x0+x1)/2,top+.008,LOOKUP[key][2],ha="center",fontsize=FS["title"],color=LOOKUP[key][-1])
+            if row==0 or col==0:letter(fig,'f' if row else chr(ord('c')+col),.005 if col==0 else x0-.065,top+.03)
+    legend(fig,observations,y=.49,compact=True)
+    save(fig, out, "main/fig1_method")
 
 
 def main():
@@ -141,13 +144,7 @@ def main():
     parser.add_argument("--out", type=Path, default=ROOT / "manuscript/figures")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
-    plt.rcParams.update({
-        "font.family": "DejaVu Sans", "font.size": 9,
-        "axes.labelsize": 10, "xtick.labelsize": 8, "ytick.labelsize": 8,
-        "pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none",
-        "savefig.facecolor": "white", "axes.spines.top": False, "axes.spines.right": False,
-    })
-    with (args.out / "reference_targets.tsv").open("w") as stream:
+    with (ROOT / "results/figures/reference_targets.tsv").open("w") as stream:
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["target", "reference_arrays", "length_definition"])
         writer.writerows(REFERENCES)

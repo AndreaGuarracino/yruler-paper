@@ -8,9 +8,10 @@ import numpy as np
 from figures_1kgp import ROOT, FROZEN, TARGETS, DEPTHS
 
 BLUE="#287da7"; GOLD="#c08332"; INK="#263f4b"
-COLORS=["#287da7","#338565","#638590","#4c687d","#b09b4a","#b67442","#8f7258","#9962a9"]
 GROUPS=["A","B","C","D","E","F","G","H","I","J","L","N","O","Q","R1a","R1b","R","T"]
 KEYS=[row[0] for row in TARGETS]
+from palette import KEY as _K, TITLE, NAMES, FS, MM
+COLORS=[_K[k] for k in KEYS]   # one palette (palette.py)
 LABELS={row[0]:row[2] for row in TARGETS}
 
 
@@ -65,12 +66,11 @@ def rowlabels():return [f"{LABELS[k]}  (n={counts(k)})" for k in KEYS]
 
 def style(ax):
     ax.spines[["top","right"]].set_visible(False)
-    ax.tick_params(labelsize=8)
     ax.set_axisbelow(True)
 
 def save(fig,out,stem):
-    fig.savefig(out/f"{stem}.pdf",dpi=190,bbox_inches="tight",facecolor="white")
-    plt.close(fig)
+    from palette import save as put
+    put(fig,out/f"{stem}.pdf");plt.close(fig)
 
 def depth_curves(ax,legend=True):
     fracs=sorted(DEPTHS,key=lambda f:DEPTHS[f])
@@ -87,7 +87,7 @@ def depth_curves(ax,legend=True):
     ax.set_title("Depth: every repeat, all targets",loc="left",fontsize=10.5,pad=10)
     ax.grid(color="#e8edf0",linewidth=.6)
     if legend:ax.legend(loc="lower left",bbox_to_anchor=(0,1.02),ncol=4,frameon=False,
-                        fontsize=6.8,columnspacing=.7,handlelength=.7,handletextpad=.3)
+                        fontsize=6.8,title=NAMES['class'],title_fontproperties=TITLE(6.8),alignment='left')
     style(ax)
 
 def error_cloud(ax,kind,target_colors=False):
@@ -163,21 +163,21 @@ def individual_boxes(ax,kind,vertical=False):
         artists=draw_error_boxes(ax,[stats],[i],color,.56,vertical=vertical,showfliers=False)
         from matplotlib.colors import to_rgba
         for box in artists['boxes']:
-            box.set_alpha(None);box.set_facecolor(to_rgba(color,.18));box.set_edgecolor(color);box.set_linewidth(1.05)
+            box.set_alpha(None);box.set_facecolor(to_rgba(color,.18));box.set_edgecolor(color);box.set_linewidth(.6)
         for median in artists['medians']:
-            median.set_linewidth(1.3);median.set_zorder(4)
+            median.set_linewidth(1);median.set_zorder(4)
         for whisker in artists['whiskers']:
-            whisker.set_alpha(1);whisker.set_linewidth(.85)
+            whisker.set_alpha(1);whisker.set_linewidth(.5)
         jitter=[r['y'] for r in records]
         ax.scatter(jitter if vertical else values,values if vertical else jitter,
-                   s=5,color=color,edgecolors=INK,linewidths=.1,alpha=.55,zorder=3)
+                   s=2.5,color=color,edgecolors=INK,linewidths=.1,alpha=.55,zorder=3)
         maximum=max(maximum,max(values))
     if vertical:
         ax.set_yscale('symlog',linthresh=5,linscale=1)
         ax.set_ylim(0,max(130,maximum*1.05));ax.set_xlim(-.6,len(KEYS)-.4)
         ax.set_yticks([0,2,5,10,20,50,100],['0','2','5','10','20','50','100'])
-        ax.set_xticks(range(len(KEYS)),[f'{LABELS[k]}\n(n={counts(k)})' for k in KEYS])
-        ax.set_ylabel('Mean absolute error (%)' if kind=='cv' else 'Absolute error (%)',fontsize=8)
+        ax.set_xticks(range(len(KEYS)),[f"{LABELS[k].replace(':',':\n')}\n(n={counts(k)})" for k in KEYS])
+        ax.set_ylabel('Mean absolute error (%)' if kind=='cv' else 'Absolute error (%)')
         ax.grid(axis='y',color='#e8edf0',linewidth=.6);style(ax)
         return
     ax.set_xscale('symlog',linthresh=5,linscale=1)
@@ -185,7 +185,7 @@ def individual_boxes(ax,kind,vertical=False):
     ax.set_xlim(0,max(25,maximum*1.02));ax.set_ylim(len(KEYS)-.5,-.5)   # 25 covers every point (max 23.93)
     ax.set_xticks([0,2,5,10,25],['0','2','5','10','25'])
     ax.set_yticks(range(len(KEYS)))
-    ax.set_xlabel('Mean absolute CV error (%)' if kind=='cv' else 'Absolute error (%)',fontsize=8.5)
+    ax.set_xlabel('Mean absolute CV error (%)' if kind=='cv' else 'Absolute error (%)')
     ax.grid(axis='x',color='#e8edf0',linewidth=.6);style(ax)
 
 
@@ -195,7 +195,7 @@ def annotate_vertical_outliers(ax,compact=False):
     from matplotlib.transforms import Bbox
     ax.figure.canvas.draw()
     renderer=ax.figure.canvas.get_renderer()
-    fontsize=5.3 if compact else 5.7
+    fontsize=FS['point']
     font=FontProperties(size=fontsize)
     bounds=ax.get_window_extent(renderer)
     column_width=bounds.width/(len(KEYS)+.2)
@@ -226,53 +226,9 @@ def annotate_vertical_outliers(ax,compact=False):
                     xytext=position,textcoords=ax.transAxes,
                     ha='center',va='center',fontsize=fontsize,color=INK,zorder=8,
                     bbox=dict(boxstyle='square,pad=0.1',facecolor='white',edgecolor='none'),
-                    arrowprops=dict(arrowstyle='-',color=color,linewidth=.55,shrinkA=2,shrinkB=2))
-        ax.scatter([record['y']],[record['value']],s=12,facecolors='none',
-                   edgecolors=INK,linewidths=.65,zorder=7)
-
-
-def fold_supplement(out):
-    """Two measurements per page; retain all 50 test-fold distributions."""
-    import csv
-    from matplotlib.backends.backend_pdf import PdfPages
-    summaries=[]
-    with PdfPages(out/'figureS6_cv_folds.pdf') as multipage:
-        for page in range((len(KEYS)+1)//2):
-            fig,axes=plt.subplots(1,2,figsize=(10.8,12.6),sharex=True,sharey=True)
-            if len(KEYS[2*page:2*page+2])==1:axes[1].set_visible(False)
-            for ax,key,color,letter in zip(axes,KEYS[2*page:2*page+2],COLORS[2*page:2*page+2],'abcdefghijklmnopqrstuvwxyz'[2*page:2*page+2]):
-                stats=[];positions=[]
-                for rep in reps(key):
-                    rows=CV[key][rep]
-                    for fold in [None,*range(5)]:
-                        selected=rows if fold is None else [r for r in rows if r['fold']==fold]
-                        values=errors(selected);q=np.percentile(values,[0,10,25,50,75,90,100])
-                        summaries.append(dict(target=key,repeat=rep+1,fold='all' if fold is None else fold+1,n=len(values),
-                                              **dict(zip(['min','p10','p25','median','p75','p90','max'],q))))
-                        if fold is not None:
-                            stats.append(error_box_stats(selected));positions.append(rep*6+fold)
-                assert len(stats)==50
-                draw_error_boxes(ax,stats,positions,color,.62)
-                ax.set_xscale('symlog',linthresh=5,linscale=1);ax.set_xlim(0,30);ax.set_ylim(59,-1)
-                ax.set_xticks([0,2,5,10,20,30],['0','2','5','10','20','30'])
-                ax.set_yticks([r*6+2 for r in range(10)],[f'Repeat {r+1}' for r in range(10)])
-                ax.tick_params(labelleft=True)
-                for rep in range(0,10,2):ax.axhspan(rep*6-.5,rep*6+4.5,color='#f2f5f7',zorder=-2)
-                ax.grid(axis='x',color='#e8edf0',linewidth=.6);style(ax)
-                ax.set_title(f'{letter}   {LABELS[key]}',loc='left',fontsize=12,fontweight='bold',color=color)
-                ax.set_xlabel('Individual absolute error (%)',fontsize=9)
-            fig.subplots_adjust(left=.10,right=.985,top=.94,bottom=.085,wspace=.30)
-            fig.suptitle('Prediction-error distributions in every test fold',fontsize=14,y=.98,color=INK)
-            fig.text(.10,.035,'Within each repeat, folds 1–5 run top to bottom. Boxes: 25th–75th percentiles; median; whiskers: 10th–90th.',fontsize=8,color=INK)
-            fig.text(.10,.015,'Points retain errors beyond the whiskers. Axes are logarithmic above 5%. Repeated individuals are not independent.',fontsize=8,color=INK)
-            multipage.savefig(fig,bbox_inches='tight',facecolor='white')
-            fig.savefig(out/f'figureS6_cv_folds_page{page+1}.pdf',dpi=190,bbox_inches='tight',facecolor='white')
-            plt.close(fig)
-    old_svg=out/'figureS6_cv_folds.svg'
-    if old_svg.exists():old_svg.unlink()
-    with (out/'figure1b_cv_distribution_summary.tsv').open('w') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(summaries[0]),delimiter='\t')
-        writer.writeheader();writer.writerows(summaries)
+                    arrowprops=dict(arrowstyle='-',color=color,linewidth=.4,shrinkA=1,shrinkB=1.5))
+        ax.scatter([record['y']],[record['value']],s=6,facecolors='none',
+                   edgecolors=INK,linewidths=.4,zorder=7)
 
 
 def top_samples(key,kind):
@@ -285,34 +241,13 @@ def annotate_top_samples(ax,kind,compact=False):
             label_y=i+(rank-2)*.25
             ax.annotate(f"{rank} {r['sample']}",xy=(r['value'],r['y']),xycoords='data',
                         xytext=(1.045,label_y),textcoords=ax.get_yaxis_transform(),
-                        ha='left',va='center',fontsize=5.8 if compact else 7.5,color=INK,
+                        ha='left',va='center',fontsize=FS['point'],color=INK,
                         annotation_clip=False,
                         arrowprops=dict(arrowstyle='-',color='#52646e',linewidth=.45,
                                         shrinkA=1.5,shrinkB=2,
                                         connectionstyle='angle3,angleA=0,angleB=90'))
-            ax.scatter([r['value']],[r['y']],s=11 if compact else 16,
-                       facecolors='none',edgecolors=INK,linewidths=.65,zorder=5)
-
-
-def write_top_samples(out):
-    import csv
-    rows=[];individual_rows=[]
-    for kind in ['cv','lineage-out']:
-        for key in KEYS:
-            records=individual_errors(key,'cv' if kind=='cv' else 'lo')
-            for r in records:
-                individual_rows.append(dict(evaluation=kind,target=LABELS[key],sample=r['sample'],
-                                            plotted_absolute_error_pct=r['value'],
-                                            **{k:r[k] for k in ['n_predictions','mean_signed_error_pct','min_absolute_error_pct','max_absolute_error_pct']}))
-            for rank,r in enumerate(top_samples(key,'cv' if kind=='cv' else 'lo'),start=1):
-                rows.append(dict(evaluation=kind,target=LABELS[key],rank=rank,sample=r['sample'],
-                                 plotted_absolute_error_pct=r['value'],mean_signed_error_pct=r['mean_signed_error_pct'],
-                                 n_predictions=r['n_predictions']))
-    for filename,records in [('figure1b_top3_samples.tsv',rows),('figure1b_individual_errors.tsv',individual_rows)]:
-        with (out/filename).open('w') as stream:
-            writer=csv.DictWriter(stream,fieldnames=list(records[0]),delimiter='\t')
-            writer.writeheader();writer.writerows(records)
-    return rows
+            ax.scatter([r['value']],[r['y']],s=6,
+                       facecolors='none',edgecolors=INK,linewidths=.4,zorder=5)
 
 
 def depth_individual_errors(key,fraction):
@@ -341,45 +276,31 @@ def depth_boxes(ax,compact=False):
             for whisker in artists['whiskers']:whisker.set_alpha(.35)
             for median in artists['medians']:median.set_zorder(4);median.set_linewidth(.85)
             rng=np.random.default_rng(915+i*10+j)
-            ax.scatter(pos+rng.uniform(-.035,.035,len(values)),values,s=1.6 if compact else 2,
+            ax.scatter(pos+rng.uniform(-.035,.035,len(values)),values,s=.8,
                        color=color,alpha=.25,linewidths=0,zorder=3,rasterized=True)
-        ax.plot(positions,medians,color='white',linewidth=2.5,zorder=5)
-        ax.plot(positions,medians,'o-',color=color,linewidth=1.35,markersize=2.8,
+        ax.plot(positions,medians,color='white',linewidth=1,zorder=5)
+        ax.plot(positions,medians,'o-',color=color,linewidth=.75,markersize=2,
                 markeredgecolor='white',markeredgewidth=.35,zorder=6)
     ax.set_xlim(-.55,len(fracs)-.45);ax.set_ylim(0,130);ax.set_yscale('symlog',linthresh=5,linscale=1)
     ax.set_yticks([0,2,5,10,20,50,100],['0','2','5','10','20','50','100'])
     from decimal import Decimal, ROUND_HALF_UP
     labels=[str(Decimal(str(DEPTHS[f])).quantize(Decimal('0.1'),rounding=ROUND_HALF_UP)) for f in fracs]
     ax.set_xticks(range(len(fracs)),labels)
-    ax.set_xlabel('Median autosomal coverage (×)',fontsize=8)
-    ax.set_ylabel('Mean absolute error (%)',fontsize=8)
+    ax.set_xlabel('Median autosomal coverage (×)')
+    ax.set_ylabel('Mean absolute error (%)')
     ax.set_title('')
     ax.yaxis.tick_left();ax.yaxis.set_label_position('left')
     ax.grid(axis='y',color='#e8edf0',linewidth=.5);style(ax)
     ax.spines['left'].set_visible(True);ax.spines['right'].set_visible(False)
-    ax.tick_params(labelsize=6.8 if compact else 8)
 
 
 def lineage_supplement(out):
-    fig,ax=plt.subplots(figsize=(6.4,5.7))
-    fig.subplots_adjust(left=.24,right=.74,bottom=.18,top=.82)
+    fig,ax=plt.subplots(figsize=(180*MM,80*MM))
+    fig.subplots_adjust(left=.1,right=.82,bottom=.12,top=.98)
     individual_boxes(ax,'lo');annotate_top_samples(ax,'lo')
     for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
-        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'D',color=INK,markersize=4,zorder=6)
-    ax.set_title('Leave one lineage out, 18 lineages',loc='left',fontsize=10,pad=12)
-    ax.set_yticklabels(rowlabels(),fontsize=9)
-    fig.text(.24,.985,'One point per individual: error with its whole lineage excluded.\nDiamonds: median of the per-individual mean CV errors.',fontsize=8.5,color=INK,va='top')
-    fig.text(.24,.015,'Boxes: 25th–75th percentiles; median; whiskers: 10th–90th.\nLabels identify the three highest errors per target.',fontsize=8,color=INK)
-    save(fig,out,'figureS7_lineage_validation')
+        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'D',color=INK,markersize=3,zorder=6)
+    ax.set_yticklabels(rowlabels())
+    save(fig,out,'ed/ed6_lineage_validation')
 
 
-def write_depth_individuals(out):
-    import csv
-    rows=[]
-    for key in KEYS:
-        for fraction in sorted(DEPTHS,key=lambda f:DEPTHS[f]):
-            for r in depth_individual_errors(key,fraction):
-                rows.append(dict(target=LABELS[key],fraction=fraction,median_autosomal_depth=DEPTHS[fraction],
-                                 sample=r['sample'],mean_absolute_error_pct=r['value'],cv_repeats=r['n_predictions']))
-    with (out/'figure1b_depth_individual_errors.tsv').open('w') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]),delimiter='\t');writer.writeheader();writer.writerows(rows)
