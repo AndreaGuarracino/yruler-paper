@@ -22,7 +22,7 @@ dyz19_j2a1a1_vs_other_j	42: 59.2-74.7 kb (37 outside the panel) vs 44: 220.9-305
 dyz19_na18910_na18911	NA18910 83.2 kb (E1a2a1b2), NA18911 77.4 kb (E1a2a1b2)
 dyz3_O2a2b1a1	median 269.2 kb, 37 men, range 226.2-532.6 kb
 dyz3_O2a2b1a2	median 1045.2 kb, 27 men, range 754.8-1385.5 kb
-sister_pairs_over_25pct	548 pairs: DYZ19 4, DYZ3 44, Yq12 48
+sister_pairs_over_25pct	545 pairs: DYZ19 4, DYZ3 44, Yq12 48
 father_son_yq12_over_25pct_with_par2_gain	2 pairs: HG02771-HG02773 Yq12 132.1%, DYZ3 1.1%, DYZ19 3.2%; NA11930-NA10845 Yq12 54.8%, DYZ3 0.1%, DYZ19 0.2%
 father_son_yq12_over_25pct_without_par2_gain	2 pairs: NA12056-NA10851 Yq12 37.1%, DYZ3 0.6%, DYZ19 3.0%; HG02317-HG02316 Yq12 29.9%, DYZ3 31.2%, DYZ19 0.8%
 par2_gain_men	HG02773 PAR2 1.4713, Yq12 56.35 Mb, HG02895 PAR2 1.4382, Yq12 49.27 Mb, HG03685 PAR2 1.4494, Yq12 32.20 Mb, NA11930 PAR2 1.4608, Yq12 48.53 Mb

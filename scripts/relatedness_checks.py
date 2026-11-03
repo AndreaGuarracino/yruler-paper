@@ -98,9 +98,11 @@ for c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17'):
     e, dm = [], []
     for r in R:
         tr = set().union(*[v for (rp, f_), v in fo.items() if rp == r['repeat'] and f_ != r['fold']]); dm.append(min(dist(r['sample'], t) for t in tr)); e.append(abs(float(r['error_pct'])))
-    e, dm = np.array(e), np.array(dm); q = np.percentile(dm, 10); rho = spearmanr(dm, e)
-    put(f'cv_tree_distance_{c}', f'{len(e)} predictions; nearest training male at median {np.median(dm):.2e} substitutions per site (10th percentile {q:.2e}); Spearman |error| vs distance {rho[0]:+.3f} (P {rho[1]:.2g}); '
-        f'median |error| {np.median(e[dm <= q]):.2f}% in the closest 10% and {np.median(e[dm > q]):.2f}% in the rest')
+    pm = co.defaultdict(list)   # one point per male: mean over repeats
+    for r, x, d in zip(R, e, dm): pm[r['sample']].append((x, d))
+    e = np.array([np.mean([x for x, _ in v]) for v in pm.values()]); dm = np.array([np.mean([d for _, d in v]) for v in pm.values()]); q = np.percentile(dm, 10); rho = spearmanr(dm, e)
+    put(f'cv_tree_distance_{c}', f'{len(R)} predictions, {len(e)} males (mean over repeats); nearest training male at median {np.median(dm):.2e} substitutions per site (10th percentile {q:.2e}); Spearman |error| vs distance {rho[0]:+.3f} (P {rho[1]:.2g}); '
+        f'median of male mean |error| {np.median(e[dm <= q]):.2f}% in the closest 10% and {np.median(e[dm > q]):.2f}% in the rest')
 
 # 4: male siblings in 1kGP
 ped = [l.split() for l in open('data/catalog_d376/ped.txt')][1:]; fa = co.defaultdict(list)
