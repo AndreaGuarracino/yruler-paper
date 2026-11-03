@@ -1,5 +1,5 @@
 individual_id	cohort	haplogroup_isogg2019	net_score	match_score	mismatch_score	chrY_sites_genotyped	y_dose	status	previous_lineage	updated_lineage	reported_sex	map_included	map_exclusion_reason
-HGDP00119	HGDP	NA	NA	NA	NA	0	1.0281	no chrY genotypes yet	Unassigned	Unassigned		True	
+HGDP00119	HGDP	C2a1a3a1a2	1253	1254	1	67147	1.0281	called	Unassigned	C		True	
 HGDP00321	HGDP	H1a1a4b1	1219	1220	1	67099	1.0554	called	Unassigned	H		True	
 HGDP00465	HGDP	E1b1a1a1a1c1a1a3a1g	1309	1310	1	67047	1.0726	called	Unassigned	E		True	
 HGDP00468	HGDP	B2b1a1a	910	949	39	67119	1.0622	called	Unassigned	B		True	
@@ -23,7 +23,7 @@ SGDP_NA_SAMEA3302803	SGDP	J2b2a2b2b1b	1204	1204	0	67140	1.0006	called	Unassigned
 SGDP_SA0722	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
 SGDP_SA0342	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
 SGDP_mixe0007	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
-SGDP_HGDP00725	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	M	True	
+SGDP_HGDP00725	SGDP	G2a2b2b2a	1002	1033	31	58315	NA	called	Unassigned	G	M	True	
 SGDP_Dus16	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
 SGDP_ALB212	SGDP	NA	NA	NA	NA	0	NA	no chrY genotypes yet	Unassigned	Unassigned	F	False	female in public SGDP metadata
 SGDP_NA_SAMEA3302821	SGDP	R1a1a1b2a1a1a1f	1247	1248	1	67166	1.0134	called	Unassigned	R	not reported	True	

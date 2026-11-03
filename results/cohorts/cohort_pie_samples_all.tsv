@@ -1653,7 +1653,7 @@ HGDP	HGDP00109	Hazara	33.5	70.0	R	Hallast 2021 Supplementary Table 2	HGDP00109	I
 HGDP	HGDP00110	Hazara	33.5	70.0	R	Hallast 2021 Supplementary Table 2	HGDP00110	IGSR population metadata	planned manifest before final QC		not supplemented				True	
 HGDP	HGDP00115	Hazara	33.5	70.0	C	Hallast 2021 Supplementary Table 2	HGDP00115	IGSR population metadata	planned manifest before final QC		not supplemented				True	
 HGDP	HGDP00118	Hazara	33.5	70.0	C	Hallast 2021 Supplementary Table 2	HGDP00118	IGSR population metadata	planned manifest before final QC		not supplemented				True	
-HGDP	HGDP00119	Hazara	33.5	70.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no chrY genotypes yet	0	NA		True	
+HGDP	HGDP00119	Hazara	33.5	70.0	C	HaploGrouper ISOGG 2019; delivered chrY genotype calls 2026-10-28	HGDP00119	IGSR population metadata	planned manifest before final QC	C2a1a3a1a2	called	67147	1253		True	
 HGDP	HGDP00120	Hazara	33.5	70.0	O	Hallast 2021 Supplementary Table 2	HGDP00120	IGSR population metadata	planned manifest before final QC		not supplemented				True	
 HGDP	HGDP00121	Hazara	33.5	70.0	R	Hallast 2021 Supplementary Table 2	HGDP00121	IGSR population metadata	planned manifest before final QC		not supplemented				True	
 HGDP	HGDP00122	Hazara	33.5	70.0	R	Hallast 2021 Supplementary Table 2	HGDP00122	IGSR population metadata	planned manifest before final QC		not supplemented				True	
@@ -2292,7 +2292,7 @@ SGDP	SGDP_IHW9193	Australian	-13.0	143.0	C	Hallast 2021 Supplementary Table 2	IH
 SGDP	SGDP_tdj409_shugnan	Tajik	37.6	71.5	L	Hallast 2021 Supplementary Table 2	LP6005519-DNA_C03;tdj409_shugnan	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_tdj430_shugnan	Tajik	37.6	71.5	L	Hallast 2021 Supplementary Table 2	LP6005519-DNA_D03;tdj430_shugnan	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP00722	Palestinian	32.0	35.0	E	Hallast 2021 Supplementary Table 2	HGDP00722;LP6005592-DNA_B03	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
-SGDP	SGDP_HGDP00725	Palestinian	32.0	35.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		no chrY genotypes yet	0	NA	M	True	
+SGDP	SGDP_HGDP00725	Palestinian	32.0	35.0	G	HaploGrouper ISOGG 2019; delivered chrY genotype calls 2026-10-28	SGDP_HGDP00725	IGSR population metadata	planned manifest before final QC	G2a2b2b2a	called	58315	1002	M	True	
 SGDP	SGDP_HGDP01035	BantuHerero	-22.0	19.0	E	Hallast 2021 Supplementary Table 2	HGDP01035;LP6005441-DNA_F01	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01028	BantuHerero	-22.0	19.0	E	Hallast 2021 Supplementary Table 2	HGDP01028;LP6005443-DNA_E02	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01333	She	27.0	119.0	O	Hallast 2021 Supplementary Table 2	HGDP01333;LP6005443-DNA_F01	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	

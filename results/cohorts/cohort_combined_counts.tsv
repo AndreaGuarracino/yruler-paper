@@ -159,11 +159,10 @@ latitude	longitude	population_labels	lineage	n	location_n
 32.0	3.0	Mozabite	E	17	19
 32.0	3.0	Mozabite	R	2	19
 32.0	35.0	Druze;Palestinian	E	3	28
-32.0	35.0	Druze;Palestinian	G	12	28
+32.0	35.0	Druze;Palestinian	G	13	28
 32.0	35.0	Druze;Palestinian	J	6	28
 32.0	35.0	Druze;Palestinian	L	5	28
 32.0	35.0	Druze;Palestinian	R	1	28
-32.0	35.0	Druze;Palestinian	Unassigned	1	28
 32.1	35.9	Jordanian	J	2	3
 32.1	35.9	Jordanian	T	1	3
 32.2	35.3	Samaritan	J	1	1
@@ -173,13 +172,12 @@ latitude	longitude	population_labels	lineage	n	location_n
 32.3	114.0	Han;NorthernHan	O	15	21
 32.3	114.0	Han;NorthernHan	Q	1	21
 33.3	44.4	Iraqi_Jew	J	1	1
-33.5	70.0	Hazara	C	5	20
+33.5	70.0	Hazara	C	6	20
 33.5	70.0	Hazara	I	1	20
 33.5	70.0	Hazara	J	1	20
 33.5	70.0	Hazara	O	2	20
 33.5	70.0	Hazara	Q	2	20
 33.5	70.0	Hazara	R	8	20
-33.5	70.0	Hazara	Unassigned	1	20
 33.5	70.5	Pathan	G	2	19
 33.5	70.5	Pathan	H	2	19
 33.5	70.5	Pathan	L	2	19

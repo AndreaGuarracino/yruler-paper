@@ -125,28 +125,28 @@
     },
     {
       "path": "results/cohorts/cohort_combined_counts.tsv",
-      "bytes": 9583,
-      "sha256": "9316be3a7d8e7453da53553be70eed27161f1176e4a1c12cc76d421f6d95c419"
+      "bytes": 9504,
+      "sha256": "2ce6967aa4414a59cb50edaaefc15161c5203aa2ee613bdf7a3303a974546afa"
     },
     {
       "path": "results/cohorts/cohort_combined_samples.tsv",
-      "bytes": 467676,
-      "sha256": "df8925ebda76006d5c02d1a5b31bc111c2420226a36a8e806d734f709de8163f"
+      "bytes": 467749,
+      "sha256": "c2e4362c941a56c34465a344822976e267f46e5daf1f8d6e7fbee004ad20aeb6"
     },
     {
       "path": "results/cohorts/cohort_combined_samples_all.tsv",
-      "bytes": 483575,
-      "sha256": "8f9b0a4fd60c1748b6c2f255ba231bb41f5d6e72af4b9a7c0b3b9e05a383e1c0"
+      "bytes": 483648,
+      "sha256": "38abbfdf5df8c131c117767db7894bdd6ec830e8c94e26101f11023473fe7b2b"
     },
     {
       "path": "results/cohorts/cohort_pie_samples.tsv",
-      "bytes": 408824,
-      "sha256": "3cb88776eae27d5fd0cfc051317f157e264b388e58e341bb66e9be641eca7463"
+      "bytes": 408898,
+      "sha256": "46e3fa81be096a2efc670b40ab5ffe0d4c31d30058996190a89fdd2292517582"
     },
     {
       "path": "results/cohorts/cohort_pie_samples_all.tsv",
-      "bytes": 410601,
-      "sha256": "941cac376debf3cffa712c43bdc288e2f59896118afc61338419aede26b9e5a1"
+      "bytes": 410675,
+      "sha256": "45fbd4e74213874834f6ab0f321b77cedf0250bc9384c82910b3c2e4deb69066"
     },
     {
       "path": "results/cohorts/cohort_shared_individuals.tsv",
@@ -155,13 +155,13 @@
     },
     {
       "path": "results/cohorts/lineage_call_changes.tsv",
-      "bytes": 3194,
-      "sha256": "136708cb826ddde31438d2c0795e7fe6174494948e21558366e215159274e86d"
+      "bytes": 3176,
+      "sha256": "47ea566aefa9830d0a95b45476573d6ab9efce978944a757f2d508aee9989c8e"
     },
     {
       "path": "results/cohorts/lineage_calls.tsv",
       "bytes": 2017,
-      "sha256": "20013924682972fc83beac04cc5be8342e2ae678522f2a2dce6324937b3e24d2"
+      "sha256": "4f78d851947e5b61bdc592f16c78f10435fbae7b1321d4873a7fcca7f26f7ebd"
     },
     {
       "path": "results/cohorts/map_exclusions.tsv",
@@ -260,8 +260,8 @@
     },
     {
       "path": "scripts/figures_1kgp.py",
-      "bytes": 61773,
-      "sha256": "cdae6ea127ede682e3a7cfc052efd5021b43b75b30ea02bbf67f1c6551e0e434"
+      "bytes": 61776,
+      "sha256": "78126656ec1539fc335d541380e2e08e3635913ecaee116f3c2a2cd75c941c6b"
     },
     {
       "path": "scripts/manuscript_figures.py",
@@ -298,27 +298,27 @@
     {
       "path": "manuscript/figures/ed/ed2_yq12_composition.pdf",
       "bytes": 48842,
-      "sha256": "da307a8ab7820c2cbc056e685ed2aeea2c51a3a72b0cd4a15608a372a8bd56df"
+      "sha256": "61d2ff08d04e2f9f01e5294a7040d56b7347d69e5d296ff19aa0e172d09f4f0e"
     },
     {
       "path": "manuscript/figures/ed/ed3_population.pdf",
       "bytes": 304096,
-      "sha256": "56d8f155c35d6740134c68a340e7ef3f2a9d2d027db8fd1a6725784868fa0ac6"
+      "sha256": "38b136cea0397c7b0d81c26355a50ae0ba60e0cda13613bfa41bd02a65cc6758"
     },
     {
       "path": "manuscript/figures/ed/ed4_depth.pdf",
       "bytes": 39924,
-      "sha256": "c6979ec6a8e0dc1977511dbe79de26ac5471e5383bee71bc3baf99dc66cdde0d"
+      "sha256": "b1687c4b56c39de21ec2fb58558014b9482e2271b25040ba4e65a51936eb5dfd"
     },
     {
       "path": "manuscript/figures/ed/ed5_J_DYZ19.pdf",
       "bytes": 67260,
-      "sha256": "6035bdb6bf697d561b1b31f2f417650cad943f507669b0241376e4f696b4e90d"
+      "sha256": "efcc4bdeece69d6e931322e94496fda595df117ad6692459c3a0c38c35ca9e4e"
     },
     {
       "path": "manuscript/figures/ed/ed6_lineage_validation.pdf",
       "bytes": 37319,
-      "sha256": "8f0a4f3deb1dd15666311cb1e2102adcfd01d1e8fced04a4f4e1c4933d5d1588"
+      "sha256": "34d8ffe9b8e5badf0d930510d40f555bd56eaa782b8e82d4589434def15af442"
     },
     {
       "path": "manuscript/figures/ed/ed7_pedigrees.pdf",
@@ -338,17 +338,17 @@
     {
       "path": "manuscript/figures/main/fig1_method.pdf",
       "bytes": 370831,
-      "sha256": "00796cc62f31b9969432e27b5542bab31e797fd52af772cf81b33936e4f7cfc5"
+      "sha256": "6c53c0d8ca64c46a99d69fe559a1069a766eb899465f103eeec4bbf3b9d9cef7"
     },
     {
       "path": "manuscript/figures/main/fig2_biology.pdf",
-      "bytes": 305946,
-      "sha256": "b4961f2ce4f5463937fecce7d04b482ba1bc606c31df4b4ee1ba2cd981d87bcb"
+      "bytes": 305939,
+      "sha256": "5e90283d1d83ef2d3e1f7b86381b3338472e71cc03ce72362fbf71c87f22f1cb"
     },
     {
       "path": "manuscript/figures/supp/suppfig1_world_map.pdf",
-      "bytes": 181360,
-      "sha256": "a9cc050e9b4d8222606f3565a610ec6d9c76920d967ca91e29a53df6930bcccb"
+      "bytes": 178876,
+      "sha256": "113c1e1c716e16bf40d0be85c1d7f8559f423432e306f829da19e60d3342678e"
     },
     {
       "path": "results/estimates_1kgp.follow_up.tsv",
@@ -412,8 +412,8 @@
     },
     {
       "path": "results/figures/figure2_lineage_counts.tsv",
-      "bytes": 549,
-      "sha256": "a54af3928444603a8de35f710e0c17a4930eaed4364eb91cc902ca73f34b0033"
+      "bytes": 514,
+      "sha256": "1692712e04afafff902adb416cdb489008fdf7d314d685d15508025a51c0a51e"
     },
     {
       "path": "results/figures/figure2_tree_membership.tsv",

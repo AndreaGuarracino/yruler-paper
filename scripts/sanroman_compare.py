@@ -9,9 +9,9 @@ import sys, collections
 import numpy as np
 from scipy.stats import spearmanr
 
+def log(*a): print(*a, flush=True)
 S6, REG, IND, DROP, PED, CVU, COH, OUT = sys.argv[1:9]; D30 = sys.argv[9] if len(sys.argv) > 9 else None   # D30: their measure on our 30x CRAMs (um_srdepth.sh)
 P3 = sys.argv[10] if len(sys.argv) > 10 else None   # P3: yruler final model on the 1kGP phase 3 low-coverage runs (um_apply.py table, samples <id>_phase3)
-def log(*a): print(*a, flush=True)
 SIG = {'San Roman DYZ1 depth': {l.split('\t')[0]: float(l.split('\t')[3]) for l in list(open(S6))[1:]}}
 if D30: SIG['San Roman measure on 30x CRAMs'] = {l.split('\t')[0]: float(l.split('\t')[5]) for l in open(D30)}
 drop = {tuple(l.split()) for l in open(DROP) if l.strip()}
@@ -62,18 +62,23 @@ for (c, col), (sname, sr) in [(x, y) for x in (('yq12', 'Yq12_bp'), ('dyz1', 'DY
     rows.append((c, f'Spearman vs truth: {sname}', len(M), rho_sr, np.nan, np.nan, np.nan)); rows.append((c, f'Spearman vs truth: yruler CV prediction (men with {sname})', len(ym), rho_y, np.nan, np.nan, np.nan))
     rows.append((c, f'Spearman {sname} vs yruler {col} (1kGP men, final model)', len(co), rho_c, np.nan, np.nan, np.nan))
     log(f'  Spearman vs truth: San Roman {rho_sr:.4f} (n {len(M)}), yruler CV {rho_y:.4f} (n {len(ym)}); San Roman vs yruler cohort {rho_c:.4f} (n {len(co)})')
+PM, SUM = [], []
 if P3:   # same data as the published San Roman values: phase 3 low coverage
     X3 = [l.rstrip('\n').split('\t') for l in open(P3)]; H3 = X3[0]; X3 = {r[0].replace('_phase3', ''): dict(zip(H3, r)) for r in X3[1:] if dict(zip(H3, r))['estimate_status'] == 'ok'}
     sr0 = SIG['San Roman DYZ1 depth']
     for c, col in (('yq12', 'Yq12_bp'), ('dyz1', 'DYZ1_bp')):
         M = sorted(m for m in T[c] if m in X3 and m in sr0); K = sum(T[c][m] for m in M) / sum(sr0[m] for m in M)
         fy = [100 * (float(X3[m][col]) / T[c][m] - 1) for m in M]; fs = [100 * (K * sr0[m] / T[c][m] - 1) for m in M]
+        PM += [(m, c, T[c][m], sr0[m], K * sr0[m], fs[i], float(X3[m][col]), fy[i]) for i, m in enumerate(M)]   # per male, published 30
+        cv = lambda r: 100 * np.std(r, ddof=1) / np.mean(r)   # spread of truth / estimate: no K
+        SUM.append(f'# {c}: {len(M)} males; K-free spread of truth/estimate (CV %): San Roman {cv([T[c][m] / sr0[m] for m in M]):.2f}, yruler final {cv([T[c][m] / float(X3[m][col]) for m in M]):.2f}; Spearman vs truth: San Roman {spearmanr([sr0[m] for m in M], [T[c][m] for m in M])[0]:.3f}, yruler final {spearmanr([float(X3[m][col]) for m in M], [T[c][m] for m in M])[0]:.3f}; San Roman bp use one K fitted on these males, yruler bp use the released model\n')
         Ky = sum(T[c][m] for m in M) / sum(float(X3[m][col]) for m in M); fyk = [100 * (Ky * float(X3[m][col]) / T[c][m] - 1) for m in M]   # same treatment as San Roman
         for name, v in (('yruler final model on phase 3 runs (same men)', fy), ('yruler on phase 3 runs, one K on these men', fyk), ('San Roman DYZ1 depth (phase 3), one K on these men', fs)):
             a = st(v); rows.append((c, name, len(M), *a)); log(f'{c} phase 3: {name}: men {len(M)}, mean {a[0]:.2f}% median {a[1]:.2f}% p90 {a[2]:.2f}% max {a[3]:.2f}%')
         rows.append((c, 'Spearman vs truth: yruler final model on phase 3 runs', len(M), spearmanr([float(X3[m][col]) for m in M], [T[c][m] for m in M])[0], np.nan, np.nan, np.nan))
         rows.append((c, 'Spearman vs truth: San Roman DYZ1 depth (phase 3), same men', len(M), spearmanr([sr0[m] for m in M], [T[c][m] for m in M])[0], np.nan, np.nan, np.nan))
         log(f'  Spearman vs truth: yruler phase 3 {rows[-2][3]:.4f}, San Roman {rows[-1][3]:.4f}')
-with open(OUT, 'w') as o:
-    o.write('class\tmeasure\tmen\tmean_or_rho\tmedian\tp90\tmax\n'); o.writelines('\t'.join([r[0], r[1], str(r[2])] + [f'{x:.4f}' if x == x else '' for x in r[3:]]) + '\n' for r in rows)
-log('written', OUT)
+with open(OUT, 'w') as o:   # phase 3 only: published San Roman vs yruler final, every male
+    o.writelines(SUM); o.write('male\tclass\ttruth_bp\tsan_roman_relative\tsan_roman_bp\tsan_roman_error_pct\tyruler_final_bp\tyruler_final_error_pct\n')
+    o.writelines(f'{m}\t{c}\t{t:.0f}\t{r:.4f}\t{a:.0f}\t{e:+.2f}\t{y:.0f}\t{f:+.2f}\n' for m, c, t, r, a, e, y, f in sorted(PM, key=lambda x: (x[1], x[0])))
+log('written', OUT, len(PM), 'rows (male x class)')

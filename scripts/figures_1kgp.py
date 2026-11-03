@@ -608,7 +608,7 @@ COHORT_SHADE = {"1kGP": BLUE, "HGDP": BLUE, "SGDP": BLUE}   # cohorts by positio
 
 
 def subtree_panel(tax, ax, rows, other, highlight, limit, letter):
-    """Fig. 2b: one subtree, DYZ3 per cohort."""
+    """Fig. 2b or c: one subtree, DYZ3 per cohort."""
     from validation_plots import error_box_stats, draw_error_boxes
     from matplotlib.colors import to_rgba
     root, leaves = collapse_tree(prune_tree(parse_newick(TREE_SOURCE), set(rows)), rows)
@@ -634,12 +634,12 @@ def subtree_panel(tax, ax, rows, other, highlight, limit, letter):
             q = np.percentile(v, [10, 25, 50, 75, 90])
             stats.append({"clade": g, "cohort": c, "n": len(v), "n_truth": int(t.sum()), "median_bp": q[2] * 1e6, "q25_bp": q[1] * 1e6, "q75_bp": q[3] * 1e6, "q10_bp": q[0] * 1e6, "q90_bp": q[4] * 1e6})
     ax.set_ylim(len(leaves) - .5, -.5); column_axis(ax, "DYZ3", BLUE, "Length (Mb)", limit, list(np.arange(0, limit + .01, .5)))
-    print("Fig. 2b n per clade (1kGP/HGDP/SGDP) and 1kGP DYZ3 truth diamonds:", {g: ("/".join(str(len(d[c])) for c in COHORT_SHADE), sum(f for _, f in d["1kGP"])) for g, d in data.items()}, flush=True)
+    print("Fig. 2b-c n per clade (1kGP/HGDP/SGDP) and 1kGP DYZ3 truth diamonds:", {g: ("/".join(str(len(d[c])) for c in COHORT_SHADE), sum(f for _, f in d["1kGP"])) for g, d in data.items()}, flush=True)
     return stats
 
 
 def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
-    """Fig. 2b-e: P and O2a DYZ3, J DYZ19 by cohort, unit ratio, DYZ1 and DYZ2 variability."""
+    """Fig. 2b-f: P and O2a DYZ3, J DYZ19 by cohort, unit ratio, DYZ1 and DYZ2 variability."""
     R, C, Q, N, inc = biology_inputs()
     H = fig.get_figheight() / MM; box = lambda x0, x1, b=bottom, t=tall: fig.add_axes([x0, b / H, x1 - x0, t / H])
     def style(ax, letter, t=tall):
@@ -658,7 +658,7 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
     G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
     assert [(len(a[0]), len(b[0])) for _, a, b in G] == [(42, 44), (16, 29), (6, 12)], [(len(a[0]), len(b[0])) for _, a, b in G]
-    print("Fig. 2c triangles (DYZ19 truth):", sum(sum(a[1]) + sum(b[1]) for _, a, b in G), flush=True)
+    print("Fig. 2d diamonds (DYZ19 truth):", sum(sum(a[1]) + sum(b[1]) for _, a, b in G), flush=True)
     for i, (c, a, b) in enumerate(G):
         strip(ax, 2.6 * i, a[0], PURPLE, s=3, a=.8, seed=i, cap=.32, ref=a[1]); strip(ax, 2.6 * i + 1, b[0], GREY, s=3, a=.8, seed=i + 5, cap=.32, ref=b[1]); ax.text(2.6 * i + .5, -TITLE_Y / tall, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=FS["label"])
     ax.set_xticks([x for i in range(3) for x in (2.6 * i, 2.6 * i + 1)], [f"{len(v[0])}" for _, a, b in G for v in (a, b)]); ax.set_xlim(-.7, 6.9); ax.set_ylim(0, 350); ax.set_ylabel("DYZ19 length (kb)"); style(ax, "c")
@@ -678,15 +678,15 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
         a = np.log2([p[0] for p in P]); b = np.log2([p[1] for p in P]); l = np.array([p[2] for p in P])
         for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
         return b, a
-    P = [r for r in rep.values() if r["reference_male"] != "yes"]; tri = np.array([r["sample"] in TRUTH["yq12"] for r in P]); print("Fig. 2e triangles (Yq12 truth):", int(tri.sum()), flush=True)
+    P = [r for r in rep.values() if r["reference_male"] != "yes"]; tri = np.array([r["sample"] in TRUTH["yq12"] for r in P]); print("Fig. 2f diamonds (Yq12 truth):", int(tri.sum()), flush=True)
     men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in P]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
     assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
     ax.scatter(men[0][~tri], men[1][~tri], s=2, c=GREY, lw=0, alpha=.6, label="From reads (1kGP, 1,196)", rasterized=True); ax.scatter(men[0][tri], men[1][tri], edgecolors=GREY, rasterized=True, **REF); ax.scatter(*asm, s=6, marker="x", c=ORANGE, linewidths=.6, alpha=.9, label="From assemblies (75)", rasterized=True)
-    L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2e symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
-    ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2e points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 relative to lineage mean"); ax.set_ylabel("DYZ1 relative to lineage mean"); from matplotlib.legend_handler import HandlerTuple
+    L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2f symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
+    ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2f points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 relative to lineage mean"); ax.set_ylabel("DYZ1 relative to lineage mean"); from matplotlib.legend_handler import HandlerTuple
     dot, cross, eq = Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY), Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6), Line2D([], [], color=MUTED, lw=.6, ls="--")
     ax.legend([(Line2D([], [], color=ORANGE, lw=.9), cross), (Line2D([], [], color=INK, lw=.9), dot), eq], [f"From assemblies (75)\n(SD ratio {a:g})", f"From reads (1kGP, 1,196)\n(SD ratio {r:g})", "Equal variation\n(SD ratio 1)"], handler_map={tuple: HandlerTuple(ndivide=1)}, **on_top(ax, left=True, ncol=1)); style(ax, "e")   # points and line share one entry
-    B = [.719, .191, .25, .19]; ins = ax.inset_axes(B); x0, y0 = -L + 2 * L * B[0], -L + 2 * L * B[1]; print("Fig. 2e points under the inset:", int(sum(((x >= x0) & (x <= x0 + 2 * L * B[2]) & (y >= y0) & (y <= y0 + 2 * L * B[3])).sum() for x, y in (men, asm))), flush=True); S = [("Assemblies", "assemblies"), ("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp")]
+    B = [.719, .18, .25, .19]; ins = ax.inset_axes(B); x0, y0 = -L + 2 * L * B[0], -L + 2 * L * B[1]; print("Fig. 2f points under the inset:", int(sum(((x >= x0) & (x <= x0 + 2 * L * B[2]) & (y >= y0) & (y <= y0 + 2 * L * B[3])).sum() for x, y in (men, asm))), flush=True); S = [("Assemblies", "assemblies"), ("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp")]
     for i, (n, k) in enumerate(S):
         m_ = re.search(r"ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)", N[f"composition_sd_{k}"]); v, lo, hi = map(float, m_.groups()); ins.plot([lo, hi], [3 - i, 3 - i], color=INK, lw=.75); ins.plot(v, 3 - i, "x" if k == "assemblies" else "o", ms=2.5 if k == "assemblies" else 2, mew=.6, color=ORANGE if k == "assemblies" else INK)
     ins.axvline(1, color=MUTED, lw=.6, ls="--"); ins.set_yticks(range(4), [n for n, _ in S[::-1]]); ins.set_xlim(.55, 1.05); ins.set_xticks([.7, 1]); ins.set_xticks([.8, .9], minor=True); ins.set_ylim(-.5, 3.5); ins.tick_params(length=1.5, pad=1); ins.set_xlabel("SD ratio", fontsize=FS["tick"], labelpad=3); ins.spines[["top", "right"]].set_visible(False); ins.patch.set_alpha(.85)
@@ -729,7 +729,7 @@ def population_figure(valid, out, snapshot_path, completed):
     stats += frozen_trait(axes[4], leaves, "unit_ratio", RATIO, 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
                           "DYZ1:DYZ2", "f", "Unit ratio", lambda g: False, show_panel=False)
     axes[4].axvline(1, color=RATIO, linestyle="--", linewidth=.6, zorder=1)
-    print("Fig. 2a triangles per column:", {a.get_title(): a._triangles for a in axes[1:]}, flush=True)
+    print("Fig. 2a diamonds per column:", {a.get_title(): a._triangles for a in axes[1:]}, flush=True)
     fig._valid = valid; subtrees = biology_panels(fig)
     save(fig, out, "main/fig2_biology")
     write_rows(AUX / "figure2b_subtree_summary.tsv", subtrees)
