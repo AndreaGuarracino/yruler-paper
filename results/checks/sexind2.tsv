@@ -1,0 +1,17 @@
+sample	role	x_kmer	par1	par2
+HG02771_ontA	ont_relative	1.0175	0.9806	0.9642
+HG02771_ontB	ont_relative	1.0198	0.9889	0.9638
+HG02771_polaris	polaris_relative	0.9818	0.9226	1.0044
+HG02773_polaris_sra	case	0.9843	0.8310	1.5043
+HG02895_ontA	case	1.0074	0.9408	1.4525
+HG02895_ontB	case	1.0112	0.9560	1.4677
+NA11930_aviti	.	0.9893	1.0742	1.5018
+NA11930_lowpass	.	0.9929	0.9095	1.5099
+NA11930_novaseq	.	0.9978	1.1652	1.4250
+NA12342_lowpass	.	0.9867	0.9732	1.0190
+ont_HG00105	reference	1.0000	0.9941	1.1374
+ont_HG00151	reference	1.0203	1.0027	1.0000
+ont_HG00631	reference	0.9843	1.0000	0.9905
+ont_HG01170	reference	1.0076	0.9032	1.0002
+ont_HG01413	reference	0.9802	1.0307	0.9482
+ont_HG03685	case	1.0088	0.9777	1.5776
