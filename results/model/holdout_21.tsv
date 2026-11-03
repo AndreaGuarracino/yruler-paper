@@ -1,6 +1,6 @@
 class	n_predictions	n_males	mean_abs	median_abs	p90_abs	max_abs	bias_median	worst_male
 dyz3	18	18	2.09	1.55	3.02	11.55	+1.17	HG03492
-yq12	3	3	0.93	0.80	1.24	1.35	+0.80	NA20762
+yq12	3	3	0.77	0.51	1.25	1.43	+0.51	NA20762
 dyz1	3	3	0.54	0.57	0.65	0.67	-0.38	NA20805
 dyz2	3	3	2.13	2.30	3.41	3.69	+2.30	NA20762
 dyz18s	3	3	4.60	3.42	7.12	8.04	-2.34	NA20762
