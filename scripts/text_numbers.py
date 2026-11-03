@@ -3,7 +3,7 @@
 
 usage: python3 scripts/text_numbers.py <results dir> <out.tsv>
 inputs: <results dir>/{cv,cv_units,lolo,holdout_21,depth,father_son,cv_females,cohort_1kgp,yprofile_1kgp,dyz1_dyz2_lineages,dyz1_dyz2_truth_vs_yruler}.tsv,
-manuscript/figures/figureS8_pedigree_pairs.tsv, results/ytree_v4_2026-11-01/ytree_v4.rooted.nwk, data/method/yq12_truth_hallast.tsv
+manuscript/figures/figureS8_pedigree_pairs.tsv, results/tree/tree.rooted.nwk, data/method/yq12_truth_hallast.tsv
 """
 import sys, csv, collections
 from pathlib import Path
@@ -46,7 +46,7 @@ def cherries(n, out):   # sister tip pairs among included men
     k = n['children']
     if len(k) == 2 and not k[0]['children'] and not k[1]['children'] and k[0]['name'] in I and k[1]['name'] in I: out.append((k[0]['name'], k[1]['name']))
     for c in k: cherries(c, out)
-P = []; cherries(fs.parse_newick(ROOT / 'results/ytree_v4_2026-11-01/ytree_v4.rooted.nwk'), P)
+P = []; cherries(fs.parse_newick(ROOT / 'results/tree/tree.rooted.nwk'), P)
 put('sister_pairs_over_25pct', f'{len(P)} pairs: ' + ', '.join(f"{c} {sum(abs(np.log(b(I[a], c) / b(I[s], c))) > np.log(1.25) for a, s in P if c != 'Yq12' or (I[a]['y_state'] != 'par2_gain' and I[s]['y_state'] != 'par2_gain'))}" for c in ('DYZ19', 'DYZ3', 'Yq12')))
 fsr = collections.defaultdict(dict)
 for r in rows(ROOT / 'manuscript/figures/figureS8_pedigree_pairs.tsv'): fsr[(r['father'], r['son'])][r['target']] = abs(float(r['signed_difference_pct']))

@@ -29,7 +29,7 @@ from figure2_tree import (
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SNAPSHOT = ROOT / "results/estimates_1kgp.tsv"
-TREE_SOURCE = ROOT / "results/ytree_v4_2026-11-01/ytree_v4.rooted.nwk"
+TREE_SOURCE = ROOT / "results/tree/tree.rooted.nwk"
 FROZEN = ROOT / "data/frozen_2026-10-27"
 TARGETS = [
     ("dyz3", "DYZ3_bp", "DYZ3", 1e3, "kb"),
@@ -625,7 +625,7 @@ def annotate_population_extremes(ax, key):
 
 def biology_panels(fig, height):
     """Fig. 2b-e: DYZ19 and DYZ3 states with replication, read density, DYZ1 and DYZ2 variability."""
-    R = ROOT / "results/model_final_2026-11-02"; GREY, INK, MUTED, ORANGE = "#a9b4ba", "#22313a", "#55666f", "#d9622b"
+    R = ROOT / "results/model"; GREY, INK, MUTED, ORANGE = "#a9b4ba", "#22313a", "#55666f", "#d9622b"
     C = read_tsv(R / "cohort_1kgp.tsv"); Q = read_tsv(R / "hgsg_calls.tsv"); N = {r["item"]: r["value"] for r in read_tsv(R / "biology_tests.tsv")}
     keep = ("normal", "mosaic_loss", "mosaic_gain", "Y_gain", "par2_gain"); inc = [r for r in C if r["sex"] == "male" and r["estimate_basis"] == "ruler" and r["y_state"] in keep]
     box = lambda x0, x1: fig.add_axes([x0, .72 / height, x1 - x0, 3.33 / height])
@@ -636,7 +636,7 @@ def biology_panels(fig, height):
     def style(ax, letter):
         ax.spines[["top", "right"]].set_visible(False); ax.tick_params(labelsize=7, length=2.5); fig.text({"b": .012, "c": .232, "d": .412, "e": .762}[letter], 4.2 / height, letter, fontsize=15, fontweight="bold")
     # short DYZ19 of J2a1a1, by cohort
-    ax = box(.05, .2); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/model_checks_2026-11-02/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
+    ax = box(.05, .2); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/checks/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
     Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: own[r["sample"]].startswith("J2a1a1"); kb = lambda R_: np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_])
     G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
     G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
@@ -910,12 +910,12 @@ def snapshot_manifest(path, out):
         "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
         "scripts/manuscript_figures.py", "scripts/figure2_tree.py",
         "scripts/figures_1kgp.py", "scripts/prepare_cohort_pies.py",
-        "scripts/cohort_lineages.py", "results/unassigned_lineages_calls_2026-10-28.tsv",
+        "scripts/cohort_lineages.py", "results/cohorts/lineage_calls.tsv",
         "scripts/figure1b_selected.py", "scripts/validation_plots.py", "scripts/depth_benchmark.py",
         "scripts/pedigree_plots.py", "scripts/validation_ratio.py")]
     inputs += [p for p in (ROOT / "data/figure_metadata").iterdir()
                if p.suffix in {".tsv", ".kin0", ".psam", ".xlsx", ".geojson"} or p.name == "sgdp_metadata.txt"]
-    inputs += list((ROOT / "results/cohort_metadata_2026-10-28").glob("*.tsv"))
+    inputs += list((ROOT / "results/cohorts").glob("*.tsv"))
     outputs = [p for p in out.glob("*.tsv") if not p.name.startswith("snapshot_")]
     outputs += [out / f"snapshot_{tag}_samples.tsv"]
     outputs += list((ROOT / "results").glob(Path(path).stem + ".*.tsv"))

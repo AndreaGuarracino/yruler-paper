@@ -3,7 +3,7 @@
 
 usage: python3 scripts/methods_numbers.py <results dir> <gc_curves.tsv> <out.tsv>
 inputs: <results dir>/{cv,cv_units,lolo,lolo_units,cv_females,cohort_1kgp,cohort_hgdp_sgdp,same_male_pairs,father_son,x_par_doses}.tsv, results/estimates_1kgp.sensitivity.tsv,
-results/model_checks_2026-11-02/xpar_kmer.summary.tsv, manuscript/figures/figure1_depth_summary.tsv, figureS8_pedigree_pairs.tsv, data/method/dyz19_clean.tsv, data/method/yq12_truth_hallast.tsv
+results/checks/xpar_kmer.summary.tsv, manuscript/figures/figure1_depth_summary.tsv, figureS8_pedigree_pairs.tsv, data/method/dyz19_clean.tsv, data/method/yq12_truth_hallast.tsv
 """
 import sys, csv, collections as co
 import numpy as np
@@ -27,7 +27,7 @@ F = {r['class']: r for r in rd(f'{D}/cv_females.tsv')}; put('female_bg', '; '.jo
 X = rd(f'{D}/cohort_1kgp.tsv'); C = {x['sample']: x for x in X}; b = lambda x, c: float(x[f'{c}_bp']); men = [x for x in X if x['sex'] == 'male' and x['estimate_basis'] == 'ruler']
 fem = [x for x in X if x['sex'] == 'female']; put('female_max_y', f"{max(float(x['y_dose']) for x in fem):.4f} ({len(fem)})")
 fmax = {c: float(F[c]['max_bp']) for c in CL}; ex = [(min(b(x, NM[c]) / fmax[c] for c in CL), x['sample']) for x in men]; ex.sort(); put('male_vs_female_max', f'lowest ratio {ex[0]}, next {ex[1]}; HG02966 classes at or below: ' + str(sum(b(C['HG02966'], NM[c]) <= fmax[c] for c in CL)))
-Q = {r['sample']: r for r in rd('results/model_checks_2026-11-02/xpar_kmer.summary.tsv')}; ref = [s for s, r in Q.items() if r['role'] == 'reference']
+Q = {r['sample']: r for r in rd('results/checks/xpar_kmer.summary.tsv')}; ref = [s for s, r in Q.items() if r['role'] == 'reference']
 g = lambda s, c: float(C[s][c]); rg = lambda v: f'{min(v):.3f}-{max(v):.3f}'
 put('x_ref', rg([g(s, 'x_dose') for s in ref])); put('x_female_median', f"{np.median([float(x['x_dose']) for x in fem]):.3f}")
 for s in ('HG01683', 'HG02869', 'HG03456', 'NA19226'): put(f'sex_{s}', f"X {g(s, 'x_dose'):.3f} Y {g(s, 'y_dose'):.3f} PAR1 {g(s, 'par1_dose'):.3f} PAR2 {g(s, 'par2_dose'):.3f}")
@@ -45,7 +45,7 @@ T = rd('data/method/yq12_truth_hallast.tsv'); fr = [float(r['dyz1_units']) / flo
 G = rd(f'{D}/cohort_hgdp_sgdp.tsv'); LIB = co.defaultdict(lambda: co.defaultdict(list))
 for x in G:
     if x['cohort'] == 'HGDP' and x['sex'] == 'male' and x['estimate_basis'] == 'ruler' and x['y_state'] == 'normal': LIB[x['population']][x['library']].append(x)
-pp = [p for p, d in LIB.items() if len([k for k in d if 'PCR-free' in k]) and sum(len(v) for k, v in d.items() if 'PCR-free' in k) >= 3 and sum(len(v) for k, v in d.items() if 'PCR-free' not in k) >= 3]; put('hgdp_libraries', str({k: sum(len(d[k]) for d in LIB.values()) for k in {k for d in LIB.values() for k in d}}) + f'; populations {len(pp)}')
+pp = [p for p, d in LIB.items() if len([k for k in d if 'PCR-free' in k]) and sum(len(v) for k, v in d.items() if 'PCR-free' in k) >= 3 and sum(len(v) for k, v in d.items() if 'PCR-free' not in k) >= 3]; put('hgdp_libraries', str({k: sum(len(d[k]) for d in LIB.values()) for k in sorted({k for d in LIB.values() for k in d})}) + f'; populations {len(pp)}')
 for c in ('DYZ2', 'DYZ18S', 'Yq12'):
     v = []
     for p in pp:

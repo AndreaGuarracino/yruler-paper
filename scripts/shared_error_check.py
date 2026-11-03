@@ -12,7 +12,7 @@ E = co.defaultdict(lambda: co.defaultdict(list))
 for r in rd(f'{D}/cv_units.tsv'): E[r['class']][r['male']].append(math.log1p(float(r['error_pct']) / 100))
 M = {c: {s: float(np.mean(v)) for s, v in d.items()} for c, d in E.items()}; men = sorted(set(M['dyz1']) & set(M['dyz17']) & set(M['dyz18s'])); F = np.array([np.mean([M[c][s] for c in ('dyz1', 'dyz17', 'dyz18s')]) for s in men])
 print(f'men {len(men)}; SD of the shared factor {100 * F.std():.2f}%')
-Z = {r['sample']: r for r in rd(FZ)}; X = {r['sample']: r for r in rd(f'{D}/cohort_1kgp.tsv')}; G = {r['sample']: r for r in rd(GC)}; I = {r['sample']: r for r in rd('results/model_checks_2026-10-29/insert_1kgp.tsv')}
+Z = {r['sample']: r for r in rd(FZ)}; X = {r['sample']: r for r in rd(f'{D}/cohort_1kgp.tsv')}; G = {r['sample']: r for r in rd(GC)}; I = {r['sample']: r for r in rd('results/checks/insert_1kgp.tsv')}
 men2 = [i for i, s in enumerate(men) if s in Z and s in G and s in X and s in I]; f = F[men2]; S = [men[i] for i in men2]; print('men with all covariates', len(S))
 V = {'ruler frac_zero': [float(Z[s]['ruler_fz']) for s in S], 'dyz1 frac_zero': [float(Z[s]['dyz1_fz']) for s in S], 'dyz17 frac_zero': [float(Z[s]['dyz17_fz']) for s in S], 'dyz18s frac_zero': [float(Z[s]['dyz18s_fz']) for s in S], 'low G+C curve (gc8)': [float(G[s]['curve_gc8']) for s in S], 'x_dose': [float(X[s]['x_dose']) for s in S], 'overlap share': [float(I[s]['overlap_share']) for s in S], 'ruler mean count': [float(Z[s]['ruler_mean']) for s in S]}
 for k, v in V.items(): r = spearmanr(f, v); print(f'{k}: Spearman {r[0]:+.3f}, P {r[1]:.2g}')

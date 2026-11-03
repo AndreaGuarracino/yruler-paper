@@ -14,8 +14,8 @@ from pathlib import Path
 from prepare_cohort_pies import (ROOT, META, ALIAS_FIELDS, read_tsv, write_rows,
                                 norm, valid_key, major, combine_individuals)
 
-CALLS = ROOT / 'results/unassigned_lineages_calls_2026-10-28.tsv'
-OUTPUT = ROOT / 'results/cohort_metadata_2026-10-28'
+CALLS = ROOT / 'results/cohorts/lineage_calls.tsv'
+OUTPUT = ROOT / 'results/cohorts'
 
 
 def build_metadata(calls_path=CALLS):

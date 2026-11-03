@@ -101,7 +101,7 @@ for c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17'):
         k = math.ceil((n + 1) * (1 - al)); q = sc2[min(k, n) - 1]; o.append(f'{100 * (math.exp(q) - 1):.2f}%')
     q90 = sc2[min(math.ceil((n + 1) * .9), n) - 1]; h = np.abs(np.log1p(np.array(H21[c]) / 100)); put(f'cv_score_quantile_{c}', f'80/90/95% {" / ".join(o)}; holdout within 90%: {int((h <= q90).sum())} of {len(h)}; {n} men')
 fam = {x['sample']: x['lineage'] for x in X}
-IN = {r['sample']: float(r['overlap_share']) for r in rd('results/model_checks_2026-10-29/insert_1kgp.tsv')}; PX = [p for p, g in pairs.items() if g == 'Cross batch' and p[0] in IN and p[1] in IN]
+IN = {r['sample']: float(r['overlap_share']) for r in rd('results/checks/insert_1kgp.tsv')}; PX = [p for p, g in pairs.items() if g == 'Cross batch' and p[0] in IN and p[1] in IN]
 for c in ('DYZ3', 'Yq12', 'DYZ1', 'DYZ2', 'DYZ18S', 'DYZ19', 'DYZ17'):
     r = spearmanr([math.log(b(C[q], c) / b(C[f_], c)) for f_, q in PX], [IN[q] - IN[f_] for f_, q in PX]); put(f'overlap_father_son_{c}', f'{len(PX)} cross-batch pairs, Spearman {r[0]:+.3f}, P {r[1]:.2g}')
 v = sorted(IN.values()); put('overlap_share', f'median {np.median(v):.4f}, 1st to 99th percentile {np.percentile(v, 1):.4f} to {np.percentile(v, 99):.4f}, {len(v)} samples')
@@ -110,7 +110,7 @@ def ch(n, out):
     k = n['children']
     if len(k) == 2 and not k[0]['children'] and not k[1]['children'] and k[0]['name'] in C and k[1]['name'] in C and all(C[y['name']] in inc for y in k): out.append((k[0]['name'], k[1]['name']))
     for z in k: ch(z, out)
-for t, f in (('v4', 'results/ytree_v4_2026-11-01/ytree_v4.rooted.nwk'), ('v3', 'results/ytree_v3_2026-10-28/ytree_v3.rooted.nwk')):
+for t, f in (('v4', 'results/tree/tree.rooted.nwk'), ('v3', 'results/tree_biallelic/tree.rooted.nwk')):
     S = []; sys.setrecursionlimit(20000); ch(fs.parse_newick(fs.ROOT / f), S); put(f'sister_pairs_{t}', f'{len(S)} pairs: ' + ', '.join(f"{c} {sum(abs(math.log(b(C[a], c) / b(C[q], c))) > math.log(1.25) for a, q in S)}" for c in ('DYZ19', 'DYZ3', 'Yq12')))
 O = {r['assembly']: r for r in rd(OURS)}; Hh = {r['assembly']: r for r in rd(HAL)}; MM = sorted(set(O) & set(Hh))
 for c, n in (('dyz1_units', 'DYZ1'), ('dyz2_units', 'DYZ2'), ('dyz18_units', 'DYZ18'), ('yq12_span', 'Yq12 span')):
