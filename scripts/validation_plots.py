@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from frozen_snapshot import ROOT, FROZEN, TARGETS, DEPTHS
+from figures_1kgp import ROOT, FROZEN, TARGETS, DEPTHS
 
 BLUE="#287da7"; GOLD="#c08332"; INK="#263f4b"
 COLORS=["#287da7","#338565","#638590","#4c687d","#b09b4a","#b67442","#8f7258","#9962a9"]

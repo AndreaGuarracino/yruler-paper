@@ -9,7 +9,7 @@ import sys, csv, collections
 from pathlib import Path
 import numpy as np
 from scipy.stats import spearmanr
-sys.path.insert(0, str(Path(__file__).resolve().parent)); import frozen_snapshot as fs
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs
 
 D, OUT = Path(sys.argv[1]), sys.argv[2]; ROOT = fs.ROOT; U1, U2 = 3478.9, 2404.4
 rows = lambda f: list(csv.DictReader(open(f), delimiter='\t')); N = []

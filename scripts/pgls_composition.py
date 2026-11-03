@@ -8,7 +8,7 @@ import sys, csv, math
 import numpy as np
 from scipy.optimize import minimize_scalar
 from scipy.stats import t as T
-sys.path.insert(0, 'scripts'); import frozen_snapshot as f
+sys.path.insert(0, 'scripts'); import figures_1kgp as f
 from biology_phylogeny import covariance
 COH, OUT = sys.argv[1:3]; rd = lambda p: list(csv.DictReader(open(p), delimiter='\t')); N = []
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)

@@ -9,7 +9,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-import frozen_snapshot as f
+import figures_1kgp as f
 import validation_plots as v
 
 

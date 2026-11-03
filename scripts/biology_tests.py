@@ -8,7 +8,7 @@ import sys, csv, re, math, collections as co, itertools
 from pathlib import Path
 import numpy as np
 from scipy.stats import spearmanr, pearsonr, kruskal, norm, rankdata, wilcoxon
-sys.path.insert(0, str(Path(__file__).resolve().parent)); import frozen_snapshot as fs
+sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs
 D, OURS, HAL, OUT = sys.argv[1:5]; DP = sys.argv[5] if len(sys.argv) > 5 else None; D = Path(D); N = []; rng = np.random.default_rng(20261102); rng2 = np.random.default_rng(20261103)
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)

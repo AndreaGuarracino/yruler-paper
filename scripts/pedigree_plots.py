@@ -9,7 +9,7 @@ from matplotlib.lines import Line2D
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import MaxNLocator
 import numpy as np
-import frozen_snapshot as f
+import figures_1kgp as f
 from validation_plots import COLORS,INK
 from validation_ratio import KEY as RATIO, LABEL as RATIO_LABEL, COLOR as RATIO_COLOR
 

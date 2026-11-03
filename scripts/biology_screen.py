@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import spearmanr
 
-import frozen_snapshot as f
+import figures_1kgp as f
 import pedigree_plots as ped
 from validation_ratio import KEY as RATIO
 from validation_plots import COLORS

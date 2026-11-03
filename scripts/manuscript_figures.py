@@ -1,31 +1,23 @@
 #!/usr/bin/env python3
-"""Render preliminary manuscript figures from the current local evidence.
+"""Render Figure 1 and the cohort map from the 1kGP table.
 
-The dated snapshot uses the frozen procedure's grouped CV, lineage-out and
-depth evaluations, with calibration references marked in population/pedigree
-panels. Historical development checks remain in a separate supplement.
-No batch adjustment is applied. An untouched external evaluation is pending.
+The 1kGP table carries the grouped CV, lineage-out and depth evaluations,
+with reference males marked in the population and pedigree panels.
+No batch adjustment is applied.
 """
 
 import argparse
 import csv
-from collections import Counter, defaultdict
 from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
-import numpy as np
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BLUE = "#277da8"
-GREEN = "#338565"
-ORANGE = "#a86828"
-RED = "#b34a45"
-GRAY = "#8c969c"
 DRAFT = "#914119"
 
 # target, available assembly references, measurement definition
@@ -118,7 +110,7 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
             validation.text(x + 0.014, y + 0.17, description, fontsize=8.3, color="#536975")
             validation.text(x + 0.014, y + 0.055, status, fontsize=8.2, color=DRAFT)
     else:
-        from frozen_snapshot import validation_panels
+        from figures_1kgp import validation_panels
         validation_panels(fig, benchmarks, depth)
 
     # Keep the primary-array and composition comparisons together by target.
@@ -137,137 +129,7 @@ def method_figure(catalog, pairs_path, out, benchmarks=None, depth=None, snapsho
             if row==0:fig.text(x0-.03,top+.027,chr(ord('c')+col),fontsize=15,fontweight='bold')
         if row==1:fig.text(.055,top+.027,'f',fontsize=15,fontweight='bold')
     legend(fig,observations,y=.496,compact=True)
-    save(fig, out, "figure1_draft")
-
-
-def boxplot(ax, values, positions, colors, rng, widths=0.58, size=6):
-    plot = ax.boxplot(values, positions=positions, widths=widths,
-                      showfliers=False, patch_artist=True,
-                      medianprops={"color": "#17272f", "linewidth": 1.1},
-                      whiskerprops={"color": "#63727b", "linewidth": 0.8},
-                      capprops={"color": "#63727b", "linewidth": 0.8})
-    for patch, color in zip(plot["boxes"], colors):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.23)
-        patch.set_edgecolor(color)
-    for x, data, color in zip(positions, values, colors):
-        jitter = rng.uniform(-widths * 0.32, widths * 0.32, len(data))
-        ax.scatter(x + jitter, data, s=size, alpha=0.36,
-                   color=color, linewidths=0, zorder=2)
-
-
-def biology_figure(catalog, pairs_path, dyz19, out):
-    raw_catalog = {row["sample"]: row for row in catalog}
-    catalog = [row for row in catalog if row["sample"] not in {"HG02300", "NA19226"}
-               and float(row["y_dosage"]) >= 0.9]
-    usable = {row["sample"]: row for row in catalog}
-    rng = np.random.default_rng(20261026)
-    by_lineage = defaultdict(list)
-    for row in catalog:
-        by_lineage[row["haplogroup"][0]].append(row)
-    groups = {key: rows for key, rows in by_lineage.items() if len(rows) >= 10}
-    order = sorted(groups, key=lambda key: np.median([float(r["dyz3_bp"]) for r in groups[key]]))
-
-    fig, axes = plt.subplots(2, 2, figsize=(9.6, 8.0),
-                              gridspec_kw={"hspace": 0.48, "wspace": 0.30})
-    for ax, key, label, title, color in [
-        (axes[0, 0], "dyz3_bp", "a", "DYZ3 by Y lineage", BLUE),
-        (axes[0, 1], "yq12_bp", "b", "Yq12 by Y lineage", GREEN),
-    ]:
-        values = [[float(row[key]) / 1e6 for row in groups[g]] for g in order]
-        positions = np.arange(len(order))
-        boxplot(ax, values, positions, [color] * len(order), rng, size=3.2)
-        ax.set_xticks(positions, [f"{g}\n{len(groups[g])}" for g in order], fontsize=7.6)
-        ax.set_xlabel("Major haplogroup; number of individuals", fontsize=9)
-        ax.set_ylabel("Estimated length (Mb)")
-        panel(ax, label, title)
-        clean_axes(ax)
-
-    dyz_groups = {"J2a": [], "J2b": [], "Other references": []}
-    for row in dyz19:
-        if row["clean"] != "True":
-            continue
-        span = int(row["end"]) - int(row["start"])
-        if span != int(row["unit_bp_array"]):
-            raise ValueError(f"DYZ19 span mismatch for {row['assembly']}")
-        haplogroup = raw_catalog.get(row["assembly"], {}).get("haplogroup", "")
-        group = "J2a" if haplogroup.startswith("J2a") else "J2b" if haplogroup.startswith("J2b") else "Other references"
-        dyz_groups[group].append(span / 1000)
-    ax = axes[1, 0]
-    labels = list(dyz_groups)
-    values = list(dyz_groups.values())
-    boxplot(ax, values, np.arange(len(labels)), [RED, ORANGE, GRAY], rng, size=13)
-    ax.set_xticks(np.arange(len(labels)), [f"{g}\nn={len(v)}" for g, v in dyz_groups.items()])
-    ax.set_ylabel("Assembly array span (kb)")
-    panel(ax, "c", "DYZ19 in assembly references")
-    clean_axes(ax)
-
-    paired = defaultdict(lambda: {"dyz3_bp": [], "yq12_bp": []})
-    pair_counts = Counter()
-    with pairs_path.open() as stream:
-        for fields in csv.reader(stream, delimiter="\t"):
-            if len(fields) != 2:
-                raise ValueError("Expected father and son columns")
-            father, son = fields
-            if father not in usable or son not in usable:
-                continue
-            f, s = usable[father], usable[son]
-            batch_pair = (f["batch"], s["batch"])
-            pair_counts[batch_pair] += 1
-            if batch_pair == ("2504", "698_related"):
-                group = "Cross-batch"
-            elif batch_pair == ("698_related", "698_related"):
-                group = "Same batch"
-            else:
-                continue
-            for key in ("dyz3_bp", "yq12_bp"):
-                if float(f[key]) <= 0:
-                    raise ValueError(f"Nonpositive paternal estimate for {father}")
-                paired[group][key].append(100 * (float(s[key]) / float(f[key]) - 1))
-    ax = axes[1, 1]
-    for index, group in enumerate(("Cross-batch", "Same batch")):
-        values = [paired[group][key] for key in ("dyz3_bp", "yq12_bp")]
-        boxplot(ax, values, [index - 0.18, index + 0.18],
-                [BLUE, GREEN], rng, widths=0.30, size=5)
-    ax.set_xticks([0, 1], [f"{g}\nn={len(paired[g]['dyz3_bp'])} pairs"
-                           for g in ("Cross-batch", "Same batch")])
-    ax.set_xlim(-0.55, 1.55)
-    ax.axhline(0, color="#4d5960", linewidth=0.9, linestyle="--")
-    ax.set_yscale("symlog", linthresh=5)
-    ax.set_yticks([-50, -20, -5, 0, 5, 20, 50])
-    ax.set_yticklabels(["−50", "−20", "−5", "0", "5", "20", "50"])
-    ax.set_ylabel("Signed offspring/parent difference (%)")
-    panel(ax, "d", "Pedigree differences before correction")
-    ax.legend(handles=[Patch(facecolor=BLUE, label="DYZ3"), Patch(facecolor=GREEN, label="Yq12")],
-              frameon=False, loc="upper right", fontsize=8.5)
-    clean_axes(ax)
-
-    fig.suptitle("Development dataset and complete-array references",
-                 color=DRAFT, fontsize=10, y=0.99)
-    fig.text(0.5, 0.015,
-             "All shown points are retained; panel d uses a symmetric log scale outside ±5%",
-             ha="center", fontsize=9, color="#43525b")
-    save(fig, out, "figureS1_development_checks")
-
-    print(f"Filtered catalog: {len(catalog)} individuals; {len(order)} displayed lineages")
-    print(f"Quality-passing DYZ19 references: {sum(map(len, dyz_groups.values()))}")
-    print("Filtered pedigree pairs:", dict(pair_counts))
-    for group, classes in paired.items():
-        for key, v in classes.items():
-            print(f"{group} {key}: n={len(v)}, median signed={np.median(v):+.3f}%, "
-                  f"median absolute={np.median(np.abs(v)):.3f}%")
-
-    rows = []
-    for g in order:
-        for key in ("dyz3_bp", "yq12_bp"):
-            v = np.array([float(row[key]) for row in groups[g]])
-            rows.append(("development catalog", g, key, len(v), np.median(v)))
-    for g, v in dyz_groups.items():
-        rows.append(("assembly span", g, "dyz19_bp", len(v), np.median(v) * 1000))
-    with (out / "figure2_summary.tsv").open("w") as stream:
-        writer = csv.writer(stream, delimiter="\t")
-        writer.writerow(["source", "group", "target", "n", "median_bp"])
-        writer.writerows(rows)
+    save(fig, out, "figure1")
 
 
 def main():
@@ -289,7 +151,7 @@ def main():
         writer = csv.writer(stream, delimiter="\t")
         writer.writerow(["target", "reference_arrays", "length_definition"])
         writer.writerows(REFERENCES)
-    from frozen_snapshot import DEFAULT_SNAPSHOT, load_snapshot, legacy_catalog, validation_summary, render_snapshot
+    from figures_1kgp import DEFAULT_SNAPSHOT, load_snapshot, legacy_catalog, validation_summary, render_snapshot
     snapshot = args.snapshot or DEFAULT_SNAPSHOT
     frozen = snapshot.exists()
     if frozen:
@@ -299,7 +161,6 @@ def main():
                       f"preliminary {len(valid)}-male 1kGP snapshot")
     else:
         method_figure(read_tsv(args.catalog), args.pairs, args.out)
-    biology_figure(read_tsv(args.catalog), args.pairs, read_tsv(args.dyz19), args.out)
     from figure2_tree import make_figure
     from prepare_cohort_pies import prepare
     prepare(snapshot if frozen else None)

@@ -724,7 +724,7 @@ def population_figure(valid, out, snapshot_path, completed):
         annotations.extend(annotate_population_extremes(axis, key))
     write_rows(out / "figure2_labelled_samples.tsv", annotations)
     biology_panels(fig, height)
-    save(fig, out, "figure2_draft")
+    save(fig, out, "figure2")
     write_rows(out / "figure2_tree_summary.tsv", stats)
     membership = [{"sample": r["sample"], "haplogroup_2019": r["haplogroup"],
                    "display_group": r["display_group"], "family": r["family"],
@@ -811,7 +811,7 @@ def population_supplement(valid, out):
     fig.text(.5, .035, ";  ".join(counts[10:]), ha="center", fontsize=8.8)
     fig.text(.5, .010, "Filled points: outside reference panel; open points: reference individuals. Lines: medians.",
              ha="center", fontsize=8)
-    save(fig, out, "figureS3_frozen_population")
+    save(fig, out, "figureS3_population")
 
 
 def depth_supplement(depth, out):
@@ -842,7 +842,7 @@ def depth_supplement(depth, out):
     fig.suptitle("Sequencing depth and prediction accuracy", fontsize=11, color="#243d49")
     fig.text(.5, .025, "Points: mean of ten repeat-specific medians. Shading: range across repeats. Training reads remain at full depth.",
              ha="center", fontsize=8)
-    save(fig, out, "figureS4_frozen_depth")
+    save(fig, out, "figureS4_depth")
 
 
 def j_subtree_figure(valid, out):
@@ -909,7 +909,7 @@ def snapshot_manifest(path, out):
         "data/method/indep_setB.tsv", "data/markers_u/truth_regions.tsv",
         "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
         "scripts/manuscript_figures.py", "scripts/figure2_tree.py",
-        "scripts/frozen_snapshot.py", "scripts/prepare_cohort_pies.py",
+        "scripts/figures_1kgp.py", "scripts/prepare_cohort_pies.py",
         "scripts/cohort_lineages.py", "results/unassigned_lineages_calls_2026-10-28.tsv",
         "scripts/figure1b_selected.py", "scripts/validation_plots.py", "scripts/depth_benchmark.py",
         "scripts/pedigree_plots.py", "scripts/validation_ratio.py")]

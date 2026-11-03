@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from scipy.linalg import eigh
 from scipy.optimize import minimize_scalar
 from threadpoolctl import threadpool_limits
-import frozen_snapshot as f
+import figures_1kgp as f
 from biology_screen import read,scopes,values,write
 from validation_ratio import KEY as RATIO
 

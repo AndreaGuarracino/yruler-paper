@@ -697,7 +697,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     fig.text(0.39, 0.033, "c–e: interquartile ranges and medians.  f: mean composition; points, individual DYZ1 fractions.",
              ha="center", fontsize=7.5, color="#4d606b")
     fig.text(0.39, 0.012, "Haplogroup branches are schematic.  * Unresolved within NO.", ha="center", fontsize=7.5, color="#4d606b")
-    save(fig, out, "figure2_draft")
+    save(fig, out, "figure2")
     composition_supplement(composition, order, out)
 
     map_fig, map_ax = plt.subplots(figsize=(10.0, 4.5))
