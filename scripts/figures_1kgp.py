@@ -751,9 +751,9 @@ def population_figure(valid, out, snapshot_path, completed):
                  "Pie area scales with unique individuals per reported location; sectors show broad Y lineages.",
                  ha="center", fontsize=9, color="#4d606b")
     pie_fig.text(.5, .018,
-                 "Shared individuals count once. 1kGP contributes length profiles; HGDP and SGDP contribute cohort metadata.",
+                 "Shared individuals count once.",
                  ha="center", fontsize=9, color="#4d606b")
-    save(pie_fig, out, "cohort_world_map")
+    save(pie_fig, out, "figureS10_world_map")
     return root, leaves
 
 
