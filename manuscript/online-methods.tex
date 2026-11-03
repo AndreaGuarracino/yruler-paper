@@ -192,7 +192,25 @@ For indexed DRAGEN BAMs, we also tested a reduced set of genomic regions that ca
 
 In a separate 16-thread whole-CRAM optimization experiment on HG00126, the ten-class prototype processed the file in 79--86 s, with peak resident memory of 5.4--6.2 GB depending on buffering. This establishes a computational baseline rather than a final cohort-wide runtime claim.
 
-yruler is calibrated and evaluated on Illumina whole-genome reads.
+yruler is calibrated and evaluated on Illumina whole-genome reads. \vsette{The same procedure applied to nanopore reads learns markers, thresholds and scale factors from those reads within the training folds. In ten repeats of five-fold cross-validation on the 84 HPRC males with R10.4.1 reads (dorado super-accuracy base calls) \cite{HPRCRelease2} and assembled arrays, median absolute errors were 6.74\% for DYZ3 (78 males), 5.99\% for Yq12 (62), 4.31\% for DYZ1 (63), 8.95\% for DYZ2 (62), 9.71\% for DYZ18S (63), 7.05\% for DYZ19 (84) and 7.47\% for DYZ17 (84), 1.9 to 3.6 times those of short reads, with 90th percentiles of 12.76--23.79\% and maxima of 22.44--40.58\% (Table~\ref{tab:ont}).} Nanopore estimates are therefore suited to checking unusual short-read results, as for HG01967, HG02895 and HG03685, rather than to fine comparisons between males. Raw and corrected long reads need further work.
+
+\begin{table}[tbp]
+\caption{Cross-validation errors of nanopore estimates. Absolute percentage errors in ten repeats of five-fold cross-validation on HPRC R10.4.1 reads, with markers, thresholds and scale factors learned from nanopore reads in the training folds; short-read medians from Table~\ref{tab:accuracy}.}\label{tab:ont}
+\centering\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Target & Males & Mean & Median & P90 & Max & Short-read median \\
+\midrule
+DYZ3 & \vsette{78} & \vsette{7.85} & \vsette{6.74} & \vsette{14.67} & \vsette{40.58} & 2.32 \\
+Yq12 & \vsette{62} & \vsette{6.97} & \vsette{5.99} & \vsette{16.30} & \vsette{25.95} & 1.72 \\
+DYZ1 & \vsette{63} & \vsette{5.73} & \vsette{4.31} & \vsette{12.76} & \vsette{22.44} & 2.29 \\
+DYZ2 & \vsette{62} & \vsette{11.36} & \vsette{8.95} & \vsette{23.79} & \vsette{36.41} & 2.50 \\
+DYZ18S & \vsette{63} & \vsette{10.94} & \vsette{9.71} & \vsette{22.32} & \vsette{36.85} & 3.92 \\
+DYZ19 & \vsette{84} & \vsette{8.22} & \vsette{7.05} & \vsette{17.22} & \vsette{29.71} & 2.48 \\
+DYZ17 & \vsette{84} & \vsette{8.49} & \vsette{7.47} & \vsette{17.54} & \vsette{25.80} & 2.24 \\
+\botrule
+\end{tabular}
+\end{table}
 
 \draftnote{Repeat the alignment and restricted-region checks with the final markers and mode-specific calibration. Final runtime reporting needs a fixed software build, hardware description and separation of compute time from remote I/O. Long-read and Hi-C results require their own validated calibrations before quantitative claims are added.}
 
