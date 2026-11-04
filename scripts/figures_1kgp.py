@@ -763,7 +763,8 @@ def population_supplement(valid, out):
     present = {r["lineage_display"] for r in valid}; order = [g for g in tree if g in present] + sorted(present - set(tree))
     clades = [("I–J", "I", "J"), ("N–O", "NO", "O"), ("P (Q, R)", "Q", "R")]   # brackets over sister lineages
     print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
-    panels = TARGETS   # Y dosage by lineage: ED5b
+    panels = TARGETS + [("unit_ratio", "unit_ratio", "DYZ1:DYZ2", 1, "Unit ratio")]   # h as Fig. 2a; Y dosage by lineage: ED5b
+    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
     fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .42, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
     rng = np.random.default_rng(271)
@@ -780,7 +781,7 @@ def population_supplement(valid, out):
             ax.scatter(jitter[truth], values[truth], edgecolors=color, **REF)
             if included.any():
                 ax.plot([x - .4, x + .4], [np.median(values[included])]*2, color=INK, linewidth=1)   # median, as strip()
-        if key == "y_dose":
+        if key == "unit_ratio":   # equal units, as Fig. 2a
             ax.axhline(1, color=color, linestyle="--", linewidth=.6, zorder=1)
         if key == "DYZ3_bp":   # short DYZ3 lineages, as the Fig. 2 bands
             for g in ("R1a", "R1b"):
