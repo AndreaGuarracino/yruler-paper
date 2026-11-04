@@ -23,14 +23,13 @@
 \begin{document}
 \raggedbottom
 
-\title[yruler]{Measuring the satellite arrays of the human Y chromosome from sequencing reads}
+\title[Yruler]{Measuring the satellite arrays of the human Y chromosome from sequencing reads}
 
 \author[1]{\fnm{Alejandro} \sur{Ortigas-Vasquez}}
 \author*[1]{\fnm{Andrea} \sur{Guarracino}}\email{aguarracino@tgen.org}
 \affil[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
 
-% The red closing sentence is provisional pending the final biological analyses.
-\abstract{Complete Y assemblies show that satellite arrays vary widely in length, but short-read genomes leave them unmeasured. yruler estimates seven Y satellite classes and Y dosage from short reads, with markers calibrated on complete arrays and median errors of \vsette{1.72--3.92\%}. In 1,597 males of the 1000 Genomes Project, it finds short DYZ19 arrays in J2a1a1 chromosomes and greater variation of DYZ2 than of DYZ1.}
+\abstract{Y chromosome satellite arrays vary widely in length, but measuring them across large cohorts has required complete long-read assemblies. Here we present Yruler, a k-mer-based tool that measures seven Y satellite arrays (median error \vsette{1.7--3.9\%} against complete assemblies) and Y dosage from short reads. Across three public cohorts, Yruler reveals lineage-wide array shifts, including four-fold shorter centromeric arrays in Y lineage O2a2b1a1 and four-fold shorter DYZ19 arrays in J2a1a1.}
 
 \maketitle
 
@@ -61,7 +60,7 @@ The DYZ1 depth values of San Roman et al.\ are their Table S6A \cite{SanRoman202
 \draftnote{Insert the archival accession for study-generated data and the source accession/checksum manifest before submission.}
 
 \bmhead{Code availability}
-The yruler repository is \url{https://github.com/guarracinolab/yruler}, under the MIT licence. The analysis code that generates the figures and tables from per-sample estimates, validation predictions and source metadata is at \url{https://github.com/AndreaGuarracino/yruler-paper}.
+The Yruler repository is \url{https://github.com/guarracinolab/yruler}, under the MIT licence. The analysis code that generates the figures and tables from per-sample estimates, validation predictions and source metadata is at \url{https://github.com/AndreaGuarracino/yruler-paper}.
 \draftnote{Confirm public accessibility, the software licence, a versioned release and an archival identifier before submission. Add the analysis-code release and the commands needed to reproduce the figures and tables.}
 
 \bibliography{refs}
