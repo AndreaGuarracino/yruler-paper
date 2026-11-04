@@ -130,5 +130,5 @@ for lab, a, b in gl:
     for a_ in (ax2, ay, ax): a_.axhline(a, color=INK, lw=0.6)
     axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 12), va='center', ha='left', fontsize=PL.FS["tick"], color=INK)
 cb = fig.colorbar(im, cax=cax, boundaries=BOUND, ticks=[(a + b) / 2 for a, b in zip(BOUND[:-1], BOUND[1:])]); cb.ax.set_yticklabels(['0', '0.5', 'loss', '1', 'gain', '1.5', '2'])
-cb.set_label('Dose relative to 100 normal XY males' + ('; hatched: no data' if nd.any() else ''))
+cb.set_label('Dose relative to 100 XY males without flagged Y profiles' + ('; hatched: no data' if nd.any() else ''))
 save(fig, OUT)

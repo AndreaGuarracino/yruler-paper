@@ -23,11 +23,12 @@ for x in R1: G[x['lineage']].append(x)
 LN = sorted(k for k, v in G.items() if len(v) >= 20 and k not in ('.', '?', '')); put('lineages_ge20', f"{len(LN)}: " + ', '.join(f'{k} {len(G[k])}' for k in LN)); P = []
 for c in CL + ['ratio']:
     g = [np.array([val(x, c) for x in G[k]]) for k in LN]; H, p = kruskal(*g); put(f'kruskal_{c}', f'H {H:.1f}, p {p:.3g}')
-    A = np.concatenate(g); r = rankdata(A); n = len(A); o = 0; m = {}
+    lg = [np.log(v) for v in g]; la = np.concatenate(lg); put(f'lineage_r2_{c}', f'{1 - sum(((v - v.mean()) ** 2).sum() for v in lg) / ((la - la.mean()) ** 2).sum():.3f} of log variance between {len(LN)} lineages, {len(la)} men')   # share of variance
+    A = np.concatenate(g); r = rankdata(A); n = len(A); o = 0; m = {}; tc = (lambda t: (t ** 3 - t).sum() / (12 * (n - 1)))(np.unique(A, return_counts=True)[1].astype(float))   # Dunn tie correction
     for k, v in zip(LN, g): m[k] = (r[o:o + len(v)].mean(), len(v)); o += len(v)
-    T = [(a, q, 2 * norm.sf(abs(m[a][0] - m[q][0]) / math.sqrt(n * (n + 1) / 12 * (1 / m[a][1] + 1 / m[q][1])))) for a, q in itertools.combinations(LN, 2)]; T.sort(key=lambda t: t[2]); adj = []; run = 0
+    T = [(a, q, 2 * norm.sf(abs(m[a][0] - m[q][0]) / math.sqrt((n * (n + 1) / 12 - tc) * (1 / m[a][1] + 1 / m[q][1])))) for a, q in itertools.combinations(LN, 2)]; T.sort(key=lambda t: t[2]); adj = []; run = 0
     for i, t in enumerate(T): run = max(run, min(1, t[2] * (len(T) - i))); adj.append((c, t[0], t[1], f'{t[2]:.3g}', f'{run:.3g}'))
-    P += adj; put(f'dunn_holm_{c}', f'{sum(float(a[4]) < .05 for a in adj)} of {len(adj)} pairs below 0.05')
+    P += adj; put(f'dunn_holm_{c}', f'{sum(float(a[4]) < .05 for a in adj)} of {len(adj)} pairs below 0.05; tie term {tc:.3g} of {n * (n + 1) / 12:.4g}')
 if DP:
     with open(DP, 'w') as o: o.write('target\tlineage_a\tlineage_b\tp\tholm_p\n'); o.writelines('\t'.join(map(str, r)) + '\n' for r in P)
 def hl(a, c):   # Hodges-Lehmann ratio of two groups

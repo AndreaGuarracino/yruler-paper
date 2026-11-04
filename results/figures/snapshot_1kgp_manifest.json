@@ -260,23 +260,23 @@
     },
     {
       "path": "scripts/figure2_tree.py",
-      "bytes": 43681,
-      "sha256": "439c86bfc365da3bbe89b5b058cdf441a251ab1c32ddbee34df83a9f86d15a35"
+      "bytes": 44643,
+      "sha256": "cf90f698dd039126b8d7ecaf5daefa40be1b0299c0aebf44c4e00f0204dc47d3"
     },
     {
       "path": "scripts/figures_1kgp.py",
-      "bytes": 63376,
-      "sha256": "06f63aa6355c31ec3479c0c650bb0320ba1d3f9c355ad7859cf713dcfc0bbb2d"
+      "bytes": 66602,
+      "sha256": "99e185c119952ae9e8a70d66d8efba9a7c8c2f3a685d650c286e655fd2743d80"
     },
     {
       "path": "scripts/manuscript_figures.py",
       "bytes": 2805,
-      "sha256": "8a6a5219bdd823c4070d2e0d674e87b75df37507e7d574b842d8205a7c202ee8"
+      "sha256": "84e8fe04c3e295601b2998cc59ab710f6682bcc30a75a60ee83d337aea22fd02"
     },
     {
       "path": "scripts/pedigree_plots.py",
-      "bytes": 10329,
-      "sha256": "824c3f47414827f88b0ee6b4d9dfda85b7a951d52d3908d694b01fd6a6340646"
+      "bytes": 10432,
+      "sha256": "fc8f10b202c9b255877415e7561d4ce89846b4c598628b95bc0edaa21548255b"
     },
     {
       "path": "scripts/prepare_cohort_pies.py",
@@ -302,88 +302,88 @@
     },
     {
       "path": "manuscript/figures/ed/ed2_yq12_composition.pdf",
-      "bytes": 86419,
-      "sha256": "8ca4597887f7dd37ac4498cdd06b4bcfcabd4b3e96c9754bc2b84dc798900fdc"
+      "bytes": 85820,
+      "sha256": "8f7c41ac904237a6a62173c99121cf9fd04b015d3704865f64cfb87af633aa8c"
     },
     {
       "path": "manuscript/figures/ed/ed3_chrY_unusual_males.pdf",
-      "bytes": 70519,
-      "sha256": "263c15453a7ae9a8fc0ec62446e5ad6652ef194029e9ddc2c5124a16877d6e0c"
+      "bytes": 72327,
+      "sha256": "3e36d3530cf672be6c9613b47965d8ec6169bc260f930238e7c7a11179779721"
     },
     {
       "path": "manuscript/figures/ed/ed4_lineage_validation.pdf",
-      "bytes": 58776,
-      "sha256": "9e01c0b01e44d6edf0c2e64919c6e3e28231516bdf8f7e9e4ea582f9fee8ffde"
+      "bytes": 60456,
+      "sha256": "93fa0964b263c201d85212768fd5c5cbd6cae17f69fc22449135933c1a7858ea"
     },
     {
       "path": "manuscript/figures/ed/ed5_depth.pdf",
-      "bytes": 48533,
-      "sha256": "375f6e425c6138eb02220577603147c1eec3e7b000e04ebc1be103c3368e9b3a"
+      "bytes": 81241,
+      "sha256": "d76c6fd01cc76737a38826bd821e3eeb9bfab7e5f123a36073a35b30fbb18ec1"
     },
     {
       "path": "manuscript/figures/ed/ed6_pedigrees.pdf",
-      "bytes": 149608,
-      "sha256": "88cb63abaa33df84aa69ab1c7862ef821748416ad5856999502642228df680bd"
+      "bytes": 150990,
+      "sha256": "192980c89100340def4aa5a52bc8985a4587952149d8d010427cb9320ad64505"
     },
     {
       "path": "manuscript/figures/ed/ed7_population.pdf",
-      "bytes": 320072,
-      "sha256": "61dfbf60b85bcb51064f001819b289830283163b56e7d1c2e3c63885da6720b4"
+      "bytes": 326573,
+      "sha256": "e0f5d2d3f7903c9bbdd01e8f312908717d045ac038d75a95e05dedfaeaae216b"
     },
     {
       "path": "manuscript/figures/ed/ed8_J_DYZ19.pdf",
-      "bytes": 74295,
-      "sha256": "4495446dbd3808333887248992ab1d41f558228e8f129e713cf4634dc7f58aab"
+      "bytes": 56155,
+      "sha256": "dc607b445146b21863a4ee0e5aa9ce3dcb276e5446b2887c57f653af1e682a12"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1a_chrY.pdf",
-      "bytes": 32828,
-      "sha256": "02a05ba46f4ce7f2f922ed99daa2056ca3f670625aacc755dd5727f2bc3f07d3"
+      "bytes": 32827,
+      "sha256": "12e3e9ba0e9fc3b9cc13c4d09224704ec643e42ce8802b893c97df491ea8bbf5"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1b_workflow.pdf",
-      "bytes": 88863,
-      "sha256": "8149f2b2ae3c97a6ef56e965ce7288c581e8aa70244d316cf87ba1f45b1b3e5a"
+      "bytes": 89709,
+      "sha256": "8aca8885529e2c39c16f24a3695f1fdbf263a674490c3e82993390b515e0940e"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1c_cv.pdf",
-      "bytes": 59792,
-      "sha256": "e9de6b9e3ee26c7a648ce9c89af1c34fdd6acb1e5e69f4c91d6b3c036944ef95"
+      "bytes": 69614,
+      "sha256": "1a1bd9e33cb8e8cdda55bdecbd4cf65674c0ab7780db3f26a51b401ef21a5db3"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1d_coverage.pdf",
-      "bytes": 41085,
-      "sha256": "40e63d0707da7cea5f1b67b9f1094bf2730cf4bfb8638023f963ff5a2c56f109"
+      "bytes": 40886,
+      "sha256": "9b8ce8ae333f42cb87a2331a2a8ef7c5b75ebd3f7d6a262d5cca7f708bdd29fe"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1e_pedigrees.pdf",
-      "bytes": 87266,
-      "sha256": "cd8aaf0ec2eeec30322b4a8a9b61e44557433c72751749e69bf58c45d004d1a4"
+      "bytes": 87903,
+      "sha256": "6fe12c57e2f76007ca019ab1c8e7a44dff89968d489565e95a6a4a0ed9c22b03"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1f_specificity.pdf",
-      "bytes": 55796,
-      "sha256": "db792fef501389860173245b4a55330cdf3cf8a5d953a02ecec5b9b2fbe1ae30"
+      "bytes": 55677,
+      "sha256": "a80bac9f7e41ed8dbd877759e20607d453ab2170c1416b84882926cbdeef9039"
     },
     {
       "path": "manuscript/figures/main/fig1_method.pdf",
-      "bytes": 1194948,
-      "sha256": "8fb42592086edadd8d5d6357bf1e2d6e7241aafda6a23799585b4ee645038ce6"
+      "bytes": 1269318,
+      "sha256": "48cf2a391ba71e0233fd6fb255106cfd4019eb9c88da4c421da439ab9be6bfe8"
     },
     {
       "path": "manuscript/figures/main/fig2_biology.pdf",
-      "bytes": 319775,
-      "sha256": "bd064fee2228e8b3424b4bcf2d712185159d0c0ccbc3c98eb9f85a83882deea5"
+      "bytes": 321038,
+      "sha256": "90409fc9eb6cbf576baedfa320ef174cc037df06e94049985cf51887598710c1"
     },
     {
       "path": "manuscript/figures/supp/suppfig1_world_map.pdf",
       "bytes": 179176,
-      "sha256": "433fec66a62e911cc9c7e018365550d66d41c90dc184b6fb3468eb592bf47098"
+      "sha256": "d20b863c28b9b4578522ab7e8121f54d5295c40384b1b705ea3ffc766324744d"
     },
     {
       "path": "manuscript/figures/supp/suppfig2_markerfree.pdf",
-      "bytes": 90984,
-      "sha256": "2f06476122c8159f34750824e361f7b494161161b24aa9fd21fa66fd7b88110e"
+      "bytes": 103773,
+      "sha256": "04493bdd108c68b22168df2c6f9e30cec76873f9d40bd23404d3c30d7201285a"
     },
     {
       "path": "results/estimates_1kgp.follow_up.tsv",
@@ -419,6 +419,11 @@
       "path": "results/estimates_1kgp.sensitivity.tsv",
       "bytes": 655,
       "sha256": "c9eccbe403027b516be3000ff73e7810b8665d11313d35e63f37426c3d280a6f"
+    },
+    {
+      "path": "results/figures/ed2_composition_correlations.tsv",
+      "bytes": 435,
+      "sha256": "dc0a4ceb84a86526c52f225e984cab2aeb96e747f28982c2b64e4952dc54592a"
     },
     {
       "path": "results/figures/figure1_depth_summary.tsv",
@@ -462,18 +467,18 @@
     },
     {
       "path": "results/figures/figure2b_subtree_summary.tsv",
-      "bytes": 2054,
-      "sha256": "a09b616ed4a34a638fd58aeafc1de12eeb66be857f5a2efc5a2a4fbf67423ca2"
+      "bytes": 2065,
+      "sha256": "e6fc65ebb8b2d04e2601d796aecf403e78fbd8fb412e05a626658e74425356bd"
     },
     {
       "path": "results/figures/figureS2_composition_samples.tsv",
-      "bytes": 18484,
-      "sha256": "d4dfd0a081a4a7e57bcc52ee80f0d5f2a4770be3d0ac41d730a7f0d51af59b4b"
+      "bytes": 18534,
+      "sha256": "52eb83b5f997174480c54b7f7719baee31dbbe9e725f11a24554df518450dda6"
     },
     {
       "path": "results/figures/figureS5_J_membership.tsv",
       "bytes": 3729,
-      "sha256": "36184597d8570ce137a71eee93859dea490af8d0465ca70c5f628f7521b14008"
+      "sha256": "fb487817f991ce317c78baf3c5bd193d83fd81529b65e351166202f9ab630bec"
     },
     {
       "path": "results/figures/pedigree_pairs.tsv",
@@ -488,17 +493,17 @@
     {
       "path": "results/figures/reference_targets.tsv",
       "bytes": 407,
-      "sha256": "76e28fd86448a761d6837d211e1e00af63bcfe5b89ca5de8277a49f26b128384"
+      "sha256": "cde840ad9b43b91eded99230dac155f36f93587585fa74f8f17905d710ee29f9"
     },
     {
       "path": "results/figures/snapshot_1kgp_samples.tsv",
-      "bytes": 458497,
-      "sha256": "e40285c11c81c12769e038167f855842e55fe2fa93fd1366c59a2450798c3ff7"
+      "bytes": 458537,
+      "sha256": "4a0f819e9beb466b9a11f752ddfa29323d0874826508dfa8d8784494c08868b3"
     },
     {
       "path": "results/figures/snapshot_1kgp_summary.json",
-      "bytes": 8765,
-      "sha256": "1f046672e93d8acda543fd4fa29b27793be333a12ea686469e599553eeab1c5f"
+      "bytes": 8766,
+      "sha256": "74e3b9d7adfc31b7469fd549a69abcb4dd132b6cdded2d87da94a9cf693a9b1e"
     }
   ]
 }
