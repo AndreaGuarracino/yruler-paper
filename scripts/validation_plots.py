@@ -295,13 +295,3 @@ def depth_boxes(ax,compact=False):
     ax.spines['left'].set_visible(True);ax.spines['right'].set_visible(False)
 
 
-def lineage_supplement(out):
-    fig,ax=plt.subplots(figsize=(180*MM,80*MM))
-    fig.subplots_adjust(left=.1,right=.82,bottom=.12,top=.98)
-    individual_boxes(ax,'lo');annotate_top_samples(ax,'lo')
-    for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
-        ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'s',color=INK,markersize=3,zorder=6)   # CV median; diamonds mean reference males
-    ax.set_yticklabels(rowlabels())
-    save(fig,out,'ed/ed4_lineage_validation')
-
-

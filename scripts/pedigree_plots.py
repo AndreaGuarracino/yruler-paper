@@ -10,7 +10,7 @@ from matplotlib.ticker import MaxNLocator
 import numpy as np
 import figures_1kgp as f
 from validation_plots import COLORS,INK
-from palette import FS, MM, save, letter, REF, REF_HANDLE, BATCH, MUTED, head
+from palette import FS, MM, save, letter, REF, REF_HANDLE, BATCH, MUTED, head, top_legend
 from validation_ratio import KEY as RATIO, LABEL as RATIO_LABEL, COLOR as RATIO_COLOR
 
 MEASUREMENTS=[(key,col,label,scale,unit,color) for (key,col,label,scale,unit),color in zip(f.TARGETS,COLORS)]
@@ -75,16 +75,16 @@ def scatter(ax,rows,key,compact=False):
     if compact:
         for r in s:
             if r['son']=='HG02966' and abs(r['signed_difference_pct'])>=20 and r not in worst:worst.append(r)
-    for rank,r in enumerate(worst):
+    n={True:0,False:0}   # labels per empty corner
+    for r in worst:
         if abs(r['signed_difference_pct'])<10:continue
-        x,y=r['father_value'],r['son_value'];right=x>upper*.55
-        offset=(-10-rank*8) if y>upper*.83 else (4+rank*9)
-        ax.annotate(r['son'],(x,y),xytext=(-3 if right else 3,offset),textcoords='offset points',
-                    fontsize=FS['point'],ha='right' if right else 'left',color=INK,
-                    bbox=dict(facecolor='white',edgecolor='none',pad=.1),
-                    arrowprops=dict(arrowstyle='-',color=color,linewidth=.4))
+        x,y=r['father_value'],r['son_value'];up=y>x;k=n[up];n[up]+=1   # above the diagonal: upper left, else lower right
+        ax.annotate(r['son'],(x,y),xytext=(.04,.8-k*.1) if up else (.96,.05+k*.1),textcoords='axes fraction',
+                    fontsize=FS['point'],ha='left' if up else 'right',va='top' if up else 'bottom',color=INK,bbox=dict(facecolor='none',edgecolor='none',pad=.3),   # line starts at the text edge
+                    arrowprops=dict(arrowstyle='-',color=color,linewidth=.4,shrinkA=1,shrinkB=2))
     med=np.median([abs(r['signed_difference_pct']) for r in s])
-    ax.text(.035,.965,f'Median |Δ| {med:.2f}%',transform=ax.transAxes,va='top',fontsize=FS['point'],color=INK)
+    if compact: ax.text(0,1.03,f'Median |Δ| {med:.2f}%',transform=ax.transAxes,va='bottom',ha='left',fontsize=FS['point'],color=INK)   # above the axes, off the data
+    else: ax.text(.035,.965,f'Median |Δ| {med:.2f}%',transform=ax.transAxes,va='top',fontsize=FS['point'],color=INK)
     ax.set_xlim(0,upper);ax.set_ylim(0,upper);ax.set_aspect('equal',adjustable='box')
     ax.xaxis.set_major_locator(MaxNLocator(3 if compact else 4));ax.yaxis.set_major_locator(MaxNLocator(3 if compact else 4))
     suffix=f' ({unit})' if unit else ''
@@ -108,7 +108,7 @@ def differences(ax,rows,key,compact=False,reverse=True):
         lo,median,hi=np.percentile(values,[25,50,75])
         ax.barh(i,hi-lo,left=lo,height=.14,color=color,linewidth=0,zorder=4)
         ax.plot(median,i,'|',color=INK,markersize=6,markeredgewidth=1,zorder=5)
-        ax.annotate(f'{median:+.2f}%',(median,i),xytext=(3,4),textcoords='offset points',fontsize=FS['point'],color=INK)
+        ax.annotate(f'{median:+.2f}%',(1,i),xycoords=('axes fraction','data'),xytext=(3,0),textcoords='offset points',fontsize=FS['point'],color=color,fontweight='bold',va='center',ha='left')   # median right of the panel, off the data
     ax.axvline(0,color=MUTED,linestyle='--',linewidth=.65)
     ax.set_xscale('symlog',linthresh=5);ax.set_xlim(-maximum,maximum)
     tick_pool=([-100,0,100] if maximum>=100 else [-20,0,20] if maximum>=20 else [-10,0,10]) if compact else [-100,-20,-5,0,5,20,100]
@@ -120,24 +120,28 @@ def differences(ax,rows,key,compact=False,reverse=True):
     style(ax);ax.spines['left'].set_visible(False)
 
 
-def legend(fig,rows,y=1.0,compact=False):
+def legend(fig,rows):
     first=[r for r in rows if r['target']=='dyz3'];counts=Counter(r['batch_group'] for r in first)
     h=[Line2D([],[],marker=m,linestyle='none',color=MUTED,markersize=3,
        label=f'{g} (n={counts[g]})') for g,m in zip(GROUPS,MARKERS)]
     h.append(Line2D([],[],markeredgecolor=MUTED,label='Pair with a truth-set male',**REF_HANDLE))
-    fig.legend(handles=h,loc='upper center',bbox_to_anchor=(.5,y),ncol=4)
+    top_legend(fig,handles=h,ncol=4)   # same gap as ED7 and ED8
 
 
 def supplement(rows,out):
-    fig=plt.figure(figsize=(180*MM,205*MM))   # one page: scatter and differences per measurement
-    g=fig.add_gridspec(4,4,left=.065,right=.985,bottom=.04,top=.935,width_ratios=[1,1.2,1,1.2],wspace=.55,hspace=.5)
-    pairs=[]
+    fig=plt.figure(figsize=(180*MM,170*MM))   # one page: scatter and differences per measurement
+    g=fig.add_gridspec(4,4,left=.065,right=.93,bottom=.04,top=.92,width_ratios=[1,1.2,1,1.2],wspace=.62,hspace=.42)
+    pairs,diffs=[],[]
     for i,(key,_,label,_,_,color) in enumerate(MEASUREMENTS):
         r,c=divmod(i,2);a,b=fig.add_subplot(g[r,2*c]),fig.add_subplot(g[r,2*c+1])
-        scatter(a,rows,key,compact=True);differences(b,rows,key,compact=True);head(a,label);pairs.append((a,c))
-    legend(fig,rows,y=.997)
+        scatter(a,rows,key,compact=True);differences(b,rows,key,compact=True);pairs.append((a,c));diffs.append((a,b,label,color))
     fig.canvas.draw()   # equal-aspect axes settle
-    for i,(a,c) in enumerate(pairs):letter(fig,chr(97+i),[.002,.5][c],a.get_position().y1+5*MM/fig.get_figheight())
+    th=[]   # class title centred over each scatter + difference pair
+    for a,b,label,color in diffs:   # difference panel at the height of its scatter: one x axis level per row
+        pa,pb=a.get_position(),b.get_position();b.set_position([pb.x0,pa.y0,pb.width,pa.height])
+        y=pa.y1+4.2*MM/fig.get_figheight();th.append(y);fig.text((pa.x0+pb.x1)/2,y,label,ha='center',va='baseline',fontsize=FS['title'],fontweight='bold',color=color)
+    for i,(a,c) in enumerate(pairs):fig.text([.002,.5][c],th[i],chr(97+i),fontsize=FS['letter'],fontweight='bold',va='baseline')   # letter on the title baseline
+    legend(fig,rows)
     save(fig,out/'ed/ed6_pedigrees.pdf');plt.close(fig)
 
 

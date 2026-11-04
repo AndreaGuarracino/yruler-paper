@@ -3,6 +3,7 @@ ORDER = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2'
 CLASS = {'DYZ3': '#1f4e79', 'DYZ17': '#8e44ad', 'DYZ19': '#c0392b', 'Yq12': '#333333', 'DYZ18S': '#e377c2', 'DYZ1': '#e6a23c', 'DYZ2': '#2e8b57'}
 RATIO = '#8c564b'   # DYZ1:DYZ2
 SOURCE = {'Hallast 2026': '#17becf', 'HPRC R2': '#bcbd22'}
+SOURCE_LABEL = {'Hallast 2026': 'Y pangenome (Hallast 2026)', 'HPRC R2': 'HPRC R2 (Lucas 2026)'}   # legend text, both bioRxiv preprints
 KEY = {k.lower(): v for k, v in CLASS.items()}   # dyz3, yq12, ... -> colour
 TITLE = lambda size: {'weight': 'bold', 'size': size}   # legend titles: bold, same size as labels
 REF = {'marker': 'D', 's': 5, 'facecolors': 'none', 'linewidths': 0.8, 'alpha': 0.8}   # male with a reference assembly; edge in panel colour
@@ -14,11 +15,12 @@ SUPERPOP_NAME = {'AFR': 'Africa (AFR)', 'AMR': 'Americas (admixed) (AMR)', 'EAS'
 import os
 import matplotlib as _mpl
 MM = 1 / 25.4   # inches per mm
+PAD = 1.5 * MM   # figure margin, every figure
 GRID = '#e8edef'   # grid lines
-FS = {'tick': 6.5, 'label': 7, 'legend': 7, 'title': 7, 'point': 6.5, 'letter': 8}   # pt per text role, every figure
+FS = {'tick': 6, 'label': 7.5, 'legend': 6, 'title': 9, 'point': 6, 'letter': 15}   # Fig. 1 sizes (Alejandro): titles 9 bold, axis labels 7.5 italic, letters 15 bold   # pt per text role, every figure
 _mpl.rcParams.update({'legend.frameon': False, 'legend.handlelength': 1.0, 'legend.handleheight': 0.7, 'legend.handletextpad': 0.4, 'legend.columnspacing': 0.8,   # one legend style
                       'font.family': 'sans-serif', 'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'], 'font.size': FS['point'], 'pdf.fonttype': 42, 'ps.fonttype': 42,
-                      'axes.titlesize': FS['title'], 'axes.labelsize': FS['label'], 'xtick.labelsize': FS['tick'], 'ytick.labelsize': FS['tick'], 'legend.fontsize': FS['legend'], 'legend.title_fontsize': FS['legend'],
+                      'axes.titlesize': FS['title'], 'axes.titleweight': 'bold', 'axes.labelsize': FS['label'], 'xtick.labelsize': FS['tick'], 'ytick.labelsize': FS['tick'], 'legend.fontsize': FS['legend'], 'legend.title_fontsize': FS['legend'],
                       'axes.spines.top': False, 'axes.spines.right': False, 'axes.linewidth': 0.5, 'xtick.major.width': 0.5, 'ytick.major.width': 0.5,
                       'xtick.major.size': 2, 'ytick.major.size': 2, 'xtick.minor.size': 1.2, 'ytick.minor.size': 1.2, 'xtick.minor.width': 0.4, 'ytick.minor.width': 0.4, 'xtick.major.pad': 2, 'ytick.major.pad': 2, 'axes.labelpad': 2, 'axes.titlepad': 3,
                       'lines.linewidth': 0.75, 'grid.linewidth': 0.4, 'grid.color': GRID, 'patch.linewidth': 0.5, 'hatch.linewidth': 0.4, 'savefig.dpi': 600, 'savefig.facecolor': 'white'})   # journal style: 5-7 pt, 0.25-1 pt lines
@@ -40,9 +42,20 @@ STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6
 COLOR = {**CLASS, 'DYZ1:DYZ2': RATIO, 'Y dosage': DOSE}   # every panel title colour
 
 
-def head(ax, text):
+TITLE_PAD = 6.5   # pt between panel title baseline and axes, every figure
+
+
+def head(ax, text, pad=TITLE_PAD):
     """Panel title, centred, in its class colour."""
-    ax.set_title(text, color=COLOR.get(text, 'black'), pad=3)
+    ax.set_title(text, color=COLOR.get(text, 'black'), pad=pad)
+
+
+def top_legend(fig, x=.5, loc='lower center', gap=1.2, **kw):
+    """Figure legend 1.2 mm above the top letter or title."""
+    fig.canvas.draw(); r = fig.canvas.get_renderer()
+    T = [t for t in list(fig.texts) + [a.title for a in fig.axes if a.get_visible()] if t.get_visible() and t.get_text().strip()]
+    top = max(t.get_window_extent(r).y1 for t in T) / fig.bbox.height
+    return fig.legend(loc=loc, bbox_to_anchor=(x, top + gap * MM / fig.get_figheight()), borderaxespad=0, **kw)
 
 
 def letter(fig, s, x, y):
@@ -59,7 +72,9 @@ def save(fig, path, pdf=None):
     b = Bbox.union([fig.get_tightbbox(r)] + [x for _, x in T])   # tight bbox squeezes axis labels
     out = [s for s, x in T if x.x0 < 0 or x.y0 < 0 or x.x1 > w or x.y1 > h]
     over = {k: round(float(v) / MM, 1) for k, v in (('left', -b.x0), ('bottom', -b.y0), ('right', b.x1 - w), ('top', b.y1 - h)) if v > 0.05 * MM}
-    (pdf.savefig(fig) if pdf else fig.savefig(path))
+    for ax in fig.axes:   # Fig. 1 style: italic axis labels, bold titles
+        ax.xaxis.label.set_fontstyle('italic'); ax.yaxis.label.set_fontstyle('italic'); ax.title.set_fontweight('bold')
+    (pdf.savefig(fig) if pdf else fig.savefig(path, bbox_inches='tight', pad_inches=PAD))   # same 1.5 mm margin on every side
     if not pdf and '/main/' in str(path):   # main figures: also native SVG, editable text
         with _mpl.rc_context({'svg.fonttype': 'none'}): fig.savefig(str(path)[:-4] + '.svg'); print(f'written {str(path)[:-4]}.svg', flush=True)
     print(f'written {path} {w / MM:.1f} x {h / MM:.1f} mm' + (f'; WARNING content outside the page (mm): {over}; texts: {out[:4]}' if over else ''), flush=True)

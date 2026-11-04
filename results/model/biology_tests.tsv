@@ -3,11 +3,11 @@ one_per_component_men	1271 of 1583 (PAR2-gain men left out)
 lineages_ge20	14: C 30, D 20, E 340, G 21, H 66, I 52, J 74, L 26, N 32, O 202, Q 47, R 34, R1a 85, R1b 221
 kruskal_DYZ3	H 794.8, p 1.82e-161
 dunn_holm_DYZ3	51 of 91 pairs below 0.05
-kruskal_Yq12	H 312.3, p 6.46e-59
+kruskal_Yq12	H 312.7, p 5.36e-59
 dunn_holm_Yq12	39 of 91 pairs below 0.05
 kruskal_DYZ1	H 361.8, p 2.56e-69
 dunn_holm_DYZ1	41 of 91 pairs below 0.05
-kruskal_DYZ2	H 266.5, p 2.33e-49
+kruskal_DYZ2	H 267.0, p 1.89e-49
 dunn_holm_DYZ2	34 of 91 pairs below 0.05
 kruskal_DYZ18S	H 265.8, p 3.36e-49
 dunn_holm_DYZ18S	51 of 91 pairs below 0.05
@@ -15,57 +15,57 @@ kruskal_DYZ19	H 999.3, p 2.42e-205
 dunn_holm_DYZ19	59 of 91 pairs below 0.05
 kruskal_DYZ17	H 280.1, p 3.54e-52
 dunn_holm_DYZ17	44 of 91 pairs below 0.05
-kruskal_ratio	H 247.2, p 2.4e-45
+kruskal_ratio	H 247.1, p 2.59e-45
 dunn_holm_ratio	25 of 91 pairs below 0.05
 hl_dyz3_r1b_over_other	0.339 (0.329-0.351)
 hl_dyz19_j2a1a1_over_other_j	0.235 (0.230-0.241); 37 vs 37
 corr_DYZ3_Yq12	all +0.100, within lineage -0.004
 corr_DYZ3_DYZ1	all +0.179, within lineage +0.014
-corr_DYZ3_DYZ2	all -0.007, within lineage -0.018
+corr_DYZ3_DYZ2	all -0.006, within lineage -0.018
 corr_DYZ3_DYZ18S	all +0.006, within lineage +0.091
 corr_DYZ3_DYZ19	all -0.463, within lineage +0.082
 corr_DYZ3_DYZ17	all -0.036, within lineage -0.052
 corr_Yq12_DYZ1	all +0.959, within lineage +0.952
 corr_Yq12_DYZ2	all +0.939, within lineage +0.939
 corr_Yq12_DYZ18S	all +0.161, within lineage +0.172
-corr_Yq12_DYZ19	all -0.138, within lineage -0.004
+corr_Yq12_DYZ19	all -0.139, within lineage -0.004
 corr_Yq12_DYZ17	all +0.154, within lineage +0.210
-corr_DYZ1_DYZ2	all +0.816, within lineage +0.808
+corr_DYZ1_DYZ2	all +0.817, within lineage +0.808
 corr_DYZ1_DYZ18S	all +0.185, within lineage +0.225
 corr_DYZ1_DYZ19	all -0.239, within lineage -0.062
 corr_DYZ1_DYZ17	all +0.177, within lineage +0.256
 corr_DYZ2_DYZ18S	all +0.102, within lineage +0.085
-corr_DYZ2_DYZ19	all -0.014, within lineage +0.062
-corr_DYZ2_DYZ17	all +0.095, within lineage +0.132
+corr_DYZ2_DYZ19	all -0.015, within lineage +0.062
+corr_DYZ2_DYZ17	all +0.094, within lineage +0.132
 corr_DYZ18S_DYZ19	all +0.050, within lineage -0.051
 corr_DYZ18S_DYZ17	all +0.280, within lineage +0.327
 corr_DYZ19_DYZ17	all +0.061, within lineage +0.017
-father_son_ratio_all	297 pairs: son closer to 1 in 159, median |log ratio| father 0.0791 son 0.0837, Wilcoxon p 0.719
-father_son_ratio_cross	273 pairs: son closer to 1 in 145, median |log ratio| father 0.0822 son 0.0837, Wilcoxon p 0.735
-father_son_ratio_same	22 pairs: son closer to 1 in 13, median |log ratio| father 0.0737 son 0.0837, Wilcoxon p 0.799
-composition_sd_1kgp	1196: SD 0.194 and 0.255, ratio 0.762 (95% 0.724 to 0.802), Pitman-Morgan r -0.471, P 4.8e-67
-composition_arithmetic_null	slope on Yq12 with DYZ2 permuted within lineage: median -0.171 (central 95% -0.200 to -0.139), 1,000 permutations
+father_son_ratio_all	297 pairs: son closer to 1 in 158, median |log ratio| father 0.0790 son 0.0836, Wilcoxon p 0.721
+father_son_ratio_cross	273 pairs: son closer to 1 in 144, median |log ratio| father 0.0816 son 0.0836, Wilcoxon p 0.737
+father_son_ratio_same	22 pairs: son closer to 1 in 13, median |log ratio| father 0.0734 son 0.0837, Wilcoxon p 0.799
+composition_sd_1kgp	1196: SD 0.194 and 0.255, ratio 0.762 (95% 0.724 to 0.802), Pitman-Morgan r -0.471, P 5.3e-67
+composition_arithmetic_null	slope on Yq12 with DYZ2 permuted within lineage: median -0.171 (central 95% -0.200 to -0.138), 1,000 permutations
 composition_slope_cohort	-0.276 (95% -0.328 to -0.221); 1196 men, within lineage, outside the panel
 composition_sd_assemblies	75: SD 0.179 and 0.250, ratio 0.714 (95% 0.634 to 0.829), Pitman-Morgan r -0.577, P 6e-08
 composition_slope_assemblies	-0.354 (95% -0.494 to -0.184); 75 assemblies, within lineage
 composition_error_sd	CV SD of log error DYZ1 0.0333, DYZ2 0.0386
 hgsg_calls	640 of 665 with a published call; 518 PCR-free individuals after removing 1kGP aliases and duplicates
 hgsg_j	63 J men; DYZ19 below 100 kb in 22: 65.5-74.9 kb; others min 250.8 kb
-composition_sd_hgdp	382: SD 0.219 and 0.274, ratio 0.798 (95% 0.750 to 0.845), Pitman-Morgan r -0.405, P 1.7e-16
-composition_sd_sgdp	136: SD 0.323 and 0.493, ratio 0.655 (95% 0.589 to 0.741), Pitman-Morgan r -0.694, P 8.1e-21
+composition_sd_hgdp	382: SD 0.219 and 0.274, ratio 0.798 (95% 0.750 to 0.846), Pitman-Morgan r -0.405, P 1.7e-16
+composition_sd_sgdp	136: SD 0.323 and 0.493, ratio 0.655 (95% 0.590 to 0.742), Pitman-Morgan r -0.693, P 8.5e-21
 hgsg_dyz3	R1b 50 men, median 363964; others 468, median 879852; O2a2b1a1 13, median 265428; O2a2b1a2 14, median 1040524
 hgsg_j_labels_short	[('J2a1a', 6), ('J2a1a1a2b2a1a', 5), ('J2a1a4b', 4), ('J2a1a1a2b2', 3), ('J2a1a1a2a2b', 2), ('J2a1a4a', 1), ('J2a1a4b4', 1)]
 hgsg_j_labels_other	[('J1a2a1a2', 22), ('J2b2a', 4), ('J1a2b', 3), ('J2a', 3), ('J2a1a2b2a2a2', 2), ('J2a1a', 2), ('J1', 1), ('J2a2a', 1), ('J2a2a1a1a2', 1), ('J2b2a1a1a1a1a', 1), ('J1a2a1a2c1a1', 1)]
 hgsg_short_outside_j	[]
 cv_score_quantile_dyz3	80/90/95% 3.79% / 5.23% / 7.18%; holdout within 90%: 17 of 18; 101 men
-cv_score_quantile_yq12	80/90/95% 3.34% / 4.49% / 5.58%; holdout within 90%: 3 of 3; 80 men
+cv_score_quantile_yq12	80/90/95% 3.34% / 4.49% / 5.56%; holdout within 90%: 3 of 3; 80 men
 cv_score_quantile_dyz1	80/90/95% 4.15% / 5.83% / 7.24%; holdout within 90%: 3 of 3; 81 men
-cv_score_quantile_dyz2	80/90/95% 4.81% / 6.86% / 7.74%; holdout within 90%: 3 of 3; 80 men
+cv_score_quantile_dyz2	80/90/95% 4.80% / 6.85% / 7.73%; holdout within 90%: 3 of 3; 80 men
 cv_score_quantile_dyz18s	80/90/95% 7.39% / 11.81% / 15.51%; holdout within 90%: 3 of 3; 81 men
 cv_score_quantile_dyz19	80/90/95% 5.16% / 6.74% / 11.67%; holdout within 90%: 14 of 14; 115 men
 cv_score_quantile_dyz17	80/90/95% 4.81% / 6.22% / 6.87%; holdout within 90%: 15 of 15; 115 men
 overlap_father_son_DYZ3	282 cross-batch pairs, Spearman +0.210, P 0.00039
-overlap_father_son_Yq12	282 cross-batch pairs, Spearman +0.103, P 0.084
+overlap_father_son_Yq12	282 cross-batch pairs, Spearman +0.103, P 0.085
 overlap_father_son_DYZ1	282 cross-batch pairs, Spearman +0.159, P 0.0076
 overlap_father_son_DYZ2	282 cross-batch pairs, Spearman -0.116, P 0.052
 overlap_father_son_DYZ18S	282 cross-batch pairs, Spearman +0.288, P 8.6e-07

@@ -1,6 +1,6 @@
 {
   "cohort": "results/estimates_1kgp.tsv",
-  "cohort_sha256": "17982872ae6637da845c16960ec0c936725d282673406bc777bd4ec1ec423035",
+  "cohort_sha256": "1c7913e891c44a89f38e70a6cc6308b0329639b9359f7d775b28f19f8d151851",
   "pairs_per_measurement": 309,
   "measurement_records": 2472,
   "measurements": [

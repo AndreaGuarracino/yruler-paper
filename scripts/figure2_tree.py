@@ -31,8 +31,8 @@ PIE_RADIUS_FACTOR = 0.765  # 10% smaller diameters; areas remain proportional to
 COMPOSITION = [
     ("dyz1", "DYZ1", CLASS["DYZ1"]),
     ("dyz2", "DYZ2", CLASS["DYZ2"]),
-    ("minor", "Other units", UNITS["Other units"]),
-    ("unannotated", "Unannotated", UNITS["Unannotated"]),
+    ("dyz18s", "DYZ18S", CLASS["DYZ18S"]),
+    ("rest", "Rest of Yq12", UNITS["Unannotated"]),   # final model parts: DYZ1 + DYZ2 + DYZ18S + rest
 ]
 CUT = {
     "A00", "A0", "A1a", "A1b1", "B", "C", "D", "E", "F1", "F2", "F3", "F4",
@@ -496,20 +496,22 @@ def summaries(ax, order, groups, key, color, scale, limit, ticks, title, panel, 
 
 def load_composition(annotations_path, regions_path, calls, parents, displayed_groups):
     annotations = {row["assembly"]: row for row in read_tsv(annotations_path)}
+    drops = {tuple(l.split()[:2]) for l in open(ROOT / "data/method/truth_qc/x/rule_w4.txt") if l.strip()}   # truth exclusions of the final model
     rows = []
     for reference in read_tsv(regions_path):
-        if reference["class"] != "yq12":
+        if reference["class"] != "yq12" or ("yq12", reference["male"]) in drops:
             continue
         sample, assembly = reference["male"], reference["asm"]
         annotation = annotations[assembly]
         span = int(annotation["yq12_span"])
         if annotation["contig"] != reference["contig"] or span != int(annotation["yq12_end"]) - int(annotation["yq12_start"]):
             raise ValueError(f"Inconsistent Yq12 annotation coordinates: {assembly}")
+        unannotated = int(annotation["non_dyz"]) if "non_dyz" in annotation else span - sum(int(annotation[k]) for k in ("dyz1_units", "dyz2_units", "dyz18_units", "q3k1_units", "q2k7_units"))
         components = {
             "dyz1": int(annotation["dyz1_units"]),
             "dyz2": int(annotation["dyz2_units"]),
-            "minor": sum(int(annotation[key]) for key in ("dyz18_units", "q3k1_units", "q2k7_units")),
-            "unannotated": int(annotation["non_dyz"]) if "non_dyz" in annotation else span - sum(int(annotation[k]) for k in ("dyz1_units", "dyz2_units", "dyz18_units", "q3k1_units", "q2k7_units")),   # Hallast table: span minus annotated bases
+            "dyz18s": int(annotation["dyz18_units"]) + int(annotation["q3k1_units"]),   # DYZ18 and the 3.1-kb repeat
+            "rest": int(annotation["q2k7_units"]) + unannotated,   # 2.7-kb repeat and unannotated sequence   # Hallast table: span minus annotated bases
         }
         if span <= 0 or min(components.values()) < 0 or sum(components.values()) != span:
             raise ValueError(f"Yq12 components do not partition the annotated span: {assembly}")
@@ -571,46 +573,50 @@ def composition_panel(ax, order, rows, out):
         writer.writerows(summaries)
 
 
-def composition_supplement(rows, order, out):
+def composition_supplement(rows, order, out, pop=()):
+    """ED2: a, parts of Yq12 in the references; b, DYZ1 share against Yq12 length within the five largest lineages (1kGP, Yruler)."""
+    from scipy.stats import spearmanr
     ranks = {group: i for i, group in enumerate(order + ["Unassigned"])}
     ordered = sorted(rows, key=lambda row: (ranks[row["display_group"]], row["dyz1_fraction"], row["sample"]))
-    fig, axes = plt.subplots(2, 1, figsize=(180 * MM, 118 * MM), gridspec_kw={"height_ratios": [1.25, 1], "hspace": 0.38})
-    x = np.arange(len(ordered))
-    bottom = np.zeros(len(ordered))
+    fig = plt.figure(figsize=(180 * MM, 120 * MM)); a = fig.add_axes([.07, .47, .92, .44])
+    gi = {g: k for k, g in enumerate(dict.fromkeys(row["display_group"] for row in ordered))}   # lineage index of each bar
+    x = np.arange(len(ordered)) + 0.6 * np.array([gi[row["display_group"]] for row in ordered]); bottom = np.zeros(len(ordered))   # small gap between lineages
     for key, label, color in COMPOSITION:
         values = np.array([100 * row[key + "_fraction"] for row in ordered])
-        axes[0].bar(x, values, bottom=bottom, width=0.92, color=color, edgecolor="none", label=label)
-        bottom += values
+        a.bar(x, values, bottom=bottom, width=0.92, color=color, edgecolor="none", label=label); bottom += values
     centers, labels = [], []
     for group in order + ["Unassigned"]:
         indices = [i for i, row in enumerate(ordered) if row["display_group"] == group]
         if indices:
-            centers.append(np.mean(indices))
-            labels.append(f"{group} ({len(indices)})" if group != "Unassigned" else f"No lineage ({len(indices)})")
+            centers.append(np.mean(x[indices])); labels.append(f"{group} ({len(indices)})" if group != "Unassigned" else f"No lineage ({len(indices)})")
             if len(centers) > 1: centers[-1] = max(centers[-1], centers[-2] + 1.6)   # labels of adjacent single bars apart
-            axes[0].axvline(indices[0] - 0.5, color="white", linewidth=0.8)
-    axes[0].set_xticks(centers, labels, rotation=90)
-    axes[0].set_xlim(-1, len(ordered))
-    axes[0].set_ylim(0, 100)
-    axes[0].set_ylabel("Annotated Yq12 bases (%)")
-    axes[0].legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, title=NAMES["class"], title_fontproperties=TITLE(FS["legend"]), borderaxespad=0.3)
-    for group in order + ["Unassigned"]:
-        subset = [row for row in ordered if row["display_group"] == group]
-        if subset:
-            major = "NO" if group.startswith("NO") else group[0]
-            axes[1].scatter([row["annotated_span_bp"] / 1e6 for row in subset],
-                            [100 * row["dyz1_fraction"] for row in subset],
-                            color=LINEAGE_COLORS.get(major, LINE), s=8, alpha=0.8,
-                            edgecolors="white", linewidths=0.25)
-    axes[1].set_xlabel("Annotated Yq12 span (Mb)")
-    axes[1].set_ylabel("DYZ1 / annotated Yq12 (%)")
-    axes[1].grid(True)
-    axes[1].set_axisbelow(True)
-    for ax in axes:
-        ax.spines[["right", "top"]].set_visible(False)
-    fig.subplots_adjust(left=0.07, right=0.99, top=0.925, bottom=0.07)
-    from palette import letter
-    for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.075 if s == "a" else .05))
+    a.set_xticks(centers, labels, rotation=90); a.set_xlim(x[0] - 1, x[-1] + 1); a.set_ylim(0, 100); a.set_ylabel("Annotated Yq12 bases (%)")
+    leg = a.legend(loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=4, borderaxespad=0.2, columnspacing=0.8)   # one line at the top right
+    fig.canvas.draw(); bb = leg.get_window_extent().transformed(a.transAxes.inverted())
+    a.text(bb.x0, (bb.y0 + bb.y1) / 2, NAMES["class"], transform=a.transAxes, ha="right", va="center", fontsize=FS["legend"], fontweight="bold")   # legend title on the same line
+    a.text(.33, 1.0 + 4 / 72 / (fig.get_figheight() * .44), f"Parts of Yq12 in the {len(ordered)} reference assemblies", transform=a.transAxes, ha="center", va="baseline", fontsize=FS["title"], fontweight="bold")   # title left of the legend
+    major = lambda g: g if g in ("R1a", "R1b") else ("NO" if g.startswith("NO") else g[0])
+    lins = ["E", "R1b", "O", "R1a", "J"]
+    for k, lin in enumerate(lins):
+        ax = fig.add_axes([.07 + k * .188, .07, .155, .2]); c = LINEAGE_COLORS.get(lin[0], LINE)
+        P = [r for r in pop if r["lineage"] == lin]; y = np.array([r["Yq12_bp"] for r in P], float) / 1e6; sh = 100 * np.array([r["DYZ1_bp"] for r in P], float) / 1e6 / y
+        ax.scatter(y, sh, s=3, color=c, alpha=.45, lw=0, zorder=2)
+        A = [r for r in ordered if major(r["display_group"]) == lin]
+        ax.scatter([r["annotated_span_bp"] / 1e6 for r in A], [100 * r["dyz1_fraction"] for r in A], marker="D", s=10, facecolor="white", edgecolor="k", lw=.6, zorder=4)
+        sl, ic = np.polyfit(y, sh, 1); xs = np.array([np.percentile(y, 2), np.percentile(y, 98)]); ax.plot(xs, ic + sl * xs, color="k", lw=.9, zorder=3)
+        rho = spearmanr(y, sh).statistic; ax.set_title(f"{lin} ({len(P)}), ρ = {rho:.2f}", color=c, fontsize=FS["title"] - 1.5)
+        ax.set_xlim(np.percentile(y, .5) - 1, np.percentile(y, 99.5) + 1); ax.set_ylim(47, 68)
+        ax.set_xlabel("Yq12 length (Mb)")
+        if k == 0: ax.set_ylabel("DYZ1 fraction of Yq12 (%)")
+        else: ax.set_yticklabels([])
+        ax.grid(True); ax.set_axisbelow(True)
+        print(f"ED2b {lin}: {len(P)} males, Spearman {rho:.3f}, slope {sl:.3f} points per Mb, assemblies {len(A)}", flush=True)
+    nt = sum(1 for r in pop if r["lineage"] in lins)   # males in the five panels
+    fig.text(.45, .335, f"DYZ1 fraction against Yq12 length within lineages in 1000 Genomes ({nt:,})", fontsize=FS["title"], fontweight="bold", ha="center")
+    fig.add_artist(plt.Line2D([.865], [.343], marker="D", ms=3.5, mfc="white", mec="k", mew=.6, ls="none", transform=fig.transFigure)); fig.text(.873, .336, "= assemblies", fontsize=FS["legend"])
+    ta = .91 + 4 / 72 / fig.get_figheight()   # baseline of the panel a title
+    for s_, x_, y_ in (("a", .005, ta), ("b", .005, .335)): fig.text(x_, y_, s_, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baselines
+    for axx in fig.axes: axx.spines[["right", "top"]].set_visible(False)
     save(fig, out, "ed/ed2_yq12_composition")
 
 

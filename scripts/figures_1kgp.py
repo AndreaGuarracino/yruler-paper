@@ -22,7 +22,7 @@ from matplotlib.colors import to_rgba
 import numpy as np
 from scipy.stats import spearmanr
 
-from palette import RATIO, FS, MM, letter, ORDER, REF, REF_HANDLE
+from palette import RATIO, FS, MM, letter, ORDER, REF, REF_HANDLE, TITLE_PAD
 from figure2_tree import (
     BLUE, GREEN, PURPLE, LINEAGE_COLORS, read_tsv, save,
     tree_data, pie_map, lineage_legend, align_map_legend_titles, clade_of, pruned_tree,
@@ -556,10 +556,10 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
     return statistics
 
 
-def reads_legend(fig, y, x=.5, loc="upper center"):
+def reads_legend(fig, x=.5, loc="lower center"):
     """Legend for dots and open diamonds, every figure."""
-    from palette import REF_HANDLE
-    fig.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], loc=loc, bbox_to_anchor=(x, y), ncol=2, borderaxespad=0)
+    from palette import REF_HANDLE, top_legend
+    top_legend(fig, x, loc, handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], ncol=2)
 
 
 def column_axis(ax, title, color, units, limit, ticks):
@@ -759,10 +759,11 @@ def population_figure(valid, out, snapshot_path, completed):
 
 
 def population_supplement(valid, out):
-    order = sorted({r["lineage_display"] for r in valid},
-                   key=lambda g: (-sum(r["lineage_display"] == g for r in valid), g))
+    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R"]   # Fig. 2a tree order
+    present = {r["lineage_display"] for r in valid}; order = [g for g in tree if g in present] + sorted(present - set(tree))
+    clades = [("I–J", "I", "J"), ("N–O", "NO", "O"), ("P (Q, R)", "Q", "R")]   # brackets over sister lineages
     print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
-    panels = TARGETS + [("y_dose", "y_dose", "Y dosage", 1, "Y dosage (relative)")]
+    panels = TARGETS   # Y dosage by lineage: ED5b
     fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .42, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
     rng = np.random.default_rng(271)
@@ -781,71 +782,91 @@ def population_supplement(valid, out):
                 ax.plot([x - .4, x + .4], [np.median(values[included])]*2, color=INK, linewidth=1)   # median, as strip()
         if key == "y_dose":
             ax.axhline(1, color=color, linestyle="--", linewidth=.6, zorder=1)
-        ax.set_xticks(range(len(order)), order, rotation=90)
+        if key == "DYZ3_bp":   # short DYZ3 lineages, as the Fig. 2 bands
+            for g in ("R1a", "R1b"):
+                if g in order: ax.axvspan(order.index(g) - .45, order.index(g) + .45, color=BAND["DYZ3"], zorder=0, lw=0)
+        lo, hi = ax.get_ylim(); ax.set_ylim(lo, hi + (hi - lo) * .12)
+        for name, g0, g1 in clades:
+            if g0 in order and g1 in order:
+                i0, i1 = order.index(g0), order.index(g1); yb = hi + (hi - lo) * .05
+                ax.plot([i0 - .35, i1 + .35], [yb, yb], color=MUTED, lw=.6, clip_on=False)
+                ax.text((i0 + i1) / 2, yb + (hi - lo) * .015, name, ha="center", va="bottom", fontsize=FS["point"], color=MUTED)
+        last = True   # every panel: name and number of males, vertical (same ticks everywhere)
+        ax.set_xticks(range(len(order)), [(f"{g} ({sum(r['lineage_display'] == g for r in valid)})" if last else g) for g in order], rotation=90)   # vertical: 19 lineages per half page
         ax.set_xlim(-.7, len(order) - .3)
         ax.set_ylabel(units)
         head(ax, label)
-        letter(fig, chr(ord("a") + panel), .002 if panel % 2 == 0 else .505, ax.get_position().y1 + 5 * MM / fig.get_figheight())
+        letter(fig, chr(ord("a") + panel), .002 if panel % 2 == 0 else .505, ax.get_position().y1 + (5 * MM + (TITLE_PAD - 3) / 72) / fig.get_figheight())
         ax.grid(axis="y")
         ax.set_axisbelow(True)
-    reads_legend(fig, .997)
+    for ax in axes.flat[len(panels):]: ax.set_visible(False)
+    reads_legend(fig)
     save(fig, out, "ed/ed7_population")
 
 
-def depth_supplement(depth, out):
-    from palette import COLOR, head
-    from validation_ratio import KEY,LABEL
-    targets=list(TARGETS)+([(KEY,None,LABEL,1,'')] if any(r['target']==KEY for r in depth) else [])
-    # Y dosage: one thinning per male and level; full depth is 0 by definition
-    Y, C = defaultdict(list), defaultdict(list)
-    for r in read_tsv(ROOT / "results/model/depth/y_dose_depth.tsv"):
-        if r["level"] in DEPTHS: Y[r["level"]].append(abs(float(r["diff_pct"]))); C[r["level"]].append(float(r["chr2depth_mean"]))
-    lv = sorted(Y, key=lambda k: np.median(C[k])); q = np.array([np.percentile(Y[k], [10, 50, 90]) for k in lv])
-    ydose = [{"median_autosomal_depth": np.median(C[k]) * 150 / 120, "mean_median_absolute_pct": m, "min_median_absolute_pct": lo, "max_median_absolute_pct": hi} for k, (lo, m, hi) in zip(lv, q)]   # chr2 31-mer depth to base coverage, as depth_benchmark
-    ydose.append({"median_autosomal_depth": DEPTHS["1"], "mean_median_absolute_pct": 0.0, "min_median_absolute_pct": np.nan, "max_median_absolute_pct": np.nan})
-    print("ED5 Y dosage median |diff| %:", {k: (len(Y[k]), round(float(r["mean_median_absolute_pct"]), 3), round(float(r["median_autosomal_depth"]), 1)) for k, r in zip(lv, ydose)}, flush=True)
-    panels = [(label, sorted((r for r in depth if r["target"] == key), key=lambda r: r["median_autosomal_depth"])) for key, _, label, _, _ in targets] + [("Y dosage", ydose)]
-    n = len(panels); cols = 4; rows = -(-n // cols)
-    fig, axes = plt.subplots(rows, cols, figsize=(180 * MM, 44 * rows * MM), sharex=True)
-    fig.subplots_adjust(left=.06, right=.94, top=.93, bottom=.095, wspace=.3, hspace=.38)
-    for i, (ax, (label, rows_)) in enumerate(zip(axes.flat, panels)):
-        x = [r["median_autosomal_depth"] for r in rows_]; color = COLOR[label]
-        ax.plot(x, [r["mean_median_absolute_pct"] for r in rows_], "o-", color=color, markersize=2.5, linewidth=.75)
-        ax.fill_between(x, [r["min_median_absolute_pct"] for r in rows_], [r["max_median_absolute_pct"] for r in rows_], color=color, alpha=.15, linewidth=0)
-        ax.set_xscale("log"); ax.set_xticks([1, 2, 5, 10, 20, 34], ["1","2","5","10","20","34"])
-        head(ax, label); ax.grid(True); ax.tick_params(labelbottom=True)   # sharex hides upper-row labels
-        letter(fig, chr(97 + i), .005 if i % cols == 0 else ax.get_position().x0 - .045, ax.get_position().y1 + 5 * MM / fig.get_figheight())
-    for ax in axes[-1]: ax.set_xlabel("Median autosomal coverage (×)")
-    for ax in axes[:, 0]: ax.set_ylabel("Absolute error (%)")
-    last = axes.flat[n - 1]; last.yaxis.set_label_position("right"); last.set_ylabel("Absolute difference\nfrom full depth (%)")   # outer edge, other quantity
-    for ax in axes.flat[n:]: ax.set_visible(False)
+def depth_supplement(valid, out):
+    """ED5: Y dosage against coverage, and by lineage."""
+    from palette import DOSE, head
+    from scipy.stats import kruskal
+    R = [dict(r, level="1" if r["level"] == "full" else r["level"]) for r in read_tsv(ROOT / "results/model/depth/y_dose_depth_chr8.tsv")]   # release chr8:91-101 Mb window (um_depthchr8.sh); full depth is level 1
+    R = [r for r in R if r["level"] in DEPTHS]
+    lv = sorted({r["level"] for r in R}, key=lambda k: DEPTHS[k]); x = [DEPTHS[k] for k in lv]
+    D = {k: np.array([abs(float(r["diff_pct"])) for r in R if r["level"] == k]) for k in lv}; q = np.array([np.percentile(D[k], [10, 50, 90]) for k in lv])
+    for k, (lo, m, hi) in zip(lv, q): print(f"ED5 Y dosage {k} ({DEPTHS[k]:.1f}x): {len(D[k])} males, |difference from full depth| median {m:.3f}% p10 {lo:.3f}% p90 {hi:.3f}% max {D[k].max():.3f}%", flush=True)
+    fig, (ax, b) = plt.subplots(1, 2, figsize=(180 * MM, 66 * MM), gridspec_kw={"width_ratios": [1, 1.7]})
+    ax.fill_between(x, q[:, 0], q[:, 2], color=DOSE, alpha=.15, lw=0, label="10th to 90th percentile"); ax.plot(x, q[:, 1], "o-", color=DOSE, ms=2.5, lw=.75, label="Median")
+    ax.set_xscale("log"); ax.set_xticks([1, 2, 5, 10, 20, DEPTHS["1"]], ["1", "2", "5", "10", "20", f"{DEPTHS['1']:.0f}"]); ax.minorticks_off(); ax.set_ylim(0, None); ax.grid(True)
+    ax.set_xlabel("Median autosomal coverage (×)"); ax.set_ylabel("Absolute difference from full depth (%)"); ax.legend(loc="upper right")
+    head(ax, f"Coverage ({len(D[lv[0]])} males)")
+    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R"]   # ED7 and Fig. 2a order
+    order = [g for g in tree if any(r["lineage_display"] == g for r in valid)]; lo, hi = .94, 1.06; rng = np.random.default_rng(5)
+    V = {g: np.array([float(r["y_dose"]) for r in valid if r["lineage_display"] == g]) for g in order}
+    for i, g in enumerate(order):
+        v = V[g]; c = np.clip(v, lo, hi); j = i + rng.uniform(-.25, .25, len(v)); inside = (v > lo) & (v < hi)
+        b.scatter(j[inside], c[inside], s=2.5, color=DOSE, alpha=.35, lw=0)
+        for m, k in (("v", v <= lo), ("^", v >= hi)): b.scatter(j[k], c[k], s=6, marker=m, color=DOSE, lw=0, clip_on=False)
+        b.plot([i - .4, i + .4], [np.median(v)] * 2, color=INK, lw=1)
+    big = [g for g in order if len(V[g]) > 20]; kw = kruskal(*[V[g] for g in big])
+    med = {g: float(np.median(V[g])) for g in big}; g0, g1 = min(med, key=med.get), max(med, key=med.get)
+    print(f"ED5b: {len(valid)} males, {len(big)} lineages with > 20 males, medians {g0} {med[g0]:.4f} to {g1} {med[g1]:.4f}, Kruskal-Wallis H {kw.statistic:.2f} P {kw.pvalue:.2e}; outside {lo}-{hi}: {sum(int(((V[g] <= lo) | (V[g] >= hi)).sum()) for g in order)}", flush=True)
+    b.text(.01, .97, f"Kruskal–Wallis P = {kw.pvalue:.1e} ({len(big)} lineages with > 20 males)", transform=b.transAxes, va="top", fontsize=FS["point"])
+    b.set_xticks(range(len(order)), [f"{g} ({len(V[g])})" for g in order], rotation=90); b.set_xlim(-.7, len(order) - .3)
+    b.set_ylim(lo, hi + .016); b.set_yticks(np.arange(lo, hi + .001, .02)); b.set_ylabel("Y dosage (relative)")   # room for the test line; b.grid(axis="y"); b.set_axisbelow(True)
+    head(b, f"Lineage (1000 Genomes, {len(valid):,} males)")
+    fig.tight_layout(w_pad=2.5)
+    for s_, a_ in zip("ab", (ax, b)): fig.text(a_.get_position().x0 - (.075 if s_ == "a" else .06), a_.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight(), s_, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baselines
     save(fig, out, "ed/ed5_depth")
 
 
 def j_subtree_figure(valid, out):
-    members = [dict(r, display_group=r["sample"]) for r in valid if r["haplogroup"].startswith("J")]
+    """ED8: J tree collapsed by haplogroup, DYZ19, bootstrap at J2a1a1."""
+    members = [dict(r, display_group=r["haplogroup"][:7]) for r in valid if r["haplogroup"].startswith("J")]   # 7 characters: J2a1a1a, J2a1a1b
     index = {r["sample"]: r for r in members}
-    tree = prune_tree(parse_newick(TREE_SOURCE), set(index))
-    root, leaves = collapse_tree(tree, index)
-    fig = plt.figure(figsize=(180 * MM, 209 * MM))
-    grid = fig.add_gridspec(1, 2, left=.03, right=.98, bottom=.035, top=.965, width_ratios=[2.4, 2.6], wspace=.06)
+    root, leaves = collapse_tree(prune_tree(parse_newick(TREE_SOURCE), set(index)), index)
+    B, full = {}, parse_newick(ROOT / "results/tree/RAxML_bipartitions.sup")   # RAxML supports, 100 bootstraps
+    def tips(n): return frozenset([n["name"]]) if not n["children"] else frozenset().union(*map(tips, n["children"]))
+    every = tips(full)
+    def splits(n):
+        if n["children"]: B[tips(n)] = B[every - tips(n)] = n["name"]; [splits(c) for c in n["children"]]
+    splits(full)
+    h = 15 + 3.3 * len(leaves)   # mm: 3.3 per row, title and axis rows
+    fig = plt.figure(figsize=(180 * MM, h * MM))
+    grid = fig.add_gridspec(1, 2, left=.03, right=.98, bottom=9.5 / h, top=1 - 5.5 / h, width_ratios=[1.75, 2.25], wspace=.0)
     tree_ax, ax = [fig.add_subplot(grid[0, i]) for i in range(2)]
-    draw_collapsed_tree(tree_ax, root, leaves, individual=True, panel="a")
-    for node in leaves:
-        row=node["members"][0];y=node["y"]
-        short = row["haplogroup"].startswith("J2a1a1")
-        c = J2 if short else PURPLE
-        ax.scatter([row["DYZ19_bp"]/1e3], [y], **(dict(edgecolors=c, **REF) if row["sample"] in TRUTH["dyz19"] else dict(s=6, color=c, linewidths=0)))
-    ax.set_ylim(len(leaves)-.4,-.7)
-    ax.set_xlim(0,350)
-    ax.set_xticks([0,100,200,300])
-    ax.set_yticks([])
-    ax.set_xlabel("DYZ19 (kb)")
-    ax.spines[["right","left","top"]].set_visible(False)
-    ax.grid(axis="x")
-    ax.set_axisbelow(True)
-    for s, x in (("a", .005), ("b", ax.get_position().x0 - .02)): letter(fig, s, x, .995)
-    reads_legend(fig, .998, .98, "upper right")
+    draw_collapsed_tree(tree_ax, root, leaves, panel="a", room=1.42)   # labels end next to b
+    def boot(n):   # supports of 70 or more at every node
+        S = frozenset(r["sample"] for r in n["members"]); v = B.get(S)
+        if n["children"]:
+            print(f"ED8 node {len(S)} males ({', '.join(sorted({r['haplogroup'][:7] for r in n['members']}))[:60]}): bootstrap {v if v is not None else 'no split in the full tree'}", flush=True)
+            if v is not None and int(v) >= 70: tree_ax.annotate(v, (n["x"], n["y"]), xytext=(-2, 1.5), textcoords="offset points", ha="right", va="bottom", fontsize=FS["point"] - 1, color=INK)   # clear of the branches
+        for c in n["children"]: boot(c)
+    boot(root)
+    frozen_trait(ax, leaves, "DYZ19_bp", PURPLE, 1e3, 350, [0, 100, 200, 300], "DYZ19", "b", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)
+    top = max(r["DYZ19_bp"] for r in members) / 1e3; assert top <= 350, top   # largest J male fits
+    ax.set_xlim(-8, 350); ax.set_xticks(range(0, 351, 50)); ax.set_xticks([], minor=True); print(f"ED8 largest DYZ19 {top:.1f} kb", flush=True)
+    yb = ax.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight()   # DYZ19 title baseline
+    for s, x in (("a", .005), ("b", ax.get_position().x0 - .025)): fig.text(x, yb, s, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baseline
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
     save(fig,out,"ed/ed8_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
@@ -864,7 +885,8 @@ def assembly_supplement(out):
     _, order = pruned_tree(groups, parents, children)
     rows = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                             calls, parents, groups)
-    composition_supplement(rows, order, out)
+    pop = [r for r in load_snapshot()[1] if r.get('population_included') in (True, 'True')]   # males of the population analyses
+    composition_supplement(rows, order, out, pop)
     write_rows(AUX / "figureS2_composition_samples.tsv", rows)
 
 
@@ -921,9 +943,9 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     summary["relatedness"] = info
     root, leaves = population_figure(valid, out, path, len(raw))
     population_supplement(valid, out)
-    from validation_plots import lineage_supplement
-    lineage_supplement(out)
-    depth_supplement(depth, out)
+    from figure1 import ed4   # ED4 in the Fig. 1c style
+    ed4(out / 'ed/ed4_lineage_validation.pdf')
+    depth_supplement(valid, out)
     j_subtree_figure(valid, out)
     assembly_supplement(out)
     write_rows(AUX / "figure1_validation_summary.tsv", benchmarks)

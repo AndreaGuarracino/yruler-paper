@@ -2,7 +2,7 @@
 """ONT with v9b markers: same CV folds as the short reads, K per class on training males; comparison with short-read v9b estimates.
 
 usage: python3 scripts/ont_v9b_eval.py <sums.tsv> <depth_f1.tsv> <cohort_1kgp.tsv> <lrsc list> <out.tsv>
-ONT estimate = K x class sum / ruler sum, K = sum truth / sum relative value on training males; Yq12 = DYZ1 + DYZ2 + rest; groups: hprc R10, lrsc R9, lrsc R10, vienna
+ONT estimate = K x class sum / ruler sum, K = sum truth / sum relative value on training males; Yq12 = DYZ1 + DYZ2 + rest (YQ12=rest2: + DYZ18S, rest2); groups: hprc R10, lrsc R9, lrsc R10, vienna
 """
 import sys, csv, collections as co
 import numpy as np
@@ -16,11 +16,12 @@ for r in rd(SUM):
 for g, d in Rl.items(): print(g, len(d), 'samples; with a G+C curve', sum(Gc[g, s] for s in d), flush=True)
 T = co.defaultdict(dict); Fd = {}; SE = {}
 for r in rd(F1): T[r['class']][r['sample']] = float(r['reference_bp']); Fd[r['repeat'], r['fold'], r['class'], r['sample']] = 1; SE[r['repeat'], r['class'], r['sample']] = (r['fold'], abs(float(r['error_pct'])))
-T['yq12rest'] = {s: T['yq12'][s] - T['dyz1'][s] - T['dyz2'][s] for s in T['yq12'] if s in T['dyz1'] and s in T['dyz2']}; reps = sorted({k[0] for k in SE})
+import os; B = os.environ.get('YQ12') == 'rest2'; PARTS = ('dyz1', 'dyz2', 'dyz18s', 'yq12rest2') if B else ('dyz1', 'dyz2', 'yq12rest'); RC = PARTS[-1]   # model B: Yq12 = DYZ1 + DYZ2 + DYZ18S + rest2
+T[RC] = {s: T['yq12'][s] - sum(T[k][s] for k in PARTS[:-1]) for s in T['yq12'] if all(s in T[k] for k in PARTS[:-1])}; print('Yq12 parts', PARTS, flush=True); reps = sorted({k[0] for k in SE})
 st = lambda a: (len(a), np.mean(a), np.median(a), np.percentile(a, 90), np.max(a)) if len(a) else (0, 0, 0, 0, 0)
 rows = []
 def cv(g, idx, c):   # one class of one group, all repeats and folds
-    d = Rl[g]; base = c if c != 'yq12' else 'yq12'; men = sorted(s for s in d if s in T[base] and (c != 'yq12' or all(k in T and s in T[k] for k in ('dyz1', 'dyz2', 'yq12rest'))))
+    d = Rl[g]; base = c if c != 'yq12' else 'yq12'; men = sorted(s for s in d if s in T[base] and (c != 'yq12' or all(k in T and s in T[k] for k in PARTS)))
     if len(men) < 10: return [], [], men
     E, S_ = [], []
     for rp in reps:
@@ -28,7 +29,7 @@ def cv(g, idx, c):   # one class of one group, all repeats and folds
         for f in sorted(set(fold.values())):
             tr = [s for s in ms if fold[s] != f]; te = [s for s in ms if fold[s] == f]
             if len(tr) < 5: continue
-            K = {k: sum(T[k][s] for s in tr) / sum(d[s][k][idx] for s in tr) for k in ('dyz1', 'dyz2', 'yq12rest')} if c == 'yq12' else sum(T[c][s] for s in tr) / sum(d[s][c][idx] for s in tr)
+            K = {k: sum(T[k][s] for s in tr) / sum(d[s][k][idx] for s in tr) for k in PARTS} if c == 'yq12' else sum(T[c][s] for s in tr) / sum(d[s][c][idx] for s in tr)
             for s in te:
                 est = sum(K[k] * d[s][k][idx] for k in K) if c == 'yq12' else K * d[s][c][idx]
                 E.append(100 * abs(est / T[c][s] - 1)); S_.append(SE[rp, c, s][1])
@@ -44,7 +45,7 @@ for g, d in Rl.items():
         for c in REP:
             sr = np.array([float(X[s][N[c] + '_bp']) for s in men])
             if c == 'yq12':
-                K = {k: np.median([float(X[s]['DYZ1_bp' if k == 'dyz1' else 'DYZ2_bp']) / d[s][k][idx] for s in men]) for k in ('dyz1', 'dyz2')}; rest = np.median([(float(X[s]['Yq12_bp']) - float(X[s]['DYZ1_bp']) - float(X[s]['DYZ2_bp'])) / d[s]['yq12rest'][idx] for s in men]); o = np.array([K['dyz1'] * d[s]['dyz1'][idx] + K['dyz2'] * d[s]['dyz2'][idx] + rest * d[s]['yq12rest'][idx] for s in men])
+                K = {k: np.median([float(X[s][N[k] + '_bp']) / d[s][k][idx] for s in men]) for k in PARTS[:-1]}; rest = np.median([(float(X[s]['Yq12_bp']) - sum(float(X[s][N[k] + '_bp']) for k in PARTS[:-1])) / d[s][RC][idx] for s in men]); o = np.array([sum(K[k] * d[s][k][idx] for k in K) + rest * d[s][RC][idx] for s in men])
             else: o = np.array([d[s][c][idx] for s in men]) * np.median([float(X[s][N[c] + '_bp']) / d[s][c][idx] for s in men])
             e = 100 * np.abs(o / sr - 1); rows.append(('vs_short_read', g, nm, c, len(men), f'{e.mean():.2f}', f'{np.median(e):.2f}', f'{np.percentile(e, 90):.2f}', f'{e.max():.2f}', f'{spearmanr(o, sr)[0]:.3f}', '.', '.', '.'))
 with open(OUT, 'w') as o:

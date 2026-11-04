@@ -12,7 +12,7 @@ import sys, csv, collections as co, numpy as np
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, leaves_list
 IN, OUT, TR, D19, D17, RX = sys.argv[1:7]; MINBP = 10000
-from palette import CLASS, SOURCE, TITLE, NAMES, FS, save, ORDER, CONTIG
+from palette import CLASS, SOURCE, SOURCE_LABEL, TITLE, NAMES, FS, save, ORDER, CONTIG
 COL = {k: CLASS[k] for k in ('DYZ3', 'DYZ17', 'DYZ19', 'DYZ1', 'DYZ2', 'DYZ18S')}
 PANEL = ['dyz3', 'dyz17', 'dyz19', 'yq12']; NAME = {'dyz3': 'DYZ3', 'dyz17': 'DYZ17', 'dyz19': 'DYZ19', 'yq12': 'Yq12'}
 rd = lambda p: csv.DictReader(open(p), delimiter='\t')
@@ -82,8 +82,8 @@ for j, rr in enumerate(cols):
     for sp in ('top', 'right', 'left'): ax.spines[sp].set_visible(False)
     ax.spines['bottom'].set_linewidth(0.4)
 y0 = B + H + 1.5 * MM / fig.get_figheight(); kw = dict(loc='lower center', title_fontproperties=TITLE(FS['legend']))
-K = [k for k in ORDER if k in COL or k == 'Yq12']; lc = fig.legend([plt.Line2D([0], [0], color='black', lw=0.8) if k == 'Yq12' else plt.Rectangle((0, 0), 1, 1, fc=COL[k]) for k in K], K, ncol=7, title=NAMES['class'], bbox_to_anchor=(0.36, y0), **kw)
-lp = fig.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in SRC.values()], list(SRC), ncol=2, title=NAMES['source'], bbox_to_anchor=(0.83, y0), **kw)
+K = [k for k in ORDER if k in COL or k == 'Yq12']; lc = fig.legend([plt.Line2D([0], [0], color='black', lw=0.8) if k == 'Yq12' else plt.Rectangle((0, 0), 1, 1, fc=COL[k]) for k in K], K, ncol=7, title=NAMES['class'], bbox_to_anchor=(0.30, y0), **kw)
+lp = fig.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in SRC.values()], [SOURCE_LABEL[k] for k in SRC], ncol=2, title=NAMES['source'], bbox_to_anchor=(0.78, y0), **kw)
 save(fig, OUT); print(sum(1 for a, _ in rows if a), 'assemblies,', len(groups), 'groups', flush=True)
 for k in ('DYZ1', 'DYZ2', 'DYZ18S'):
     c = [sum(x[0] == k for x in Q[a]) for a in A if 'yq12' in A[a]]; print(k, 'clusters >= 10 kb in Yq12 per assembly: median', np.median(c), 'min', min(c), 'max', max(c))
