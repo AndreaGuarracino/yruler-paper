@@ -28,7 +28,7 @@ for f, k in (('lolo.tsv', 'lolo'), ('holdout_21.tsv', 'h21')):
     t = {r['class']: r for r in rows(D / f)}; put(f'{k}_median', ', '.join(f"{c} {t[c]['median_abs']} ({t[c]['n_males']})" for c in ('dyz3', 'yq12', 'dyz19')))
 t = {(r['depth'], r['class']): r for r in rows(D / 'depth.tsv')}; put('depth_1x_median', ', '.join(f"{c} {t[('d1x', c)]['median_abs']}" for c in ('dyz3', 'yq12', 'dyz19')))
 t = {r['class']: r for r in rows(D / 'father_son.tsv') if r['pairs'] == 'all'}; put('father_son_median_signed', ', '.join(f"{c} {t[c]['median_abs']} / {t[c]['signed_median']} ({t[c]['n_pairs']})" for c in ('DYZ3', 'Yq12', 'DYZ19')))
-t = {r['class']: r for r in rows(D / 'cv_females.tsv')}; put('female_bg_pct_median', ', '.join(f"{c} {t[c]['median_pct_of_median_truth']}" for c in ('dyz3', 'yq12', 'dyz19')))
+t = {r['class']: r for r in rows(D / 'cv_females.tsv')}; put('female_bg_pct_median', ', '.join(f"{c} {t[c]['median_pct_of_median_truth']}" for c in ('dyz3', 'dyz17', 'dyz19', 'yq12', 'dyz18s', 'dyz1', 'dyz2')))
 put('female_bg_pct_max_any', f"{max(float(r['max_pct_of_median_truth']) for c, r in t.items() if c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17')):.2f}")
 X = rows(D / 'cohort_1kgp.tsv'); ref = {x['sample']: x['reference_male'] == 'yes' for x in X}
 inc = [x for x in X if x['estimate_basis'] == 'ruler' and x['sex'] != 'female' and x['y_state'] in ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain', 'par2_gain')]; I = {x['sample']: x for x in inc}; incq = [x for x in inc if x['y_state'] != 'par2_gain']   # incq: Yq12, DYZ1, DYZ2 summaries

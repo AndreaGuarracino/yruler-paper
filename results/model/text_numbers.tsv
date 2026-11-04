@@ -10,10 +10,10 @@ cv_median_ratio	2.61
 ratio_per_man_abs_median_p90	2.63 / 7.65
 dyz19_short_truth_men	HG02492 11.34, HG02735 3.12, NA20809 3.79
 lolo_median	dyz3 2.39 (101), yq12 1.89 (80), dyz19 2.63 (115)
-h21_median	dyz3 1.55 (18), yq12 0.80 (3), dyz19 2.90 (14)
+h21_median	dyz3 1.55 (18), yq12 0.51 (3), dyz19 2.90 (14)
 depth_1x_median	dyz3 3.28, yq12 2.06, dyz19 4.21
 father_son_median_signed	DYZ3 1.86 / -0.68 (309), Yq12 1.81 / -0.08 (309), DYZ19 2.85 / -0.45 (309)
-female_bg_pct_median	dyz3 0.0128, yq12 0.0202, dyz19 0.0093
+female_bg_pct_median	dyz3 0.0128, dyz17 0.1050, dyz19 0.0093, yq12 0.0202, dyz18s 0.1929, dyz1 0.0237, dyz2 0.0679
 female_bg_pct_max_any	0.74
 men_estimated_included	1597 / 1587
 dyz3_r1b_vs_other	318.8 kb (282) vs 980.9 kb (1305)
