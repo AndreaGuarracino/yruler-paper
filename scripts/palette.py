@@ -1,4 +1,4 @@
-"""One palette for every figure: satellite classes, DYZ1:DYZ2 ratio and assembly sources (as in Extended Data Fig. 1)."""
+"""One palette for every figure: satellite classes, DYZ1:DYZ2 ratio and assembly sources (as in Extended Data Fig. 2)."""
 ORDER = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']   # along chrY; ratio after its parts, in every figure
 CLASS = {'DYZ3': '#1f4e79', 'DYZ17': '#8e44ad', 'DYZ19': '#c0392b', 'Yq12': '#333333', 'DYZ18S': '#e377c2', 'DYZ1': '#e6a23c', 'DYZ2': '#2e8b57'}
 RATIO = '#8c564b'   # DYZ1:DYZ2
@@ -26,16 +26,16 @@ _mpl.rcParams.update({'legend.frameon': False, 'legend.handlelength': 1.0, 'lege
 
 DOSE = '#526774'   # Y dosage
 INK, MUTED, LINE, GREY, ORANGE = '#22313a', '#55666f', '#60717a', '#a9b4ba', '#d9622b'   # text, guides, tree lines, other males, assemblies
-J2 = '#bd6078'   # J2a1a1 in ED5
+J2 = '#bd6078'   # J2a1a1 in ED9
 BAND = {'DYZ3': '#e8f1f7', 'DYZ19': '#f8e9ec'}   # highlighted rows
 LAND = {'face': '#ebeff1', 'edge': '#bbc5ca'}
-CONTIG = {'face': '#f0f0f0', 'edge': '#bbbbbb'}   # ED1 contigs
-UNITS = {'Other units': '#a584b9', 'Unannotated': '#dbe1e5'}   # ED2 Yq12 composition
+CONTIG = {'face': '#f0f0f0', 'edge': '#bbbbbb'}   # ED2 contigs
+UNITS = {'Other units': '#a584b9', 'Unannotated': '#dbe1e5'}   # ED3 Yq12 composition
 SCHEME = {'reference': '#eef3f5', 'train': '#e7f1f7', 'test': '#f9eee7', 'output': '#eaf4ef'}   # Fig. 1a boxes
 LINEAGE = {'A': '#a73945', 'B': '#d3b183', 'C': '#2684b2', 'D': '#789bac', 'E': '#de915b', 'F': '#94a6ad', 'G': '#b6a14b', 'H': '#b3a1c8',
            'I': '#8b6baa', 'J': '#439a88', 'L': '#83b955', 'M': '#68a5a7', 'NO': '#b0b6bf', 'N': '#9bbc59', 'O': '#62b9b5', 'Q': '#d8bb51',
            'R': '#77628f', 'S': '#b78d69', 'T': '#c4d39e', 'Unassigned': '#dddddd'}   # Y lineages
-HEAT = ['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']   # ED8 copy-number classes
+HEAT = ['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']   # ED4 copy-number classes
 STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6d5d1'}   # cytoband stains
 COLOR = {**CLASS, 'DYZ1:DYZ2': RATIO, 'Y dosage': DOSE}   # every panel title colour
 

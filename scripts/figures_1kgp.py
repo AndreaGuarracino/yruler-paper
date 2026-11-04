@@ -662,7 +662,7 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     for i, (c, a, b) in enumerate(G):
         strip(ax, 2.6 * i, a[0], PURPLE, s=3, a=.8, seed=i, cap=.32, ref=a[1]); strip(ax, 2.6 * i + 1, b[0], GREY, s=3, a=.8, seed=i + 5, cap=.32, ref=b[1]); ax.text(2.6 * i + .5, -TITLE_Y / tall, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=FS["label"])
     ax.set_xticks([x for i in range(3) for x in (2.6 * i, 2.6 * i + 1)], [f"{len(v[0])}" for _, a, b in G for v in (a, b)]); ax.set_xlim(-.7, 6.9); ax.set_ylim(0, 350); ax.set_ylabel("DYZ19 length (kb)"); style(ax, "c")
-    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=PURPLE, label="J2a1a1"), Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY, label="Other J"), Line2D([], [], markeredgecolor=INK, label="From reads, truth-set male", **REF_HANDLE)], **on_top(ax))
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=PURPLE, label="J2a1a1"), Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY, label="Other J")], **on_top(ax))
     # unit ratio by lineage
     ax = box(.40, .625); U = read_tsv(R / "dyz1_dyz2_lineages.tsv"); A = {r["measure"].split("_")[1]: float(r["median"]) for r in read_tsv(R / "dyz1_dyz2_truth_vs_yruler.tsv") if r["measure"].startswith("lineage_") and "_truth_" in r["measure"]}
     for i, r in enumerate(U):
@@ -718,6 +718,7 @@ def population_figure(valid, out, snapshot_path, completed):
     print("Fig. 2a superpopulation counts:", {n["group"]: dict(Counter(r["superpopulation"] for r in n["members"])) for n in leaves}, flush=True)
     p0, p1 = sp.get_position(), axes[-1].get_position()
     fig.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="upper center", bbox_to_anchor=((p0.x0 + p1.x1) / 2, (H - 1) / H), ncol=5, title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=0)
+    fig.legend(handles=[Line2D([], [], markeredgecolor=INK, label="From reads, truth-set male", **REF_HANDLE)], loc="upper left", bbox_to_anchor=(.03, (H - 4.2) / H), fontsize=FS["legend"], borderaxespad=0)   # one diamond key for a-d, f
     stats = frozen_trait(axes[1], leaves, "DYZ3_bp", BLUE, 1e6, 3, [0, 1, 2, 3],
                          "DYZ3", "c", "Length (Mb)", lambda g: g in ("R1b", "O2a2b1a1"), show_panel=False)
     stats += frozen_trait(axes[3], leaves, "Yq12_bp", GREEN, 1e6, 60, [0, 20, 40, 60],
@@ -760,7 +761,7 @@ def population_figure(valid, out, snapshot_path, completed):
 def population_supplement(valid, out):
     order = sorted({r["lineage_display"] for r in valid},
                    key=lambda g: (-sum(r["lineage_display"] == g for r in valid), g))
-    print("ED3 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
+    print("ED8 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
     panels = TARGETS + [("y_dose", "y_dose", "Y dosage", 1, "Y dosage (relative)")]
     fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .42, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
@@ -788,7 +789,7 @@ def population_supplement(valid, out):
         ax.grid(axis="y")
         ax.set_axisbelow(True)
     reads_legend(fig, .997)
-    save(fig, out, "ed/ed3_population")
+    save(fig, out, "ed/ed8_population")
 
 
 def depth_supplement(depth, out):
@@ -802,7 +803,7 @@ def depth_supplement(depth, out):
     lv = sorted(Y, key=lambda k: np.median(C[k])); q = np.array([np.percentile(Y[k], [10, 50, 90]) for k in lv])
     ydose = [{"median_autosomal_depth": np.median(C[k]) * 150 / 120, "mean_median_absolute_pct": m, "min_median_absolute_pct": lo, "max_median_absolute_pct": hi} for k, (lo, m, hi) in zip(lv, q)]   # chr2 31-mer depth to base coverage, as depth_benchmark
     ydose.append({"median_autosomal_depth": DEPTHS["1"], "mean_median_absolute_pct": 0.0, "min_median_absolute_pct": np.nan, "max_median_absolute_pct": np.nan})
-    print("ED4 Y dosage median |diff| %:", {k: (len(Y[k]), round(float(r["mean_median_absolute_pct"]), 3), round(float(r["median_autosomal_depth"]), 1)) for k, r in zip(lv, ydose)}, flush=True)
+    print("ED6 Y dosage median |diff| %:", {k: (len(Y[k]), round(float(r["mean_median_absolute_pct"]), 3), round(float(r["median_autosomal_depth"]), 1)) for k, r in zip(lv, ydose)}, flush=True)
     panels = [(label, sorted((r for r in depth if r["target"] == key), key=lambda r: r["median_autosomal_depth"])) for key, _, label, _, _ in targets] + [("Y dosage", ydose)]
     n = len(panels); cols = 4; rows = -(-n // cols)
     fig, axes = plt.subplots(rows, cols, figsize=(180 * MM, 44 * rows * MM), sharex=True)
@@ -818,7 +819,7 @@ def depth_supplement(depth, out):
     for ax in axes[:, 0]: ax.set_ylabel("Absolute error (%)")
     last = axes.flat[n - 1]; last.yaxis.set_label_position("right"); last.set_ylabel("Absolute difference\nfrom full depth (%)")   # outer edge, other quantity
     for ax in axes.flat[n:]: ax.set_visible(False)
-    save(fig, out, "ed/ed4_depth")
+    save(fig, out, "ed/ed6_depth")
 
 
 def j_subtree_figure(valid, out):
@@ -845,7 +846,7 @@ def j_subtree_figure(valid, out):
     ax.set_axisbelow(True)
     for s, x in (("a", .005), ("b", ax.get_position().x0 - .02)): letter(fig, s, x, .995)
     reads_legend(fig, .998, .98, "upper right")
-    save(fig,out,"ed/ed5_J_DYZ19")
+    save(fig,out,"ed/ed9_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
          "reference_male":r["reference_male"],"DYZ19_bp":r["DYZ19_bp"]}

@@ -81,7 +81,7 @@ for j, rr in enumerate(cols):
     ax.set_xlabel('Position along the contig (Mb)', labelpad=1)
     for sp in ('top', 'right', 'left'): ax.spines[sp].set_visible(False)
     ax.spines['bottom'].set_linewidth(0.4)
-y0 = B + H + 1.5 * MM / fig.get_figheight(); kw = dict(loc='lower center', title_fontproperties=TITLE(FS['legend']), alignment='left')
+y0 = B + H + 1.5 * MM / fig.get_figheight(); kw = dict(loc='lower center', title_fontproperties=TITLE(FS['legend']))
 K = [k for k in ORDER if k in COL or k == 'Yq12']; lc = fig.legend([plt.Line2D([0], [0], color='black', lw=0.8) if k == 'Yq12' else plt.Rectangle((0, 0), 1, 1, fc=COL[k]) for k in K], K, ncol=7, title=NAMES['class'], bbox_to_anchor=(0.36, y0), **kw)
 lp = fig.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in SRC.values()], list(SRC), ncol=2, title=NAMES['source'], bbox_to_anchor=(0.83, y0), **kw)
 save(fig, OUT); print(sum(1 for a, _ in rows if a), 'assemblies,', len(groups), 'groups', flush=True)

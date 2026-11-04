@@ -88,7 +88,7 @@ def depth_curves(ax,legend=True):
     ax.set_title("Depth: every repeat, all targets",loc="left",fontsize=10.5,pad=10)
     ax.grid(True)
     if legend:ax.legend(loc="lower left",bbox_to_anchor=(0,1.02),ncol=4,frameon=False,
-                        fontsize=6.8,title=NAMES['class'],title_fontproperties=TITLE(6.8),alignment='left')
+                        fontsize=6.8,title=NAMES['class'],title_fontproperties=TITLE(6.8))
     style(ax)
 
 def error_cloud(ax,kind,target_colors=False):
@@ -302,6 +302,6 @@ def lineage_supplement(out):
     for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
         ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'s',color=INK,markersize=3,zorder=6)   # CV median; diamonds mean reference males
     ax.set_yticklabels(rowlabels())
-    save(fig,out,'ed/ed6_lineage_validation')
+    save(fig,out,'ed/ed5_lineage_validation')
 
 

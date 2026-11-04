@@ -593,7 +593,7 @@ def composition_supplement(rows, order, out):
     axes[0].set_xlim(-1, len(ordered))
     axes[0].set_ylim(0, 100)
     axes[0].set_ylabel("Annotated Yq12 bases (%)")
-    axes[0].legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=4, title=NAMES["class"], title_fontproperties=TITLE(FS["legend"]), alignment="left", borderaxespad=0.3)
+    axes[0].legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, title=NAMES["class"], title_fontproperties=TITLE(FS["legend"]), borderaxespad=0.3)
     for group in order + ["Unassigned"]:
         subset = [row for row in ordered if row["display_group"] == group]
         if subset:
@@ -611,7 +611,7 @@ def composition_supplement(rows, order, out):
     fig.subplots_adjust(left=0.07, right=0.99, top=0.925, bottom=0.07)
     from palette import letter
     for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.075 if s == "a" else .05))
-    save(fig, out, "ed/ed2_yq12_composition")
+    save(fig, out, "ed/ed3_yq12_composition")
 
 
 def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, dyz19_path, out):
@@ -683,7 +683,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     fig.text(0.39, 0.033, "c–e: interquartile ranges and medians.  f: mean composition; points, individual DYZ1 fractions.",
              ha="center", fontsize=7.5, color="#4d606b")
     fig.text(0.39, 0.012, "Haplogroup branches are schematic.  * Unresolved within NO.", ha="center", fontsize=7.5, color="#4d606b")
-    save(fig, out, "main/fig2_biology")
+    plt.close(fig); print("old Fig. 2 layout not saved: main Fig. 2 comes from manuscript_figures.py", flush=True)
     composition_supplement(composition, order, out)
 
     map_fig, map_ax = plt.subplots(figsize=(10.0, 4.5))

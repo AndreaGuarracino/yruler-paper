@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Numbers of the Online Methods from the final tables.
+"""Numbers of the Methods from the final tables.
 
 usage: python3 scripts/methods_numbers.py <results dir> <gc_curves.tsv> <out.tsv>
 inputs: <results dir>/{cv,cv_units,lolo,lolo_units,cv_females,cohort_1kgp,cohort_hgdp_sgdp,same_male_pairs,father_son,x_par_doses}.tsv, results/estimates_1kgp.sensitivity.tsv,

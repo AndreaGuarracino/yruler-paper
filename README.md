@@ -4,7 +4,7 @@ Manuscript, figures and analysis tables of the yruler paper: lengths of the sate
 
 ## Contents
 
-- `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex`, `online-methods.tex`, `y-state.tex`, `reference-lineage-table.tex`), bibliography and figure PDFs.
+- `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex`, `methods.tex`, `y-state.tex`, `reference-lineage-table.tex`), bibliography and figure PDFs.
 - `results/model/`: per-sample estimates of the final model (`cohort_1kgp.tsv`, `cohort_hgdp_sgdp.tsv`), cross-validation predictions, depth tests and the tables behind the numbers in the text (`text_numbers.tsv`, `methods_numbers.tsv`, `biology_tests.tsv`, `pgls_composition.tsv`).
 - `results/checks/`: checks cited in the Methods (relatedness, nanopore cross-validation, sequencing-protocol pairs and others).
 - `results/cohorts/`, `results/tree/`, `results/tree_biallelic/`: cohort tables and the Y SNP trees.
@@ -26,4 +26,4 @@ python3 scripts/relatedness_checks.py $R results/checks/relatedness/gnomad_relat
 cd manuscript && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
 
-The per-sample estimates come from yruler runs on the sequencing data listed in the Data availability section of the manuscript. Those runs, the marker selection and the cross-validation used a computing cluster and are described in the Online Methods.
+The per-sample estimates come from yruler runs on the sequencing data listed in the Data availability section of the manuscript. Those runs, the marker selection and the cross-validation used a computing cluster and are described in the Methods.

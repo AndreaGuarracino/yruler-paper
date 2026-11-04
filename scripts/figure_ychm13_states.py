@@ -107,11 +107,11 @@ lax.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), l
 for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))):   # palindromes 5.2-6.4, labels on two rows
     for a, b in arms: ax0.add_patch(plt.Rectangle((a / MB, 5.2), (b - a) / MB, 1.2, fc=INK, lw=0))
     ax0.text(np.mean([v for ab in arms for v in ab]) / MB, 4.9 - 2.4 * (i % 2), p, ha='center', va='top', fontsize=PL.FS["point"], color=INK)
-for y, lab in ((12.3, 'Cytoband'), (8.6, 'Sequence\nclass'), (5.8, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=PL.FS["tick"], color=INK, linespacing=1)
+for y, lab in ((12.3, 'Cytoband'), (8.6, NAMES['annotation']), (5.8, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=PL.FS["tick"], color=INK, linespacing=1)
 ax0.set_xlim(0, xmax); ax0.set_ylim(0, HEAD); ax0.axis('off')
 M = np.array([X[s] for s in rows]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect='auto', cmap=cm, norm=nrm, interpolation='nearest', extent=(0, xmax, n, 0))
 ax2.hlines(np.arange(1, n), 0, xmax, color='white', lw=0.5)   # thin gap between rows
-nd = np.isnan(M).astype(float); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
+nd = np.isnan(M).astype(float); print(f'no-data cells in the heatmap: {int(nd.sum())} of {nd.size}', flush=True); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
 ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels(rows)
 for t, s in zip(ax2.get_yticklabels(), rows): t.set_color(PL.GREY if s in relrow else INK)   # relatives outside the groups in grey
 ax2.set_xlabel('CHM13v2 chrY position (Mb)'); ax2.set_xlim(0, xmax)
@@ -126,5 +126,5 @@ for lab, a, b in gl:
     for a_ in (ax2, ay, ax): a_.axhline(a, color=INK, lw=0.6)
     axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 12), va='center', ha='left', fontsize=PL.FS["tick"], color=INK)
 cb = fig.colorbar(im, cax=cax, boundaries=BOUND, ticks=[(a + b) / 2 for a, b in zip(BOUND[:-1], BOUND[1:])]); cb.ax.set_yticklabels(['0', '0.5', 'loss', '1', 'gain', '1.5', '2'])
-cb.set_label('Copies vs 100 reference XY males; hatched white: no data')
+cb.set_label('Dose relative to 100 normal XY males' + ('; hatched: no data' if nd.any() else ''))
 save(fig, OUT)
