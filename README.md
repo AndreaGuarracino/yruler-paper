@@ -9,7 +9,7 @@ Manuscript, figures and analysis tables of the yruler paper: lengths of the sate
 - `results/checks/`: checks cited in the Methods (relatedness, nanopore cross-validation, sequencing-protocol pairs and others).
 - `results/cohorts/`, `results/tree/`, `results/tree_biallelic/`: cohort tables and the Y SNP trees.
 - `data/`: reference-array annotations, marker regions and metadata used by the figure scripts.
-- `scripts/`: Python scripts that make the figures and tables from the files above.
+- `scripts/`: Python scripts that make the figures and tables from the files above; `scripts/pipeline/`: the cluster scripts that build the model and its cross-validation from assemblies and reads.
 
 ## Rebuild
 
@@ -29,4 +29,4 @@ python3 scripts/relatedness_checks.py $R results/checks/relatedness/gnomad_relat
 cd manuscript && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
 
-The per-sample estimates come from yruler runs on the sequencing data listed in the Data availability section of the manuscript. Those runs, the marker selection and the cross-validation used a computing cluster and are described in the Methods.
+The per-sample estimates come from yruler runs on the sequencing data listed in the Data availability section of the manuscript. Those runs, the marker selection and the cross-validation used a computing cluster; `scripts/pipeline/README.md` lists the steps.
