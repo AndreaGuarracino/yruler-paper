@@ -63,16 +63,26 @@ def svg_panels(tmp, out):
     print(f'SVG: {len(parts)} top-level elements, {sum(v == "c-f" for v in parts.values())} of panels c-e dropped (redrawn here)', flush=True)
 
 
+SHRINK = {'c': (362.05, 501.05, 14), 'd': (571, 695.5, 14), 'e': (571, 695.5, 14), 'f': (762, 844, 12)}   # plot band (design y) and units removed from it
+ROWS = {'c': 0, 'd': 1, 'e': 1, 'f': 2}   # rows below b; shrinks of rows above shift a row up
+P_ = None   # current panel
+
+
+def g(y):
+    """Design y to drawn y in the current panel."""
+    a, b, sh = SHRINK.get(P_, (0, 1, 0)); return y if y <= a else y - sh * min(y - a, b - a) / (b - a)
+
+
 def panel(p):
     """New figure for panel p."""
-    global FIG, R
-    _, x0, y0, x1, y1 = PANELS[p]; R = (x0, y0, x1 - x0, y1 - y0)
-    FIG = plt.figure(figsize=(R[2] * S / 72, R[3] * S / 72))
+    global FIG, R, P_
+    _, x0, y0, x1, y1 = PANELS[p]; R = (x0, y0, x1 - x0, y1 - y0); P_ = p
+    FIG = plt.figure(figsize=(R[2] * S / 72, (g(y1) - g(y0)) * S / 72))
 
 
 XS = 1   # x stretch: ED figures 180 mm wide with Fig. 1 font sizes
 fx = lambda x: (x * XS - R[0]) / R[2]
-fy = lambda y: 1 - (y - R[1]) / R[3]
+fy = lambda y: 1 - (g(y) - g(R[1])) / (g(R[1] + R[3]) - g(R[1]))   # bands shrunk by SHRINK
 
 
 def axes(x0, y0, x1, y1):
@@ -161,7 +171,8 @@ def panel_c(out):
 def ed4(path):
     """Extended Data Fig. 4: excluded-lineage errors, Fig. 1c style."""
     global R, XS
-    XS = 180 / 25.4 * 72 / S / 540; panel('c'); R = (0, 342, 540 * XS, 270); FIG.set_size_inches(R[2] * S / 72, R[3] * S / 72)
+    global P_
+    XS = 180 / 25.4 * 72 / S / 540; panel('c'); P_ = 'ed4'; R = (0, 342, 540 * XS, 270); FIG.set_size_inches(R[2] * S / 72, R[3] * S / 72)   # ED4: no shrink
     E = lolo_errors(); mx = max(max(per.values()) for per, _ in E.values()); print(f'ED4 largest error {mx:.2f}%', flush=True)
     boxes(E, 'Absolute error (%, log scale)', 'Excluded-lineage error', '', ybot=581)   # every point shown, log y as Fig. 1c
     from palette import PAD
@@ -245,7 +256,7 @@ def panel_f(out):
     gap = ((fy_ > top) & (fy_ < .2)).sum() + ((my > top) & (my < .2)).sum(); lo, hi = (my >= .2).sum(), (my > 2.2).sum()
     print(f'f: broken x axis, samples in the hidden {top}-0.2 gap: {gap}, males from 0.2: {lo}, above 2.2 (clipped into the last bin): {hi}', flush=True)
     if gap: sys.exit('ERROR samples in the hidden part of the dosage axis')
-    T1, B, X1, X2 = 751, 844, 135, 141; HB = B - T1   # top, bottom, axis break
+    T1, B, X1, X2 = 751, 844, 135, 141; HB = g(B) - g(T1)   # top, bottom, axis break; HB drawn axes height
     a1, a2 = axes(52, T1, X1, B), axes(X2, T1, 270, B)   # log part (no Y), linear part (Y)
     for ax, bins, clip in ((a1, np.logspace(-4, np.log10(top), 26), (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
         for v, c, lab in ((fy_, '#B07AA1', f'Recorded females (n = {len(fy_)})'), (my, DOSE, f'Recorded males (n = {len(my):,})')):
@@ -261,7 +272,7 @@ def panel_f(out):
     for r in males:
         if float(r['y_dose']) <= cut:   # recorded male without Y
             e = np.logspace(-4, np.log10(top), 26); j = np.searchsorted(e, float(r['y_dose'])) - 1   # its bin
-            a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (B - 865) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=7 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
+            a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (g(B) - g(865)) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=7 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
                         arrowprops=dict(arrowstyle='-|>', color='k', lw=.5, mutation_scale=4, shrinkA=1, shrinkB=0))
             print(f"f: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
     a2.legend(loc='upper left', fontsize=7 * S, handlelength=.8, frameon=False, bbox_to_anchor=(.0, 1 + 3 / HB), borderaxespad=0)   # 3 units above the axes top
@@ -292,14 +303,15 @@ def main():
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/main'; pd = out / 'fig1'; pd.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as t: svg_panels(Path(t), pd)
     panel_c(pd); panel_d(pd); panel_e(pd); panel_f(pd)
-    w = PdfWriter(); page = w.add_blank_page(W * S, H * S)
+    up = lambda p: sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from rows above
+    Hn = H - sum(SHRINK[q][2] for q in ('c', 'd', 'f')); w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)
     for p, (name, x0, y0, x1, y1) in PANELS.items():
-        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height)
-        if abs(sw - (x1 - x0) * S) > .5 or abs(sh - (y1 - y0) * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {(y1 - y0) * S:.1f}')
-        page.merge_transformed_page(sub, Transformation().translate(x0 * S, (H - y1) * S))
+        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = y1 - y0 - SHRINK.get(p, (0, 0, 0))[2]
+        if abs(sw - (x1 - x0) * S) > .5 or abs(sh - hn * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {hn * S:.1f}')
+        page.merge_transformed_page(sub, Transformation().translate(x0 * S, (Hn - (y0 - up(p)) - hn) * S))
     f = out / 'fig1_method.pdf'; w.write(f)
     subprocess.run(['inkscape', str(f), '--export-type=svg', f'--export-filename={f.with_suffix(".svg")}'], check=True, capture_output=True)
-    print(f'written {f} and .svg: {W * S:.1f} x {H * S:.1f} pt ({W * S / 72 * 25.4:.1f} x {H * S / 72 * 25.4:.1f} mm), {len(PANELS)} panels', flush=True)
+    print(f'written {f} and .svg: {W * S:.1f} x {Hn * S:.1f} pt ({W * S / 72 * 25.4:.1f} x {Hn * S / 72 * 25.4:.1f} mm), {len(PANELS)} panels', flush=True)
 
 
 if __name__ == '__main__':
