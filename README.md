@@ -4,7 +4,7 @@ Manuscript, figures and analysis tables of the yruler paper: lengths of the sate
 
 ## Contents
 
-- `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex`, `methods.tex`, `y-state.tex`, `reference-lineage-table.tex`), bibliography and figure PDFs.
+- `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex` and `methods.tex`), bibliography and figure PDFs.
 - `results/model/`: per-sample estimates of the final model (`cohort_1kgp.tsv`, `cohort_hgdp_sgdp.tsv`), cross-validation predictions, depth tests and the tables behind the numbers in the text (`text_numbers.tsv`, `methods_numbers.tsv`, `biology_tests.tsv`, `pgls_composition.tsv`).
 - `results/checks/`: checks cited in the Methods (relatedness, nanopore cross-validation, sequencing-protocol pairs and others).
 - `results/cohorts/`, `results/tree/`, `results/tree_biallelic/`: cohort tables and the Y SNP trees.
@@ -16,9 +16,12 @@ Manuscript, figures and analysis tables of the yruler paper: lengths of the sate
 Python 3 with numpy, scipy and matplotlib. Run from the repository root.
 
 ```shell
-python3 scripts/manuscript_figures.py      # main figures and most supplementary figures into manuscript/figures
-python3 scripts/pedigree_plots.py          # parent-offspring figures
 R=results/model
+python3 scripts/biology_tests.py $R data/method/indep_ours10.tsv data/method/yq12_truth_hallast.tsv $R/biology_tests.tsv $R/dunn_pairs.tsv
+python3 scripts/manuscript_figures.py      # Fig. 2, Extended Data and Supplementary Fig. 1 into manuscript/figures
+python3 scripts/figure1.py                 # Fig. 1 (panels a and b from manuscript/figures/main/fig1/*.svg)
+python3 scripts/pedigree_plots.py          # parent-offspring figure
+python3 scripts/suppfig2_markerfree.py     # Supplementary Fig. 2
 python3 scripts/text_numbers.py $R $R/text_numbers.tsv
 python3 scripts/methods_numbers.py $R results/checks/gc_curves.tsv $R/methods_numbers.tsv
 python3 scripts/pgls_composition.py $R/cohort_1kgp.tsv $R/pgls_composition.tsv

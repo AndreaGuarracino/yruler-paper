@@ -3,7 +3,7 @@
 usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4 in the Fig. 1c style)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
 writes <out>/fig1/fig1{a..f}_*.pdf (one per panel) and <out>/fig1_method.pdf/.svg (the panels composed).
 Layout units are the SVG units (540 wide, y down); 1 unit = 0.75 pt in the PDF, as in the Inkscape export of v4."""
-import collections as co, csv, os, subprocess, sys, tempfile, xml.etree.ElementTree as ET
+import collections as co, csv, os, re, subprocess, sys, tempfile, xml.etree.ElementTree as ET
 from pathlib import Path
 import numpy as np
 import matplotlib
@@ -15,13 +15,15 @@ from pypdf import PdfReader, PdfWriter, Transformation
 from palette import CLASS, RATIO, DOSE
 
 ROOT = Path(__file__).resolve().parents[1]
-SVG = ROOT / 'manuscript/figures/main/fig1/Fig1_Yruler_v4.svg'   # Alejandro's v4, source of a-b
+SVG = ROOT / 'manuscript/figures/main/fig1/Fig1_Yruler_v4.svg'   # Alejandro's v4, source of b
+SVG_A = ROOT / 'manuscript/figures/main/fig1/Fig1A_Yruler_v3 (1).svg'   # Alejandro's compact a (2026-11-04)
+A_BOX = (10.83, 103)   # a viewBox y range: 5.5 units above the title, 1 below the lowest label
 M = ROOT / 'results/model'
 W, H, S = 540, 870, 0.75   # page width and height (units), pt per unit
 PANELS = {'a': ('chrY', 0, 0, 540, 114), 'b': ('workflow', 0, 96, 540, 342), 'c': ('cv', 0, 342, 540, 532),   # name, region x0 y0 x1 y1
           'd': ('coverage', 0, 532, 204, 720), 'e': ('pedigrees', 204, 532, 540, 720), 'f': ('specificity', 0, 720, 540, 870)}
 LOGO = (234, 99, 322, 136)   # Yruler logo box, part of b
-A_UP = 5   # units of empty space cut above the a title
+A_UP = 96 - 68.47   # b top on the page: logo letters 5 units under the DYZ18S bar of a (bar bottom y 87.3 in SVG_A, page 76.47)
 NAMES = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']
 COL = {**CLASS, 'DYZ1:DYZ2': RATIO}
 KEY = {n: n.lower() for n in NAMES}
@@ -48,14 +50,17 @@ def svg_panels(tmp, out):
         logo = x >= LOGO[0] and y >= LOGO[1] and x + w <= LOGO[2] and y + h <= LOGO[3]
         return 'c-f' if y >= PANELS['b'][4] else 'b' if logo or y >= PANELS['a'][4] - 1 else 'a'
     parts = {e.get('id'): part(e) for e in root}
-    for p in 'ab':
+    s = SVG_A.read_text(); s = re.sub(r'viewBox="[^"]*"', f'viewBox="0 {A_BOX[0]} 540 {A_BOX[1] - A_BOX[0]}"', s, 1); s = re.sub(r'enable-background:new [^;]*;', f'enable-background:new 0 {A_BOX[0]} 540 {A_BOX[1] - A_BOX[0]};', s, 1)
+    for a, b in FONTS: s = s.replace(a, b)
+    f = out / f'fig1a_{PANELS["a"][0]}.pdf'; (tmp / 'a.svg').write_text(s)
+    subprocess.run(['inkscape', str(tmp / 'a.svg'), '--export-type=pdf', f'--export-filename={f}'], check=True, capture_output=True); print(f'panel a: {SVG_A.name}, y {A_BOX[0]}-{A_BOX[1]} -> {f}', flush=True)
+    for p in 'b':
         _, x0, y0, x1, y1 = PANELS[p]; t = ET.parse(tmp / 'ids.svg'); r = t.getroot()
         for e in list(r):
             if parts[e.get('id')] not in ('keep', p): r.remove(e)
         low = max((box[e.get('id')][1] + box[e.get('id')][3] for e in r if parts[e.get('id')] == p), default=0)
         high = min((box[e.get('id')][1] for e in r if parts[e.get('id')] == p), default=0)
         if low > y1 or high < y0: sys.exit(f'ERROR panel {p}: elements span y {high:.1f}-{low:.1f}, outside its region {y0}-{y1}')
-        y0 = y0 + A_UP if p == 'a' else y0   # a starts below the cut
         r.set('viewBox', f'{x0} {y0} {x1 - x0} {y1 - y0}'); r.set('style', f'enable-background:new {x0} {y0} {x1 - x0} {y1 - y0};')
         s = ET.tostring(r, encoding='unicode')
         for a, b in FONTS: s = s.replace(a, b)
@@ -325,7 +330,7 @@ def main():
     up = lambda p: (A_UP if p != 'a' else 0) + sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from a and rows above
     Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd', 'f')); w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)
     for p, (name, x0, y0, x1, y1) in PANELS.items():
-        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = y1 - y0 - SHRINK.get(p, (0, 0, 0))[2] - (A_UP if p == 'a' else 0)
+        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = A_BOX[1] - A_BOX[0] if p == 'a' else y1 - y0 - SHRINK.get(p, (0, 0, 0))[2]
         if abs(sw - (x1 - x0) * S) > .5 or abs(sh - hn * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {hn * S:.1f}')
         page.merge_transformed_page(sub, Transformation().translate(x0 * S, (Hn - (y0 - up(p)) - hn) * S))
     f = out / 'fig1_method.pdf'; w.write(f)
