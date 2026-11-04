@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fig. 1: panels a-b cut from Alejandro's Fig1_Yruler_v4.svg, panels c-f drawn from the model tables in its style.
-usage: [TOP=15] python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4 in the Fig. 1c style)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
+usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4 in the Fig. 1c style)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
 writes <out>/fig1/fig1{a..f}_*.pdf (one per panel) and <out>/fig1_method.pdf/.svg (the panels composed).
 Layout units are the SVG units (540 wide, y down); 1 unit = 0.75 pt in the PDF, as in the Inkscape export of v4."""
 import collections as co, csv, os, subprocess, sys, tempfile, xml.etree.ElementTree as ET
@@ -122,28 +122,28 @@ def lolo_errors():
     return {n: ({m: abs(v) for m, v in U[KEY[n]].items()}, float(np.median(np.abs(list(U[KEY[n]].values()))))) for n in NAMES}
 
 
-def boxes(E, ylabel, title, letter, cvmed=None, top=None, ybot=501.05):
-    """Fig. 1c box plot on the current panel figure; top None: TOP env threshold with triangles."""
-    ax = axes(37.15, 362.05, 521.95, ybot); rng = np.random.default_rng(1); full = top is not None
-    top, J2 = top if full else float(os.environ.get('TOP', 15)), ('HG02492', 'HG02735', 'NA20809')   # short J2a1a1 DYZ19 arrays
+def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05):
+    """Fig. 1c box plot on the current panel figure, log y, every male."""
+    ax = axes(37.15, 362.05, 521.95, ybot); rng = np.random.default_rng(1); J2 = ('HG02492', 'HG02735', 'NA20809')   # short J2a1a1 DYZ19 arrays
+    allv = np.concatenate([np.array(list(per.values())) for per, _ in E.values()]); lo, hi, yl = 10 ** np.floor(np.log10(allv.min())), 50, 33   # log axis from the decade below the smallest error; median labels at yl
+    assert allv.max() < yl, allv.max(); print(f'{title}: errors {allv.min():.4f}-{allv.max():.2f}%, y axis {lo:g}-{hi}', flush=True)
     for i, n in enumerate(NAMES):
         per, med = E[n]; males = sorted(per); v = np.array([per[m] for m in males]); x = i + rng.uniform(-.24, .24, len(v)); c = COL[n]
-        low = v <= top
-        ax.scatter(x[low], v[low], s=3.2, color=c, alpha=.55, lw=0, zorder=2)
+        ax.scatter(x, v, s=3.2, color=c, alpha=.55, lw=0, zorder=2)
         q = np.percentile(v, [10, 25, 50, 75, 90])
         ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55, patch_artist=True,
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2),
                whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22, manage_ticks=False, zorder=3)
         if cvmed: ax.scatter(i + .36, cvmed[n], marker='s', s=10, facecolor='white', edgecolor='k', lw=.6, zorder=6)
-        k = (~low).sum(); lab = f'{med:.2f}%' + (f' (▲{k})' if k else '')   # triangle count beside the median
-        ax.text(i, top * 1.027 if top > 12 else min(q[4] + 2.4, 11), lab, color=c, ha='center', fontsize=10 * S, zorder=6, bbox=dict(facecolor='white', alpha=.75, edgecolor='none', pad=.6))
+        ax.text(i, yl, f'{med:.2f}%', color=c, ha='center', va='center', fontsize=10 * S, zorder=6, bbox=dict(facecolor='white', alpha=.75, edgecolor='none', pad=.6))
         ax.annotate(f'{n}\n(n = {len(v)})', (i, 0), xycoords=('data', 'axes fraction'), xytext=(0, -3), textcoords='offset points',
                     ha='center', va='top', color=c, fontsize=10 * S, fontweight='bold', linespacing=1.15)
         if n == 'DYZ19':
             for m in J2:
                 if m in per: ax.scatter(x[males.index(m)], per[m], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, zorder=5)
-        print(f'{title} {n}: {len(v)} males, median of predictions {med:.2f}%, p10-p90 {q[0]:.2f}-{q[4]:.2f}, above {top}%: {(~low).sum()}' + (f', CV median {cvmed[n]:.2f}%' if cvmed else ''), flush=True)
-    ax.set_xlim(-.576, 7.53); ax.set_ylim(0, top * 1.112); ax.set_xticks([]); ax.set_yticks(np.arange(0, top + .1, 2 if top <= 12 else 5 if top <= 30 else 10))
+        print(f'{title} {n}: {len(v)} males, median of predictions {med:.2f}%, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.3f}, max {v.max():.2f}' + (f', CV median {cvmed[n]:.2f}%' if cvmed else ''), flush=True)
+    ax.set_xlim(-.576, 7.53); ax.set_yscale('log'); ax.set_ylim(lo, hi); ax.set_xticks([]); T = [t for t in (.01, .02, .05, .1, .2, .5, 1, 2, 5, 10, 20) if t >= lo]; ax.set_yticks(T, [f'{t:g}' for t in T])   # 1-2-5 per decade
+    ax.yaxis.set_minor_locator(matplotlib.ticker.LogLocator(subs=range(2, 10))); ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter()); ax.tick_params(which='minor', width=.4, length=1.5)
     for t in ax.get_yticklabels(): t.set_fontstyle('italic')
     frame(ax); ax.tick_params(axis='y', labelsize=10 * S)
     ax.set_ylabel(ylabel, fontsize=10 * S, fontstyle='italic', labelpad=2)
@@ -152,11 +152,10 @@ def boxes(E, ylabel, title, letter, cvmed=None, top=None, ybot=501.05):
     yd = 343 if cvmed else 354   # legends stacked when the CV square is shown
     mark([42], [yd], marker='D', ms=4.5, mfc='white', mec='k', mew=.6); put(48.5, yd + 3, '= short J2a1a1 DYZ19 arrays', 8)
     if cvmed: mark([42], [354], marker='s', ms=3.6, mfc='white', mec='k', mew=.6); put(48.5, 357, '= cross-validation median (Fig. 1c)', 8)
-    if not full: put(425.5, 358.4, '▲', 10, color=GREY); put(438.5, 358.4, f'= points above {top:g}%', 10)
 
 
 def panel_c(out):
-    panel('c'); boxes(cv_errors(), 'Mean absolute error (%)', 'Cross-validation error', 'c'); save('c', out)
+    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c'); save('c', out)
 
 
 def ed4(path):
@@ -164,7 +163,7 @@ def ed4(path):
     global R, XS
     XS = 180 / 25.4 * 72 / S / 540; panel('c'); R = (0, 342, 540 * XS, 270); FIG.set_size_inches(R[2] * S / 72, R[3] * S / 72)
     E = lolo_errors(); mx = max(max(per.values()) for per, _ in E.values()); print(f'ED4 largest error {mx:.2f}%', flush=True)
-    boxes(E, 'Absolute error (%)', 'Excluded-lineage error', '', top=np.ceil(mx / 5) * 5, ybot=581)   # every point shown
+    boxes(E, 'Absolute error (%, log scale)', 'Excluded-lineage error', '', ybot=581)   # every point shown, log y as Fig. 1c
     from palette import PAD
     FIG.savefig(path, bbox_inches='tight', pad_inches=PAD); plt.close(FIG); XS = 1; print(f'written {path}', flush=True)
 
