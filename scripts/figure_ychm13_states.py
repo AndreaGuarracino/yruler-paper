@@ -42,6 +42,10 @@ if KM:   # PAR and XTR windows: Y dose from the 31-mers shared by X and Y, Y = 2
 def order(S):   # rows of a group by profile similarity
     if len(S) < 3: return S
     A = np.nan_to_num(np.clip(np.array([X[s] for s in S]), 0, 2), nan=1.0); return [S[i] for i in leaves_list(optimal_leaf_ordering(linkage(A, 'average'), A))]
+ORD = __import__('os').environ.get('ORDER', 'window')   # window: 100-kb profiles; band: mean per cytoband
+BI = [ix for ix in ([j for j in range(nw) if a <= j * step < b] for _, a, b, _ in BANDS) if ix]
+feat = (lambda v: np.array([np.nanmean(v[ix]) if np.isfinite(v[ix]).any() else np.nan for ix in BI])) if ORD == 'band' else (lambda v: v)
+print(f'row order within groups: {ORD} ({len(BI) if ORD == "band" else nw} features)', flush=True)
 FS = [(r['parent'], r['child']) for r in rd('results/estimates_1kgp.relationships.tsv') if r['relationship'] == 'parent_offspring' and r['parent'] in X and r['child'] in X]   # father-son pairs shown
 grp = {s: st for s in X for lab, st in GROUPS if info[s][0] == st}; grp.update({s: lab for lab, S in EXTRA for s in S if s in X})
 REL = co.defaultdict(list)
@@ -58,7 +62,7 @@ for lab, key in [(l, st) for l, st in GROUPS] + [(l, l) for l, S in EXTRA]:
             seen.add(x); u.append(x); todo += [y for y, _ in REL[x] if y not in seen and grp.get(y) == key]
         units.append(sorted(u, key=lambda x: sum(1 for y, r in REL[x] if r == 'offspring of' and y in u)))   # fathers above sons
     if len(units) > 2:
-        A = np.nan_to_num(np.clip(np.array([np.nanmean([X[x] for x in u if x in M], 0) for u in units]), 0, 2), nan=1.0); units = [units[i] for i in leaves_list(optimal_leaf_ordering(linkage(A, 'average'), A))]
+        A = np.nan_to_num(np.clip(np.array([feat(np.nanmean([X[x] for x in u if x in M], 0)) for u in units]), 0, 2), nan=1.0); units = [units[i] for i in leaves_list(optimal_leaf_ordering(linkage(A, 'average'), A))]
     S = [x for u in units for x in u]; relrow |= {x for x in S if x not in grp}
     if S: gl.append((lab, len(rows), len(rows) + len(S))); rows.extend(S)
 BASE = dict(NOTE)
