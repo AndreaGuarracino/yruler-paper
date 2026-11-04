@@ -21,6 +21,7 @@ W, H, S = 540, 870, 0.75   # page width and height (units), pt per unit
 PANELS = {'a': ('chrY', 0, 0, 540, 114), 'b': ('workflow', 0, 96, 540, 342), 'c': ('cv', 0, 342, 540, 532),   # name, region x0 y0 x1 y1
           'd': ('coverage', 0, 532, 204, 720), 'e': ('pedigrees', 204, 532, 540, 720), 'f': ('specificity', 0, 720, 540, 870)}
 LOGO = (234, 99, 322, 136)   # Yruler logo box, part of b
+A_UP = 5   # units of empty space cut above the a title
 NAMES = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']
 COL = {**CLASS, 'DYZ1:DYZ2': RATIO}
 KEY = {n: n.lower() for n in NAMES}
@@ -54,6 +55,7 @@ def svg_panels(tmp, out):
         low = max((box[e.get('id')][1] + box[e.get('id')][3] for e in r if parts[e.get('id')] == p), default=0)
         high = min((box[e.get('id')][1] for e in r if parts[e.get('id')] == p), default=0)
         if low > y1 or high < y0: sys.exit(f'ERROR panel {p}: elements span y {high:.1f}-{low:.1f}, outside its region {y0}-{y1}')
+        y0 = y0 + A_UP if p == 'a' else y0   # a starts below the cut
         r.set('viewBox', f'{x0} {y0} {x1 - x0} {y1 - y0}'); r.set('style', f'enable-background:new {x0} {y0} {x1 - x0} {y1 - y0};')
         s = ET.tostring(r, encoding='unicode')
         for a, b in FONTS: s = s.replace(a, b)
@@ -63,7 +65,7 @@ def svg_panels(tmp, out):
     print(f'SVG: {len(parts)} top-level elements, {sum(v == "c-f" for v in parts.values())} of panels c-e dropped (redrawn here)', flush=True)
 
 
-SHRINK = {'c': (362.05, 501.05, 14), 'd': (571, 695.5, 14), 'e': (571, 695.5, 14), 'f': (762, 844, 12)}   # plot band (design y) and units removed from it
+SHRINK = {'c': (362.05, 501.05, 14), 'd': (571, 695.5, 14), 'e': (571, 695.5, 14), 'f': (762, 844, 20)}   # plot band (design y) and units removed from it
 ROWS = {'c': 0, 'd': 1, 'e': 1, 'f': 2}   # rows below b; shrinks of rows above shift a row up
 P_ = None   # current panel
 
@@ -87,7 +89,7 @@ fy = lambda y: 1 - (g(y) - g(R[1])) / (g(R[1] + R[3]) - g(R[1]))   # bands shrun
 
 def axes(x0, y0, x1, y1):
     """Axes at SVG coordinates."""
-    return FIG.add_axes([fx(x0), fy(y1), (x1 - x0) * XS / R[2], (y1 - y0) / R[3]])
+    return FIG.add_axes([fx(x0), fy(y1), (x1 - x0) * XS / R[2], fy(y0) - fy(y1)])   # drawn height (SHRINK)
 
 
 def put(x, y, s, size, **k):
@@ -107,7 +109,7 @@ def frame(ax, sides='all'):
 
 def save(p, out):
     f = out / f'fig1{p}_{PANELS[p][0]}.pdf'; FIG.savefig(f, transparent=True); plt.close(FIG)
-    print(f'panel {p}: {R[2] * S:.1f} x {R[3] * S:.1f} pt -> {f}', flush=True)
+    print(f'panel {p}: {R[2] * S:.1f} x {(g(R[1] + R[3]) - g(R[1])) * S:.1f} pt -> {f}', flush=True)
 
 
 def cv_errors():
@@ -132,9 +134,9 @@ def lolo_errors():
     return {n: ({m: abs(v) for m, v in U[KEY[n]].items()}, float(np.median(np.abs(list(U[KEY[n]].values()))))) for n in NAMES}
 
 
-def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05):
+def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None):
     """Fig. 1c box plot on the current panel figure, log y, every male."""
-    ax = axes(37.15, 362.05, 521.95, ybot); rng = np.random.default_rng(1); J2 = ('HG02492', 'HG02735', 'NA20809')   # short J2a1a1 DYZ19 arrays
+    ax = axes(37.15, 362.05, x1, ybot); rng = np.random.default_rng(1); J2 = ('HG02492', 'HG02735', 'NA20809')   # short J2a1a1 DYZ19 arrays
     allv = np.concatenate([np.array(list(per.values())) for per, _ in E.values()]); lo, hi, yl = 10 ** np.floor(np.log10(allv.min())), 50, 33   # log axis from the decade below the smallest error; median labels at yl
     assert allv.max() < yl, allv.max(); print(f'{title}: errors {allv.min():.4f}-{allv.max():.2f}%, y axis {lo:g}-{hi}', flush=True)
     for i, n in enumerate(NAMES):
@@ -158,14 +160,31 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05):
     frame(ax); ax.tick_params(axis='y', labelsize=10 * S)
     ax.set_ylabel(ylabel, fontsize=10 * S, fontstyle='italic', labelpad=2)
     if letter: put(21.8, 356.9, letter, 20, fontweight='bold')
-    put(277, 357, title, 12, fontweight='bold', ha='center')
+    put(tx or (37.15 + x1) / 2, 357, title, 12, fontweight='bold', ha='center')   # tx: clear of the diamond key
     yd = 343 if cvmed else 354   # legends stacked when the CV square is shown
     mark([42], [yd], marker='D', ms=4.5, mfc='white', mec='k', mew=.6); put(48.5, yd + 3, '= short J2a1a1 DYZ19 arrays', 8)
     if cvmed: mark([42], [354], marker='s', ms=3.6, mfc='white', mec='k', mew=.6); put(48.5, 357, '= cross-validation median (Fig. 1c)', 8)
 
 
+def cost(x0, x1):
+    """Runtime and peak memory of the released model, 130 local CRAMs."""
+    B = rd(ROOT / 'results/checks/runtime_memory.tsv'); rng = np.random.default_rng(4)
+    t, m = np.array([float(r['wall_s']) / 60 for r in B]), np.array([float(r['peak_rss_kb']) / 1e6 for r in B])
+    a = axes(x0, 362.05, x1, 501.05); b = a.twinx()
+    for ax, v, i, c in ((a, t, 0, DOSE), (b, m, 1, GREY)):
+        ax.scatter(i + rng.uniform(-.22, .22, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
+        ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55, patch_artist=True, manage_ticks=False, zorder=3,
+               boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22)
+        print(f'cost {["runtime min", "peak memory GB"][i]}: {len(v)} CRAMs, median {q[2]:.2f}, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.2f}, max {v.max():.2f}', flush=True)
+    a.set_xlim(-.45, 1.45); a.set_xticks([0, 1], ['Time', 'Memory']); a.set_ylim(0, 2.5); b.set_ylim(0, 5); a.set_yticks([0, 1, 2]); b.set_yticks([0, 2, 4])
+    for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side)); ax.tick_params(axis='y', labelsize=10 * S)
+    for tk, c in zip(a.get_xticklabels(), (DOSE, GREY)): tk.set_color(c); tk.set_fontweight('bold'); tk.set_fontsize(9 * S)
+    a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Peak memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
+    put((x0 + x1) / 2, 357, 'Runtime and memory', 12, fontweight='bold', ha='center')
+
+
 def panel_c(out):
-    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c'); save('c', out)
+    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c', x1=402, tx=238); cost(444, 514); save('c', out)
 
 
 def ed4(path):
@@ -277,7 +296,7 @@ def panel_f(out):
             print(f"f: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
     a2.legend(loc='upper left', fontsize=7 * S, handlelength=.8, frameon=False, bbox_to_anchor=(.0, 1 + 3 / HB), borderaxespad=0)   # 3 units above the axes top
     put(161, 865, 'Y dosage', 10, fontstyle='italic', ha='center'); a1.set_ylabel('Samples', fontsize=10 * S, fontstyle='italic', labelpad=2)
-    put(161, 746, '1000 Genomes samples', 10, fontweight='bold', ha='center')
+    put(161, 743, '1000 Genomes samples', 10, fontweight='bold', ha='center')
     T = {r['class']: r for r in rd(M / 'cv_females.tsv')}; CV = {r['class']: float(r['median_abs']) for r in rd(M / 'cv.tsv')}
     ax = axes(312, 762, 530, B); n7 = NAMES[:-1]
     for i, n in enumerate(n7):
@@ -290,10 +309,10 @@ def panel_f(out):
     for t, n in zip(ax.get_xticklabels(), n7): t.set_color(COL[n]); t.set_fontweight('bold')
     frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', labelsize=7 * S, length=0)
     ax.set_ylabel('% of median\nsatellite length', fontsize=9 * S, fontstyle='italic', labelpad=2, linespacing=1.1)
-    put(421, 746, f'Signal in {int(T["dyz3"]["n_predictions"]) // 10} held-out females', 10, fontweight='bold', ha='center')
+    put(421, 743, f'Signal in {int(T["dyz3"]["n_predictions"]) // 10} held-out females', 10, fontweight='bold', ha='center')
     for x, txt, h in ((334, 'highest female signal', '//////'), (419, 'error in males (CV median)', None)):
-        FIG.add_artist(matplotlib.patches.Rectangle((fx(x - 3), fy(757.8)), 6 / R[2], 6 / R[3], transform=FIG.transFigure, facecolor='white' if h else to_rgba(GREY, .28), edgecolor=GREY, hatch=h, lw=.75))
-        put(x + 5.5, 757.4, txt, 7)
+        FIG.add_artist(matplotlib.patches.Rectangle((fx(x - 3), fy(754.8)), 6 / R[2], fy(748.8) - fy(754.8), transform=FIG.transFigure, facecolor='white' if h else to_rgba(GREY, .28), edgecolor=GREY, hatch=h, lw=.75))
+        put(x + 5.5, 754.4, txt, 7)
     put(22.3, 735, 'f', 20, fontweight='bold'); put(270, 735, 'Specificity', 12, fontweight='bold', ha='center')
     save('f', out)
 
@@ -303,10 +322,10 @@ def main():
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/main'; pd = out / 'fig1'; pd.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as t: svg_panels(Path(t), pd)
     panel_c(pd); panel_d(pd); panel_e(pd); panel_f(pd)
-    up = lambda p: sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from rows above
-    Hn = H - sum(SHRINK[q][2] for q in ('c', 'd', 'f')); w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)
+    up = lambda p: (A_UP if p != 'a' else 0) + sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from a and rows above
+    Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd', 'f')); w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)
     for p, (name, x0, y0, x1, y1) in PANELS.items():
-        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = y1 - y0 - SHRINK.get(p, (0, 0, 0))[2]
+        sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = y1 - y0 - SHRINK.get(p, (0, 0, 0))[2] - (A_UP if p == 'a' else 0)
         if abs(sw - (x1 - x0) * S) > .5 or abs(sh - hn * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {hn * S:.1f}')
         page.merge_transformed_page(sub, Transformation().translate(x0 * S, (Hn - (y0 - up(p)) - hn) * S))
     f = out / 'fig1_method.pdf'; w.write(f)
