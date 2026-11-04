@@ -18,22 +18,12 @@ Yruler reads BAM, CRAM, SAM, FASTQ or FASTA files through HTSlib \cite{Bonfield2
 Libraries lose reads poor in G and C to different degrees, which changes array estimates. Yruler measures this loss in each sample from its ruler markers and corrects every class (Length estimation). DYZ2 is rich in A and T, and its markers with few G or C bases gave the largest differences between libraries of the same male, so DYZ2 markers need at least 14 G or C bases of 31. This threshold was chosen on ten males sequenced by both SGDP and 1000 Genomes, without assembly lengths.
 
 \subsection{Length estimation}\label{sec:m-length}
-For individual $i$, let $C_{ik}$ be the count of marker $k$ and $g(k)$ its number of G or C bases. A relative depth curve $r_i(g)$ is the mean count of the ruler markers with $g$ G or C bases divided by the mean of all ruler markers, after removing counts above ten times the mean plus ten; G+C bins with fewer than 1,000 markers or 10,000 counts take the value of the nearest supported bin. With $f_i$ the mean of $r_i(g(k))$ over the ruler markers,
+Yruler estimates the length of each class in four steps. (1) G+C correction: for each G+C content of a 31-mer, the mean count of the ruler markers with that content divided by the mean count of all ruler markers gives the relative depth of the sample at that content, and each class marker count is divided by the relative depth at its own G+C content. Samples with fewer than 1,000,000 ruler counts are not corrected. (2) Ratio: the corrected count of class $c$ in individual $i$, $S^{\mathrm{GC}}_{ic}$, is divided by the ruler count $S_{iY}$, the sum of the single-copy Y marker counts. (3) Scale: a class-specific factor $K_c$, the sum of the assembled lengths of the training individuals divided by the sum of their ratios, converts the ratio into base pairs,
 \begin{equation}
- S^{\mathrm{GC}}_{ic}=f_i\sum_{k\in M_c}\frac{C_{ik}}{r_i(g(k))},
- \qquad S_{iY}=\sum_{k\in M_Y}C_{ik},
+ \widehat L_{ic}=K_c\,\frac{S^{\mathrm{GC}}_{ic}}{S_{iY}}.
 \end{equation}
-where $M_c$ are the markers of class $c$ and $M_Y$ the ruler. Samples with fewer than 1,000,000 ruler counts use uncorrected sums. The length estimate and the scale factor are
-\begin{equation}
- \widehat L_{ic}=K_c z_{ic},\qquad
- z_{ic}=\frac{S^{\mathrm{GC}}_{ic}}{S_{iY}},\qquad
- K_c=\frac{\sum_{i\in\mathcal T_c}L_{ic}}{\sum_{i\in\mathcal T_c}z_{ic}},
-\end{equation}
-where $\mathcal T_c$ are the training individuals with an assembled length $L_{ic}$. Yq12 is the sum of its parts,
-\begin{equation}
- \widehat L_{i,\mathrm{Yq12}}=\widehat L_{i,\mathrm{DYZ1}}+\widehat L_{i,\mathrm{DYZ2}}+\widehat L_{i,\mathrm{DYZ18S}}+\widehat L_{i,\mathrm{rest}},
-\end{equation}
-where the rest (other repeats and unannotated sequence of Yq12) has its own markers and scale. On the same 80 males and folds, this sum gave a median Yq12 error of 1.72\%, against 1.75\% for a single Yq12 marker class. The DYZ1:DYZ2 ratio is converted into a ratio of repeat units with the median unit lengths of the annotated assemblies, 3,478.9 bp for DYZ1 and 2,404.4 bp for DYZ2 \cite{Hallast2026}.
+(4) Yq12: the Yq12 length is the sum of the DYZ1, DYZ2, DYZ18S and rest estimates, where the rest (other repeats and unannotated sequence of Yq12) has its own markers and $K$. On the same 80 males and folds, this sum gave a median Yq12 error of 1.72\%, against 1.75\% for a single Yq12 marker class.
+The DYZ1:DYZ2 ratio is converted into a ratio of repeat units with the median unit lengths of the annotated assemblies, 3,478.9 bp for DYZ1 and 2,404.4 bp for DYZ2 \cite{Hallast2026}.
 
 \subsection{Y dosage and Y state}\label{sec:m-dosage}
 Y dosage is
