@@ -29,7 +29,7 @@
 \author*[1]{\fnm{Andrea} \sur{Guarracino}}\email{aguarracino@tgen.org}
 \affil[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
 
-\abstract{Y chromosome satellite arrays vary widely in length, but measuring them across large cohorts has required complete long-read assemblies. Here we present Yruler, a k-mer-based tool that measures seven Y satellite arrays (median error \vsette{1.7--3.9\%} against complete assemblies) and Y dosage from short reads. Across three public cohorts, Yruler reveals lineage-wide array shifts, including four-fold shorter centromeric arrays in Y lineage O2a2b1a1 and four-fold shorter DYZ19 arrays in J2a1a1.}
+\abstract{Y chromosome satellite arrays vary widely in length, but short reads cannot span them, so measuring them has required complete long-read assemblies. In response, we developed Yruler, which counts array-specific k-mers in short reads and converts them to lengths calibrated on complete assemblies. Yruler measures seven satellite arrays and Y dosage with median errors of \vsette{1.7--3.9\%}, and reveals four-fold contractions of the centromere in Y lineage O2a2b1a1 and of the DYZ19 array in J2a1a1.}
 
 \maketitle
 
