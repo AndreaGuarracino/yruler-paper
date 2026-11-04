@@ -346,6 +346,15 @@ def tree_data(path):
     return parents, children
 
 
+def add_reference_calls(calls, parents):
+    """Published calls for assemblies without a 1kGP call."""
+    for row in read_tsv(ROOT / "data/method/reference_haplogroups_published.tsv"):
+        h = row["haplogroup"]
+        while h and h not in parents: h = h[:-1]   # deepest ISOGG 2019 node
+        if row["sample"] not in calls: calls[row["sample"]] = h; print(f"reference call {row['sample']}: {row['haplogroup']} -> {h} ({row['source']})", flush=True)
+    return calls
+
+
 def clade_of(haplogroup, parents):
     node = haplogroup.split(" ")[0]
     if node not in parents:
@@ -624,6 +633,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
     catalog = read_tsv(catalog_path)
     calls = {row["ID"]: row["Haplogroup"] for row in read_tsv(calls_path)}
     parents, children = tree_data(tree_path)
+    add_reference_calls(calls, parents)
     groups = defaultdict(list)
     for row in catalog:
         if row["sample"] in {"HG02300", "NA19226"} or float(row["y_dosage"]) < 0.9:

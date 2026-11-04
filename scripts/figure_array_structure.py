@@ -8,14 +8,14 @@ with DYZ1, DYZ2 and DYZ18S (DYZ18 + 3.1 kb) clusters >= 10 kb inside it (um_arrs
 contigs not named *_chrY (fragments) are shifted so that their first array starts at the median start of that class on the *_chrY contigs;
 order in each group: average linkage on log array lengths and log bp and cluster counts of DYZ1, DYZ2, DYZ18S in Yq12 (Euclidean on z-scores)
 """
-import sys, csv, collections as co, numpy as np
+import sys, csv, lzma, collections as co, numpy as np
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, leaves_list
 IN, OUT, TR, D19, D17, RX = sys.argv[1:7]; MINBP = 10000
 from palette import CLASS, SOURCE, SOURCE_LABEL, TITLE, NAMES, FS, save, ORDER, CONTIG
 COL = {k: CLASS[k] for k in ('DYZ3', 'DYZ17', 'DYZ19', 'DYZ1', 'DYZ2', 'DYZ18S')}
 PANEL = ['dyz3', 'dyz17', 'dyz19', 'yq12']; NAME = {'dyz3': 'DYZ3', 'dyz17': 'DYZ17', 'dyz19': 'DYZ19', 'yq12': 'Yq12'}
-rd = lambda p: csv.DictReader(open(p), delimiter='\t')
+rd = lambda p: csv.DictReader(lzma.open(p, 'rt') if p.endswith('.xz') else open(p), delimiter='\t')   # inputs may be xz
 # arrays passing QC per assembly
 A = co.defaultdict(dict)
 for r in rd(TR): A[r['asm']][r['class']] = (r['contig'], int(r['start']), int(r['end']))

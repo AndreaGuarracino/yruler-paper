@@ -26,7 +26,7 @@ from palette import RATIO, FS, MM, letter, ORDER, REF, REF_HANDLE, TITLE_PAD
 from figure2_tree import (
     BLUE, GREEN, PURPLE, LINEAGE_COLORS, read_tsv, save,
     tree_data, pie_map, lineage_legend, align_map_legend_titles, clade_of, pruned_tree,
-    load_composition, composition_supplement,
+    load_composition, composition_supplement, add_reference_calls,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -883,7 +883,7 @@ def j_subtree_figure(valid, out):
 def assembly_supplement(out):
     """Preserve the complete-array annotation view, separate from population reads."""
     calls = {r["ID"]: r["Haplogroup"] for r in read_tsv(ROOT / "data/method/haplogroups_1kgp_isogg2019_decode1.tsv")}
-    parents, children = tree_data(ROOT / "data/figure_metadata/isogg2019_tree.tsv")
+    parents, children = tree_data(ROOT / "data/figure_metadata/isogg2019_tree.tsv"); add_reference_calls(calls, parents)
     groups = defaultdict(list)
     for row in load_snapshot()[1]:   # display groups from the current 1kGP estimates (dose >= 0.9)
         if row["y_dose"] >= .9:

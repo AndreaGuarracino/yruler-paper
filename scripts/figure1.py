@@ -241,27 +241,27 @@ def panel_e(out):
 def panel_f(out):
     panel('f')
     F = [r for r in rd(M / 'cohort_fem.tsv') if r['cohort'] == '1kGP']; males = [r for r in rd(M / 'cohort_1kgp.tsv') if r['sex'] == 'male']
-    fy_, my = np.array([float(r['y_dose']) for r in F]), np.array([float(r['y_dose']) for r in males]); cut = fy_.max()
-    print(f'f: 1kGP females {len(fy_)} (max Y dosage {cut:.4f}, at or below 0.0001: {(fy_ <= 1e-4).sum()}), males {len(my)} (min {my.min():.4f}, at or below the female max: {(my <= cut).sum()})', flush=True)
-    gap = ((fy_ > .02) & (fy_ < .2)).sum() + ((my > .02) & (my < .2)).sum(); lo, hi = (my >= .2).sum(), (my > 2.2).sum()
-    print(f'f: broken x axis, samples in the hidden 0.02-0.2 gap: {gap}, males from 0.2: {lo}, above 2.2 (clipped into the last bin): {hi}', flush=True)
+    fy_, my = np.array([float(r['y_dose']) for r in F]), np.array([float(r['y_dose']) for r in males]); cut, top = .02, .03   # no-Y cut (user 2026-11-04: above every female, max 0.0191 in HGDP), log part end
+    print(f'f: 1kGP females {len(fy_)} (max Y dosage {fy_.max():.4f}, above the cut {cut}: {(fy_ > cut).sum()}, at or below 0.0001: {(fy_ <= 1e-4).sum()}), males {len(my)} (min {my.min():.4f}, at or below the cut: {(my <= cut).sum()})', flush=True)
+    gap = ((fy_ > top) & (fy_ < .2)).sum() + ((my > top) & (my < .2)).sum(); lo, hi = (my >= .2).sum(), (my > 2.2).sum()
+    print(f'f: broken x axis, samples in the hidden {top}-0.2 gap: {gap}, males from 0.2: {lo}, above 2.2 (clipped into the last bin): {hi}', flush=True)
     if gap: sys.exit('ERROR samples in the hidden part of the dosage axis')
     T1, B, X1, X2 = 751, 844, 135, 141; HB = B - T1   # top, bottom, axis break
     a1, a2 = axes(52, T1, X1, B), axes(X2, T1, 270, B)   # log part (no Y), linear part (Y)
-    for ax, bins, clip in ((a1, np.logspace(-4, np.log10(.02), 25), (1.01e-4, .02)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
+    for ax, bins, clip in ((a1, np.logspace(-4, np.log10(top), 26), (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
         for v, c, lab in ((fy_, '#B07AA1', f'Recorded females (n = {len(fy_)})'), (my, DOSE, f'Recorded males (n = {len(my):,})')):
-            w = v[(v >= clip[0] * .99) & (v <= .02)] if ax is a1 else v[v >= .2]
+            w = v[(v >= clip[0] * .99) & (v <= top)] if ax is a1 else v[v >= .2]
             ax.hist(np.clip(w, *clip), bins, color=c, label=lab, zorder=2)
         ax.set_yscale('log'); ax.set_ylim(.7, 5e3); frame(ax, ('left', 'bottom') if ax is a1 else ('bottom',))
-    a1.set_xscale('log'); a1.set_xlim(1e-4, .02); a1.set_xticks([1e-4, 1e-3, 1e-2], ['0.0001', '0.001', '0.01']); a1.minorticks_off()
+    a1.set_xscale('log'); a1.set_xlim(1e-4, top); a1.set_xticks([1e-4, 1e-3, 1e-2], ['0.0001', '0.001', '0.01']); a1.minorticks_off()
     a1.set_yticks([1, 10, 100, 1000], ['1', '10', '100', '1000']); a1.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     a2.set_xlim(.2, 2.2); a2.set_xticks([.5, 1, 1.5, 2], ['0.5', '1', '1.5', '2']); a2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)   # minor ticks every 0.1
     a2.tick_params(which='minor', width=.4, length=1.5); a2.set_yticks([]); a2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     for x in (X1, X2): mark([x - 1.5, x + 1.5], [B + 2.5, B - 2.5], color='k', lw=.5)   # axis break
-    a1.axvline(cut, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1); a1.text(cut / 1.15, 1.6e3 * 10 ** (3 / HB * np.log10(5e3 / .7)), f'{cut:.4f}', fontsize=7 * S, color='k', va='center', ha='right')
+    a1.axvline(cut, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1); a1.text(cut / 1.15, 1.6e3 * 10 ** (3 / HB * np.log10(5e3 / .7)), f'{cut:g}', fontsize=7 * S, color='k', va='center', ha='right')
     for r in males:
         if float(r['y_dose']) <= cut:   # recorded male without Y
-            e = np.logspace(-4, np.log10(.02), 25); j = np.searchsorted(e, float(r['y_dose'])) - 1   # its bin
+            e = np.logspace(-4, np.log10(top), 26); j = np.searchsorted(e, float(r['y_dose'])) - 1   # its bin
             a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (B - 865) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=7 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
                         arrowprops=dict(arrowstyle='-|>', color='k', lw=.5, mutation_scale=4, shrinkA=1, shrinkB=0))
             print(f"f: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
