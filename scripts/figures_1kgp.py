@@ -94,7 +94,7 @@ def load_snapshot(path=DEFAULT_SNAPSHOT):
         row["family"] = pedigree.get(row["sample"], {}).get("FamilyID", row["sample"])
         row["display_group"] = group_of(row["haplogroup"], parents)
         # Keep the source lineage unchanged; an ancestral NO call is not a resolved N call.
-        row["lineage_display"] = "NO" if row["haplogroup"].split()[0] == "NO" else row["lineage"]
+        row["lineage_display"] = "NO" if row["haplogroup"].split()[0] == "NO" else "R2" if row["lineage"] == "R" and row["haplogroup"].startswith("R2") else row["lineage"]   # R2 as in Fig. 2a
         row["ratio_bp"] = row["DYZ1_bp"] / row["DYZ2_bp"]
         supplied = next((record[k] for k in ("y_state", "y_status", "Y_status") if record.get(k)), None)
         status = supplied or reported_status.get(row["sample"], {}).get("y_status", "not_reported")
@@ -759,9 +759,9 @@ def population_figure(valid, out, snapshot_path, completed):
 
 
 def population_supplement(valid, out):
-    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R"]   # Fig. 2a tree order
+    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R2"]   # Fig. 2a tree order
     present = {r["lineage_display"] for r in valid}; order = [g for g in tree if g in present] + sorted(present - set(tree))
-    clades = [("I–J", "I", "J"), ("N–O", "NO", "O"), ("P (Q, R)", "Q", "R")]   # brackets over sister lineages
+    clades = [("I–J", "I", "J"), ("N–O", "NO", "O"), ("P (Q, R)", "Q", "R2")]   # brackets over sister lineages
     print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
     panels = TARGETS + [("unit_ratio", "unit_ratio", "DYZ1:DYZ2", 1, "Unit ratio")]   # h as Fig. 2a; Y dosage by lineage: ED5b
     for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
@@ -819,7 +819,7 @@ def depth_supplement(valid, out):
     ax.set_xscale("log"); ax.set_xticks([1, 2, 5, 10, 20, DEPTHS["1"]], ["1", "2", "5", "10", "20", f"{DEPTHS['1']:.0f}"]); ax.minorticks_off(); ax.set_ylim(0, None); ax.grid(True)
     ax.set_xlabel("Median autosomal coverage (×)"); ax.set_ylabel("Absolute difference from full depth (%)"); ax.legend(loc="upper right")
     head(ax, f"Coverage ({len(D[lv[0]])} males)")
-    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R"]   # ED7 and Fig. 2a order
+    tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R2"]   # ED7 and Fig. 2a order
     order = [g for g in tree if any(r["lineage_display"] == g for r in valid)]; lo, hi = .94, 1.06; rng = np.random.default_rng(5)
     V = {g: np.array([float(r["y_dose"]) for r in valid if r["lineage_display"] == g]) for g in order}
     for i, g in enumerate(order):
@@ -827,10 +827,10 @@ def depth_supplement(valid, out):
         b.scatter(j[inside], c[inside], s=2.5, color=DOSE, alpha=.35, lw=0)
         for m, k in (("v", v <= lo), ("^", v >= hi)): b.scatter(j[k], c[k], s=6, marker=m, color=DOSE, lw=0, clip_on=False)
         b.plot([i - .4, i + .4], [np.median(v)] * 2, color=INK, lw=1)
-    big = [g for g in order if len(V[g]) > 20]; kw = kruskal(*[V[g] for g in big])
+    big = [g for g in order if len(V[g]) >= 20]; kw = kruskal(*[V[g] for g in big])   # at least 20, as Statistics
     med = {g: float(np.median(V[g])) for g in big}; g0, g1 = min(med, key=med.get), max(med, key=med.get)
-    print(f"ED5b: {len(valid)} males, {len(big)} lineages with > 20 males, medians {g0} {med[g0]:.4f} to {g1} {med[g1]:.4f}, Kruskal-Wallis H {kw.statistic:.2f} P {kw.pvalue:.2e}; outside {lo}-{hi}: {sum(int(((V[g] <= lo) | (V[g] >= hi)).sum()) for g in order)}", flush=True)
-    b.text(.01, .97, f"Kruskal–Wallis P = {kw.pvalue:.1e} ({len(big)} lineages with > 20 males)", transform=b.transAxes, va="top", fontsize=FS["point"])
+    print(f"ED5b: {len(valid)} males, {len(big)} lineages with at least 20 males, medians {g0} {med[g0]:.4f} to {g1} {med[g1]:.4f}, Kruskal-Wallis H {kw.statistic:.2f} P {kw.pvalue:.2e}; outside {lo}-{hi}: {sum(int(((V[g] <= lo) | (V[g] >= hi)).sum()) for g in order)}", flush=True)
+    b.text(.01, .97, f"Kruskal–Wallis P = {kw.pvalue:.1e} ({len(big)} lineages with at least 20 males)", transform=b.transAxes, va="top", fontsize=FS["point"])
     b.set_xticks(range(len(order)), [f"{g} ({len(V[g])})" for g in order], rotation=90); b.set_xlim(-.7, len(order) - .3)
     b.set_ylim(lo, hi + .016); b.set_yticks(np.arange(lo, hi + .001, .02)); b.set_ylabel("Y dosage (relative)")   # room for the test line; b.grid(axis="y"); b.set_axisbelow(True)
     head(b, f"Lineage (1000 Genomes, {len(valid):,} males)")
