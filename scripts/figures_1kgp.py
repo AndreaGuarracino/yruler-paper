@@ -765,7 +765,7 @@ def population_supplement(valid, out):
     print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
     panels = TARGETS + [("unit_ratio", "unit_ratio", "DYZ1:DYZ2", 1, "Unit ratio")]   # h as Fig. 2a; Y dosage by lineage: ED5b
     for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
-    fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .42, "wspace": .12})
+    fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .5, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
     rng = np.random.default_rng(271)
     for panel, (ax, (_, key, label, scale, units)) in enumerate(zip(axes.flat, panels)):
