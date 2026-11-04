@@ -149,7 +149,7 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None)
         if cvmed: ax.scatter(i + .36, cvmed[n], marker='s', s=10, facecolor='white', edgecolor='k', lw=.6, zorder=6)
         ax.text(i, yl, f'{med:.2f}%', color=c, ha='center', va='center', fontsize=10 * S, zorder=6, bbox=dict(facecolor='white', alpha=.75, edgecolor='none', pad=.6))
         ax.annotate(f'{n}\n(n = {len(v)})', (i, 0), xycoords=('data', 'axes fraction'), xytext=(0, -3), textcoords='offset points',
-                    ha='center', va='top', color=c, fontsize=10 * S, fontweight='bold', linespacing=1.15)
+                    ha='center', va='top', color=c, fontsize=9 * S, fontweight='bold', linespacing=1.15)
         if n == 'DYZ19':
             for m in J2:
                 if m in per: ax.scatter(x[males.index(m)], per[m], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, zorder=5)
@@ -172,19 +172,19 @@ def cost(x0, x1):
     t, m = np.array([float(r['wall_s']) / 60 for r in B]), np.array([float(r['peak_rss_kb']) / 1e6 for r in B])
     a = axes(x0, 362.05, x1, 501.05); b = a.twinx()
     for ax, v, i, c in ((a, t, 0, DOSE), (b, m, 1, GREY)):
-        ax.scatter(i + rng.uniform(-.22, .22, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
-        ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55, patch_artist=True, manage_ticks=False, zorder=3,
-               boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22)
+        ax.scatter(i + rng.uniform(-.17, .17, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
+        ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.42, patch_artist=True, manage_ticks=False, zorder=3,
+               boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.18)
         print(f'cost {["runtime min", "peak memory GB"][i]}: {len(v)} CRAMs, median {q[2]:.2f}, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.2f}, max {v.max():.2f}', flush=True)
-    a.set_xlim(-.45, 1.45); a.set_xticks([0, 1], ['Time', 'Memory']); a.set_ylim(0, 2.5); b.set_ylim(0, 5); a.set_yticks([0, 1, 2]); b.set_yticks([0, 2, 4])
+    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(0, 2.65); b.set_ylim(0, 5.3); a.set_yticks([0, .5, 1, 1.5, 2, 2.5], ['0', '0.5', '1', '1.5', '2', '2.5']); b.set_yticks([0, 1, 2, 3, 4, 5])   # axes end above the top tick, clear of the title
     for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side)); ax.tick_params(axis='y', labelsize=10 * S)
-    for tk, c in zip(a.get_xticklabels(), (DOSE, GREY)): tk.set_color(c); tk.set_fontweight('bold'); tk.set_fontsize(9 * S)
-    a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Peak memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
-    put((x0 + x1) / 2, 357, 'Runtime and memory', 12, fontweight='bold', ha='center')
+    for tk in a.get_xticklabels(): tk.set_fontweight('bold'); tk.set_fontsize(9 * S)   # black
+    a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
+    put((x0 + x1) / 2, 357, 'Performance', 12, fontweight='bold', ha='center'); put(x0 - 40, 357, 'd', 20, fontweight='bold')   # letter on the title baseline, clear of the tick labels
 
 
 def panel_c(out):
-    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c', x1=402, tx=238); cost(444, 514); save('c', out)
+    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c', x1=382, tx=232); cost(426, 496); save('c', out)
 
 
 def ed4(path):
@@ -212,7 +212,7 @@ def panel_d(out):
     frame(ax); ax.tick_params(which='minor', width=.4, length=1.5)
     ax.set_xlabel('Median autosomal coverage (×)', fontsize=10 * S, fontstyle='italic', labelpad=2)
     ax.set_ylabel('Median absolute error (%)', fontsize=10 * S, fontstyle='italic', labelpad=4)
-    put(22.3, 550.3, 'd', 20, fontweight='bold'); put(54.1, 546, 'Sequencing coverage', 12, fontweight='bold')   # baseline as the e title
+    put(22.3, 550.3, 'e', 20, fontweight='bold'); put(54.1, 546, 'Sequencing coverage', 12, fontweight='bold')   # baseline as the e title
     for i, n in enumerate(NAMES[:-1]):
         x, y = [48.7, 89.6, 130.5, 176.7][i // 2], [558, 567][i % 2]
         mark([x - 11, x - 3], [y - 2.6] * 2, color=COL[n], lw=.9 * S); mark([x - 7], [y - 2.6], marker='o', ms=2.6, color=COL[n]); put(x, y, n, 8)
@@ -260,7 +260,7 @@ def panel_e(out):
     ax.axvline(0, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1)
     frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', labelsize=9 * S)
     ax.set_xlabel('Offspring − parent difference (%)', fontsize=10 * S, fontstyle='italic', labelpad=1)
-    put(224.2, 551.1, 'e', 20, fontweight='bold'); put(372, 546, f'Parent–offspring agreement ({len(P)} pairs)', 12, fontweight='bold', ha='center')   # title size as c, d, f
+    put(224.2, 551.1, 'f', 20, fontweight='bold'); put(372, 546, f'Parent–offspring agreement ({len(P)} pairs)', 12, fontweight='bold', ha='center')   # title size as c, d, f
     for x, mk, s in ((323.5, '^', 'HG02966'), (378, 'o', 'HG02773')):
         mark([x], [555.2], marker=mk, ms=4, mfc='white', mec='k', mew=.75); put(x + 5.5, 557.9, f'= {s}', 8)
     put(511, 553.2, 'Median (%)', 8, color=GREY, fontweight='bold', ha='center'); put(511, 562.7, 'Cross/Same', 8, color=GREY, fontweight='bold', ha='center')
@@ -313,7 +313,7 @@ def panel_f(out):
     for x, txt, h in ((334, 'highest female signal', '//////'), (419, 'error in males (CV median)', None)):
         FIG.add_artist(matplotlib.patches.Rectangle((fx(x - 3), fy(754.8)), 6 / R[2], fy(748.8) - fy(754.8), transform=FIG.transFigure, facecolor='white' if h else to_rgba(GREY, .28), edgecolor=GREY, hatch=h, lw=.75))
         put(x + 5.5, 754.4, txt, 7)
-    put(22.3, 735, 'f', 20, fontweight='bold'); put(270, 735, 'Specificity', 12, fontweight='bold', ha='center')
+    put(22.3, 735, 'g', 20, fontweight='bold'); put(270, 735, 'Specificity', 12, fontweight='bold', ha='center')
     save('f', out)
 
 
