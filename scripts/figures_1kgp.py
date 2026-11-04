@@ -851,7 +851,7 @@ def j_subtree_figure(valid, out):
     splits(full)
     h = 15 + 3.3 * len(leaves)   # mm: 3.3 per row, title and axis rows
     fig = plt.figure(figsize=(180 * MM, h * MM))
-    grid = fig.add_gridspec(1, 3, left=.03, right=.98, bottom=9.5 / h, top=1 - 5.5 / h, width_ratios=[1.6, .62, 1.75], wspace=.13)
+    grid = fig.add_gridspec(1, 3, left=.03, right=.98, bottom=9.5 / h, top=1 - 5.5 / h, width_ratios=[1.6, .62, 1.75], wspace=.05)   # gaps as Fig. 2a
     tree_ax, sp, ax = [fig.add_subplot(grid[0, i]) for i in range(3)]
     from palette import SUPERPOP, SUPERPOP_NAME, NAMES as NM, TITLE as TT
     for y, node in enumerate(leaves):   # 1kGP superpopulation per clade, as Fig. 2a
@@ -859,7 +859,7 @@ def j_subtree_figure(valid, out):
         for k, col in SUPERPOP.items():
             w = 100 * c[k] / len(node["members"]); sp.barh(y, w, left=left, height=.6, color=col, linewidth=0); left += w
     sp.set_ylim(len(leaves) - .4, -.7); column_axis(sp, "Superpopulation", None, "Males (%)", 100, [0, 50, 100])
-    draw_collapsed_tree(tree_ax, root, leaves, panel="a", room=1.42)   # labels end next to b
+    draw_collapsed_tree(tree_ax, root, leaves, panel="a", room=1.3)   # labels end next to the bars
     def boot(n):   # supports of 70 or more at every node
         S = frozenset(r["sample"] for r in n["members"]); v = B.get(S)
         if n["children"]:
@@ -870,8 +870,7 @@ def j_subtree_figure(valid, out):
     frozen_trait(ax, leaves, "DYZ19_bp", PURPLE, 1e3, 350, [0, 100, 200, 300], "DYZ19", "b", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)
     top = max(r["DYZ19_bp"] for r in members) / 1e3; assert top <= 350, top   # largest J male fits
     ax.set_xlim(-8, 350); ax.set_xticks(range(0, 351, 50)); ax.set_xticks([], minor=True); print(f"ED8 largest DYZ19 {top:.1f} kb", flush=True)
-    yb = ax.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight()   # DYZ19 title baseline
-    for s, x in (("a", .005), ("b", ax.get_position().x0 - .025)): fig.text(x, yb, s, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baseline
+    # one panel as Fig. 2a: no letters
     ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
     ax.add_artist(ax.get_legend()); ax.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="center left", bbox_to_anchor=(0, .5), title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=.4, alignment="left")   # empty left side of b
     save(fig,out,"ed/ed8_J_DYZ19")
