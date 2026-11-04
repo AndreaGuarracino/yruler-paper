@@ -138,7 +138,7 @@ def supplement(rows,out):
     legend(fig,rows,y=.997)
     fig.canvas.draw()   # equal-aspect axes settle
     for i,(a,c) in enumerate(pairs):letter(fig,chr(97+i),[.002,.5][c],a.get_position().y1+5*MM/fig.get_figheight())
-    save(fig,out/'ed/ed7_pedigrees.pdf');plt.close(fig)
+    save(fig,out/'ed/ed6_pedigrees.pdf');plt.close(fig)
 
 
 def main():

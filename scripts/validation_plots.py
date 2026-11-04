@@ -302,6 +302,6 @@ def lineage_supplement(out):
     for i,key in enumerate(KEYS):   # CV reference: median of the per-male mean CV errors
         ax.plot(np.median([r['value'] for r in individual_errors(key,'cv')]),i,'s',color=INK,markersize=3,zorder=6)   # CV median; diamonds mean reference males
     ax.set_yticklabels(rowlabels())
-    save(fig,out,'ed/ed5_lineage_validation')
+    save(fig,out,'ed/ed4_lineage_validation')
 
 

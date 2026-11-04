@@ -761,7 +761,7 @@ def population_figure(valid, out, snapshot_path, completed):
 def population_supplement(valid, out):
     order = sorted({r["lineage_display"] for r in valid},
                    key=lambda g: (-sum(r["lineage_display"] == g for r in valid), g))
-    print("ED8 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
+    print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
     panels = TARGETS + [("y_dose", "y_dose", "Y dosage", 1, "Y dosage (relative)")]
     fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .42, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
@@ -789,7 +789,7 @@ def population_supplement(valid, out):
         ax.grid(axis="y")
         ax.set_axisbelow(True)
     reads_legend(fig, .997)
-    save(fig, out, "ed/ed8_population")
+    save(fig, out, "ed/ed7_population")
 
 
 def depth_supplement(depth, out):
@@ -803,7 +803,7 @@ def depth_supplement(depth, out):
     lv = sorted(Y, key=lambda k: np.median(C[k])); q = np.array([np.percentile(Y[k], [10, 50, 90]) for k in lv])
     ydose = [{"median_autosomal_depth": np.median(C[k]) * 150 / 120, "mean_median_absolute_pct": m, "min_median_absolute_pct": lo, "max_median_absolute_pct": hi} for k, (lo, m, hi) in zip(lv, q)]   # chr2 31-mer depth to base coverage, as depth_benchmark
     ydose.append({"median_autosomal_depth": DEPTHS["1"], "mean_median_absolute_pct": 0.0, "min_median_absolute_pct": np.nan, "max_median_absolute_pct": np.nan})
-    print("ED6 Y dosage median |diff| %:", {k: (len(Y[k]), round(float(r["mean_median_absolute_pct"]), 3), round(float(r["median_autosomal_depth"]), 1)) for k, r in zip(lv, ydose)}, flush=True)
+    print("ED5 Y dosage median |diff| %:", {k: (len(Y[k]), round(float(r["mean_median_absolute_pct"]), 3), round(float(r["median_autosomal_depth"]), 1)) for k, r in zip(lv, ydose)}, flush=True)
     panels = [(label, sorted((r for r in depth if r["target"] == key), key=lambda r: r["median_autosomal_depth"])) for key, _, label, _, _ in targets] + [("Y dosage", ydose)]
     n = len(panels); cols = 4; rows = -(-n // cols)
     fig, axes = plt.subplots(rows, cols, figsize=(180 * MM, 44 * rows * MM), sharex=True)
@@ -819,7 +819,7 @@ def depth_supplement(depth, out):
     for ax in axes[:, 0]: ax.set_ylabel("Absolute error (%)")
     last = axes.flat[n - 1]; last.yaxis.set_label_position("right"); last.set_ylabel("Absolute difference\nfrom full depth (%)")   # outer edge, other quantity
     for ax in axes.flat[n:]: ax.set_visible(False)
-    save(fig, out, "ed/ed6_depth")
+    save(fig, out, "ed/ed5_depth")
 
 
 def j_subtree_figure(valid, out):
@@ -846,7 +846,7 @@ def j_subtree_figure(valid, out):
     ax.set_axisbelow(True)
     for s, x in (("a", .005), ("b", ax.get_position().x0 - .02)): letter(fig, s, x, .995)
     reads_legend(fig, .998, .98, "upper right")
-    save(fig,out,"ed/ed9_J_DYZ19")
+    save(fig,out,"ed/ed8_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
          "reference_male":r["reference_male"],"DYZ19_bp":r["DYZ19_bp"]}

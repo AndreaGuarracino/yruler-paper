@@ -611,7 +611,7 @@ def composition_supplement(rows, order, out):
     fig.subplots_adjust(left=0.07, right=0.99, top=0.925, bottom=0.07)
     from palette import letter
     for ax, s in zip(axes, "ab"): letter(fig, s, .005, ax.get_position().y1 + (.075 if s == "a" else .05))
-    save(fig, out, "ed/ed3_yq12_composition")
+    save(fig, out, "ed/ed2_yq12_composition")
 
 
 def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, dyz19_path, out):
