@@ -613,7 +613,7 @@ def subtree_panel(tax, ax, rows, other, highlight, limit, letter):
     from matplotlib.colors import to_rgba
     root, leaves = collapse_tree(prune_tree(parse_newick(TREE_SOURCE), set(rows)), rows)
     assert all(n == 1 for n in Counter(leaf["group"] for leaf in leaves).values()), [leaf["group"] for leaf in leaves]
-    data = {n["group"]: {"1kGP": [(r["DYZ3_bp"] / 1e6, r["sample"] in TRUTH["dyz3"]) for r in n["members"]],
+    data = {n["group"]: {"1kGP": [(r["DYZ3_bp"] / 1e6, r["sample"] in TRUTH["dyz3"]) for r in n["members"] if in_summary(r, "DYZ3_bp")],   # population summary rule
                          **{c: [(float(r["DYZ3_bp"]) / 1e6, False) for r in other if r["cohort"] == c and r["call"].startswith(n["group"])] for c in ("HGDP", "SGDP")}} for n in leaves}
     draw_collapsed_tree(tax, root, leaves, panel=letter, room=3.3, counts={g: "/".join(str(len(d[c])) for c in COHORT_SHADE) for g, d in data.items()})
     stats, rng = [], np.random.default_rng(2710)
