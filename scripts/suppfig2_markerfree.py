@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import spearmanr
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import figures_1kgp as f
-from palette import CLASS, LINEAGE, MUTED
+from palette import CLASS, LINEAGE, MUTED, RATIO
 from matplotlib.colors import to_rgba
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,16 +55,18 @@ def panel(ax, groups, xk, yk, scale, title, letter, x0, x1, xl, yl):
 
 def aligner(ax):
     """Aligned depth, DRAGEN against BWA on the same reads."""
-    A = list(csv.DictReader(open(ROOT / 'results/checks/alignchk.tsv'), delimiter='\t')); cl = ['DYZ3', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2']; rng = np.random.default_rng(3)   # Fig. 1c order; DYZ17 not in the check
+    A = list(csv.DictReader(open(ROOT / 'results/checks/alignchk.tsv'), delimiter='\t')); cl = ['DYZ3', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']; rng = np.random.default_rng(3)   # Fig. 1c order; DYZ17 not in these bins
+    V = {(r['sample'], r['class']): r for r in A}; males = sorted({r['sample'] for r in A})
+    ratio = np.array([100 * ((float(V[m, 'dyz1']['dragen']) / float(V[m, 'dyz2']['dragen'])) / (float(V[m, 'dyz1']['bwa']) / float(V[m, 'dyz2']['bwa'])) - 1) for m in males])   # DYZ1:DYZ2 depth ratio
     for i, n in enumerate(cl):
-        v = np.array([float(r['dragen_vs_bwa_pct']) for r in A if r['class'] == n.lower()]); c = CLASS[n]
+        v = ratio if n == 'DYZ1:DYZ2' else np.array([float(r['dragen_vs_bwa_pct']) for r in A if r['class'] == n.lower()]); c = RATIO if n == 'DYZ1:DYZ2' else CLASS[n]
         ax.scatter(i + rng.uniform(-.22, .22, len(v)), v, s=4, color=c, alpha=.55, lw=0, zorder=2)
         q = np.percentile(v, [10, 25, 50, 75, 90])
         ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.45, patch_artist=True, manage_ticks=False, zorder=3,
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22)
         print(f'aligner {n}: {len(v)} males, DRAGEN vs BWA aligned depth median {q[2]:.2f}%, range {v.min():.2f} to {v.max():.2f}%', flush=True)
     ax.set_xticks(range(len(cl)), cl); ax.set_xlim(-.6, len(cl) - .4)
-    for t, n in zip(ax.get_xticklabels(), cl): t.set_color(CLASS[n]); t.set_fontweight('bold')
+    for t, n in zip(ax.get_xticklabels(), cl): t.set_color(RATIO if n == 'DYZ1:DYZ2' else CLASS[n]); t.set_fontweight('bold')
     style(ax, '', 'DRAGEN − BWA aligned depth (%)'); put(291, 347, f'Aligner dependence ({len(v)} males)', 12, fontweight='bold', ha='center'); put(8, 347, 'c', 20, fontweight='bold')
 
 

@@ -34,6 +34,13 @@ def hl(a, c):   # Hodges-Lehmann ratio of two groups
     a, c = np.log(a), np.log(c); e = lambda p, q: np.median(np.subtract.outer(p, q)); B = [e(rng.choice(a, len(a)), rng.choice(c, len(c))) for _ in range(2000)]; return np.exp(e(a, c)), np.exp(np.percentile(B, 2.5)), np.exp(np.percentile(B, 97.5))
 v = hl(np.array([b(x, 'DYZ3') for x in R1 if x['lineage'] == 'R1b']), np.array([b(x, 'DYZ3') for x in R1 if x['lineage'] != 'R1b'])); put('hl_dyz3_r1b_over_other', '%.3f (%.3f-%.3f)' % v)
 J = [x for x in R1 if x['lineage'] == 'J']; ja = np.array([b(x, 'DYZ19') for x in J if x['haplogroup'].startswith('J2a1a1')]); jo = np.array([b(x, 'DYZ19') for x in J if not x['haplogroup'].startswith('J2a1a1')]); put('hl_dyz19_j2a1a1_over_other_j', '%.3f (%.3f-%.3f)' % hl(ja, jo) + f'; {len(ja)} vs {len(jo)}')
+from scipy.stats import mannwhitneyu
+def mw(name, a, c):   # two-sided Mann-Whitney, medians in kb
+    a, c = np.array(a), np.array(c); r = mannwhitneyu(a, c, alternative='two-sided'); put(f'mw_{name}', f'{len(a)} vs {len(c)}, median {np.median(a) / 1e3:.0f} vs {np.median(c) / 1e3:.0f} kb, U {r.statistic:.0f}, p {r.pvalue:.3g}')
+hg = lambda x, p: x['haplogroup'].startswith(p)
+mw('dyz3_r1b_1kgp', [b(x, 'DYZ3') for x in R1 if x['lineage'] == 'R1b'], [b(x, 'DYZ3') for x in R1 if x['lineage'] != 'R1b'])
+mw('dyz3_o2a2b1a1_1kgp', [b(x, 'DYZ3') for x in R1 if hg(x, 'O2a2b1a1')], [b(x, 'DYZ3') for x in R1 if hg(x, 'O2a2b1a2')])
+mw('dyz19_j2a1a1_1kgp', ja, jo)
 M = np.array([[math.log(b(x, c)) for c in CL] for x in inc]); L = np.array([x['lineage'] for x in inc]); W = M.copy()
 for k in set(L): W[L == k] -= W[L == k].mean(0)
 for i, j in itertools.combinations(range(len(CL)), 2): put(f'corr_{CL[i]}_{CL[j]}', f'all {spearmanr(M[:, i], M[:, j])[0]:+.3f}, within lineage {spearmanr(W[:, i], W[:, j])[0]:+.3f}')
@@ -63,12 +70,8 @@ B = [np.polyfit(A[i, 1], A[i, 0], 1)[0] for i in (rng.integers(0, len(A), len(A)
 E = co.defaultdict(lambda: co.defaultdict(list))
 for r in rd(D / 'cv_units.tsv'): E[r['class']][r['male']].append(float(r['error_pct']))
 s = {c: np.std([np.mean(np.log1p(np.array(v) / 100)) for v in E[c].values()], ddof=1) for c in ('dyz1', 'dyz2')}; put('composition_error_sd', f"CV SD of log error DYZ1 {s['dyz1']:.4f}, DYZ2 {s['dyz2']:.4f}")
-sys.path.insert(0, 'scripts'); import prepare_cohort_pies as pc, openpyxl
-tb = list(pc.hallast_book()['Suppl2'].values); H = {}
-for f in tb[2:]:
-    r = dict(zip(tb[1], f))
-    for k in ('Sample_ID', 'vcf_ID'):
-        if pc.valid_key(r[k]): H[pc.norm(r[k])] = (str(r['hg_ISOGG_v03.10.19']), str(r['terminal marker']))
+sys.path.insert(0, 'scripts'); import prepare_cohort_pies as pc
+H = {pc.norm(r['ID']): (r['Haplogroup'], '') for r in rd('data/method/haplogroups_hgdp_sgdp_isogg2019_decode1.tsv')}   # HaploGrouper ISOGG 2019, as 1kGP
 AL = co.defaultdict(list)
 for r in pc.read_tsv(pc.META / 'sgdp_metadata.txt', encoding='latin-1'):
     for k in pc.ALIAS_FIELDS:
@@ -84,10 +87,15 @@ for x in sorted(Q, key=lambda r: r['sample']):
     i = x['sample'].replace('SGDP_', '')
     if i in seen or i in C: continue
     seen.add(i); got.append((x, c))
-put('hgsg_calls', f'{nh} of {len(Q)} with a published call; {len(got)} PCR-free individuals after removing 1kGP aliases and duplicates'); JJ = [(x, c) for x, c in got if c[0].startswith('J')]
+put('hgsg_calls', f'{nh} of {len(Q)} with a HaploGrouper call; {len(got)} PCR-free individuals after removing 1kGP aliases and duplicates'); JJ = [(x, c) for x, c in got if c[0].startswith('J')]
 sh = [(x, c) for x, c in JJ if b(x, 'DYZ19') < 1e5]; put('hgsg_j', f"{len(JJ)} J men; DYZ19 below 100 kb in {len(sh)}: {min(b(x, 'DYZ19') for x, _ in sh) / 1e3:.1f}-{max(b(x, 'DYZ19') for x, _ in sh) / 1e3:.1f} kb; others min {min(b(x, 'DYZ19') for x, _ in JJ if b(x, 'DYZ19') >= 1e5) / 1e3:.1f} kb")
 for co_ in ('HGDP', 'SGDP'):
     G = [(x, c) for x, c in got if x['cohort'] == co_]; sdratio(np.array([b(x, 'DYZ1') for x, _ in G]), np.array([b(x, 'DYZ2') for x, _ in G]), np.array([c[0][:1] for _, c in G]), co_.lower())
+for co_ in ('HGDP', 'SGDP'):   # same contrasts per cohort, never pooled
+    G2 = [(x, c[0]) for x, c in got if x['cohort'] == co_]
+    mw(f'dyz3_r1b_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('R1b')], [b(x, 'DYZ3') for x, h in G2 if not h.startswith('R1b')])
+    mw(f'dyz3_o2a2b1a1_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a1')], [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a2')])
+    mw(f'dyz19_j2a1a1_{co_.lower()}', [b(x, 'DYZ19') for x, h in G2 if h.startswith('J2a1a1')], [b(x, 'DYZ19') for x, h in G2 if h.startswith('J') and not h.startswith('J2a1a1')])
 with open(D / 'hgsg_calls.tsv', 'w') as o:   # input of Fig. 2
     o.write('sample\tcohort\tcall\tDYZ3_bp\tDYZ19_bp\n'); o.writelines(f"{x['sample']}\t{x['cohort']}\t{c[0]}\t{x['DYZ3_bp']}\t{x['DYZ19_bp']}\n" for x, c in got)
 M3 = lambda f: [b(x, 'DYZ3') for x, c in got if f(c[0])]; put('hgsg_dyz3', f"R1b {len(M3(lambda h: h.startswith('R1b')))} men, median {np.median(M3(lambda h: h.startswith('R1b'))):.0f}; others {len(M3(lambda h: not h.startswith('R1b')))}, median {np.median(M3(lambda h: not h.startswith('R1b'))):.0f}; O2a2b1a1 {len(M3(lambda h: h.startswith('O2a2b1a1')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a1'))):.0f}; O2a2b1a2 {len(M3(lambda h: h.startswith('O2a2b1a2')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a2'))):.0f}")

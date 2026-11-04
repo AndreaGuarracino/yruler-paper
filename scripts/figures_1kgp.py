@@ -653,11 +653,11 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     for (c, highlight), x0 in zip((("P", "R1b"), ("O2a", "O2a2b1a1")), (.03, .52)):
         t, d = box(x0, x0 + .18, *sub), box(x0 + .185, x0 + .465, *sub); stats += subtree_panel(t, d, clades[c], other, highlight, limit, "b" if c == "P" else ""); style(d, "", sub[1])
     # short DYZ19 of J2a1a1, by cohort
-    ax = box(.055, .33); own = {r[0]: r[4] for r in csv.reader(open(ROOT / "results/checks/j_calls_hgdp_sgdp.tsv"), delimiter="\t") if r[0].startswith(("HGDP", "SGDP", "HG0", "NA"))}
-    Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: own[r["sample"]].startswith("J2a1a1"); kb = lambda R_: (np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_]), [r["sample"] in TRUTH["dyz19"] for r in R_])
+    ax = box(.055, .33)
+    Jk = [r for r in inc if r["lineage"] == "J"]; Jq = [r for r in Q if r["call"].startswith("J")]; yes = lambda r: r["call"].startswith("J2a1a1"); kb = lambda R_: (np.array([float(r["DYZ19_bp"]) / 1e3 for r in R_]), [r["sample"] in TRUTH["dyz19"] for r in R_])   # HaploGrouper calls, as 1kGP
     G = [("1kGP", kb([r for r in Jk if r["haplogroup"].startswith("J2a1a1")]), kb([r for r in Jk if not r["haplogroup"].startswith("J2a1a1")]))]
     G += [(c, kb([r for r in Jq if r["cohort"] == c and yes(r)]), kb([r for r in Jq if r["cohort"] == c and not yes(r)])) for c in ("HGDP", "SGDP")]
-    assert [(len(a[0]), len(b[0])) for _, a, b in G] == [(42, 44), (16, 29), (6, 12)], [(len(a[0]), len(b[0])) for _, a, b in G]
+    print("Fig. 2d J2a1a1 vs other J per cohort:", [(c, len(a[0]), len(b[0])) for c, a, b in G], flush=True)
     print("Fig. 2d diamonds (DYZ19 truth):", sum(sum(a[1]) + sum(b[1]) for _, a, b in G), flush=True)
     for i, (c, a, b) in enumerate(G):
         strip(ax, 2.6 * i, a[0], PURPLE, s=3, a=.8, seed=i, cap=.32, ref=a[1]); strip(ax, 2.6 * i + 1, b[0], GREY, s=3, a=.8, seed=i + 5, cap=.32, ref=b[1]); ax.text(2.6 * i + .5, -TITLE_Y / tall, c, transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=FS["label"])
