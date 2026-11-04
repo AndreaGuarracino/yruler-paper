@@ -10,7 +10,7 @@
 \newif\ifdraftnotes
 \draftnotesfalse % Author queries remain in the source and can be enabled for review.
 \newcommand{\vsette}[1]{#1} % numbers of the final model, checked 2026-11-03
-\newcommand{\provisional}[1]{\textcolor{red}{#1}} % values to update with the final nanopore model
+\newcommand{\provisional}[1]{#1} % nanopore values: preliminary, to update with the final nanopore model
 \newcommand{\draftnote}[1]{\ifdraftnotes\par\smallskip{\noindent\color{draftink}\small\textbf{Author query:} #1\par}\smallskip\fi}
 % Keep back-matter headings at a consistent level in the PDF outline.
 \makeatletter\def\toclevel@subparagraph{2}\makeatother
