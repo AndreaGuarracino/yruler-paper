@@ -266,7 +266,7 @@
 <circle class="st22" cx="325" cy="289.9" r="1.7"/>
 <circle class="st22" cx="331.8" cy="287.2" r="1.7"/>
 <text transform="matrix(1 0 0 1 301.8127 292.7055)" class="st23 st24 st25">“K”</text>
-<text transform="matrix(0 -1 1 0 281.4277 322.3314)" class="st23 st24 st25">True Length</text>
+<text transform="matrix(0 -1 1 0 281.4277 330.3314)" class="st23 st24 st25">Assembly length</text>
 <path class="st26" d="M75,190.7h21.2c1.1,0,1.9,0.9,1.9,1.9l0,0c0,1.1-0.9,1.9-1.9,1.9H75c-1.1,0-1.9-0.9-1.9-1.9l0,0
 	C73.1,191.5,74,190.7,75,190.7z"/>
 <path class="st27" d="M101,198h26.4c1.1,0,1.9,0.9,1.9,1.9l0,0c0,1.1-0.9,1.9-1.9,1.9H101c-1.1,0-1.9-0.9-1.9-1.9l0,0
@@ -401,7 +401,7 @@
 <circle class="st41" cx="478.8" cy="294.7" r="1.8"/>
 <text transform="matrix(0 -1 1 0 428.4553 320.4189)" class="st23 st24 st25">Predicted</text>
 <text transform="matrix(1 0 0 1 473.2603 311.2568)" class="st45 st24 st25">Error</text>
-<text transform="matrix(1 0 0 1 437.9897 330.4006)" class="st23 st24 st25">True Length</text>
+<text transform="matrix(1 0 0 1 437.9897 330.4006)" class="st23 st24 st25">Assembly length</text>
 <path class="st46" d="M377.3,194.4h2.5c0.3,0,0.5,0.2,0.5,0.5v6.7c0,0.3-0.2,0.5-0.5,0.5h-2.5c-0.3,0-0.5-0.2-0.5-0.5V195
 	C376.8,194.7,377,194.4,377.3,194.4z"/>
 <path class="st47" d="M381,194.4h2.5c0.3,0,0.5,0.2,0.5,0.5v6.7c0,0.3-0.2,0.5-0.5,0.5H381c-0.3,0-0.5-0.2-0.5-0.5v-6.7

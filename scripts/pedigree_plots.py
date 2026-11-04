@@ -116,7 +116,7 @@ def differences(ax,rows,key,compact=False,reverse=True):
     ax.set_xticks(ticks,[str(x) for x in ticks]);ax.set_ylim(len(groups)-.55,-.55)
     short=['Cross\nbatch','Same\nbatch','Reverse\ncross batch'] if compact else GROUPS
     ax.set_yticks(range(len(groups)),short[:len(groups)])
-    ax.tick_params(axis='y',length=0);ax.set_xlabel('Offspring/parent difference (%)')
+    ax.tick_params(axis='y',length=0);ax.set_xlabel('Relative offspring–parent\ndifference (%)')
     style(ax);ax.spines['left'].set_visible(False)
 
 
@@ -124,7 +124,7 @@ def legend(fig,rows):
     first=[r for r in rows if r['target']=='dyz3'];counts=Counter(r['batch_group'] for r in first)
     h=[Line2D([],[],marker=m,linestyle='none',color=MUTED,markersize=3,
        label=f'{g} (n={counts[g]})') for g,m in zip(GROUPS,MARKERS)]
-    h.append(Line2D([],[],markeredgecolor=MUTED,label='Pair with a truth-set male',**REF_HANDLE))
+    h.append(Line2D([],[],markeredgecolor=MUTED,label='Pair involving a reference individual',**REF_HANDLE))
     top_legend(fig,handles=h,ncol=4)   # same gap as ED7 and ED8
 
 

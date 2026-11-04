@@ -264,7 +264,7 @@ def panel_e(out):
     for t in ticks: ax.axvline(t, color=GRIDC, lw=.6 * S, zorder=1)
     ax.axvline(0, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1)
     frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', labelsize=9 * S)
-    ax.set_xlabel('Offspring − parent difference (%)', fontsize=10 * S, fontstyle='italic', labelpad=1)
+    ax.set_xlabel('Relative offspring–parent difference (%)', fontsize=10 * S, fontstyle='italic', labelpad=1)
     put(224.2, 551.1, 'f', 20, fontweight='bold'); put(372, 546, f'Parent–offspring agreement ({len(P)} pairs)', 12, fontweight='bold', ha='center')   # title size as c, d, f
     for x, mk, s in ((323.5, '^', 'HG02966'), (378, 'o', 'HG02773')):
         mark([x], [555.2], marker=mk, ms=4, mfc='white', mec='k', mew=.75); put(x + 5.5, 557.9, f'= {s}', 8)

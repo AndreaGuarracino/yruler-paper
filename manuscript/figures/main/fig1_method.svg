@@ -28435,13 +28435,13 @@
                          id="tspan426">“K”</tspan></text>
                     <text
                        xml:space="preserve"
-                       transform="rotate(-90,190.40966,-20.661113)"
+                       transform="rotate(-90,193.40966,-17.661113)"
                        style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#3d4651;fill-opacity:1;fill-rule:nonzero;stroke:none"
                        id="text432"><tspan
-                         x="0 3.4430392 5.4410858 8.7779999 12.114914 13.781906 17.11882 20.455734 23.792648 27.129562 28.796555"
+                         x="0 4.0019531 7.0019531 10.001953 13.338867 18.336914 21.673828 23.006836 26.006836 27.673828 29.006836 32.34375 35.680664 39.017578 40.68457"
                          y="0"
                          sodipodi:role="line"
-                         id="tspan430">True Length</tspan></text>
+                         id="tspan430">Assembly length</tspan></text>
                     <g
                        id="g434">
                       <g
@@ -29138,10 +29138,10 @@
                        transform="translate(328.49227,175.80045)"
                        style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#3d4651;fill-opacity:1;fill-rule:nonzero;stroke:none"
                        id="text866"><tspan
-                         x="0 3.4430392 5.4410858 8.7779999 12.114914 13.781906 17.11882 20.455734 23.792648 27.129562 28.796555"
+                         x="0 4.0019531 7.0019531 10.001953 13.338867 18.336914 21.673828 23.006836 26.006836 27.673828 29.006836 32.34375 35.680664 39.017578 40.68457"
                          y="0"
                          sodipodi:role="line"
-                         id="tspan864">True Length</tspan></text>
+                         id="tspan864">Assembly length</tspan></text>
                     <g
                        id="g868">
                       <path
@@ -48124,16 +48124,16 @@
             </g>
             <g
                id="g15608"
-               transform="translate(71.657812,1.140625)">
+               transform="translate(60.071875,1.140625)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
                  style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15612"><tspan
-                   x="0 5.835 7.9200001 10.005 13.755 17.924999 20.422501 22.0875 26.2575 30.4275 32.512501 36.892502 38.977501 43.147499 47.317501 49.814999 53.985001 58.154999 60.240002 62.325001 66.495003 68.160004 70.245003 72.330002 76.5 78.997498 83.167503 87.337502 91.087502 95.2575 97.342499 99.839996 106.5075"
+                   x="0 5.415 9.585 11.25 15.42 17.504999 19.17 22.92 27.09 29.174999 33.345001 35.43 37.514999 41.264999 45.435001 47.932499 49.5975 53.767502 57.9375 62.107498 66.277496 70.447502 72.945 77.114998 81.285004 83.370003 85.455002 89.625 91.290001 93.375 95.459999 99.629997 102.1275 106.2975 110.4675 114.2175 118.3875 120.4725 122.97 129.6375"
                    y="0"
                    sodipodi:role="line"
-                   id="tspan15610">Offspring − parent difference (%)</tspan></text>
+                   id="tspan15610">Relative offspring–parent difference (%)</tspan></text>
             </g>
           </g>
           <g

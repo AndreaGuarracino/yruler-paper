@@ -13,7 +13,7 @@ BANDS = [('p11.32', 0, 127522, 'gneg'), ('p11.31', 127522, 454425, 'gpos50'), ('
          ('q11.1', 10726286, 10883195, 'acen'), ('q11.21', 10883195, 13307633, 'gneg'), ('q11.221', 13307633, 18006534, 'gpos50'), ('q11.222', 18006534, 20506564, 'gneg'),
          ('q11.223', 20506564, 25062557, 'gpos50'), ('q11.23', 25062557, 27449937, 'gneg'), ('q12', 27449937, 62460029, 'gvar')]
 STAIN = PL.STAIN
-GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp deletion', 'yp_deletion'), ('Mosaic loss', 'mosaic_loss'), ('Mosaic gain', 'mosaic_gain'), ('Y gain (XYY)', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
+GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp depletion', 'yp_deletion'), ('Low Y dosage', 'mosaic_loss'), ('Intermediate Y dosage', 'mosaic_gain'), ('Y gain (XYY)', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
 EXTRA = [('X gain (XXY)', ['HG01683']), ('Unusual array estimates', ['HG01527', 'HG01529', 'NA18910', 'NA18911', 'HG04006', 'HG02804', 'HG02684', 'HG02686', 'NA18952'])]
 NOTE = {'NA19226': 'Y lost; offspring XY', 'HG02966': 'offspring; parent HG02965 without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))

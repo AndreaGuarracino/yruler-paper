@@ -603,9 +603,10 @@ def composition_supplement(rows, order, out, pop=()):
     leg = a.legend(loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=4, borderaxespad=0.2, columnspacing=0.8)   # one line at the top right
     fig.canvas.draw(); bb = leg.get_window_extent().transformed(a.transAxes.inverted())
     a.text(bb.x0, (bb.y0 + bb.y1) / 2, NAMES["class"], transform=a.transAxes, ha="right", va="center", fontsize=FS["legend"], fontweight="bold")   # legend title on the same line
-    a.text(.33, 1.0 + 4 / 72 / (fig.get_figheight() * .44), f"Parts of Yq12 in the {len(ordered)} reference assemblies", transform=a.transAxes, ha="center", va="baseline", fontsize=FS["title"], fontweight="bold")   # title left of the legend
+    a.text(.33, 1.0 + 4 / 72 / (fig.get_figheight() * .44), f"Yq12 composition in {len(ordered)} reference assemblies", transform=a.transAxes, ha="center", va="baseline", fontsize=FS["title"], fontweight="bold")   # title left of the legend
     major = lambda g: g if g in ("R1a", "R1b") else ("NO" if g.startswith("NO") else g[0])
     lins = ["E", "R1b", "O", "R1a", "J"]
+    statistics = []
     for k, lin in enumerate(lins):
         ax = fig.add_axes([.07 + k * .188, .07, .155, .2]); c = LINEAGE_COLORS.get(lin[0], LINE)
         P = [r for r in pop if r["lineage"] == lin]; y = np.array([r["Yq12_bp"] for r in P], float) / 1e6; sh = 100 * np.array([r["DYZ1_bp"] for r in P], float) / 1e6 / y
@@ -619,7 +620,11 @@ def composition_supplement(rows, order, out, pop=()):
         if k == 0: ax.set_ylabel("DYZ1 fraction of Yq12 (%)")
         else: ax.set_yticklabels([])
         ax.grid(True); ax.set_axisbelow(True)
+        statistics.append({"lineage": lin, "males": len(P), "reference_arrays": len(A), "spearman_rho": float(rho), "slope_percentage_points_per_mb": float(sl), "intercept_pct": float(ic)})
         print(f"ED2b {lin}: {len(P)} males, Spearman {rho:.3f}, slope {sl:.3f} points per Mb, assemblies {len(A)}", flush=True)
+    with (ROOT / "results/figures/ed2_composition_correlations.tsv").open("w") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(statistics[0]), delimiter="\t")
+        writer.writeheader(); writer.writerows(statistics)
     nt = sum(1 for r in pop if r["lineage"] in lins)   # males in the five panels
     fig.text(.45, .335, f"DYZ1 fraction against Yq12 length within lineages in 1000 Genomes ({nt:,})", fontsize=FS["title"], fontweight="bold", ha="center")
     fig.add_artist(plt.Line2D([.865], [.343], marker="D", ms=3.5, mfc="white", mec="k", mew=.6, ls="none", transform=fig.transFigure)); fig.text(.873, .336, "= assemblies", fontsize=FS["legend"])

@@ -559,7 +559,7 @@ def frozen_trait(ax, leaves, key, color, scale, limit, ticks, title, panel, unit
 def reads_legend(fig, x=.5, loc="lower center"):
     """Legend for dots and open diamonds, every figure."""
     from palette import REF_HANDLE, top_legend
-    top_legend(fig, x, loc, handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], ncol=2)
+    top_legend(fig, x, loc, handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="Individual with a reference assembly", **REF_HANDLE)], ncol=2)
 
 
 def column_axis(ax, title, color, units, limit, ticks):
@@ -683,7 +683,7 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
     ax.scatter(men[0][~tri], men[1][~tri], s=2, c=GREY, lw=0, alpha=.6, label="From reads (1kGP, 1,196)", rasterized=True); ax.scatter(men[0][tri], men[1][tri], edgecolors=GREY, rasterized=True, **REF); ax.scatter(*asm, s=6, marker="x", c=ORANGE, linewidths=.6, alpha=.9, label="From assemblies (75)", rasterized=True)
     L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2f symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
-    ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2f points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 relative to lineage mean"); ax.set_ylabel("DYZ1 relative to lineage mean"); from matplotlib.legend_handler import HandlerTuple
+    ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2f points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 / lineage geometric mean"); ax.set_ylabel("DYZ1 / lineage geometric mean"); from matplotlib.legend_handler import HandlerTuple
     dot, cross, eq = Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY), Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6), Line2D([], [], color=MUTED, lw=.6, ls="--")
     ax.legend([(Line2D([], [], color=ORANGE, lw=.9), cross), (Line2D([], [], color=INK, lw=.9), dot), eq], [f"From assemblies (75)\n(SD ratio {a:g})", f"From reads (1kGP, 1,196)\n(SD ratio {r:g})", "Equal variation\n(SD ratio 1)"], handler_map={tuple: HandlerTuple(ndivide=1)}, **on_top(ax, left=True, ncol=1)); style(ax, "e")   # points and line share one entry
     B = [.719, .18, .25, .19]; ins = ax.inset_axes(B); x0, y0 = -L + 2 * L * B[0], -L + 2 * L * B[1]; print("Fig. 2f points under the inset:", int(sum(((x >= x0) & (x <= x0 + 2 * L * B[2]) & (y >= y0) & (y <= y0 + 2 * L * B[3])).sum() for x, y in (men, asm))), flush=True); S = [("Assemblies", "assemblies"), ("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp")]
@@ -718,7 +718,7 @@ def population_figure(valid, out, snapshot_path, completed):
     print("Fig. 2a superpopulation counts:", {n["group"]: dict(Counter(r["superpopulation"] for r in n["members"])) for n in leaves}, flush=True)
     p0, p1 = sp.get_position(), axes[-1].get_position()
     fig.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="upper center", bbox_to_anchor=((p0.x0 + p1.x1) / 2, (H - 1) / H), ncol=5, title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=0)
-    fig.legend(handles=[Line2D([], [], markeredgecolor=INK, label="From reads, truth-set male", **REF_HANDLE)], loc="upper left", bbox_to_anchor=(.03, (H - 4.2) / H), fontsize=FS["legend"], borderaxespad=0)   # one diamond key for a-d, f
+    fig.legend(handles=[Line2D([], [], markeredgecolor=INK, label="Individual with a reference assembly", **REF_HANDLE)], loc="upper left", bbox_to_anchor=(.03, (H - 4.2) / H), fontsize=FS["legend"], borderaxespad=0)   # one diamond key for a-d, f
     stats = frozen_trait(axes[1], leaves, "DYZ3_bp", BLUE, 1e6, 3, [0, 1, 2, 3],
                          "DYZ3", "c", "Length (Mb)", lambda g: g in ("R1b", "O2a2b1a1"), show_panel=False)
     stats += frozen_trait(axes[3], leaves, "Yq12_bp", GREEN, 1e6, 60, [0, 20, 40, 60],
@@ -872,7 +872,7 @@ def j_subtree_figure(valid, out):
     top = max(r["DYZ19_bp"] for r in members) / 1e3; assert top <= 350, top   # largest J male fits
     ax.set_xlim(-8, 350); ax.set_xticks(range(0, 351, 50)); ax.set_xticks([], minor=True); print(f"ED8 largest DYZ19 {top:.1f} kb", flush=True)
     # one panel as Fig. 2a: no letters
-    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="From reads, truth-set male", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
+    ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="Individual with a reference assembly", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
     ax.add_artist(ax.get_legend()); ax.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="center left", bbox_to_anchor=(0, .5), title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=.4, alignment="left")   # empty left side of b
     save(fig,out,"ed/ed8_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
@@ -892,7 +892,7 @@ def assembly_supplement(out):
     _, order = pruned_tree(groups, parents, children)
     rows = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                             calls, parents, groups)
-    pop = [r for r in load_snapshot()[1] if r.get('population_included') in (True, 'True')]   # males of the population analyses
+    pop = [r for r in load_snapshot()[1] if in_summary(r, 'Yq12_bp')]   # same Yq12 inclusion rule as the population summaries, excluding PAR2 gains
     composition_supplement(rows, order, out, pop)
     write_rows(AUX / "figureS2_composition_samples.tsv", rows)
 
