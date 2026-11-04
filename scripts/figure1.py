@@ -166,17 +166,17 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None)
     if cvmed: mark([42], [354], marker='s', ms=3.6, mfc='white', mec='k', mew=.6); put(48.5, 357, '= cross-validation median (Fig. 1c)', 8)
 
 
-def cost(x0, x1):
+def cost(x0, x1, uc):   # uc: design units per box step in c, so boxes match
     """Runtime and peak memory of the released model, 130 local CRAMs."""
     B = rd(ROOT / 'results/checks/runtime_memory.tsv'); rng = np.random.default_rng(4)
     t, m = np.array([float(r['wall_s']) / 60 for r in B]), np.array([float(r['peak_rss_kb']) / 1e6 for r in B])
-    a = axes(x0, 362.05, x1, 501.05); b = a.twinx()
+    a = axes(x0, 362.05, x1, 501.05); b = a.twinx(); k = uc / ((x1 - x0) / 1.72)   # c scale over d scale (xlim span 1.72)
     for ax, v, i, c in ((a, t, 0, DOSE), (b, m, 1, GREY)):
-        ax.scatter(i + rng.uniform(-.17, .17, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
-        ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.42, patch_artist=True, manage_ticks=False, zorder=3,
-               boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.18)
+        ax.scatter(i + rng.uniform(-.24 * k, .24 * k, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
+        ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55 * k, patch_artist=True, manage_ticks=False, zorder=3,
+               boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22 * k)
         print(f'cost {["runtime min", "peak memory GB"][i]}: {len(v)} CRAMs, median {q[2]:.2f}, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.2f}, max {v.max():.2f}', flush=True)
-    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(0, 2.65); b.set_ylim(0, 5.3); a.set_yticks([0, .5, 1, 1.5, 2, 2.5], ['0', '0.5', '1', '1.5', '2', '2.5']); b.set_yticks([0, 1, 2, 3, 4, 5])   # axes end above the top tick, clear of the title
+    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(1.1, 2.3); b.set_ylim(3.37, 3.45); a.set_yticks([1.2, 1.4, 1.6, 1.8, 2, 2.2], ['1.2', '1.4', '1.6', '1.8', '2.0', '2.2']); b.set_yticks([3.38, 3.4, 3.42, 3.44], ['3.38', '3.40', '3.42', '3.44'])   # zoomed on the data (axes do not start at 0)   # axes end above the top tick, clear of the title
     for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side)); ax.tick_params(axis='y', labelsize=10 * S)
     for tk in a.get_xticklabels(): tk.set_fontweight('bold'); tk.set_fontsize(9 * S)   # black
     a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
@@ -184,7 +184,7 @@ def cost(x0, x1):
 
 
 def panel_c(out):
-    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c', x1=382, tx=232); cost(426, 496); save('c', out)
+    panel('c'); boxes(cv_errors(), 'Mean absolute error (%, log scale)', 'Cross-validation error', 'c', x1=382, tx=232); cost(426, 496, (382 - 37.15) / (7.53 + .576)); save('c', out)   # c xlim span 8.106
 
 
 def ed4(path):

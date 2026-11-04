@@ -3,7 +3,7 @@
 usage: python3 scripts/suppfig2_markerfree.py [out.pdf]   (default manuscript/figures/supp/suppfig2_markerfree.pdf)
 inputs: results/checks/dyz3_check.tsv (aligned_ratio: GRCh38 DYZ3 block over chrY:14.5-15.5 Mb),
         results/checks/dyz19_depth.tsv (depth_ratio_core: chrY:20,054,500-20,351,000 over chrY:14.5-15.5 Mb, um_dyz19depth.py with v9bBx),
-        results/checks/alignchk.tsv (same reads aligned by DRAGEN 3.7.6 and NYGC BWA: aligned depth per class, um_alignchk.py, 6 classes),
+        results/checks/alignchk.tsv (same reads aligned by DRAGEN 3.7.6 and NYGC BWA: aligned depth per class, um_alignchk.py, 7 classes),
         Yruler estimates and population set from figures_1kgp.load_snapshot (final model v9bBx)."""
 import csv, sys
 from pathlib import Path
@@ -55,7 +55,7 @@ def panel(ax, groups, xk, yk, scale, title, letter, x0, x1, xl, yl):
 
 def aligner(ax):
     """Aligned depth, DRAGEN against BWA on the same reads."""
-    A = list(csv.DictReader(open(ROOT / 'results/checks/alignchk.tsv'), delimiter='\t')); cl = ['DYZ3', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']; rng = np.random.default_rng(3)   # Fig. 1c order; DYZ17 not in these bins
+    A = list(csv.DictReader(open(ROOT / 'results/checks/alignchk.tsv'), delimiter='\t')); cl = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']; rng = np.random.default_rng(3)   # Fig. 1c order
     V = {(r['sample'], r['class']): r for r in A}; males = sorted({r['sample'] for r in A})
     ratio = np.array([100 * ((float(V[m, 'dyz1']['dragen']) / float(V[m, 'dyz2']['dragen'])) / (float(V[m, 'dyz1']['bwa']) / float(V[m, 'dyz2']['bwa'])) - 1) for m in males])   # DYZ1:DYZ2 depth ratio
     for i, n in enumerate(cl):
