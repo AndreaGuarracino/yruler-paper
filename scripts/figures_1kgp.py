@@ -818,7 +818,8 @@ def dosage_by_sex(axes, out_cut=.02):
     gap = int(((fd > top) & (fd < .2)).sum() + ((md > top) & (md < .2)).sum())
     if gap: sys.exit(f"ERROR {gap} samples in the hidden {top}-0.2 part of the dosage axis")
     print(f"ED7a: {len(fd)} recorded females (max Y dosage {fd.max():.4f}, above the cut {out_cut}: {int((fd > out_cut).sum())}), {len(md)} recorded males (min {md.min():.4f}, at or below the cut: {int((md <= out_cut).sum())})", flush=True)
-    for ax, bins, clip in ((a1, np.logspace(-4, np.log10(top), 26), (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
+    E = np.concatenate([np.geomspace(1e-4, out_cut, 24), [top]])   # the cut is a bin edge: no bar crosses the line
+    for ax, bins, clip in ((a1, E, (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
         for v, c, lab in ((fd, "#b07aa1", f"Recorded females (n = {len(fd)})"), (md, DOSE, f"Recorded 1kGP males (n = {len(md):,})")):
             w = v[(v >= clip[0] * .99) & (v <= top)] if ax is a1 else v[v >= .2]
             ax.hist(np.clip(w, *clip), bins, color=c, label=lab, zorder=2)
@@ -833,8 +834,8 @@ def dosage_by_sex(axes, out_cut=.02):
     for ax, x in ((a1, 1), (a2, 0)): ax.plot([x], [0], transform=ax.transAxes, clip_on=False, marker=[(-1.4, -2.6), (1.4, 2.6)], ms=4, mew=.5, color="k", ls="none")   # break on the x axis
     for r in males:
         if float(r["y_dose"]) <= out_cut:   # recorded male without Y
-            e = np.logspace(-4, np.log10(top), 26); j = int(np.searchsorted(e, float(r["y_dose"]))) - 1
-            a1.annotate(r["sample"], (np.sqrt(e[j] * e[j + 1]), .7), xytext=(.02, -.21), textcoords="axes fraction", annotation_clip=False,
+            j = int(np.searchsorted(E, float(r["y_dose"]))) - 1
+            a1.annotate(r["sample"], (np.sqrt(E[j] * E[j + 1]), .7), xytext=(.02, -.21), textcoords="axes fraction", annotation_clip=False,
                         fontsize=FS["point"], ha="left", va="top", arrowprops=dict(arrowstyle="-|>", color="k", lw=.5, mutation_scale=4, shrinkA=1.5, shrinkB=0))   # label under the x axis, tip at the base of its bar
             print(f"ED5a: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
     a2.legend(loc="upper left", fontsize=FS["legend"], handlelength=1.1, frameon=False, labelspacing=.3, borderaxespad=.2)   # level with the b legend
