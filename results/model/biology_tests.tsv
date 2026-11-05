@@ -2,21 +2,29 @@ item	value
 one_per_component_men	1271 of 1583 (PAR2-gain men left out)
 lineages_ge20	14: C 30, D 20, E 340, G 21, H 66, I 52, J 74, L 26, N 32, O 202, Q 47, R 34, R1a 85, R1b 221
 kruskal_DYZ3	H 794.8, p 1.82e-161
-dunn_holm_DYZ3	51 of 91 pairs below 0.05
+lineage_r2_DYZ3	0.681 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ3	51 of 91 pairs below 0.05; tie term 0.0004 of 1.303e+05
 kruskal_Yq12	H 312.7, p 5.36e-59
-dunn_holm_Yq12	39 of 91 pairs below 0.05
+lineage_r2_Yq12	0.235 of log variance between 14 lineages, 1250 men
+dunn_holm_Yq12	39 of 91 pairs below 0.05; tie term 0 of 1.303e+05
 kruskal_DYZ1	H 361.8, p 2.56e-69
-dunn_holm_DYZ1	41 of 91 pairs below 0.05
+lineage_r2_DYZ1	0.258 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ1	41 of 91 pairs below 0.05; tie term 0 of 1.303e+05
 kruskal_DYZ2	H 267.0, p 1.89e-49
-dunn_holm_DYZ2	34 of 91 pairs below 0.05
+lineage_r2_DYZ2	0.196 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ2	34 of 91 pairs below 0.05; tie term 0 of 1.303e+05
 kruskal_DYZ18S	H 265.8, p 3.36e-49
-dunn_holm_DYZ18S	51 of 91 pairs below 0.05
+lineage_r2_DYZ18S	0.235 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ18S	51 of 91 pairs below 0.05; tie term 0.002 of 1.303e+05
 kruskal_DYZ19	H 999.3, p 2.42e-205
-dunn_holm_DYZ19	59 of 91 pairs below 0.05
+lineage_r2_DYZ19	0.664 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ19	59 of 91 pairs below 0.05; tie term 0.0028 of 1.303e+05
 kruskal_DYZ17	H 280.1, p 3.54e-52
-dunn_holm_DYZ17	44 of 91 pairs below 0.05
+lineage_r2_DYZ17	0.198 of log variance between 14 lineages, 1250 men
+dunn_holm_DYZ17	44 of 91 pairs below 0.05; tie term 0.0012 of 1.303e+05
 kruskal_ratio	H 247.1, p 2.59e-45
-dunn_holm_ratio	25 of 91 pairs below 0.05
+lineage_r2_ratio	0.145 of log variance between 14 lineages, 1250 men
+dunn_holm_ratio	25 of 91 pairs below 0.05; tie term 0 of 1.303e+05
 hl_dyz3_r1b_over_other	0.339 (0.329-0.351)
 hl_dyz19_j2a1a1_over_other_j	0.235 (0.230-0.241); 37 vs 37
 mw_dyz3_r1b_1kgp	221 vs 1050, median 318 vs 980 kb, U 8833, p 1.35e-103

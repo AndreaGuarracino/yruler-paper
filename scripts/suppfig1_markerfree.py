@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Supplementary Fig. 2: aligned read depth, which uses no Yruler marker, against the Yruler estimates of DYZ3 and DYZ19 (Fig. 1 style).
-usage: python3 scripts/suppfig2_markerfree.py [out.pdf]   (default manuscript/figures/supp/suppfig2_markerfree.pdf)
+"""Supplementary Fig. 1: aligned read depth, which uses no Yruler marker, against the Yruler estimates of DYZ3 and DYZ19 (Fig. 1 style).
+usage: python3 scripts/suppfig1_markerfree.py [out.pdf]   (default manuscript/figures/supp/suppfig1_markerfree.pdf)
 inputs: results/checks/dyz3_check.tsv (aligned_ratio: GRCh38 DYZ3 block over chrY:14.5-15.5 Mb),
         results/checks/dyz19_depth.tsv (depth_ratio_core: chrY:20,054,500-20,351,000 over chrY:14.5-15.5 Mb, um_dyz19depth.py with v9bBx),
         results/checks/alignchk.tsv (same reads aligned by DRAGEN 3.7.6 and NYGC BWA: aligned depth per class, um_alignchk.py, 7 classes),
@@ -71,7 +71,7 @@ def aligner(ax):
 
 
 def main():
-    out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/supp/suppfig2_markerfree.pdf'
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/supp/suppfig1_markerfree.pdf'
     _, valid, _ = f.load_snapshot(); E = {r['sample']: r for r in valid if r.get('population_included') in (True, 'True', 'yes')}
     print(f'population males {len(E)}', flush=True)
     D3 = rd(ROOT / 'results/checks/dyz3_check.tsv'); D19 = rd(ROOT / 'results/checks/dyz19_depth.tsv')

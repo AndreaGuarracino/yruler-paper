@@ -749,13 +749,13 @@ def population_figure(valid, out, snapshot_path, completed):
         for group,n in counts.items()])
     pie_fig, pie_ax = plt.subplots(figsize=(180 * MM, 77 * MM)); pie_ax.set_anchor("N")
     pie_map(pie_ax, None, map_samples, land, size_legend=True, legend_y=-51)   # legends 2 mm (4 degrees) lower
-    print(f"Supplementary Fig. 1 map: n={len(map_samples):,} individuals", flush=True)
+    print(f"Supplementary Fig. 2 map: n={len(map_samples):,} individuals", flush=True)
     pie_fig.subplots_adjust(left=.005, right=.995, top=.995, bottom=.005)
     pie_fig.canvas.draw()
     anchor=pie_fig.transFigure.inverted().transform(pie_ax.transData.transform((55.38,-42.63)))
     map_legend=lineage_legend(pie_fig, map_samples, anchor[1], x=anchor[0], fontsize=FS["legend"])
     align_map_legend_titles(pie_ax,map_legend)
-    save(pie_fig, out, "supp/suppfig1_world_map")
+    save(pie_fig, out, "supp/suppfig2_world_map")
     return root, leaves
 
 

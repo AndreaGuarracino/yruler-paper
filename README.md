@@ -18,11 +18,11 @@ Python 3 with numpy, scipy and matplotlib. Run from the repository root.
 ```shell
 R=results/model
 python3 scripts/biology_tests.py $R data/method/indep_ours10.tsv data/method/yq12_truth_hallast.tsv $R/biology_tests.tsv $R/dunn_pairs.tsv
-python3 scripts/manuscript_figures.py      # Extended Data and Supplementary Fig. 1 into manuscript/figures
+python3 scripts/manuscript_figures.py      # Extended Data and Supplementary Fig. 2 into manuscript/figures
 python3 scripts/figure1.py                 # Fig. 1 (panels a and b from manuscript/figures/main/fig1/*.svg)
 python3 scripts/figure2.py                 # Fig. 2 (layout of manuscript/figures/main/fig2/Fig2_Yruler_v3.svg, data from the tables)
 python3 scripts/pedigree_plots.py          # parent-offspring figure
-python3 scripts/suppfig2_markerfree.py     # Supplementary Fig. 2
+python3 scripts/suppfig1_markerfree.py     # Supplementary Fig. 1
 python3 scripts/text_numbers.py $R $R/text_numbers.tsv
 python3 scripts/methods_numbers.py $R results/checks/gc_curves.tsv $R/methods_numbers.tsv
 python3 scripts/pgls_composition.py $R/cohort_1kgp.tsv $R/pgls_composition.tsv
