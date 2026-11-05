@@ -1,4 +1,4 @@
-# Independent class truth from our model hits
+# Class amounts from our profile-HMM hits
 import sys, glob, os, collections as co
 D, OUT, HMM = sys.argv[1], sys.argv[2], sys.argv[3]; EMAX = float(sys.argv[4]) if len(sys.argv) > 4 else 1e-10
 LN = {}; nm = None  # model lengths

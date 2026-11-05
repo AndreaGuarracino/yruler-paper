@@ -6,7 +6,7 @@ def load(O):
         if l: m, c, src, a, ctg, s, e = l.split('\t'); T[c][m] = float(int(e) - int(s)); A12.update({m: a} if c == 'yq12' else {})
     yq = set(T['yq12'])
     h = None
-    for l in open(f'{O}/indep_setB.tsv'):   # unit bp from our profile HMMs, assemblies with a truth Yq12
+    for l in open(f'{O}/indep_setB.tsv'):   # Hallast annotation table (um_halregions.py)
         x = l.rstrip('\n').split('\t')
         if h is None: h = x; continue
         r = dict(zip(h, x)); m = r['assembly'].replace('_R2', '')
@@ -22,7 +22,7 @@ def load(O):
         if h is None: h = x; continue
         r = dict(zip(h, x))
         if r['clean'] == 'True': T['dyz19'][r['assembly'].replace('_R2', '')] = float(r['unit_bp_array'])
-    f = os.environ.get('D17T', f'{os.path.dirname(O)}/newclass/truth_all.tsv'); c17 = os.environ.get('D17C', 'dyz17_span')   # DYZ17: array spans (um_newtruth.py) or nine-model amounts
+    f = os.environ.get('D17T', f'{os.path.dirname(O)}/newclass/truth_all.tsv'); c17 = os.environ.get('D17C', 'dyz17_span')   # DYZ17: D17T table (release: um_halregions.py)
     if os.path.exists(f):
         h = None
         for l in open(f):

@@ -678,7 +678,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
         for lineage in LINEAGE_COLORS:
             if lineage_counts[lineage]:
                 writer.writerow([lineage, lineage_counts[lineage], 100 * lineage_counts[lineage] / len(pie_samples)])
-    composition = load_composition(ROOT / "data/method/indep_setB.tsv", ROOT / "data/markers_u/truth_regions.tsv",
+    composition = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                                    calls, parents, groups)
     fig = plt.figure(figsize=(9.8, 9.2))
     map_ax = fig.add_axes([0.045, 0.61, 0.91, 0.37])

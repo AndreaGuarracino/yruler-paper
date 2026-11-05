@@ -908,7 +908,7 @@ def snapshot_manifest(path, out):
     inputs += [ROOT / name for name in (
         "data/catalog_d376/ped.txt", "data/catalog_d376/fs_pairs.tsv",
         "data/method/dyz19_clean.tsv",
-        "data/method/indep_setB.tsv", "data/markers_u/truth_regions.tsv",
+        "data/method/yq12_truth_hallast.tsv", "data/markers_u/truth_regions.tsv",
         "data/method/haplogroups_1kgp_isogg2019_decode1.tsv",
         "scripts/manuscript_figures.py", "scripts/figure2_tree.py",
         "scripts/figures_1kgp.py", "scripts/prepare_cohort_pies.py",

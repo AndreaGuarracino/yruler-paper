@@ -1,0 +1,8 @@
+model	sample	class	signed_error_pct	input_library	source
+v9bBx	HG002	DYZ3	1.4236	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	Yq12	-1.6553	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	DYZ1	1.0410	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	DYZ2	-5.3516	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	DYZ18S	0.5606	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	DYZ19	2.1547	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv
+v9bBx	HG002	DYZ17	1.5969	NovaSeq PCR-free 30x	model_v5_v9bBx_sum/holdout_units.tsv

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extra tables of a final model: CV median bootstrap, prediction intervals, lineage medians, DYZ1:DYZ2 truth vs yruler.
 
-usage: python3 scripts/final_extras.py <results dir> <indep_setB.tsv> <truth_regions.tsv>
+usage: python3 scripts/final_extras.py <results dir> <yq12_truth_hallast.tsv> <truth_regions.tsv>
 reads cv_units.tsv, holdout_21_units.tsv, cohort_1kgp.tsv in the results dir; interval half-width w: |error| as % of the estimate (truth within estimate x (1 +- w)); writes cv_median_bootstrap.tsv, prediction_intervals.tsv,
 lineage_medians_bootstrap.tsv, dyz1_dyz2_truth_vs_yruler.tsv there. Bootstrap: 2,000 resamples, seed 20261101.
 DYZ1:DYZ2 unit ratio in Hallast 2026 units (bp per hit): DYZ1 3,478.9, DYZ2 2,404.4.

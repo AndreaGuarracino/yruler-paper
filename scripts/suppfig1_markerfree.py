@@ -83,13 +83,16 @@ def main():
     panel(a, [('other lineages', rest, GREY, .5, 5, 1), ('R1b', r1b, LINEAGE['R'], .7, 7, 2), ('O2a2b1a2', o2, LINEAGE['O'], .9, 12, 3), ('O2a2b1a1', o1, CLASS['DYZ3'], .9, 12, 4)],
           'est', 'aligned_ratio', 1e6, 'DYZ3', 'a', 52, 262, 'Yruler DYZ3 estimate (Mb)', 'Aligned read depth, DYZ3 / control')
     r19 = [dict(r, est=r['DYZ19_bp']) for s, r in D19.items() if s in E]
+    for nm, rr, k in (('DYZ3', r3, 'aligned_ratio'), ('DYZ19', r19, 'depth_ratio_core')):   # least-squares line for the caption
+        x, y = np.array([float(r['est']) for r in rr]), np.array([float(r[k]) for r in rr]); sl, ic = np.polyfit(x, y, 1); r2 = 1 - np.var(y - sl * x - ic) / np.var(y)
+        print(f'{nm} fit: {k} = estimate / {1 / sl / 1e3:.1f} kb + {ic:.3f}, R2 {r2:.4f}, {len(x)} males, median |residual| {100 * np.median(np.abs(y - sl * x - ic) / y):.2f}%', flush=True)
     j1 = [r for r in r19 if r['haplogroup'].startswith('J2a1a1')]; jo = [r for r in r19 if r['lineage'] == 'J' and r not in j1]; ot = [r for r in r19 if r['lineage'] != 'J']
     b = axes(320, 34, 530, 299)
     panel(b, [('other lineages', ot, GREY, .5, 5, 1), ('other J', jo, LINEAGE['J'], .6, 8, 2), ('J2a1a1', j1, CLASS['DYZ19'], .9, 10, 3)],
           'est', 'depth_ratio_core', 1e3, 'DYZ19', 'b', 320, 530, 'Yruler DYZ19 estimate (kb)', 'Aligned read depth, DYZ19 core / control')
     aligner(axes(52, 359, 530, 569))
-    from palette import PAD
-    fig.savefig(out, bbox_inches='tight', pad_inches=PAD); print(f'written {out}: {W * S / 72 * 25.4:.1f} x {H * S / 72 * 25.4:.1f} mm', flush=True)
+    from palette import PAD, crop_ink
+    fig.savefig(out, bbox_inches='tight', pad_inches=PAD); crop_ink(out); print(f'written {out}: {W * S / 72 * 25.4:.1f} x {H * S / 72 * 25.4:.1f} mm', flush=True)
 
 
 if __name__ == '__main__':
