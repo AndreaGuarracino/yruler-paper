@@ -75,6 +75,23 @@ def save(fig, path, pdf=None):
     for ax in fig.axes:   # Fig. 1 style: italic axis labels, bold titles
         ax.xaxis.label.set_fontstyle('italic'); ax.yaxis.label.set_fontstyle('italic'); ax.title.set_fontweight('bold')
     (pdf.savefig(fig) if pdf else fig.savefig(path, bbox_inches='tight', pad_inches=PAD))   # same 1.5 mm margin on every side
+    if not pdf and str(path).endswith('.pdf'): crop_ink(path)   # margins measured on the ink
     if not pdf and '/main/' in str(path):   # main figures: also native SVG, editable text
         with _mpl.rc_context({'svg.fonttype': 'none'}): fig.savefig(str(path)[:-4] + '.svg'); print(f'written {str(path)[:-4]}.svg', flush=True)
     print(f'written {path} {w / MM:.1f} x {h / MM:.1f} mm' + (f'; WARNING content outside the page (mm): {over}; texts: {out[:4]}' if over else ''), flush=True)
+
+
+def crop_ink(path, pad=1.5, dpi=300):
+    """Crop a PDF to its ink plus pad mm."""
+    import subprocess, tempfile, numpy as np
+    from PIL import Image
+    from pypdf import PdfReader, PdfWriter
+    with tempfile.TemporaryDirectory() as t:
+        subprocess.run(['pdftoppm', '-r', str(dpi), '-png', '-singlefile', str(path), f'{t}/p'], check=True); a = np.asarray(Image.open(f'{t}/p.png').convert('L'))
+    ys, xs = np.nonzero(a < 250); k = 72 / dpi; q = pad / 25.4 * 72
+    if not len(xs): raise SystemExit(f'ERROR no ink in {path}')
+    r = PdfReader(str(path)); w = PdfWriter(); pg = r.pages[0]; x0, y0, x1, y1 = (float(v) for v in pg.mediabox)
+    box = (x0 + xs.min() * k - q, y1 - (ys.max() + 1) * k - q, x0 + (xs.max() + 1) * k + q, y1 - ys.min() * k + q)
+    pg.mediabox.lower_left, pg.mediabox.upper_right = box[:2], box[2:]; pg.cropbox.lower_left, pg.cropbox.upper_right = box[:2], box[2:]
+    w.add_page(pg); w.write(str(path))
+    print(f'cropped {path} to ink + {pad} mm: {(box[2] - box[0]) / 72 * 25.4:.1f} x {(box[3] - box[1]) / 72 * 25.4:.1f} mm', flush=True)

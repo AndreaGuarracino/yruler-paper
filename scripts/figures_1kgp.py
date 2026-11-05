@@ -517,7 +517,8 @@ def truth_males():
         m = r["male"].removesuffix("_R2")
         if (r["class"], m) not in drop: out[r["class"]].add(m)
     for c in ("dyz19", "dyz17"): out[c] = {r["assembly"].removesuffix("_R2") for r in read_tsv(ROOT / f"data/method/{c}_clean.tsv") if r["clean"] == "True"}
-    for c in ("dyz1", "dyz2", "dyz18s"): out[c] = {m for m in out["yq12"] if (c, m) not in drop}   # parts of the Yq12 assemblies
+    yq = {r["male"].removesuffix("_R2") for r in read_tsv(ROOT / "data/markers_u/truth_regions.tsv") if r["class"] == "yq12"}
+    for c in ("dyz1", "dyz2", "dyz18s"): out[c] = {m for m in yq if (c, m) not in drop}   # parts of all Yq12 assemblies
     print("truth males per class:", {k: len(v) for k, v in out.items()}, flush=True)
     return out
 
@@ -732,7 +733,7 @@ def population_figure(valid, out, snapshot_path, completed):
     axes[4].axvline(1, color=RATIO, linestyle="--", linewidth=.6, zorder=1)
     print("Fig. 2a diamonds per column:", {a.get_title(): a._triangles for a in axes[1:]}, flush=True)
     fig._valid = valid; subtrees = biology_panels(fig)
-    save(fig, out, "main/fig2_biology")
+    plt.close(fig)   # Fig. 2 is drawn by scripts/figure2.py
     write_rows(AUX / "figure2b_subtree_summary.tsv", subtrees)
     write_rows(AUX / "figure2_tree_summary.tsv", stats)
     membership = [{"sample": r["sample"], "haplogroup_2019": r["haplogroup"],
@@ -865,7 +866,7 @@ def j_subtree_figure(valid, out):
         S = frozenset(r["sample"] for r in n["members"]); v = B.get(S)
         if n["children"]:
             print(f"ED8 node {len(S)} males ({', '.join(sorted({r['haplogroup'][:7] for r in n['members']}))[:60]}): bootstrap {v if v is not None else 'no split in the full tree'}", flush=True)
-            if v is not None and int(v) >= 70: tree_ax.annotate(v, (n["x"], n["y"]), xytext=(-2, 1.5), textcoords="offset points", ha="right", va="bottom", fontsize=FS["point"] - 1, color=INK)   # clear of the branches
+            if v is not None and int(v) >= 70: tree_ax.annotate(v, (n["x"], n["y"]), xytext=(-2, 1.5), textcoords="offset points", ha="right", va="bottom", fontsize=FS["point"], color=INK)   # clear of the branches
         for c in n["children"]: boot(c)
     boot(root)
     frozen_trait(ax, leaves, "DYZ19_bp", PURPLE, 1e3, 350, [0, 100, 200, 300], "DYZ19", "b", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)

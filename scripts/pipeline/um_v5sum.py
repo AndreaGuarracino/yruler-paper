@@ -28,7 +28,7 @@ if sys.argv[1] == 'rules':   # rules <prefix> <rule> ...: one row per fixed rule
     for m, x, r, t in sorted(rows): print(f'{r}\t{m:.3f}\t{x:.2f}\t{t}', flush=True)
     sys.exit(0)
 if sys.argv[1] in ('depth', 'pair'):   # depth table: depth <out.tsv> <label> ...; paired runs: pair <units A> <units B> <name A> <name B> <out.tsv>
-    M = fos.environ["P"] + "/{os.environ.get('MDIR', 'model_v5_sum')}"
+    M = f"{os.environ['P']}/{os.environ.get('MDIR', 'model_v5_sum')}"
     if sys.argv[1] == 'depth':
         with open(sys.argv[2], 'w') as o:
             o.write('depth\tclass\tn_predictions\tn_males\tmean_abs\tmedian_abs\tp90_abs\tmax_abs\tbias_median\trepeat_median_mean\tfemale_median_bp\tfemale_max_bp\n')

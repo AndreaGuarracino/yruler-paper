@@ -5,8 +5,8 @@
    version="1.1"
    id="svg2"
    width="540"
-   height="794.46997"
-   viewBox="0 0 540 794.46997"
+   height="797.46997"
+   viewBox="0 0 540 797.46997"
    sodipodi:docname="fig1_method.pdf"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -235,7 +235,7 @@
        cy="111.5122"
        r="125.0685"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.3414,0,0,0.244425,80.0262,917.90325)"
+       gradientTransform="matrix(0.3414,0,0,0.244425,80.0262,922.40325)"
        spreadMethod="pad"
        id="radialGradient780">
       <stop
@@ -27572,7 +27572,7 @@
          id="path48242" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27603,7 +27603,7 @@
          id="path48268" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27634,7 +27634,7 @@
          id="path48294" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27665,7 +27665,7 @@
          id="path48320" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27696,7 +27696,7 @@
          id="path48346" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27727,7 +27727,7 @@
          id="path48372" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27758,7 +27758,7 @@
          id="path48398" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27782,7 +27782,7 @@
          id="path48414" />
     </clipPath>
     <pattern
-       patternTransform="translate(0,97.5)"
+       patternTransform="translate(0,95.25)"
        patternUnits="userSpaceOnUse"
        x="0"
        y="0"
@@ -27812,7 +27812,7 @@
      id="g8"
      inkscape:groupmode="layer"
      inkscape:label="fig1_method"
-     transform="matrix(1.3333333,0,0,-1.3333333,0,794.47)">
+     transform="matrix(1.3333333,0,0,-1.3333333,0,797.47)">
     <g
        id="g10">
       <g
@@ -27825,7 +27825,7 @@
                id="g18">
               <g
                  id="g20"
-                 transform="translate(0,526.725)">
+                 transform="translate(0,528.975)">
                 <g
                    id="g22"
                    clip-path="url(#clipPath26)">
@@ -28107,7 +28107,7 @@
             </g>
             <g
                id="g168"
-               transform="translate(0,360)">
+               transform="translate(0,362.25)">
               <g
                  id="g170"
                  clip-path="url(#clipPath174)">
@@ -30014,7 +30014,7 @@
           </g>
           <g
              id="g1462"
-             transform="translate(0,228)">
+             transform="translate(0,230.25)">
             <g
                id="g1464"
                clip-path="url(#clipPath1468)">
@@ -30024,13 +30024,13 @@
                  id="path1470" />
               <g
                  id="g1472"
-                 transform="translate(13.440625,20.345312)">
+                 transform="translate(15.503125,21.064062)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1476"><tspan
-                     x="0 4.1700001 6.2550001"
+                     x="0 3.336 5.0040002"
                      y="0"
                      sodipodi:role="line"
                      id="tspan1474">0.1</tspan></text>
@@ -30041,13 +30041,13 @@
                  id="path1478" />
               <g
                  id="g1480"
-                 transform="translate(13.440625,30.801732)">
+                 transform="translate(15.503125,31.520482)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1484"><tspan
-                     x="0 4.1700001 6.2550001"
+                     x="0 3.336 5.0040002"
                      y="0"
                      sodipodi:role="line"
                      id="tspan1482">0.2</tspan></text>
@@ -30058,13 +30058,13 @@
                  id="path1486" />
               <g
                  id="g1488"
-                 transform="translate(13.440625,44.624366)">
+                 transform="translate(15.503125,45.343116)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1492"><tspan
-                     x="0 4.1700001 6.2550001"
+                     x="0 3.336 5.0040002"
                      y="0"
                      sodipodi:role="line"
                      id="tspan1490">0.5</tspan></text>
@@ -30075,11 +30075,11 @@
                  id="path1494" />
               <g
                  id="g1496"
-                 transform="translate(19.690625,55.080786)">
+                 transform="translate(20.51875,55.799536)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1500"><tspan
                      x="0"
                      y="0"
@@ -30091,11 +30091,11 @@
                  id="path1502" />
               <g
                  id="g1504"
-                 transform="translate(19.690625,65.537205)">
+                 transform="translate(20.51875,66.255955)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1508"><tspan
                      x="0"
                      y="0"
@@ -30107,11 +30107,11 @@
                  id="path1510" />
               <g
                  id="g1512"
-                 transform="translate(19.690625,79.359839)">
+                 transform="translate(20.51875,80.078589)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1516"><tspan
                      x="0"
                      y="0"
@@ -30123,13 +30123,13 @@
                  id="path1518" />
               <g
                  id="g1520"
-                 transform="translate(15.51875,89.816259)">
+                 transform="translate(17.175,90.535009)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1524"><tspan
-                     x="0 4.1700001"
+                     x="0 3.336"
                      y="0"
                      sodipodi:role="line"
                      id="tspan1522">10</tspan></text>
@@ -30140,13 +30140,13 @@
                  id="path1526" />
               <g
                  id="g1528"
-                 transform="translate(15.51875,100.27268)">
+                 transform="translate(17.175,100.99143)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
-                   style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   style="font-style:italic;font-variant:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                    id="text1532"><tspan
-                     x="0 4.1700001"
+                     x="0 3.336"
                      y="0"
                      sodipodi:role="line"
                      id="tspan1530">20</tspan></text>
@@ -30213,7 +30213,7 @@
                  id="path1562" />
               <g
                  id="g1564"
-                 transform="rotate(90,-1.5070313,11.260156)">
+                 transform="rotate(90,-0.47578125,12.291406)">
                 <text
                    xml:space="preserve"
                    transform="scale(1,-1)"
@@ -41353,26 +41353,26 @@
                  id="g10490">
                 <g
                    id="g10492"
-                   transform="translate(37.615886,15.196875)">
+                   transform="translate(38.569011,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10496"><tspan
-                       x="0 4.8734999 9.3757496 13.5"
+                       x="0 4.3319998 8.3339996 12"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10494">DYZ3</tspan></text>
                 </g>
                 <g
                    id="g10498"
-                   transform="translate(32.459636,7.9640625)">
+                   transform="translate(33.967449,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10502"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573 25.326"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001 22.511999"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10500">(n = 101)</tspan></text>
@@ -41437,26 +41437,26 @@
                  id="g10554">
                 <g
                    id="g10556"
-                   transform="translate(67.647807,15.196875)">
+                   transform="translate(68.804057,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10560"><tspan
-                       x="0 4.8734999 9.3757496 13.5 17.253"
+                       x="0 4.3319998 8.3339996 12 15.336"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10558">DYZ17</tspan></text>
                 </g>
                 <g
                    id="g10562"
-                   transform="translate(64.554057,7.9640625)">
+                   transform="translate(66.06187,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10566"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.460625 21.213625 24.966625"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.511875 18.847876 22.183874"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10564">(n = 115)</tspan></text>
@@ -41521,26 +41521,26 @@
                  id="g10618">
                 <g
                    id="g10620"
-                   transform="translate(99.554728,15.196875)">
+                   transform="translate(100.71098,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10624"><tspan
-                       x="0 4.8734999 9.3757496 13.5 17.253"
+                       x="0 4.3319998 8.3339996 12 15.336"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10622">DYZ19</tspan></text>
                 </g>
                 <g
                    id="g10626"
-                   transform="translate(96.460978,7.9640625)">
+                   transform="translate(97.96879,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10630"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.460625 21.213625 24.966625"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.511875 18.847876 22.183874"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10628">(n = 115)</tspan></text>
@@ -41605,26 +41605,26 @@
                  id="g10682">
                 <g
                    id="g10684"
-                   transform="translate(134.14915,15.18125)">
+                   transform="translate(135.03196,15.9)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10688"><tspan
-                       x="0 4.0022502 8.1265001 11.8795"
+                       x="0 3.5645001 7.2305002 10.5665"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10686">Yq12</tspan></text>
                 </g>
                 <g
                    id="g10690"
-                   transform="translate(130.0554,7.9484375)">
+                   transform="translate(131.36009,9.68125)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10694"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10692">(n = 80)</tspan></text>
@@ -41689,26 +41689,26 @@
                  id="g10746">
                 <g
                    id="g10748"
-                   transform="translate(161.11857,15.196875)">
+                   transform="translate(162.52482,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10752"><tspan
-                       x="0 4.8734999 9.3757496 13.5 17.253 21.006001"
+                       x="0 4.3319998 8.3339996 12 15.336 18.672001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10750">DYZ18S</tspan></text>
                 </g>
                 <g
                    id="g10754"
-                   transform="translate(161.96232,7.9640625)">
+                   transform="translate(163.26701,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10758"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10756">(n = 81)</tspan></text>
@@ -41773,26 +41773,26 @@
                  id="g10810">
                 <g
                    id="g10812"
-                   transform="translate(197.15049,15.196875)">
+                   transform="translate(198.10361,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10816"><tspan
-                       x="0 4.8734999 9.3757496 13.5"
+                       x="0 4.3319998 8.3339996 12"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10814">DYZ1</tspan></text>
                 </g>
                 <g
                    id="g10818"
-                   transform="translate(193.86924,7.9640625)">
+                   transform="translate(195.17393,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10822"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10820">(n = 81)</tspan></text>
@@ -41857,26 +41857,26 @@
                  id="g10874">
                 <g
                    id="g10876"
-                   transform="translate(229.05741,15.196875)">
+                   transform="translate(230.01054,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10880"><tspan
-                       x="0 4.8734999 9.3757496 13.5"
+                       x="0 4.3319998 8.3339996 12"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10878">DYZ2</tspan></text>
                 </g>
                 <g
                    id="g10882"
-                   transform="translate(225.77616,7.9640625)">
+                   transform="translate(227.08085,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10886"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10884">(n = 80)</tspan></text>
@@ -41941,26 +41941,26 @@
                  id="g10938">
                 <g
                    id="g10940"
-                   transform="translate(251.21433,15.196875)">
+                   transform="translate(253.24558,15.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10944"><tspan
-                       x="0 4.8734999 9.3757496 13.5 17.253 19.50075 24.37425 28.876499 33.000751"
+                       x="0 4.3319998 8.3339996 12 15.336 17.334 21.666 25.667999 29.334"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10942">DYZ1:DYZ2</tspan></text>
                 </g>
                 <g
                    id="g10946"
-                   transform="translate(257.68308,7.9640625)">
+                   transform="translate(258.98777,9.696875)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text10950"><tspan
-                       x="0 2.24775 6.3720002 8.2484999 12.1905 14.067 17.82 21.573"
+                       x="0 1.998 5.664 7.3319998 10.836 12.504 15.84 19.176001"
                        y="0"
                        sodipodi:role="line"
                        id="tspan10948">(n = 80)</tspan></text>
@@ -42090,137 +42090,137 @@
               <g
                  id="g11062">
                 <path
-                   d="m 35.008074,106.43021 h 22.465625 v 8.52813 H 35.008074 Z"
+                   d="m 37.117449,107.35209 h 18.246875 v 6.68437 H 37.117449 Z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11064" />
                 <g
                    id="g11066"
-                   transform="translate(35.608074,108.62396)">
+                   transform="translate(37.717449,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11070"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11068">2.32%</tspan></text>
                 </g>
                 <path
-                   d="M 66.914995,106.43021 H 89.38062 v 8.52813 H 66.914995 Z"
+                   d="m 69.02437,107.35209 h 18.246875 v 6.68437 H 69.02437 Z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11072" />
                 <g
                    id="g11074"
-                   transform="translate(67.514995,108.62396)">
+                   transform="translate(69.62437,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11078"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11076">2.24%</tspan></text>
                 </g>
                 <path
-                   d="m 98.821915,106.43021 h 22.465625 v 8.52813 H 98.821915 Z"
+                   d="m 100.93129,107.35209 h 18.24687 v 6.68437 h -18.24687 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11080" />
                 <g
                    id="g11082"
-                   transform="translate(99.421916,108.62396)">
+                   transform="translate(101.53129,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11086"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11084">2.48%</tspan></text>
                 </g>
                 <path
-                   d="m 130.72884,106.43021 h 22.46562 v 8.52813 h -22.46562 z"
+                   d="m 132.83821,107.35209 h 18.24688 v 6.68437 h -18.24688 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11088" />
                 <g
                    id="g11090"
-                   transform="translate(131.32884,108.62396)">
+                   transform="translate(133.43821,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11094"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11092">1.70%</tspan></text>
                 </g>
                 <path
-                   d="m 162.63576,106.43021 h 22.46562 v 8.52813 h -22.46562 z"
+                   d="m 164.74513,107.35209 h 18.24688 v 6.68437 h -18.24688 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11096" />
                 <g
                    id="g11098"
-                   transform="translate(163.23576,108.62396)">
+                   transform="translate(165.34513,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11102"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11100">3.92%</tspan></text>
                 </g>
                 <path
-                   d="m 194.54268,106.43021 h 22.46562 v 8.52813 h -22.46562 z"
+                   d="m 196.65205,107.35209 h 18.24688 v 6.68437 h -18.24688 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11104" />
                 <g
                    id="g11106"
-                   transform="translate(195.14268,108.62396)">
+                   transform="translate(197.25205,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11110"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11108">2.29%</tspan></text>
                 </g>
                 <path
-                   d="m 226.4496,106.43021 h 22.46562 v 8.52813 H 226.4496 Z"
+                   d="m 228.55897,107.35209 h 18.24688 v 6.68437 h -18.24688 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11112" />
                 <g
                    id="g11114"
-                   transform="translate(227.0496,108.62396)">
+                   transform="translate(229.15897,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11118"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11116">2.48%</tspan></text>
                 </g>
                 <path
-                   d="m 258.35652,106.43021 h 22.46562 v 8.52813 h -22.46562 z"
+                   d="m 260.46589,107.35209 h 18.24688 v 6.68437 h -18.24688 z"
                    style="fill:#ffffff;fill-opacity:0.75;fill-rule:nonzero;stroke:none"
                    id="path11120" />
                 <g
                    id="g11122"
-                   transform="translate(258.95652,108.62396)">
+                   transform="translate(261.06589,109.13959)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11126"><tspan
-                       x="0 4.1700001 6.2550001 10.425 14.595"
+                       x="0 3.336 5.0040002 8.3400002 11.676"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11124">2.63%</tspan></text>
@@ -42231,13 +42231,13 @@
                    id="path11128" />
                 <g
                    id="g11130"
-                   transform="translate(316.98837,14.196875)">
+                   transform="translate(318.47275,14.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11134"><tspan
-                       x="0 4.8734999 8.9977503 13.122 15.36975 17.24625 23.247"
+                       x="0 4.3319998 7.9980001 11.664 13.662 15.33 20.664"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11132">Runtime</tspan></text>
@@ -42248,13 +42248,13 @@
                    id="path11136" />
                 <g
                    id="g11138"
-                   transform="translate(348.07413,14.196875)">
+                   transform="translate(349.48819,14.915625)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11142"><tspan
-                       x="0 5.6227498 9.3757496 15.3765 19.50075 22.126499"
+                       x="0 4.9980001 8.3339996 13.668 17.334 19.667999"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11140">Memory</tspan></text>
@@ -42265,13 +42265,13 @@
                    id="path11144" />
                 <g
                    id="g11146"
-                   transform="translate(305.07812,28.157813)">
+                   transform="translate(307.14063,28.876562)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11150"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11148">1.2</tspan></text>
@@ -42282,13 +42282,13 @@
                    id="path11152" />
                 <g
                    id="g11154"
-                   transform="translate(305.07812,43.782813)">
+                   transform="translate(307.14063,44.501562)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11158"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11156">1.4</tspan></text>
@@ -42299,13 +42299,13 @@
                    id="path11160" />
                 <g
                    id="g11162"
-                   transform="translate(305.07812,59.407812)">
+                   transform="translate(307.14063,60.126563)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11166"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11164">1.6</tspan></text>
@@ -42316,13 +42316,13 @@
                    id="path11168" />
                 <g
                    id="g11170"
-                   transform="translate(305.07812,75.032812)">
+                   transform="translate(307.14063,75.751563)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11174"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11172">1.8</tspan></text>
@@ -42333,13 +42333,13 @@
                    id="path11176" />
                 <g
                    id="g11178"
-                   transform="translate(305.07812,90.657812)">
+                   transform="translate(307.14063,91.376562)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11182"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11180">2.0</tspan></text>
@@ -42350,20 +42350,20 @@
                    id="path11184" />
                 <g
                    id="g11186"
-                   transform="translate(305.07812,106.28281)">
+                   transform="translate(307.14063,107.00156)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text11190"><tspan
-                       x="0 4.1700001 6.2550001"
+                       x="0 3.336 5.0040002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan11188">2.2</tspan></text>
                 </g>
                 <g
                    id="g11192"
-                   transform="rotate(90,127.42891,173.96172)">
+                   transform="rotate(90,128.46016,174.99297)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
@@ -44417,13 +44417,13 @@
                    id="path12834" />
                 <g
                    id="g12836"
-                   transform="translate(376,32.064062)">
+                   transform="translate(376,32.782813)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text12840"><tspan
-                       x="0 4.1700001 6.2550001 10.425"
+                       x="0 3.336 5.0040002 8.3400002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan12838">3.46</tspan></text>
@@ -44434,13 +44434,13 @@
                    id="path12842" />
                 <g
                    id="g12844"
-                   transform="translate(376,55.501562)">
+                   transform="translate(376,56.220313)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text12848"><tspan
-                       x="0 4.1700001 6.2550001 10.425"
+                       x="0 3.336 5.0040002 8.3400002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan12846">3.48</tspan></text>
@@ -44451,13 +44451,13 @@
                    id="path12850" />
                 <g
                    id="g12852"
-                   transform="translate(376,78.939063)">
+                   transform="translate(376,79.657812)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text12856"><tspan
-                       x="0 4.1700001 6.2550001 10.425"
+                       x="0 3.336 5.0040002 8.3400002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan12854">3.50</tspan></text>
@@ -44468,20 +44468,20 @@
                    id="path12858" />
                 <g
                    id="g12860"
-                   transform="translate(376,102.37656)">
+                   transform="translate(376,103.09531)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
-                     style="font-variant:normal;font-weight:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                     style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                      id="text12864"><tspan
-                       x="0 4.1700001 6.2550001 10.425"
+                       x="0 3.336 5.0040002 8.3400002"
                        y="0"
                        sodipodi:role="line"
                        id="tspan12862">3.52</tspan></text>
                 </g>
                 <g
                    id="g12866"
-                   transform="rotate(90,175.41719,223.00469)">
+                   transform="rotate(90,173.97187,221.55937)">
                   <text
                      xml:space="preserve"
                      transform="scale(1,-1)"
@@ -46602,7 +46602,7 @@
         </g>
         <g
            id="g14540"
-           transform="translate(0,97.5)">
+           transform="translate(0,99.75)">
           <g
              id="g14542"
              clip-path="url(#clipPath14546)">
@@ -47867,7 +47867,7 @@
       </g>
       <g
          id="g15422"
-         transform="translate(153,97.5)">
+         transform="translate(153,99.75)">
         <g
            id="g15424"
            clip-path="url(#clipPath15428)">
@@ -48011,13 +48011,13 @@
                id="path15552" />
             <g
                id="g15554"
-               transform="translate(44.407287,9.359375)">
+               transform="translate(45.235412,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15558"><tspan
-                   x="0 3.9419999 7.6950002 11.448"
+                   x="0 3.5039999 6.8400002 10.176"
                    y="0"
                    sodipodi:role="line"
                    id="tspan15556">−100</tspan></text>
@@ -48028,13 +48028,13 @@
                id="path15560" />
             <g
                id="g15562"
-               transform="translate(67.768551,9.359375)">
+               transform="translate(68.393551,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15566"><tspan
-                   x="0 3.9419999 7.6950002"
+                   x="0 3.5039999 6.8400002"
                    y="0"
                    sodipodi:role="line"
                    id="tspan15564">−20</tspan></text>
@@ -48045,13 +48045,13 @@
                id="path15568" />
             <g
                id="g15570"
-               transform="translate(88.150812,9.359375)">
+               transform="translate(88.572687,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15574"><tspan
-                   x="0 3.9419999"
+                   x="0 3.5039999"
                    y="0"
                    sodipodi:role="line"
                    id="tspan15572">−5</tspan></text>
@@ -48062,11 +48062,11 @@
                id="path15576" />
             <g
                id="g15578"
-               transform="translate(124.275,9.359375)">
+               transform="translate(124.47813,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15582"><tspan
                    x="0"
                    y="0"
@@ -48078,11 +48078,11 @@
                id="path15584" />
             <g
                id="g15586"
-               transform="translate(158.43044,9.359375)">
+               transform="translate(158.63356,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15590"><tspan
                    x="0"
                    y="0"
@@ -48094,13 +48094,13 @@
                id="path15592" />
             <g
                id="g15594"
-               transform="translate(175.0627,9.359375)">
+               transform="translate(175.46895,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15598"><tspan
-                   x="0 3.753"
+                   x="0 3.336"
                    y="0"
                    sodipodi:role="line"
                    id="tspan15596">20</tspan></text>
@@ -48111,20 +48111,20 @@
                id="path15600" />
             <g
                id="g15602"
-               transform="translate(194.67396,9.359375)">
+               transform="translate(195.28334,10.078125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text15606"><tspan
-                   x="0 3.753 7.506"
+                   x="0 3.336 6.6719999"
                    y="0"
                    sodipodi:role="line"
                    id="tspan15604">100</tspan></text>
             </g>
             <g
                id="g15608"
-               transform="translate(60.071875,1.140625)">
+               transform="translate(60.071875,2.0625)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
@@ -85125,13 +85125,13 @@
              id="g45240">
             <g
                id="g45242"
-               transform="translate(21.225,98.539062)">
+               transform="translate(23.13125,98.804687)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45246"><tspan
-                   x="0 4.8734999 9.3757496 13.5"
+                   x="0 4.3319998 8.3339996 12"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45244">DYZ3</tspan></text>
@@ -85176,13 +85176,13 @@
              id="g45274">
             <g
                id="g45276"
-               transform="translate(17.475,87.607812)">
+               transform="translate(19.7875,87.873437)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45280"><tspan
-                   x="0 4.8734999 9.3757496 13.5 17.253"
+                   x="0 4.3319998 8.3339996 12 15.336"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45278">DYZ17</tspan></text>
@@ -85227,13 +85227,13 @@
              id="g45308">
             <g
                id="g45310"
-               transform="translate(17.475,76.676562)">
+               transform="translate(19.7875,76.942188)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45314"><tspan
-                   x="0 4.8734999 9.3757496 13.5 17.253"
+                   x="0 4.3319998 8.3339996 12 15.336"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45312">DYZ19</tspan></text>
@@ -85278,13 +85278,13 @@
              id="g45342">
             <g
                id="g45344"
-               transform="translate(22.85,65.7375)">
+               transform="translate(24.615625,66.003125)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45348"><tspan
-                   x="0 4.0022502 8.1265001 11.8795"
+                   x="0 3.5645001 7.2305002 10.5665"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45346">Yq12</tspan></text>
@@ -85329,13 +85329,13 @@
              id="g45376">
             <g
                id="g45378"
-               transform="translate(12.975,54.814062)">
+               transform="translate(15.7875,55.079687)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45382"><tspan
-                   x="0 4.8734999 9.3757496 13.5 17.253 21.006001"
+                   x="0 4.3319998 8.3339996 12 15.336 18.672001"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45380">DYZ18S</tspan></text>
@@ -85380,13 +85380,13 @@
              id="g45410">
             <g
                id="g45412"
-               transform="translate(21.225,43.882812)">
+               transform="translate(23.13125,44.148437)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45416"><tspan
-                   x="0 4.8734999 9.3757496 13.5"
+                   x="0 4.3319998 8.3339996 12"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45414">DYZ1</tspan></text>
@@ -85431,13 +85431,13 @@
              id="g45444">
             <g
                id="g45446"
-               transform="translate(21.225,32.951562)">
+               transform="translate(23.13125,33.217187)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45450"><tspan
-                   x="0 4.8734999 9.3757496 13.5"
+                   x="0 4.3319998 8.3339996 12"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45448">DYZ2</tspan></text>
@@ -85482,13 +85482,13 @@
              id="g45478">
             <g
                id="g45480"
-               transform="translate(1.725,22.020312)">
+               transform="translate(5.7875,22.285937)">
               <text
                  xml:space="preserve"
                  transform="scale(1,-1)"
-                 style="font-variant:normal;font-weight:bold;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8c564b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="text45484"><tspan
-                   x="0 4.8734999 9.3757496 13.5 17.253 19.50075 24.37425 28.876499 33.000751"
+                   x="0 4.3319998 8.3339996 12 15.336 17.334 21.666 25.667999 29.334"
                    y="0"
                    sodipodi:role="line"
                    id="tspan45482">DYZ1:DYZ2</tspan></text>
@@ -85951,7 +85951,8 @@
       </g>
     </g>
     <g
-       id="g45854">
+       id="g45854"
+       transform="translate(0,2.25)">
       <g
          id="g45856"
          clip-path="url(#clipPath45860)">
@@ -86662,34 +86663,34 @@
              id="path46440" />
           <g
              id="g46442"
-             transform="translate(85.080745,68.180855)">
+             transform="translate(83.59637,67.91523)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text46446"><tspan
-                 x="0 2.9189999 4.3785 7.2975001"
+                 x="0 3.336 5.0040002 8.3400002"
                  y="0"
                  sodipodi:role="line"
                  id="tspan46444">0.02</tspan></text>
           </g>
           <path
-             d="m 78.382885,10.283212 c -1.092628,3.439032 -2.128833,6.700472 -3.108615,9.784321"
+             d="m 78.209888,10.994533 c -1.034963,3.201924 -2.012614,6.226542 -2.932955,9.073854"
              style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path46448" />
           <path
-             d="m 74.996304,18.300407 0.277966,1.767126 1.246921,-1.282648 z"
+             d="m 75.007813,18.299892 0.26912,1.768495 1.253324,-1.276394 z"
              style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path46450" />
           <g
              id="g46452"
-             transform="translate(69.0959,3.75)">
+             transform="translate(67.525587,3.75)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text46456"><tspan
-                 x="0 3.7904999 7.2922502 10.21125 13.13025 16.04925 18.96825"
+                 x="0 4.3319998 8.3339996 11.67 15.006 18.341999 21.677999"
                  y="0"
                  sodipodi:role="line"
                  id="tspan46454">NA19226</tspan></text>
@@ -88596,126 +88597,126 @@
              style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path48126" />
           <path
-             d="m 107.85,70.725 h 4.2 V 74.4 h -4.2 z"
+             d="m 105.75,73.625 h 4.8 v 4.2 h -4.8 z"
              style="fill:#b07aa1;fill-opacity:1;fill-rule:nonzero;stroke:none"
              id="path48128" />
           <g
              id="g48130"
-             transform="translate(114.15,70.725)">
+             transform="translate(112.95,73.625)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48134"><tspan
-                 x="0 3.7904999 6.7094998 9.3345003 12.2535 14.00175 16.92075 19.83975 22.758751 24.21825 25.67775 28.59675 32.970001 35.889 37.054501 39.973499 42.598499 44.057999 45.806252 48.72525 50.18475 53.250751 54.710251 57.62925 60.548248 63.467251"
+                 x="0 4.3319998 7.6680002 10.668 14.004 16.002001 19.337999 22.674 26.01 27.677999 29.346001 32.681999 37.68 41.015999 42.348 45.683998 48.683998 50.352001 52.349998 55.686001 57.354 60.858002 62.526001 65.862 69.197998 72.533997"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48132">Recorded females (n = 208)</tspan></text>
           </g>
           <path
-             d="m 107.85,63.378125 h 4.2 v 3.675 h -4.2 z"
+             d="m 105.75,66.184375 h 4.8 v 4.2 h -4.8 z"
              style="fill:#526774;fill-opacity:1;fill-rule:nonzero;stroke:none"
              id="path48136" />
           <g
              id="g48138"
-             transform="translate(114.15,63.378125)">
+             transform="translate(112.95,66.184375)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48142"><tspan
-                 x="0 3.7904999 6.7094998 9.3345003 12.2535 14.00175 16.92075 19.83975 22.758751 24.21825 28.591499 31.5105 32.675999 35.595001 38.220001 39.679501 41.42775 44.346748 45.806252 48.87225 50.331749 53.250751 54.710251 57.62925 60.548248 63.467251"
+                 x="0 4.3319998 7.6680002 10.668 14.004 16.002001 19.337999 22.674 26.01 27.677999 32.675999 36.012001 37.344002 40.68 43.68 45.348 47.346001 50.681999 52.349998 55.854 57.521999 60.858002 62.526001 65.862 69.197998 72.533997"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48140">Recorded males (n = 1,598)</tspan></text>
           </g>
           <g
              id="g48144"
-             transform="translate(240.91406,14.421875)">
+             transform="translate(239.95312,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#1f4e79;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48148"><tspan
-                 x="0 3.7904999 7.2922502 10.5"
+                 x="0 4.3319998 8.3339996 12"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48146">DYZ3</tspan></text>
           </g>
           <g
              id="g48150"
-             transform="translate(262.16146,14.421875)">
+             transform="translate(260.98958,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#8e44ad;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48154"><tspan
-                 x="0 3.7904999 7.2922502 10.5 13.419"
+                 x="0 4.3319998 8.3339996 12 15.336"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48152">DYZ17</tspan></text>
           </g>
           <g
              id="g48156"
-             transform="translate(284.86979,14.421875)">
+             transform="translate(283.69792,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#c0392b;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48160"><tspan
-                 x="0 3.7904999 7.2922502 10.5 13.419"
+                 x="0 4.3319998 8.3339996 12 15.336"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48158">DYZ19</tspan></text>
           </g>
           <g
              id="g48162"
-             transform="translate(309.66406,14.40625)">
+             transform="translate(308.82031,13.6875)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48166"><tspan
-                 x="0 3.111125 6.3188748 9.237875"
+                 x="0 3.5645001 7.2305002 10.5665"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48164">Yq12</tspan></text>
           </g>
           <g
              id="g48168"
-             transform="translate(328.53646,14.421875)">
+             transform="translate(327.11458,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e377c2;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48172"><tspan
-                 x="0 3.7904999 7.2922502 10.5 13.419 16.337999"
+                 x="0 4.3319998 8.3339996 12 15.336 18.672001"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48170">DYZ18S</tspan></text>
           </g>
           <g
              id="g48174"
-             transform="translate(354.45573,14.421875)">
+             transform="translate(353.49479,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#e6a23c;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48178"><tspan
-                 x="0 3.7904999 7.2922502 10.5"
+                 x="0 4.3319998 8.3339996 12"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48176">DYZ1</tspan></text>
           </g>
           <g
              id="g48180"
-             transform="translate(377.16406,14.421875)">
+             transform="translate(376.20312,13.703125)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:bold;font-size:5.25px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:bold;font-size:6px;font-family:Arial;-inkscape-font-specification:Arial-BoldMT;writing-mode:lr-tb;fill:#2e8b57;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48184"><tspan
-                 x="0 3.7904999 7.2922502 10.5"
+                 x="0 4.3319998 8.3339996 12"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48182">DYZ2</tspan></text>
@@ -88802,26 +88803,26 @@
           </g>
           <g
              id="g48226"
-             transform="rotate(90,96.147656,120.14766)">
+             transform="rotate(90,96.596094,118.50234)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-style:italic;font-variant:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48230"><tspan
-                 x="0 6.0007501 7.8772502 11.63025 13.50675 15.38325 21.006001 24.759001 28.511999 30.0105 33.7635"
+                 x="0 6.6675 8.7524996 12.9225 15.0075 17.092501 23.34 27.51 31.68 33.345001 37.514999"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48228">% of median</tspan></text>
           </g>
           <g
              id="g48232"
-             transform="rotate(90,101.00781,122.19531)">
+             transform="rotate(90,102.11328,120.88672)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-style:italic;font-variant:normal;font-size:6.75px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-style:italic;font-variant:normal;font-size:7.5px;font-family:Arial;-inkscape-font-specification:Arial-ItalicMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48236"><tspan
-                 x="0 3.375 7.1279998 9.0045004 12.7575 14.256 15.7545 17.253 19.129499 22.8825 24.759001 26.2575 30.0105 33.7635 37.516499 39.393002"
+                 x="0 3.75 7.9200001 10.005 14.175 15.84 17.504999 19.17 21.254999 25.424999 27.51 29.174999 33.345001 37.514999 41.685001 43.77"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48234">satellite length</tspan></text>
@@ -88992,11 +88993,11 @@
              style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path48424" />
           <path
-             d="m 248.25,71.4 h 4.5 v 4.5 h -4.5 z"
+             d="m 245.25,71.4 h 4.5 v 4.5 h -4.5 z"
              style="fill:url(#pattern48430);fill-opacity:1;fill-rule:nonzero;stroke:#55666f;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path48432" />
           <path
-             d="m 312,71.4 h 4.5 v 4.5 H 312 Z"
+             d="m 315,71.4 h 4.5 v 4.5 H 315 Z"
              style="fill:#55666f;fill-opacity:0.28;fill-rule:nonzero;stroke:#55666f;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              id="path48434" />
           <path
@@ -89048,26 +89049,26 @@
           </g>
           <g
              id="g48458"
-             transform="translate(254.625,71.7)">
+             transform="translate(251.625,71.7)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48462"><tspan
-                 x="0 2.9189999 4.0844998 7.0035 9.9224997 12.8415 15.4665 16.926001 18.3855 19.844999 22.764 27.137251 30.05625 31.22175 34.140751 35.60025 38.22525 39.390751 42.30975 45.228748 48.147751"
+                 x="0 3.336 4.6680002 8.0039997 11.34 14.676 17.676001 19.344 21.011999 22.68 26.016001 31.014 34.349998 35.681999 39.018002 40.686001 43.686001 45.018002 48.354 51.689999 55.026001"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48460">highest female signal</tspan></text>
           </g>
           <g
              id="g48464"
-             transform="translate(318.375,71.7)">
+             transform="translate(321.375,71.7)">
             <text
                xml:space="preserve"
                transform="scale(1,-1)"
-               style="font-variant:normal;font-weight:normal;font-size:5.25px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+               style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;-inkscape-font-specification:ArialMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text48468"><tspan
-                 x="0 2.9189999 4.6672502 6.4155002 9.3345003 11.08275 12.54225 13.70775 16.626751 18.08625 22.459499 25.3785 26.544001 29.462999 32.088001 33.547501 35.29575 39.08625 42.588001 44.047501 48.42075 51.339748 54.258751 55.424252 58.34325 61.262249"
+                 x="0 3.336 5.3340001 7.3319998 10.668 12.666 14.334 15.666 19.002001 20.67 25.667999 29.004 30.336 33.672001 36.672001 38.34 40.338001 44.669998 48.672001 50.34 55.338001 58.674 62.009998 63.341999 66.678001 70.014"
                  y="0"
                  sodipodi:role="line"
                  id="tspan48466">error in males (CV median)</tspan></text>

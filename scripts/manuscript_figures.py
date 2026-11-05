@@ -20,11 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 # target, available assembly references, measurement definition
 REFERENCES = [
     ("DYZ3", 129, "Hallast 2026 array coordinates"),
-    ("Yq12", 91, "Hallast 2026 region span"),
+    ("Yq12", 90, "Hallast 2026 region span"),
     ("DYZ1", 91, "sum of Hallast 2026 HMMER block lengths"),
-    ("DYZ2", 91, "sum of Hallast 2026 HMMER block lengths"),
+    ("DYZ2", 90, "sum of Hallast 2026 HMMER block lengths"),
     ("DYZ18S", 91, "sum of Hallast 2026 HMMER block lengths (DYZ18 and YqHet3.1)"),
-    ("DYZ19", 140, "Hallast 2026 array span, assembly QC"),
+    ("DYZ19", 139, "Hallast 2026 array span, assembly QC"),
     ("DYZ17", 140, "longest run of DYZ17 unit hits (gaps <= 10 kb), assembly QC"),
 ]
 

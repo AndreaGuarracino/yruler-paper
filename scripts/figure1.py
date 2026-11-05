@@ -152,9 +152,9 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None)
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2),
                whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22, manage_ticks=False, zorder=3)
         if cvmed: ax.scatter(i + .36, cvmed[n], marker='s', s=10, facecolor='white', edgecolor='k', lw=.6, zorder=6)
-        ax.text(i, yl, f'{med:.2f}%', color=c, ha='center', va='center', fontsize=10 * S, zorder=6, bbox=dict(facecolor='white', alpha=.75, edgecolor='none', pad=.6))
+        ax.text(i, yl, f'{med:.2f}%', color=c, ha='center', va='center', fontsize=8 * S, zorder=6, bbox=dict(facecolor='white', alpha=.75, edgecolor='none', pad=.6))
         ax.annotate(f'{n}\n(n = {len(v)})', (i, 0), xycoords=('data', 'axes fraction'), xytext=(0, -3), textcoords='offset points',
-                    ha='center', va='top', color=c, fontsize=9 * S, fontweight='bold', linespacing=1.15)
+                    ha='center', va='top', color=c, fontsize=8 * S, fontweight='bold', linespacing=1.15)
         if n == 'DYZ19':
             for m in J2:
                 if m in per: ax.scatter(x[males.index(m)], per[m], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, zorder=5)
@@ -162,7 +162,7 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None)
     ax.set_xlim(-.576, 7.53); ax.set_yscale('log'); ax.set_ylim(lo, hi); ax.set_xticks([]); T = [t for t in (.01, .02, .05, .1, .2, .5, 1, 2, 5, 10, 20) if t >= lo]; ax.set_yticks(T, [f'{t:g}' for t in T])   # 1-2-5 per decade
     ax.yaxis.set_minor_locator(matplotlib.ticker.LogLocator(subs=range(2, 10))); ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter()); ax.tick_params(which='minor', width=.4, length=1.5)
     for t in ax.get_yticklabels(): t.set_fontstyle('italic')
-    frame(ax); ax.tick_params(axis='y', labelsize=10 * S)
+    frame(ax)
     ax.set_ylabel(ylabel, fontsize=10 * S, fontstyle='italic', labelpad=2)
     if letter: put(21.8, 356.9, letter, 20, fontweight='bold')
     put(tx or (37.15 + x1) / 2, 357, title, 12, fontweight='bold', ha='center')   # tx: clear of the diamond key
@@ -174,16 +174,16 @@ def boxes(E, ylabel, title, letter, cvmed=None, ybot=501.05, x1=521.95, tx=None)
 def cost(x0, x1, uc):   # uc: design units per box step in c, so boxes match
     """Runtime and peak memory of the released model, 130 local CRAMs."""
     B = rd(ROOT / 'results/checks/runtime_memory.tsv'); rng = np.random.default_rng(4)
-    t, m = np.array([float(r['wall_s']) / 60 for r in B]), np.array([float(r['peak_rss_kb']) / 1e6 for r in B])
+    t, m = np.array([float(r['wall_s']) / 60 for r in B]), np.array([float(r['peak_rss_kb']) * 1024 / 1e9 for r in B])   # GNU time %M is KiB
     a = axes(x0, 362.05, x1, 501.05); b = a.twinx(); k = uc / ((x1 - x0) / 1.72)   # c scale over d scale (xlim span 1.72)
     for ax, v, i, c in ((a, t, 0, DOSE), (b, m, 1, GREY)):
         ax.scatter(i + rng.uniform(-.24 * k, .24 * k, len(v)), v, s=3.2, color=c, alpha=.55, lw=0, zorder=2); q = np.percentile(v, [10, 25, 50, 75, 90])
         ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55 * k, patch_artist=True, manage_ticks=False, zorder=3,
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22 * k)
         print(f'cost {["runtime min", "peak memory GB"][i]}: {len(v)} CRAMs, median {q[2]:.2f}, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.2f}, max {v.max():.2f}', flush=True)
-    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(1.1, 2.3); b.set_ylim(3.37, 3.45); a.set_yticks([1.2, 1.4, 1.6, 1.8, 2, 2.2], ['1.2', '1.4', '1.6', '1.8', '2.0', '2.2']); b.set_yticks([3.38, 3.4, 3.42, 3.44], ['3.38', '3.40', '3.42', '3.44'])   # zoomed on the data (axes do not start at 0)   # axes end above the top tick, clear of the title
-    for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side)); ax.tick_params(axis='y', labelsize=10 * S)
-    for tk in a.get_xticklabels(): tk.set_fontweight('bold'); tk.set_fontsize(9 * S)   # black
+    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(1.1, 2.3); b.set_ylim(3.45, 3.53); a.set_yticks([1.2, 1.4, 1.6, 1.8, 2, 2.2], ['1.2', '1.4', '1.6', '1.8', '2.0', '2.2']); b.set_yticks([3.46, 3.48, 3.5, 3.52], ['3.46', '3.48', '3.50', '3.52'])   # zoomed on the data (axes do not start at 0)   # axes end above the top tick, clear of the title
+    for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side))
+    for tk in a.get_xticklabels(): tk.set_fontweight('bold')   # black
     a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
     put((x0 + x1) / 2, 357, 'Performance', 12, fontweight='bold', ha='center'); put(x0 - 40, 357, 'd', 20, fontweight='bold')   # letter on the title baseline, clear of the tick labels
 
@@ -199,8 +199,8 @@ def ed4(path):
     XS = 180 / 25.4 * 72 / S / 540; panel('c'); P_ = 'ed4'; R = (0, 342, 540 * XS, 270); FIG.set_size_inches(R[2] * S / 72, R[3] * S / 72)   # ED4: no shrink
     E = lolo_errors(); mx = max(max(per.values()) for per, _ in E.values()); print(f'ED4 largest error {mx:.2f}%', flush=True)
     boxes(E, 'Absolute error (%, log scale)', 'Excluded-lineage error', '', ybot=581)   # every point shown, log y as Fig. 1c
-    from palette import PAD
-    FIG.savefig(path, bbox_inches='tight', pad_inches=PAD); plt.close(FIG); XS = 1; print(f'written {path}', flush=True)
+    from palette import PAD, crop_ink
+    FIG.savefig(path, bbox_inches='tight', pad_inches=PAD); crop_ink(path); plt.close(FIG); XS = 1; print(f'written {path}', flush=True)
 
 
 def panel_d(out):
@@ -255,7 +255,7 @@ def panel_e(out):
         for r in P:
             for m, mk in special.items():
                 if m in (r['parent'], r['child']): ax.scatter(r[n], i + (-.2 if r['group'] != 'same' else .2), marker=mk, s=16, facecolor='white', edgecolor='k', lw=.75, zorder=5)
-        ax.annotate(n, (0, i), xycoords=('axes fraction', 'data'), xytext=(-3, 0), textcoords='offset points', ha='right', va='center', color=c, fontsize=9 * S, fontweight='bold')
+        ax.annotate(n, (0, i), xycoords=('axes fraction', 'data'), xytext=(-3, 0), textcoords='offset points', ha='right', va='center', color=c, fontsize=8 * S, fontweight='bold')
         ax.annotate(f'{meds[0]:+.2f}/{meds[1]:+.2f}', (1, i), xycoords=('axes fraction', 'data'), xytext=(3, 0), textcoords='offset points',
                     ha='left', va='center', color=c, fontsize=8 * S, fontweight='bold')
         print(f'e {n}: median cross {meds[0]:+.2f}, same {meds[1]:+.2f}', flush=True)
@@ -263,7 +263,7 @@ def panel_e(out):
     ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     for t in ticks: ax.axvline(t, color=GRIDC, lw=.6 * S, zorder=1)
     ax.axvline(0, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1)
-    frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', labelsize=9 * S)
+    frame(ax, ('left', 'bottom'))
     ax.set_xlabel('Relative offspring–parent difference (%)', fontsize=10 * S, fontstyle='italic', labelpad=1)
     put(224.2, 551.1, 'f', 20, fontweight='bold'); put(372, 546, f'Parent–offspring agreement ({len(P)} pairs)', 12, fontweight='bold', ha='center')   # title size as c, d, f
     for x, mk, s in ((323.5, '^', 'HG02966'), (378, 'o', 'HG02773')):
@@ -292,14 +292,14 @@ def panel_f(out):
     a2.set_xlim(.2, 2.2); a2.set_xticks([.5, 1, 1.5, 2], ['0.5', '1', '1.5', '2']); a2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)   # minor ticks every 0.1
     a2.tick_params(which='minor', width=.4, length=1.5); a2.set_yticks([]); a2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     for x in (X1, X2): mark([x - 1.5, x + 1.5], [B + 2.5, B - 2.5], color='k', lw=.5)   # axis break
-    a1.axvline(cut, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1); a1.text(cut / 1.15, 1.6e3 * 10 ** (3 / HB * np.log10(5e3 / .7)), f'{cut:g}', fontsize=7 * S, color='k', va='center', ha='right')
+    a1.axvline(cut, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1); a1.text(cut / 1.15, 1.6e3 * 10 ** (3 / HB * np.log10(5e3 / .7)), f'{cut:g}', fontsize=8 * S, color='k', va='center', ha='right')
     for r in males:
         if float(r['y_dose']) <= cut:   # recorded male without Y
             e = np.logspace(-4, np.log10(top), 26); j = np.searchsorted(e, float(r['y_dose'])) - 1   # its bin
-            a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (g(B) - g(865)) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=7 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
+            a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (g(B) - g(865)) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=8 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
                         arrowprops=dict(arrowstyle='-|>', color='k', lw=.5, mutation_scale=4, shrinkA=1, shrinkB=0))
             print(f"f: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
-    a2.legend(loc='upper left', fontsize=7 * S, handlelength=.8, frameon=False, bbox_to_anchor=(.0, 1 + 3 / HB), borderaxespad=0)   # 3 units above the axes top
+    a2.legend(loc='upper left', fontsize=8 * S, handlelength=.8, frameon=False, bbox_to_anchor=(.0, 1 + 5 / HB), borderaxespad=0, borderpad=0, labelspacing=.3)   # 5 units above the axes top, clear of the bars
     put(161, 865, 'Y dosage', 10, fontstyle='italic', ha='center'); a1.set_ylabel('Samples', fontsize=10 * S, fontstyle='italic', labelpad=2)
     put(161, 743, '1000 Genomes samples', 10, fontweight='bold', ha='center')
     T = {r['class']: r for r in rd(M / 'cv_females.tsv')}; CV = {r['class']: float(r['median_abs']) for r in rd(M / 'cv.tsv')}
@@ -312,12 +312,12 @@ def panel_f(out):
     ax.set_ylim(0, 4.2); ax.set_xlim(-.6, len(n7) - .4); ax.set_yticks([0, 1, 2, 3, 4])
     ax.set_xticks(range(len(n7)), n7)
     for t, n in zip(ax.get_xticklabels(), n7): t.set_color(COL[n]); t.set_fontweight('bold')
-    frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', labelsize=7 * S, length=0)
-    ax.set_ylabel('% of median\nsatellite length', fontsize=9 * S, fontstyle='italic', labelpad=2, linespacing=1.1)
+    frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', length=0)
+    ax.set_ylabel('% of median\nsatellite length', fontsize=10 * S, fontstyle='italic', labelpad=2, linespacing=1.1)
     put(421, 743, f'Signal in {int(T["dyz3"]["n_predictions"]) // 10} held-out females', 10, fontweight='bold', ha='center')
-    for x, txt, h in ((334, 'highest female signal', '//////'), (419, 'error in males (CV median)', None)):
+    for x, txt, h in ((330, 'highest female signal', '//////'), (423, 'error in males (CV median)', None)):
         FIG.add_artist(matplotlib.patches.Rectangle((fx(x - 3), fy(754.8)), 6 / R[2], fy(748.8) - fy(754.8), transform=FIG.transFigure, facecolor='white' if h else to_rgba(GREY, .28), edgecolor=GREY, hatch=h, lw=.75))
-        put(x + 5.5, 754.4, txt, 7)
+        put(x + 5.5, 754.4, txt, 8)
     put(22.3, 735, 'g', 20, fontweight='bold'); put(270, 735, 'Specificity', 12, fontweight='bold', ha='center')
     save('f', out)
 
@@ -328,12 +328,12 @@ def main():
     with tempfile.TemporaryDirectory() as t: svg_panels(Path(t), pd)
     panel_c(pd); panel_d(pd); panel_e(pd); panel_f(pd)
     up = lambda p: (A_UP if p != 'a' else 0) + sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from a and rows above
-    Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd', 'f')); w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)
+    Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd', 'f')) + 3; w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)   # +3 units: 1.5 mm bottom margin
     for p, (name, x0, y0, x1, y1) in PANELS.items():
         sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = A_BOX[1] - A_BOX[0] if p == 'a' else y1 - y0 - SHRINK.get(p, (0, 0, 0))[2]
         if abs(sw - (x1 - x0) * S) > .5 or abs(sh - hn * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {hn * S:.1f}')
         page.merge_transformed_page(sub, Transformation().translate(x0 * S, (Hn - (y0 - up(p)) - hn) * S))
-    f = out / 'fig1_method.pdf'; w.write(f)
+    f = out / 'fig1_method.pdf'; w.write(f); from palette import crop_ink; crop_ink(f)   # 1.5 mm ink margin
     subprocess.run(['inkscape', str(f), '--export-type=svg', f'--export-filename={f.with_suffix(".svg")}'], check=True, capture_output=True)
     print(f'written {f} and .svg: {W * S:.1f} x {Hn * S:.1f} pt ({W * S / 72 * 25.4:.1f} x {Hn * S / 72 * 25.4:.1f} mm), {len(PANELS)} panels', flush=True)
 
