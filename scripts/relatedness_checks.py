@@ -9,7 +9,7 @@ results/tree/tree.rooted.nwk, data/catalog_d376/ped.txt, data/figure_metadata/sg
 import sys, csv, math, collections as co
 from pathlib import Path
 import numpy as np
-from scipy.stats import spearmanr, kruskal
+from scipy.stats import spearmanr, kruskal, mannwhitneyu
 sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs, prepare_cohort_pies as pc
 D, GN, OUT = Path(sys.argv[1]), sys.argv[2], sys.argv[3]; OWN = sys.argv[4] if len(sys.argv) > 4 else None
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t')); N = []; rng = np.random.default_rng(20261103)
@@ -80,6 +80,15 @@ for lab, R in (('all', HS), ('one_per_component', one_per(HS, ch))):
     put(f'hgsg_dyz19_{lab}', f"{len(rows)} individuals; {len(sh)} of {len(JJ)} J below 100 kb, all J2a1a1: {all(x['call'].startswith('J2a1a') for x in sh)}; other lineages below 100 kb: {sum(b(x, 'DYZ19') < 1e5 for x in rows if not x['call'].startswith('J'))}")
     m = lambda f: (len(v := [b(x, 'DYZ3') for x in rows if f(x['call'])]), np.median(v))
     put(f'hgsg_dyz3_{lab}', 'R1b %d %.0f; other %d %.0f; O2a2b1a1 %d %.0f; O2a2b1a2 %d %.0f' % (*m(lambda h: h.startswith('R1b')), *m(lambda h: not h.startswith('R1b')), *m(lambda h: h.startswith('O2a2b1a1')), *m(lambda h: h.startswith('O2a2b1a2'))))
+    for co_ in ('HGDP', 'SGDP'):   # same three contrasts as the Statistics, per cohort
+        g = [x for x in rows if x['cohort'] == co_]
+        for nm, cl, f1, f2 in (('dyz3_r1b', 'DYZ3', lambda h: h.startswith('R1b'), lambda h: not h.startswith('R1b')),
+                               ('dyz3_o2a2b1a1', 'DYZ3', lambda h: h.startswith('O2a2b1a1'), lambda h: h.startswith('O2a2b1a2')),
+                               ('dyz19_j2a1a1', 'DYZ19', lambda h: h.startswith('J2a1a1'), lambda h: h.startswith('J') and not h.startswith('J2a1a1'))):
+            u = [b(x, cl) for x in g if f1(x['call'])]; v = [b(x, cl) for x in g if f2(x['call'])]
+            if not u or not v: put(f'hgsg_mw_{nm}_{co_.lower()}_{lab}', f'{len(u)} and {len(v)} men, no test'); continue
+            st = mannwhitneyu(u, v, alternative='two-sided')
+            put(f'hgsg_mw_{nm}_{co_.lower()}_{lab}', f'{len(u)} against {len(v)} men, medians {np.median(u) / 1e3:.0f} and {np.median(v) / 1e3:.0f} kb, U {st.statistic:.0f}, P {st.pvalue:.2g}')
 
 # 2: CV error against Y-tree distance to the nearest training male
 T = fs.parse_newick(fs.ROOT / 'results/tree/tree.rooted.nwk'); dep, anc = {}, {}

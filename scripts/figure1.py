@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fig. 1: panels a-b cut from Alejandro's Fig1_Yruler_v4.svg, panels c-f drawn from the model tables in its style.
+"""Fig. 1: panels a-b cut from Alejandro's Fig1_Yruler_v4.svg, panels c-f drawn from the model tables in its style (specificity moved to Extended Data Fig. 5).
 usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4 in the Fig. 1c style)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
 writes <out>/fig1/fig1{a..f}_*.pdf (one per panel) and <out>/fig1_method.pdf/.svg (the panels composed).
 Layout units are the SVG units (540 wide, y down); 1 unit = 0.75 pt in the PDF, as in the Inkscape export of v4."""
@@ -19,9 +19,9 @@ SVG = ROOT / 'manuscript/figures/main/fig1/Fig1_Yruler_v4.svg'   # Alejandro's v
 SVG_A = ROOT / 'manuscript/figures/main/fig1/Fig1A_Yruler_v3 (1).svg'   # Alejandro's compact a (2026-11-04)
 A_BOX = (10.83, 103)   # a viewBox y range: 5.5 units above the title, 1 below the lowest label
 M = ROOT / 'results/model'
-W, H, S = 540, 870, 0.75   # page width and height (units), pt per unit
+W, H, S = 540, 720, 0.75   # page width and height (units), pt per unit
 PANELS = {'a': ('chrY', 0, 0, 540, 114), 'b': ('workflow', 0, 96, 540, 342), 'c': ('cv', 0, 342, 540, 532),   # name, region x0 y0 x1 y1
-          'd': ('coverage', 0, 532, 204, 720), 'e': ('pedigrees', 204, 532, 540, 720), 'f': ('specificity', 0, 720, 540, 870)}
+          'd': ('coverage', 0, 532, 204, 720), 'e': ('pedigrees', 204, 532, 540, 720)}
 LOGO = (234, 99, 322, 136)   # Yruler logo box, part of b
 A_UP = 96 - 68.47   # b top on the page: logo letters 5 units under the DYZ18S bar of a (bar bottom y 87.3 in SVG_A, page 76.47)
 NAMES = ['DYZ3', 'DYZ17', 'DYZ19', 'Yq12', 'DYZ18S', 'DYZ1', 'DYZ2', 'DYZ1:DYZ2']
@@ -70,8 +70,8 @@ def svg_panels(tmp, out):
     print(f'SVG: {len(parts)} top-level elements, {sum(v == "c-f" for v in parts.values())} of panels c-e dropped (redrawn here)', flush=True)
 
 
-SHRINK = {'c': (362.05, 501.05, 14), 'd': (571, 695.5, 14), 'e': (571, 695.5, 14), 'f': (762, 844, 20)}   # plot band (design y) and units removed from it
-ROWS = {'c': 0, 'd': 1, 'e': 1, 'f': 2}   # rows below b; shrinks of rows above shift a row up
+SHRINK = {'c': (362.05, 501.05, 14), 'd': (571, 695.5, 14), 'e': (571, 695.5, 14)}   # plot band (design y) and units removed from it
+ROWS = {'c': 0, 'd': 1, 'e': 1}   # rows below b; shrinks of rows above shift a row up
 P_ = None   # current panel
 
 
@@ -272,63 +272,13 @@ def panel_e(out):
     save('e', out)
 
 
-def panel_f(out):
-    panel('f')
-    F = [r for r in rd(M / 'cohort_fem.tsv') if r['cohort'] == '1kGP']; males = [r for r in rd(M / 'cohort_1kgp.tsv') if r['sex'] == 'male']
-    fy_, my = np.array([float(r['y_dose']) for r in F]), np.array([float(r['y_dose']) for r in males]); cut, top = .02, .03   # no-Y cut (user 2026-11-04: above every female, max 0.0191 in HGDP), log part end
-    print(f'f: 1kGP females {len(fy_)} (max Y dosage {fy_.max():.4f}, above the cut {cut}: {(fy_ > cut).sum()}, at or below 0.0001: {(fy_ <= 1e-4).sum()}), males {len(my)} (min {my.min():.4f}, at or below the cut: {(my <= cut).sum()})', flush=True)
-    gap = ((fy_ > top) & (fy_ < .2)).sum() + ((my > top) & (my < .2)).sum(); lo, hi = (my >= .2).sum(), (my > 2.2).sum()
-    print(f'f: broken x axis, samples in the hidden {top}-0.2 gap: {gap}, males from 0.2: {lo}, above 2.2 (clipped into the last bin): {hi}', flush=True)
-    if gap: sys.exit('ERROR samples in the hidden part of the dosage axis')
-    T1, B, X1, X2 = 751, 844, 135, 141; HB = g(B) - g(T1)   # top, bottom, axis break; HB drawn axes height
-    a1, a2 = axes(52, T1, X1, B), axes(X2, T1, 270, B)   # log part (no Y), linear part (Y)
-    for ax, bins, clip in ((a1, np.logspace(-4, np.log10(top), 26), (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
-        for v, c, lab in ((fy_, '#B07AA1', f'Recorded females (n = {len(fy_)})'), (my, DOSE, f'Recorded males (n = {len(my):,})')):
-            w = v[(v >= clip[0] * .99) & (v <= top)] if ax is a1 else v[v >= .2]
-            ax.hist(np.clip(w, *clip), bins, color=c, label=lab, zorder=2)
-        ax.set_yscale('log'); ax.set_ylim(.7, 5e3); frame(ax, ('left', 'bottom') if ax is a1 else ('bottom',))
-    a1.set_xscale('log'); a1.set_xlim(1e-4, top); a1.set_xticks([1e-4, 1e-3, 1e-2], ['0.0001', '0.001', '0.01']); a1.minorticks_off()
-    a1.set_yticks([1, 10, 100, 1000], ['1', '10', '100', '1000']); a1.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-    a2.set_xlim(.2, 2.2); a2.set_xticks([.5, 1, 1.5, 2], ['0.5', '1', '1.5', '2']); a2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)   # minor ticks every 0.1
-    a2.tick_params(which='minor', width=.4, length=1.5); a2.set_yticks([]); a2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-    for x in (X1, X2): mark([x - 1.5, x + 1.5], [B + 2.5, B - 2.5], color='k', lw=.5)   # axis break
-    a1.axvline(cut, color=GREY, lw=.6 * S, ls=(0, (3, 2)), zorder=1); a1.text(cut / 1.15, 1.6e3 * 10 ** (3 / HB * np.log10(5e3 / .7)), f'{cut:g}', fontsize=8 * S, color='k', va='center', ha='right')
-    for r in males:
-        if float(r['y_dose']) <= cut:   # recorded male without Y
-            e = np.logspace(-4, np.log10(top), 26); j = np.searchsorted(e, float(r['y_dose'])) - 1   # its bin
-            a1.annotate(r['sample'], (np.sqrt(e[j] * e[j + 1]), np.sqrt(.7)), xytext=(.0043, (g(B) - g(865)) / HB), textcoords=('data', 'axes fraction'), annotation_clip=False, fontsize=8 * S, color='k', va='baseline', ha='center',   # on the 'Y dosage' baseline
-                        arrowprops=dict(arrowstyle='-|>', color='k', lw=.5, mutation_scale=4, shrinkA=1, shrinkB=0))
-            print(f"f: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
-    a2.legend(loc='upper left', fontsize=8 * S, handlelength=.8, frameon=False, bbox_to_anchor=(.0, 1 + 5 / HB), borderaxespad=0, borderpad=0, labelspacing=.3)   # 5 units above the axes top, clear of the bars
-    put(161, 865, 'Y dosage', 10, fontstyle='italic', ha='center'); a1.set_ylabel('Samples', fontsize=10 * S, fontstyle='italic', labelpad=2)
-    put(161, 743, '1000 Genomes samples', 10, fontweight='bold', ha='center')
-    T = {r['class']: r for r in rd(M / 'cv_females.tsv')}; CV = {r['class']: float(r['median_abs']) for r in rd(M / 'cv.tsv')}
-    ax = axes(312, 762, 530, B); n7 = NAMES[:-1]
-    for i, n in enumerate(n7):
-        r = T[KEY[n]]; md, mx = float(r['median_pct_of_median_truth']), float(r['max_pct_of_median_truth']); c = COL[n]
-        ax.bar(i - .19, mx, .36, facecolor='white', edgecolor=c, hatch='//////', lw=.75, zorder=2)   # females hatched, males as in c
-        ax.bar(i + .19, CV[KEY[n]], .36, facecolor=to_rgba(c, .28), edgecolor=c, lw=.75, zorder=2)
-        print(f'f {n}: female median {md}% max {mx}% of the median length ({r["n_predictions"]} predictions); CV median error {CV[KEY[n]]}%', flush=True)
-    ax.set_ylim(0, 4.2); ax.set_xlim(-.6, len(n7) - .4); ax.set_yticks([0, 1, 2, 3, 4])
-    ax.set_xticks(range(len(n7)), n7)
-    for t, n in zip(ax.get_xticklabels(), n7): t.set_color(COL[n]); t.set_fontweight('bold')
-    frame(ax, ('left', 'bottom')); ax.tick_params(axis='x', length=0)
-    ax.set_ylabel('% of median\nsatellite length', fontsize=10 * S, fontstyle='italic', labelpad=2, linespacing=1.1)
-    put(421, 743, f'Signal in {int(T["dyz3"]["n_predictions"]) // 10} held-out females', 10, fontweight='bold', ha='center')
-    for x, txt, h in ((330, 'highest female signal', '//////'), (423, 'error in males (CV median)', None)):
-        FIG.add_artist(matplotlib.patches.Rectangle((fx(x - 3), fy(754.8)), 6 / R[2], fy(748.8) - fy(754.8), transform=FIG.transFigure, facecolor='white' if h else to_rgba(GREY, .28), edgecolor=GREY, hatch=h, lw=.75))
-        put(x + 5.5, 754.4, txt, 8)
-    put(22.3, 735, 'g', 20, fontweight='bold'); put(270, 735, 'Specificity', 12, fontweight='bold', ha='center')
-    save('f', out)
-
-
 def main():
     if sys.argv[1:2] == ['ed4']: return ed4(ROOT / 'manuscript/figures/ed/ed4_lineage_validation.pdf')
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/main'; pd = out / 'fig1'; pd.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as t: svg_panels(Path(t), pd)
-    panel_c(pd); panel_d(pd); panel_e(pd); panel_f(pd)
-    up = lambda p: (A_UP if p != 'a' else 0) + sum(SHRINK[q][2] for q in ('c', 'd', 'f') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from a and rows above
-    Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd', 'f')) + 3; w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)   # +3 units: 1.5 mm bottom margin
+    panel_c(pd); panel_d(pd); panel_e(pd)
+    up = lambda p: (A_UP if p != 'a' else 0) + sum(SHRINK[q][2] for q in ('c', 'd') if ROWS.get(q, -1) < ROWS.get(p, -1))   # shift from a and rows above
+    Hn = H - A_UP - sum(SHRINK[q][2] for q in ('c', 'd')) + 3; w = PdfWriter(); page = w.add_blank_page(W * S, Hn * S)   # +3 units: 1.5 mm bottom margin
     for p, (name, x0, y0, x1, y1) in PANELS.items():
         sub = PdfReader(pd / f'fig1{p}_{name}.pdf').pages[0]; sw, sh = float(sub.mediabox.width), float(sub.mediabox.height); hn = A_BOX[1] - A_BOX[0] if p == 'a' else y1 - y0 - SHRINK.get(p, (0, 0, 0))[2]
         if abs(sw - (x1 - x0) * S) > .5 or abs(sh - hn * S) > .5: sys.exit(f'ERROR panel {p}: {sw:.1f} x {sh:.1f} pt, region {(x1 - x0) * S:.1f} x {hn * S:.1f}')

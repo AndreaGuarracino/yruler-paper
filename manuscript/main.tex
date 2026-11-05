@@ -29,7 +29,7 @@
 \author*[1]{\fnm{Andrea} \sur{Guarracino}}\email{aguarracino@tgen.org}
 \affil[1]{\orgname{Translational Genomics Research Institute (TGen)}, \orgaddress{\city{Phoenix}, \state{Arizona}, \country{USA}}}
 
-\abstract{Human Y chromosome satellite arrays vary widely in length, but remain difficult to measure accurately in large population cohorts. We present Yruler, a k-mer-based tool that measures seven Y satellite lengths (median error \vsette{1.7--3.9\%} against assemblies) and Y dosage from short reads. Across three public cohorts, Yruler reveals lineage-wide array shifts, including 4-fold shorter centromeric arrays in Y lineage O2a2b1a1 and 4-fold shorter DYZ19 arrays in J2a1a1.}
+\abstract{Human Y chromosome satellites vary widely but remain difficult to measure in large cohorts. In response, we developed Yruler, which uses pangenome assemblies to measure satellite lengths, composition and Y dosage from sequencing reads without alignment. Analyses reveal centromere-length differences between related lineages, extend observations of short non-centromeric arrays across a lineage, and show unequal component variability and composition changes with heterochromatin length within lineages. Yruler brings satellite variation into population-scale phenotype studies.}
 
 \maketitle
 
@@ -46,6 +46,9 @@
 \bmhead{Funding}
 This work was made possible, in part, through the generous philanthropic support of the Robert \& Lynda Carter Altman Family Foundation.
 
+\bmhead{Acknowledgements}
+We thank the Human Pangenome Reference Consortium and the Human Genome Structural Variation Consortium for the assemblies and reads that made this work possible, and the 1000 Genomes Project, HGDP and SGDP for their public sequencing data.
+
 \section*{Declarations}
 
 \bmhead{Authors' contributions}
@@ -57,11 +60,10 @@ The authors declare no competing interests.
 \bmhead{Data availability}
 We used public 1000 Genomes sequencing data \cite{ByrskaBishop2022}, HGDP and SGDP sequencing data \cite{Bergstrom2020,Mallick2016}, Y chromosome assemblies \cite{Hallast2026}, HPRC release 2 assemblies and nanopore reads \cite{HPRCRelease2} and pedigree sequencing resources \cite{Porubsky2025}. Public KING reports and corrected sample metadata are available from \url{https://www.cog-genomics.org/plink/2.0/resources}. Independent libraries are in BioProjects PRJNA686136 (low-pass libraries of NA11930 and NA12342), PRJNA909799 (Aviti and NovaSeq libraries of NA11930), PRJEB25009 (Polaris library of HG02773) and PRJEB20654 (Polaris library of HG02771). Nanopore runs are in PRJEB89727 and PRJEB112147 (HG01967, HG02771 and HG02895) and in the 1000 Genomes nanopore data \cite{Gustafson2024} (HG03685 and five control males). Study data (per-sample satellite estimates, reference-array annotations, model parameters, cross-validation predictions, the SNP tree, relatedness tables and geographic metadata) are at \url{https://github.com/AndreaGuarracino/yruler-paper}.
 The DYZ1 depth values of San Roman et al.\ are their Table S6A \cite{SanRoman2024}, \url{https://doi.org/10.1016/j.xgen.2023.100462}.
-\draftnote{Insert the archival accession for study-generated data and the source accession/checksum manifest before submission.}
+This study generated no new sequencing data. The per-sample estimates, validation predictions and all tables behind the figures are in the analysis repository.
 
 \bmhead{Code availability}
 The Yruler repository is \url{https://github.com/guarracinolab/yruler}, under the MIT licence. The analysis code that generates the figures and tables from per-sample estimates, validation predictions and source metadata is at \url{https://github.com/AndreaGuarracino/yruler-paper}, with the scripts that build the model from assemblies and reads in its \texttt{scripts/pipeline} folder.
-\draftnote{Confirm public accessibility, the software licence, a versioned release and an archival identifier before submission. Add the analysis-code release and the commands needed to reproduce the figures and tables.}
 
 \bibliography{refs}
 

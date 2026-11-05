@@ -12,10 +12,22 @@ hgsg_sd_HGDP_all	386: ratio 0.799 (95% 0.756 to 0.848)
 hgsg_sd_SGDP_all	140: ratio 0.658 (95% 0.592 to 0.748)
 hgsg_dyz19_all	526 individuals; 22 of 64 J below 100 kb, all J2a1a1: True; other lineages below 100 kb: 0
 hgsg_dyz3_all	R1b 51 360604; other 475 880973; O2a2b1a1 13 265428; O2a2b1a2 14 1040524
+hgsg_mw_dyz3_r1b_hgdp_all	43 against 343 men, medians 358 and 868 kb, U 1389, P 4e-18
+hgsg_mw_dyz3_o2a2b1a1_hgdp_all	10 against 10 men, medians 267 and 1054 kb, U 1, P 0.00025
+hgsg_mw_dyz19_j2a1a1_hgdp_all	16 against 29 men, medians 71 and 291 kb, U 0, P 4e-08
+hgsg_mw_dyz3_r1b_sgdp_all	8 against 132 men, medians 389 and 964 kb, U 102, P 1.8e-05
+hgsg_mw_dyz3_o2a2b1a1_sgdp_all	3 against 4 men, medians 257 and 967 kb, U 0, P 0.057
+hgsg_mw_dyz19_j2a1a1_sgdp_all	6 against 13 men, medians 74 and 303 kb, U 0, P 7.4e-05
 hgsg_sd_HGDP_one_per_component	377: ratio 0.803 (95% 0.758 to 0.853)
 hgsg_sd_SGDP_one_per_component	139: ratio 0.658 (95% 0.591 to 0.747)
 hgsg_dyz19_one_per_component	516 individuals; 22 of 63 J below 100 kb, all J2a1a1: True; other lineages below 100 kb: 0
 hgsg_dyz3_one_per_component	R1b 50 359290; other 466 877814; O2a2b1a1 13 265428; O2a2b1a2 14 1040524
+hgsg_mw_dyz3_r1b_hgdp_one_per_component	42 against 335 men, medians 356 and 862 kb, U 1274, P 5e-18
+hgsg_mw_dyz3_o2a2b1a1_hgdp_one_per_component	10 against 10 men, medians 267 and 1054 kb, U 1, P 0.00025
+hgsg_mw_dyz19_j2a1a1_hgdp_one_per_component	16 against 28 men, medians 71 and 291 kb, U 0, P 5e-08
+hgsg_mw_dyz3_r1b_sgdp_one_per_component	8 against 131 men, medians 389 and 963 kb, U 102, P 1.9e-05
+hgsg_mw_dyz3_o2a2b1a1_sgdp_one_per_component	3 against 4 men, medians 257 and 967 kb, U 0, P 0.057
+hgsg_mw_dyz19_j2a1a1_sgdp_one_per_component	6 against 13 men, medians 74 and 303 kb, U 0, P 7.4e-05
 cv_males_not_in_tree	0: []
 cv_tree_distance_dyz3	1010 predictions, 101 males (mean over repeats); nearest training male at median 2.23e-05 substitutions per site (10th percentile 9.98e-06); Spearman |error| vs distance -0.049 (P 0.62); median of male mean |error| 2.32% in the closest 10% and 2.42% in the rest
 cv_tree_distance_yq12	800 predictions, 80 males (mean over repeats); nearest training male at median 2.70e-05 substitutions per site (10th percentile 1.15e-05); Spearman |error| vs distance +0.049 (P 0.66); median of male mean |error| 1.86% in the closest 10% and 1.64% in the rest

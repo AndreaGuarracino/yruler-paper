@@ -64,8 +64,9 @@ for _ in range(1000):   # DYZ2 moved between men of a lineage
 put('composition_arithmetic_null', f'slope on Yq12 with DYZ2 permuted within lineage: median {np.median(NL):.3f} (central 95% {np.percentile(NL, 2.5):.3f} to {np.percentile(NL, 97.5):.3f}), 1,000 permutations')
 for k in set(l2): lr[l2 == k] -= lr[l2 == k].mean(); ls[l2 == k] -= ls[l2 == k].mean()
 sl = np.polyfit(ls, lr, 1)[0]; B = [np.polyfit(ls[i], lr[i], 1)[0] for i in (rng.integers(0, len(ls), len(ls)) for _ in range(2000))]; put('composition_slope_cohort', f'{sl:.3f} (95% {np.percentile(B, 2.5):.3f} to {np.percentile(B, 97.5):.3f}); {len(ls)} men, within lineage, outside the panel')
-T = rd('data/method/yq12_truth_hallast.tsv'); lin = [(C[r['assembly']]['lineage'], math.log(float(r['dyz1_units']) / float(r['dyz2_units'])), math.log(float(r['yq12_span']))) for r in T if r['assembly'] in C and r['assembly'] != 'HG01261']; A = np.array([[a, q] for _, a, q in lin]); l3 = np.array([k for k, _, _ in lin])
-Tc = [r for r in T if r['assembly'] in C and r['assembly'] != 'HG01261']; sdratio(np.array([float(r['dyz1_units']) for r in Tc]), np.array([float(r['dyz2_units']) for r in Tc]), l3, 'assemblies')
+T = rd('data/method/yq12_truth_hallast.tsv'); don = lambda r: r['assembly'].replace('_R2', '')   # HPRC release 2 replacements keep the donor name
+lin = [(C[don(r)]['lineage'], math.log(float(r['dyz1_units']) / float(r['dyz2_units'])), math.log(float(r['yq12_span']))) for r in T if don(r) in C and don(r) != 'HG01261']; A = np.array([[a, q] for _, a, q in lin]); l3 = np.array([k for k, _, _ in lin])
+Tc = [r for r in T if don(r) in C and don(r) != 'HG01261']; sdratio(np.array([float(r['dyz1_units']) for r in Tc]), np.array([float(r['dyz2_units']) for r in Tc]), l3, 'assemblies')
 for k in set(l3): A[l3 == k] -= A[l3 == k].mean(0)
 B = [np.polyfit(A[i, 1], A[i, 0], 1)[0] for i in (rng.integers(0, len(A), len(A)) for _ in range(2000))]; put('composition_slope_assemblies', f'{np.polyfit(A[:, 1], A[:, 0], 1)[0]:.3f} (95% {np.percentile(B, 2.5):.3f} to {np.percentile(B, 97.5):.3f}); {len(A)} assemblies, within lineage')
 E = co.defaultdict(lambda: co.defaultdict(list))

@@ -57,13 +57,13 @@ father_son_ratio_same	22 pairs: son closer to 1 in 13, median |log ratio| father
 composition_sd_1kgp	1196: SD 0.194 and 0.255, ratio 0.762 (95% 0.724 to 0.802), Pitman-Morgan r -0.471, P 5.3e-67
 composition_arithmetic_null	slope on Yq12 with DYZ2 permuted within lineage: median -0.171 (central 95% -0.200 to -0.138), 1,000 permutations
 composition_slope_cohort	-0.276 (95% -0.328 to -0.221); 1196 men, within lineage, outside the panel
-composition_sd_assemblies	75: SD 0.179 and 0.250, ratio 0.714 (95% 0.634 to 0.829), Pitman-Morgan r -0.577, P 6e-08
-composition_slope_assemblies	-0.354 (95% -0.494 to -0.184); 75 assemblies, within lineage
+composition_sd_assemblies	83: SD 0.172 and 0.244, ratio 0.704 (95% 0.625 to 0.812), Pitman-Morgan r -0.582, P 8.2e-09
+composition_slope_assemblies	-0.370 (95% -0.510 to -0.201); 83 assemblies, within lineage
 composition_error_sd	CV SD of log error DYZ1 0.0333, DYZ2 0.0386
 hgsg_calls	664 of 665 with a HaploGrouper call; 526 PCR-free individuals after removing 1kGP aliases and duplicates
 hgsg_j	64 J men; DYZ19 below 100 kb in 22: 65.5-74.9 kb; others min 250.8 kb
-composition_sd_hgdp	386: SD 0.219 and 0.274, ratio 0.799 (95% 0.755 to 0.846), Pitman-Morgan r -0.402, P 1.8e-16
-composition_sd_sgdp	140: SD 0.321 and 0.487, ratio 0.658 (95% 0.588 to 0.743), Pitman-Morgan r -0.682, P 1.8e-20
+composition_sd_hgdp	386: SD 0.219 and 0.274, ratio 0.799 (95% 0.756 to 0.846), Pitman-Morgan r -0.402, P 1.8e-16
+composition_sd_sgdp	140: SD 0.321 and 0.487, ratio 0.658 (95% 0.590 to 0.744), Pitman-Morgan r -0.682, P 1.8e-20
 mw_dyz3_r1b_hgdp	43 vs 343, median 358 vs 868 kb, U 1389, p 4.03e-18
 mw_dyz3_o2a2b1a1_hgdp	10 vs 10, median 267 vs 1054 kb, U 1, p 0.000246
 mw_dyz19_j2a1a1_hgdp	16 vs 29, median 71 vs 291 kb, U 0, p 4.04e-08

@@ -10,10 +10,12 @@ import csv
 import hashlib
 import json
 import re
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 import matplotlib
+import matplotlib.ticker
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -22,7 +24,7 @@ from matplotlib.colors import to_rgba
 import numpy as np
 from scipy.stats import spearmanr
 
-from palette import RATIO, FS, MM, letter, ORDER, REF, REF_HANDLE, TITLE_PAD
+from palette import RATIO, FS, MM, GREY, letter, ORDER, REF, REF_HANDLE, TITLE_PAD
 from figure2_tree import (
     BLUE, GREEN, PURPLE, LINEAGE_COLORS, read_tsv, save,
     tree_data, pie_map, lineage_legend, align_map_legend_titles, clade_of, pruned_tree,
@@ -672,7 +674,7 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     ax.axvline(1, color=MUTED, lw=.6, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U]); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio"); style(ax, "d")
     ax.legend(handles=[Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6, label="From assemblies"), Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads")], **on_top(ax))
     # DYZ2 varies more than DYZ1
-    ax = box(.725, .99); T = {r["assembly"]: r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}; lin = {r["sample"]: r["lineage"] for r in C}
+    ax = box(.725, .99); T = {r["assembly"].removesuffix("_R2"): r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}   # release 2 replacements keyed by donor; lin = {r["sample"]: r["lineage"] for r in C}
     kin = {r["sample"]: r["kinship_component_id"] for r in read_tsv(ROOT / "results/estimates_1kgp.relatedness_samples.tsv")}; rep = {}
     for r in sorted((r for r in inc if r["y_state"] != "par2_gain"), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)
     def centred(P):
@@ -681,12 +683,12 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
         return b, a
     P = [r for r in rep.values() if r["reference_male"] != "yes"]; tri = np.array([r["sample"] in TRUTH["yq12"] for r in P]); print("Fig. 2f diamonds (Yq12 truth):", int(tri.sum()), flush=True)
     men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in P]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
-    assert len(men[0]) == 1196 and len(asm[0]) == 75, (len(men[0]), len(asm[0]))
+    assert len(men[0]) == 1196 and len(asm[0]) == 83, (len(men[0]), len(asm[0]))
     ax.scatter(men[0][~tri], men[1][~tri], s=2, c=GREY, lw=0, alpha=.6, label="From reads (1kGP, 1,196)", rasterized=True); ax.scatter(men[0][tri], men[1][tri], edgecolors=GREY, rasterized=True, **REF); ax.scatter(*asm, s=6, marker="x", c=ORANGE, linewidths=.6, alpha=.9, label="From assemblies (75)", rasterized=True)
     L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2f symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
     ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2f points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 / lineage geometric mean"); ax.set_ylabel("DYZ1 / lineage geometric mean"); from matplotlib.legend_handler import HandlerTuple
     dot, cross, eq = Line2D([], [], ls="none", marker="o", ms=2.5, color=GREY), Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6), Line2D([], [], color=MUTED, lw=.6, ls="--")
-    ax.legend([(Line2D([], [], color=ORANGE, lw=.9), cross), (Line2D([], [], color=INK, lw=.9), dot), eq], [f"From assemblies (75)\n(SD ratio {a:g})", f"From reads (1kGP, 1,196)\n(SD ratio {r:g})", "Equal variation\n(SD ratio 1)"], handler_map={tuple: HandlerTuple(ndivide=1)}, **on_top(ax, left=True, ncol=1)); style(ax, "e")   # points and line share one entry
+    ax.legend([(Line2D([], [], color=ORANGE, lw=.9), cross), (Line2D([], [], color=INK, lw=.9), dot), eq], [f"From assemblies (83)\n(SD ratio {a:g})", f"From reads (1kGP, 1,196)\n(SD ratio {r:g})", "Equal variation\n(SD ratio 1)"], handler_map={tuple: HandlerTuple(ndivide=1)}, **on_top(ax, left=True, ncol=1)); style(ax, "e")   # points and line share one entry
     B = [.719, .18, .25, .19]; ins = ax.inset_axes(B); x0, y0 = -L + 2 * L * B[0], -L + 2 * L * B[1]; print("Fig. 2f points under the inset:", int(sum(((x >= x0) & (x <= x0 + 2 * L * B[2]) & (y >= y0) & (y <= y0 + 2 * L * B[3])).sum() for x, y in (men, asm))), flush=True); S = [("Assemblies", "assemblies"), ("1kGP", "1kgp"), ("HGDP", "hgdp"), ("SGDP", "sgdp")]
     for i, (n, k) in enumerate(S):
         m_ = re.search(r"ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)", N[f"composition_sd_{k}"]); v, lo, hi = map(float, m_.groups()); ins.plot([lo, hi], [3 - i, 3 - i], color=INK, lw=.75); ins.plot(v, 3 - i, "x" if k == "assemblies" else "o", ms=2.5 if k == "assemblies" else 2, mew=.6, color=ORANGE if k == "assemblies" else INK)
@@ -803,11 +805,65 @@ def population_supplement(valid, out):
         ax.set_axisbelow(True)
     for ax in axes.flat[len(panels):]: ax.set_visible(False)
     reads_legend(fig)
-    save(fig, out, "ed/ed7_population")
+    save(fig, out, "ed/ed8_population")
+
+
+def dosage_by_sex(axes, out_cut=.02):
+    """ED5a: Y dosage of 1kGP samples by recorded sex, broken axis (was Fig. 1g)."""
+    from palette import DOSE
+    a1, a2 = axes; top = .03   # end of the log part
+    F = read_tsv(ROOT / "results/model/cohort_fem.tsv")   # all three cohorts: the cut is set by the highest female
+    males = [r for r in read_tsv(ROOT / "results/model/cohort_1kgp.tsv") if r["sex"] == "male"]
+    fd = np.array([float(r["y_dose"]) for r in F]); md = np.array([float(r["y_dose"]) for r in males])
+    gap = int(((fd > top) & (fd < .2)).sum() + ((md > top) & (md < .2)).sum())
+    if gap: sys.exit(f"ERROR {gap} samples in the hidden {top}-0.2 part of the dosage axis")
+    print(f"ED7a: {len(fd)} recorded females (max Y dosage {fd.max():.4f}, above the cut {out_cut}: {int((fd > out_cut).sum())}), {len(md)} recorded males (min {md.min():.4f}, at or below the cut: {int((md <= out_cut).sum())})", flush=True)
+    for ax, bins, clip in ((a1, np.logspace(-4, np.log10(top), 26), (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
+        for v, c, lab in ((fd, "#b07aa1", f"Recorded females (n = {len(fd)})"), (md, DOSE, f"Recorded 1kGP males (n = {len(md):,})")):
+            w = v[(v >= clip[0] * .99) & (v <= top)] if ax is a1 else v[v >= .2]
+            ax.hist(np.clip(w, *clip), bins, color=c, label=lab, zorder=2)
+        ax.set_yscale("log"); ax.set_ylim(.7, 5e3)
+    a1.set_xscale("log"); a1.set_xlim(1e-4, top); a1.set_xticks([1e-4, 1e-3, 1e-2], ["0.0001", "0.001", "0.01"]); a1.minorticks_off()
+    a1.set_yticks([1, 10, 100, 1000], ["1", "10", "100", "1000"]); a1.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    a1.set_ylabel("Samples", labelpad=2); a1.axvline(out_cut, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=1)
+    a1.text(out_cut / 1.25, 2.6e3, f"{out_cut:g}", fontsize=FS["point"], ha="right", va="center")
+    a2.set_xlim(.2, 2.2); a2.set_xticks([.5, 1, 1.5, 2], ["0.5", "1", "1.5", "2"]); a2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)
+    a2.tick_params(which="minor", width=.4, length=1.5); a2.set_yticks([]); a2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    a2.spines["left"].set_visible(False); a1.spines["right"].set_visible(False)
+    for ax, x in ((a1, 1), (a2, 0)): ax.plot([x], [0], transform=ax.transAxes, clip_on=False, marker=[(-1.4, -2.6), (1.4, 2.6)], ms=4, mew=.5, color="k", ls="none")   # break on the x axis
+    for r in males:
+        if float(r["y_dose"]) <= out_cut:   # recorded male without Y
+            e = np.logspace(-4, np.log10(top), 26); j = int(np.searchsorted(e, float(r["y_dose"]))) - 1
+            a1.annotate(r["sample"], (np.sqrt(e[j] * e[j + 1]), .7), xytext=(.02, -.21), textcoords="axes fraction", annotation_clip=False,
+                        fontsize=FS["point"], ha="left", va="top", arrowprops=dict(arrowstyle="-|>", color="k", lw=.5, mutation_scale=4, shrinkA=1.5, shrinkB=0))   # label under the x axis, tip at the base of its bar
+            print(f"ED5a: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
+    a2.legend(loc="upper left", fontsize=FS["legend"], handlelength=1.1, frameon=False, labelspacing=.3, borderaxespad=.2)   # level with the b legend
+    return a1, a2
+
+
+def specificity_bars(ax):
+    """ED5c: highest Y signal in held-out females against the error in males (was Fig. 1g)."""
+    from palette import CLASS
+    T = {r["class"]: r for r in read_tsv(ROOT / "results/model/cv_females.tsv")}
+    CV = {r["class"]: float(r["median_abs"]) for r in read_tsv(ROOT / "results/model/cv.tsv")}
+    n7 = ["DYZ3", "DYZ17", "DYZ19", "Yq12", "DYZ18S", "DYZ1", "DYZ2"]
+    for i, n in enumerate(n7):
+        r = T[n.lower()]; mx = float(r["max_pct_of_median_truth"]); c = CLASS[n]
+        ax.bar(i - .19, mx, .36, facecolor="white", edgecolor=c, hatch="//////", lw=.6, zorder=2)
+        ax.bar(i + .19, CV[n.lower()], .36, facecolor=to_rgba(c, .28), edgecolor=c, lw=.6, zorder=2)
+        print(f'ED5c {n}: female median {r["median_pct_of_median_truth"]}% max {mx}% of the median length ({r["n_predictions"]} predictions); CV median error {CV[n.lower()]}%', flush=True)
+    ax.set_ylim(0, 5.3); ax.set_xlim(-.6, len(n7) - .4); ax.set_yticks([0, 1, 2, 3, 4])
+    ax.set_xticks(range(len(n7)), n7, rotation=90)
+    for t, n in zip(ax.get_xticklabels(), n7): t.set_color(CLASS[n]); t.set_fontweight("bold")
+    ax.tick_params(axis="x", length=0); ax.set_ylabel("% of median satellite length", labelpad=2)
+    ax.legend(handles=[Patch(facecolor="white", edgecolor=GREY, hatch="//////", lw=.6, label="Highest female signal"),
+                       Patch(facecolor=to_rgba(GREY, .28), edgecolor=GREY, lw=.6, label="Error in males (CV median)")],
+              loc="upper left", fontsize=FS["legend"], frameon=False, handlelength=1.1, labelspacing=.3, borderaxespad=.2)
+    return int(T["dyz3"]["n_predictions"]) // 10
 
 
 def depth_supplement(valid, out):
-    """ED5: Y dosage against coverage, and by lineage."""
+    """ED5: Y dosage by recorded sex, against coverage, and by lineage."""
     from palette import DOSE, head
     from scipy.stats import kruskal
     R = [dict(r, level="1" if r["level"] == "full" else r["level"]) for r in read_tsv(ROOT / "results/model/depth/y_dose_depth_chr8.tsv")]   # release chr8:91-101 Mb window (um_depthchr8.sh); full depth is level 1
@@ -818,7 +874,7 @@ def depth_supplement(valid, out):
     fig, (ax, b) = plt.subplots(1, 2, figsize=(180 * MM, 66 * MM), gridspec_kw={"width_ratios": [1, 1.7]})
     ax.fill_between(x, q[:, 0], q[:, 2], color=DOSE, alpha=.15, lw=0, label="10th to 90th percentile"); ax.plot(x, q[:, 1], "o-", color=DOSE, ms=2.5, lw=.75, label="Median")
     ax.set_xscale("log"); ax.set_xticks([1, 2, 5, 10, 20, DEPTHS["1"]], ["1", "2", "5", "10", "20", f"{DEPTHS['1']:.0f}"]); ax.minorticks_off(); ax.set_ylim(0, None); ax.grid(True)
-    ax.set_xlabel("Median autosomal coverage (×)"); ax.set_ylabel("Absolute difference from full depth (%)"); ax.legend(loc="upper right")
+    ax.set_xlabel("Median autosomal coverage (×)"); ax.set_ylabel("Difference from full depth (%)"); ax.legend(loc="upper right")
     head(ax, f"Coverage ({len(D[lv[0]])} males)")
     tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R2"]   # ED7 and Fig. 2a order
     order = [g for g in tree if any(r["lineage_display"] == g for r in valid)]; lo, hi = .94, 1.06; rng = np.random.default_rng(5)
@@ -837,7 +893,22 @@ def depth_supplement(valid, out):
     head(b, f"Lineage (1000 Genomes, {len(valid):,} males)")
     fig.tight_layout(w_pad=2.5)
     for s_, a_ in zip("ab", (ax, b)): fig.text(a_.get_position().x0 - (.075 if s_ == "a" else .06), a_.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight(), s_, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baselines
-    save(fig, out, "ed/ed5_depth")
+    save(fig, out, "ed/ed5_y_dosage")
+
+
+def specificity_supplement(out):
+    """ED7: no Y in females and the background signal of the markers (was Fig. 1g)."""
+    from palette import head
+    fig = plt.figure(figsize=(180 * MM, 54 * MM))
+    T = fig.add_gridspec(1, 2, width_ratios=[1.12, .9], wspace=.42, bottom=.255, top=.845); L = T[0, 0].subgridspec(1, 2, width_ratios=[.42, .58], wspace=.06)
+    s1 = fig.add_subplot(L[0, 0]); s2 = fig.add_subplot(L[0, 1]); cb = fig.add_subplot(T[0, 1])
+    a1, a2 = dosage_by_sex((s1, s2)); nfem = specificity_bars(cb); head(cb, f"Background in {nfem} held-out females")
+    fig.canvas.draw(); p1, p2 = s1.get_position(), s2.get_position()
+    fig.text((p1.x0 + p2.x1) / 2, p1.y1 + TITLE_PAD / 72 / fig.get_figheight(), "Y dosage by recorded sex", fontsize=FS["title"], fontweight="bold", ha="center", va="baseline")
+    yb = min(t.get_window_extent(fig.canvas.get_renderer()).y0 for t in a1.get_xticklabels() + a2.get_xticklabels()) / fig.dpi / fig.get_figheight()
+    fig.text((p1.x0 + p2.x1) / 2, yb - 1.1 / 72 / fig.get_figheight(), "Y dosage", fontsize=FS["label"], fontstyle="italic", ha="center", va="top")
+    for s_, a_, dx in (("a", s1, .052), ("b", cb, .085)): fig.text(a_.get_position().x0 - dx, a_.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight(), s_, fontsize=FS["letter"], fontweight="bold", va="baseline")
+    save(fig, out, "ed/ed7_specificity")
 
 
 def j_subtree_figure(valid, out):
@@ -875,7 +946,7 @@ def j_subtree_figure(valid, out):
     # one panel as Fig. 2a: no letters
     ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="Individual with a reference assembly", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
     ax.add_artist(ax.get_legend()); ax.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="center left", bbox_to_anchor=(0, .5), title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=.4, alignment="left")   # empty left side of b
-    save(fig,out,"ed/ed8_J_DYZ19")
+    save(fig,out,"ed/ed9_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
          "reference_male":r["reference_male"],"DYZ19_bp":r["DYZ19_bp"]}
@@ -954,6 +1025,7 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     from figure1 import ed4   # ED4 in the Fig. 1c style
     ed4(out / 'ed/ed4_lineage_validation.pdf')
     depth_supplement(valid, out)
+    specificity_supplement(out)
     j_subtree_figure(valid, out)
     assembly_supplement(out)
     write_rows(AUX / "figure1_validation_summary.tsv", benchmarks)

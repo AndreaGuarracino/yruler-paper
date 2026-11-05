@@ -256,7 +256,7 @@ def panel_f():
         for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
         return b, a
     P = [r for r in rep.values() if r['reference_male'] != 'yes']; tri = np.array([r['sample'] in F.TRUTH['yq12'] for r in P])
-    T = {r['assembly']: r for r in rd(ROOT / 'data/method/yq12_truth_hallast.tsv')}
+    T = {r['assembly'].replace('_R2', ''): r for r in rd(ROOT / 'data/method/yq12_truth_hallast.tsv')}   # HPRC release 2 replacements keep the donor name
     men = centred([(float(r['DYZ1_bp']), float(r['DYZ2_bp']), r['lineage']) for r in P]); asm = centred([(float(r['dyz1_units']), float(r['dyz2_units']), lin[s]) for s, r in T.items() if s in lin and s != 'HG01261'])
     sd = {k: re.search(r'^(\d+): .*ratio ([0-9.]+) \(95% ([0-9.]+) to ([0-9.]+)\)', N[f'composition_sd_{k}']).groups() for k in ('assemblies', '1kgp', 'hgdp', 'sgdp')}
     if (len(men[0]), len(asm[0])) != (int(sd['1kgp'][0]), int(sd['assemblies'][0])): sys.exit(f'ERROR f: {len(men[0])} males, {len(asm[0])} assemblies, table {sd["1kgp"][0]}, {sd["assemblies"][0]}')
