@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fig. 1: panels a-b cut from Alejandro's Fig1_Yruler_v4.svg, panels c-f drawn from the model tables in its style (specificity moved to Extended Data Fig. 5).
-usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4, a pooled excluded-lineage errors, b earliest-branching lineages)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
+usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4, a pooled excluded-lineage errors, b lineages A, B and deep clades C, D, E)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
 writes <out>/fig1/fig1{a..f}_*.pdf (one per panel) and <out>/fig1_method.pdf/.svg (the panels composed).
 Layout units are the SVG units (540 wide, y down); 1 unit = 0.75 pt in the PDF, as in the Inkscape export of v4."""
 import collections as co, csv, os, re, subprocess, sys, tempfile, xml.etree.ElementTree as ET
@@ -197,7 +197,7 @@ def panel_c(out):
 
 
 def ed4(path):
-    """Extended Data Fig. 4: excluded-lineage errors, a pooled per class, b split by the earliest-branching lineages A, B, D, E, C on the same rows."""
+    """Extended Data Fig. 4: excluded-lineage errors, a pooled per class, b split by lineages A, B and the deep clades D, E, C on the same rows."""
     from palette import FS, MM, PAD, crop_ink
     E = lolo_errors(); H = {r['sample']: r['haplogroup'] for r in rd(ROOT / 'data/method/haplogroups_cv_males.tsv')}; DEEP = ['A', 'B', 'D', 'E', 'C']   # first splits of the Y tree: A, B, then the CT branches
     sub = lambda per, l: np.array([per[m] for m in per if H[m][0] == l])
@@ -223,7 +223,7 @@ def ed4(path):
         ax.set_xscale('log'); ax.set_xlim(.01, 50); ax.set_xticks([.01, .1, 1, 10], ['0.01', '0.1', '1', '10']); ax.set_ylim(y - .3, -.8); frame(ax, ('bottom',))
         ax.grid(axis='x', color=GRIDC, lw=.5); ax.set_axisbelow(True); ax.set_xlabel('Absolute error (%, log scale)', fontsize=FS['label'], fontstyle='italic')
     a.set_yticks([]); b.set_yticks([p for p, _ in T], [t for _, t in T], fontsize=FS['tick']); b.tick_params(axis='y', length=0)
-    a.set_title('All excluded lineages', fontsize=FS['title'], fontweight='bold'); b.set_title('Earliest-branching excluded lineages', fontsize=FS['title'], fontweight='bold')
+    a.set_title('All excluded lineages', fontsize=FS['title'], fontweight='bold'); b.set_title('A, B and deep clades C, D, E', fontsize=FS['title'], fontweight='bold')
     for ax, k in ((a, 'a'), (b, 'b')): ax.text(-.02 if k == 'b' else -.2, 1.0, k, transform=ax.transAxes, fontsize=FS['letter'], fontweight='bold', va='bottom', ha='right')
     a.scatter([], [], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, label='Short J2a1a1 DYZ19 arrays'); a.legend(loc='upper left', fontsize=FS['legend'], bbox_to_anchor=(0, -.06), borderaxespad=0)
     R = rd(ROOT / 'results/model/range_units.tsv'); DES = [('short_to_long', 'Short \u2192 long'), ('long_to_short', 'Long \u2192 short'), ('middle_to_extremes', 'Centre \u2192 ends')]   # c: length extrapolation
