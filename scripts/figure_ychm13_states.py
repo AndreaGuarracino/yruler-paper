@@ -1,5 +1,5 @@
 # Supplementary figure: chrY dose of unusual males
-# usage: python3 scripts/figure_ychm13_states.py <dir with ychm13_flagged_100kb.tsv, .classes.tsv, ylift_flagged_100kb.tsv> <out.pdf> [unusual|pairs] [kmer <X/PAR summary.tsv> [Y-specific profile.tsv [CRAM-subset profile.tsv:sample,...]]]; 16:9, rows clustered within groups
+# usage: python3 scripts/figure_ychm13_states.py <dir with ychm13_flagged_100kb.tsv, .classes.tsv> <out.pdf> [unusual|pairs] [kmer <X/PAR summary.tsv> [Y-specific profile.tsv [CRAM-subset profile.tsv:sample,...]]]; 16:9, rows clustered within groups
 # kmer: alignment-free only (marker k-mer dose on Y, no read depth; X dose from um_sexprof.py; PAR and XTR windows: Y = 2 (X + Y) - X from <summary>.chrY_XY.tsv)
 from palette import NAMES, TITLE, MM, save
 import palette as PL
@@ -13,26 +13,27 @@ BANDS = [('p11.32', 0, 127522, 'gneg'), ('p11.31', 127522, 454425, 'gpos50'), ('
          ('q11.1', 10726286, 10883195, 'acen'), ('q11.21', 10883195, 13307633, 'gneg'), ('q11.221', 13307633, 18006534, 'gpos50'), ('q11.222', 18006534, 20506564, 'gneg'),
          ('q11.223', 20506564, 25062557, 'gpos50'), ('q11.23', 25062557, 27449937, 'gneg'), ('q12', 27449937, 62460029, 'gvar')]
 STAIN = PL.STAIN
-GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp depletion', 'yp_deletion'), ('Low Y dosage', 'mosaic_loss'), ('Intermediate Y dosage', 'mosaic_gain'), ('Y gain (XYY)', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
-EXTRA = [('X gain (XXY)', ['HG01683']), ('Unusual array estimates', ['HG01527', 'HG01529', 'NA18910', 'NA18911', 'HG04006', 'HG02804', 'HG02684', 'HG02686', 'NA18952'])]
-NOTE = {'NA19226': 'Y lost; offspring XY', 'HG02966': 'offspring; parent HG02965 without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
+GROUPS = [('Yp \u2260 Yq (gain and loss)', 'partial'), ('Yq loss', 'yq_loss'), ('Yp depletion', 'yp_deletion'), ('Low Y dosage', 'mosaic_loss'), ('Intermediate Y dosage', 'mosaic_gain'), ('Y gain', 'Y_gain'), ('PAR2 gain', 'par2_gain'), ('No Y call', 'no_Y')]
+EXTRA = [('X gain', ['HG01683']), ('Unusual array estimates', ['HG01527', 'HG01529', 'NA18910', 'NA18911', 'HG04006', 'HG02804', 'HG02684', 'HG02686', 'NA18952']), ('Recorded females with Y signal', ['HGDP01239', 'HGDP01273', 'HG02772'])]   # females: user 2026-11-11
+NOTE = {'HGDP01239': 'recorded female; XY', 'HGDP01273': 'recorded female; XY', 'HG02772': 'mother of HG02773; Yq12 and PAR2 without single-copy Y', 'NA19226': 'Y lost; offspring XY', 'HG02966': 'offspring; parent HG02965 without change', 'HG01529': 'DYZ18S', 'HG01527': 'DYZ18S', 'NA18911': 'DYZ19', 'NA18910': 'DYZ19', 'HG04006': 'DYZ3', 'HG02804': 'DYZ2', 'NA18952': 'DYZ3', 'HG02684': 'H3b2a', 'HG02686': 'H3b2a', 'NA11930': 'PAR2 1.43-1.51 in 3 libraries', 'HG02895': 'PAR2 1.45, 1.47 in 2 ONT runs', 'HG03685': 'PAR2 1.58 in ONT; Yq12-PAR2 on 15p', 'HG02773': 'PAR2 1.50 in Polaris'}
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))
+if not KM: sys.exit('ERROR alignment-free only: give kmer <X/PAR summary.tsv>')
 YP = sys.argv[6] if KM and len(sys.argv) > 6 else None   # um_yprof2.py windows: Y-specific 31-mers
 SUB = sys.argv[7].split(':') if YP and len(sys.argv) > 7 else None; SUBS = set(SUB[1].split(',')) if SUB else set()   # samples whose Y comes from the CRAM subset
-K = [r for r in rd(YP) if r['level'] == 'window' and r['role'] != 'reference' and r['sample'] not in SUBS] + ([r for r in rd(SUB[0]) if r['chrom'] == 'chrY' and r['sample'] in SUBS] if SUB else []) if YP else [r for r in rd(f'{D}/ychm13_flagged_100kb.tsv') if r['level'] == 'window']; L = [] if KM else rd(f'{D}/ylift_flagged_100kb.tsv')
+K = [r for r in rd(YP) if r['level'] == 'window' and r['role'] != 'reference' and r['sample'] not in SUBS] + ([r for r in rd(SUB[0]) if r['chrom'] == 'chrY' and r['sample'] in SUBS] if SUB else []) if YP else [r for r in rd(f'{D}/ychm13_flagged_100kb.tsv') if r['level'] == 'window']
 W = sorted({int(r['start']) for r in K}); step = W[1] - W[0]; W = list(range(0, 62460029, step)) if KM else W; nw = len(W); X = {}   # kmer: whole chrY, PAR2 included
 for r in K:   # k-mer dose where >= 50 marker positions
     X.setdefault(r['sample'], np.full(nw, np.nan))[int(r['start']) // step] = float(r['ratio']) if int(r['key_positions']) >= 50 else np.nan
-for r in L:   # read depth where normal males have >= 50 unique reads per million chr2 reads
-    j = int(r['start']) // step
-    if r['sample'] in X and j < nw and float(r['ref_reads_per_million_chr2']) >= 50 and r['ratio'] != 'nan': X[r['sample']][j] = float(r['ratio'])
 s0 = K[0]['sample']; kw = {int(r['start']) // step for r in K if r['sample'] == s0 and int(r['key_positions']) >= 50}
-lw = {int(r['start']) // step for r in L if r['sample'] == s0 and float(r['ref_reads_per_million_chr2']) >= 50 and int(r['start']) // step < nw}
-print(f'windows: {nw}; read depth {len(lw)}, k-mers only {len(kw - lw)}, no data {nw - len(lw | kw)}')
-E = {r['sample']: r for r in rd('results/estimates_1kgp.tsv')}; X = {s: v for s, v in X.items() if E[s]['sex_ped'] == '1'}   # males only
+print(f'windows: {nw}; with k-mer dose {len(kw)}, no data {nw - len(kw)}')
+E = {r['sample']: r for r in rd('results/estimates_1kgp.tsv')}; FEM = set(EXTRA[-1][1]); CT = {r['sample']: r for f in ('cohort_1kgp', 'cohort_fem', 'cohort_hgdp_sgdp') for r in rd(f'results/model/{f}.tsv')}
+X = {s: v for s, v in X.items() if s in FEM or (s in E and E[s]['sex_ped'] == '1')}   # males, and the recorded females with a Y signal
+print(f'recorded females with Y signal in the profile: {sorted(FEM & set(X))}', flush=True)
 XP = {r['sample']: r for r in rd(KM)} if KM else {}; fx = lambda s, c: float(XP[s][c]) if s in XP else np.nan   # alignment-free X and PAR doses
-info = {s: (E[s]['y_state'], float(E[s]['y_dose']), fx(s, 'x_kmer') if KM else float(E[s]['x_dose'])) for s in X}
-XYS = [(int(x[1]), int(x[2])) for x in (l.split('\t') for l in open('data/chm13_annot/chm13v2.0_chrXY_sequence_class_v1.bed')) if x[0] == 'chrY' and x[3] in (('PAR1', 'PAR2') if YP else ('PAR1', 'PAR2', 'XTR1', 'XTR2'))]   # with Y-specific keys only the PARs
+import os; FX = {r['sample']: r for r in rd('results/checks/ed3_female_doses.tsv')} if os.path.exists('results/checks/ed3_female_doses.tsv') else {}   # females outside the cohort tables: doses from their recount (um_apply59.py)
+CT.update({s: r for s, r in FX.items() if s not in CT}); PR = {r['sample']: r for r in K}; yfem = lambda s: float(CT[s]['y_dose']) if s in CT else float(PR[s]['y_dose_saved'])   # females outside the cohort tables: dose of the profile reads
+info = {s: (CT[s]['y_state'] if s in CT else 'no_Y' if yfem(s) <= 0.025 else 'normal', yfem(s), fx(s, 'x_kmer') if s in XP else float(CT[s]['x_dose']) if s in CT else np.nan) if s in FEM else (E[s]['y_state'], float(E[s]['y_dose']), fx(s, 'x_kmer') if KM else float(E[s]['x_dose'])) for s in X}
+XYS = [(int(x[1]), int(x[2])) for x in (l.split('\t') for l in open('data/chm13_annot/chm13v2.0_chrXY_sequence_class_v1.bed')) if x[0] == 'chrY' and x[3] in ('PAR1', 'PAR2', 'XTR1', 'XTR2')]   # PAR and XTR windows from the X + Y rulers
 if KM:   # PAR and XTR windows: Y dose from the 31-mers shared by X and Y, Y = 2 (X + Y) - X
     nxy = 0
     for r in rd(KM.replace('.summary.tsv', '.chrY_XY.tsv')):
@@ -85,10 +86,14 @@ for r in rd(f'{D}/ychm13_flagged_100kb.classes.tsv'): C[r['class']][int(r['start
 BOUND = [0, 0.25, 0.75, 0.9, 1.1, 1.25, 1.75, 2.5]   # 0, about 0.5, slight loss, 1, slight gain, about 1.5, 2
 cm = ListedColormap(PL.HEAT); cm.set_bad('white'); nrm = BoundaryNorm(BOUND, cm.N)
 n = len(rows); ROW, HEAD, BOT, TOP = 2.5, 25, 8, 1   # mm: row pitch, tracks, bottom, top margins
-FW, FH = 180, TOP + HEAD + 1 + n * ROW + BOT; fig = plt.figure(figsize=(FW * MM, FH * MM))
+FLAB = {'HGDP01239': 'XY profile', 'HGDP01273': 'XY profile', 'HG02772': 'Yq12 only'}   # notes per female (user 2026-11-11)
+runs = lambda v: [(v[i], i, j) for i, j in zip([0] + [k for k in range(1, len(v)) if v[k] != v[k - 1]], [k for k in range(1, len(v)) if v[k] != v[k - 1]] + [len(v)])]   # consecutive equal labels
+FG = [i for i, (lab, a, b) in enumerate(gl) if lab == EXTRA[-1][0]]; nf = gl[FG[0]][2] - gl[FG[0]][1] if FG else 0; GAP = 7 if nf else 0   # females: own block below the males
+FW, FH = 180, TOP + HEAD + 6 + n * ROW + GAP + BOT; fig = plt.figure(figsize=(FW * MM, FH * MM))
 ax_mm = lambda x0, x1, y0, y1: fig.add_axes([x0 / FW, y0 / FH, (x1 - x0) / FW, (y1 - y0) / FH])
-hb = BOT + n * ROW   # heatmap top
-ax0, ax2, ay, ax, axg, cax = ax_mm(14, 126, hb + 1, hb + 1 + HEAD), ax_mm(14, 126, BOT, hb), ax_mm(128, 137, BOT, hb), ax_mm(139, 148, BOT, hb), ax_mm(149.5, 167, BOT, hb), ax_mm(168.5, 170.5, BOT, hb)
+hb = BOT + n * ROW + GAP   # heatmap top
+ax0, cax = ax_mm(14, 126, hb + 6, hb + 6 + HEAD), ax_mm(168.5, 170.5, BOT, hb)
+BL = [(rows[:n - nf], [g for g in gl if g[0] != EXTRA[-1][0]], BOT + nf * ROW + GAP, hb)] + ([(rows[n - nf:], [(lab, i, j) for lab, i, j in runs([FLAB[s] for s in rows[n - nf:]])], BOT, BOT + nf * ROW)] if nf else [])
 xmax = (W[-1] + step) / MB
 A = 'data/chm13_annot'   # T2T CHM13v2 annotations (github.com/marbl/CHM13)
 SC = [(int(x[1]), int(x[2]), x[3], '#%02x%02x%02x' % tuple(int(v) for v in x[8].split(','))) for x in (l.split('\t') for l in open(f'{A}/chm13v2.0_chrXY_sequence_class_v1.bed')) if x[0] == 'chrY']
@@ -106,29 +111,39 @@ for lab, a, b in (('Yp', 0, 10.71), ('Yq', 10.71, 62.46)):   # arms
 CC = {}   # sequence classes 7.4-9.8, legend at the top right
 for a, b, c, col in SC:
     ax0.add_patch(plt.Rectangle((a / MB, 7.4), (b - a) / MB, 2.4, fc=col, ec='white', lw=0.3)); CC.setdefault(NMC[c], col)
-lax = ax_mm(128, 180, hb + 1, hb + 1 + HEAD); lax.axis('off')   # legend in its own header cell
+lax = ax_mm(128, 180, hb + 6, hb + 6 + HEAD); lax.axis('off')   # legend in its own header cell
 lax.legend([plt.Rectangle((0, 0), 1, 1, fc=c) for c in CC.values()], list(CC), loc='center', ncol=2, title=NAMES['annotation'], title_fontproperties=TITLE(PL.FS['legend']), labelspacing=0.35)
 for i, (p, arms) in enumerate(sorted(PAL.items(), key=lambda kv: np.mean(kv[1]))):   # palindromes 5.2-6.4, labels on two rows
     for a, b in arms: ax0.add_patch(plt.Rectangle((a / MB, 5.2), (b - a) / MB, 1.2, fc=INK, lw=0))
     ax0.text(np.mean([v for ab in arms for v in ab]) / MB, 4.9 - 2.4 * (i % 2), p, ha='center', va='top', fontsize=PL.FS["point"], color=INK)
 for y, lab in ((12.3, 'Cytoband'), (8.6, NAMES['annotation']), (5.8, 'Palindromes')): ax0.text(-0.5, y, lab, ha='right', va='center', fontsize=PL.FS["tick"], color=INK, linespacing=1)
 ax0.set_xlim(0, xmax); ax0.set_ylim(0, HEAD); ax0.axis('off')
-M = np.array([X[s] for s in rows]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect='auto', cmap=cm, norm=nrm, interpolation='nearest', extent=(0, xmax, n, 0))
-ax2.hlines(np.arange(1, n), 0, xmax, color='white', lw=0.5)   # thin gap between rows
-nd = np.isnan(M).astype(float); print(f'no-data cells in the heatmap: {int(nd.sum())} of {nd.size}', flush=True); ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(n) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
-ax2.set_yticks(np.arange(n) + 0.5); ax2.set_yticklabels(rows)
-for t, s in zip(ax2.get_yticklabels(), rows): t.set_color(PL.GREY if s in relrow else INK)   # relatives outside the groups in grey
-ax2.set_xlabel('CHM13v2 chrY position (Mb)'); ax2.set_xlim(0, xmax)
-for a_, lab, col in ((ay, 'Y dose', 1), (ax, 'X dose', 2)):   # dose bars with numbers
-    v = [info[s][col] for s in rows]; a_.barh(np.arange(n) + 0.5, v, height=0.62, color=PL.GREY, lw=0)
-    for i, x in enumerate(v): a_.text(min(x, 2.25) + 0.05, i + 0.5, f'{x:.2f}', va='center', ha='left', fontsize=PL.FS["point"], color=INK)
-    for g in (1, 2): a_.axvline(g, color=PL.GREY, lw=0.5, ls=':')
-    a_.set_xlim(0, 2.9); a_.set_ylim(n, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.set_xlabel(lab)
-    for sp_ in ('top', 'right'): a_.spines[sp_].set_visible(False)
-axg.set_ylim(n, 0); axg.set_xlim(0, 1); axg.set_autoscale_on(False); axg.axis('off')
-for lab, a, b in gl:
-    for a_ in (ax2, ay, ax): a_.axhline(a, color=INK, lw=0.6)
-    axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 12), va='center', ha='left', fontsize=PL.FS["tick"], color=INK)
+nd_all = 0
+for k, (R, G, y0, y1) in enumerate(BL):   # one block per sex: heatmap, dose bars, group labels
+    m = len(R); ax2, ay, ax, axg = ax_mm(14, 126, y0, y1), ax_mm(128, 137, y0, y1), ax_mm(139, 148, y0, y1), ax_mm(149.5, 167, y0, y1)
+    M = np.array([X[s] for s in R]); im = ax2.imshow(np.clip(M, 0, 2.49), aspect='auto', cmap=cm, norm=nrm, interpolation='nearest', extent=(0, xmax, m, 0))
+    ax2.hlines(np.arange(1, m), 0, xmax, color='white', lw=0.5)   # thin gap between rows
+    nd = np.isnan(M).astype(float); nd_all += int(nd.sum())
+    if nd.any(): ax2.contourf(np.array(W) / MB + step / 2 / MB, np.arange(m) + 0.5, nd, levels=[0.5, 1.5], colors='none', hatches=['////'])   # no data: hatched white
+    ax2.set_yticks(np.arange(m) + 0.5); ax2.set_yticklabels(R)
+    for t, s in zip(ax2.get_yticklabels(), R): t.set_color(PL.GREY if s in relrow else INK)   # relatives outside the groups in grey
+    ax2.set_xlim(0, xmax); last = k == len(BL) - 1
+    if last: ax2.set_xlabel('CHM13v2 chrY position (Mb)')
+    else: ax2.set_xticklabels([])
+    if nf: ax2.set_title('Recorded females' if k else 'Recorded males', loc='left', fontsize=PL.FS['label'], fontweight='bold', pad=2)
+    for a_, lab, col in ((ay, 'Y dose', 1), (ax, 'X dose', 2)):   # dose bars with numbers
+        v = [info[s][col] for s in R]; a_.barh(np.arange(m) + 0.5, np.nan_to_num(v), height=0.62, color=PL.GREY, lw=0)
+        for i, x in enumerate(v):
+            if x == x: a_.text(min(x, 2.25) + 0.05, i + 0.5, f'{x:.2f}', va='center', ha='left', fontsize=PL.FS["point"], color=INK)
+        for g in (1, 2): a_.axvline(g, color=PL.GREY, lw=0.5, ls=':')
+        a_.set_xlim(0, 2.9); a_.set_ylim(m, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.set_xlabel(lab if last else '')
+        if not last: a_.set_xticklabels([])
+        for sp_ in ('top', 'right'): a_.spines[sp_].set_visible(False)
+    axg.set_ylim(m, 0); axg.set_xlim(0, 1); axg.set_autoscale_on(False); axg.axis('off')
+    for lab, a, b in G:
+        for a_ in (ax2, ay, ax): a_.axhline(a, color=INK, lw=0.6)
+        axg.plot([0.08, 0.08], [a + 0.15, b - 0.15], color=INK, lw=0.6); axg.text(0.2, (a + b) / 2, textwrap.fill(lab, 12), va='center', ha='left', fontsize=PL.FS["tick"], color=INK)
+print(f'no-data cells in the heatmap: {nd_all} of {n * nw}', flush=True); nd = np.array([nd_all])
 cb = fig.colorbar(im, cax=cax, boundaries=BOUND, ticks=[(a + b) / 2 for a, b in zip(BOUND[:-1], BOUND[1:])]); cb.ax.set_yticklabels(['0', '0.5', 'loss', '1', 'gain', '1.5', '2'])
 cb.set_label('Dose relative to 100 XY males without flagged Y profiles' + ('; hatched: no data' if nd.any() else ''))
 save(fig, OUT)

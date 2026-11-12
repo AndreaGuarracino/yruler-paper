@@ -6,27 +6,16 @@
   "completed_fraction": 1.0,
   "valid_males": 1597,
   "valid_reference_males": 136,
-  "population_summary_n": 1587,
-  "population_excluded_samples": [
-    "HG00185",
-    "HG01967",
-    "HG01982",
-    "HG01984",
-    "HG02966",
-    "HG03006",
-    "HG03008",
-    "HG03976",
-    "HG03998",
-    "NA20806"
-  ],
+  "population_summary_n": 1597,
+  "population_excluded_samples": [],
   "all_reference_males": 136,
   "flag_counts": {
     "ok": 1581,
     "female": 41,
     "y_dose_below_0.9": 16,
-    "no_estimate": 1
+    "no_y": 1
   },
-  "female_max_y_dose": 0.0053,
+  "female_max_y_dose": 0.0026,
   "male_below_0_9_including_no_estimate": 17,
   "complete_father_son_pairs": 309,
   "pair_batch_directions": {
@@ -53,7 +42,7 @@
     "I": 62,
     "R1a": 102,
     "J": 90,
-    "N": 33,
+    "N": 32,
     "O": 248,
     "B": 8,
     "C": 32,
@@ -66,6 +55,7 @@
     "A": 8,
     "F": 1,
     "L": 31,
+    "NO": 1,
     "D": 20
   },
   "display_lineage_counts": {
@@ -90,273 +80,283 @@
     "D": 20
   },
   "population_lineage_counts": {
-    "R1b": 282,
+    "R1b": 283,
     "I": 62,
-    "R1a": 100,
-    "J": 86,
+    "R1a": 102,
+    "J": 90,
     "N": 32,
     "O": 248,
     "B": 8,
     "C": 32,
     "T": 11,
-    "E": 465,
+    "E": 466,
     "G": 28,
-    "Q": 62,
+    "Q": 63,
     "H": 71,
     "R": 40,
     "A": 8,
     "F": 1,
     "L": 31,
+    "NO": 1,
     "D": 20
   },
   "median_bp_by_target": {
-    "DYZ3_bp": 857643.0,
-    "DYZ17_bp": 861548.0,
-    "DYZ19_bp": 332356.0,
-    "Yq12_bp": 26937913.0,
-    "DYZ18S_bp": 303208.0,
-    "DYZ1_bp": 15640131.0,
-    "DYZ2_bp": 10744343.0
+    "DYZ3_bp": 857337.0,
+    "DYZ17_bp": 860326.0,
+    "DYZ19_bp": 332175.0,
+    "Yq12_bp": 26929326.0,
+    "DYZ18S_bp": 302016.0,
+    "DYZ1_bp": 15604131.0,
+    "DYZ2_bp": 10784017.0
   },
   "lineage_medians_bp": {
     "A": {
-      "DYZ3_bp": 941615.5,
-      "DYZ17_bp": 970692.5,
-      "DYZ19_bp": 285361.5,
-      "Yq12_bp": 25239001.0,
-      "DYZ18S_bp": 275733.5,
-      "DYZ1_bp": 16330438.0,
-      "DYZ2_bp": 8591283.0
+      "DYZ3_bp": 937676.0,
+      "DYZ17_bp": 973495.0,
+      "DYZ19_bp": 284123.0,
+      "Yq12_bp": 24909608.0,
+      "DYZ18S_bp": 300645.0,
+      "DYZ1_bp": 15714559.5,
+      "DYZ2_bp": 8833625.0
     },
     "B": {
-      "DYZ3_bp": 718879.5,
-      "DYZ17_bp": 971033.5,
-      "DYZ19_bp": 229356.5,
-      "Yq12_bp": 29777792.5,
-      "DYZ18S_bp": 280238.5,
-      "DYZ1_bp": 15125220.0,
-      "DYZ2_bp": 13824218.5
+      "DYZ3_bp": 716040.0,
+      "DYZ17_bp": 974661.0,
+      "DYZ19_bp": 228952.5,
+      "Yq12_bp": 29701311.0,
+      "DYZ18S_bp": 282502.0,
+      "DYZ1_bp": 15215876.0,
+      "DYZ2_bp": 13696334.5
     },
     "C": {
-      "DYZ3_bp": 1084040.5,
-      "DYZ17_bp": 909233.5,
-      "DYZ19_bp": 268153.5,
-      "Yq12_bp": 23522608.5,
-      "DYZ18S_bp": 265644.0,
-      "DYZ1_bp": 13033103.0,
-      "DYZ2_bp": 10023278.0
+      "DYZ3_bp": 1082181.5,
+      "DYZ17_bp": 907480.5,
+      "DYZ19_bp": 267871.5,
+      "Yq12_bp": 23406586.5,
+      "DYZ18S_bp": 274011.0,
+      "DYZ1_bp": 12908974.5,
+      "DYZ2_bp": 9916666.5
     },
     "D": {
-      "DYZ3_bp": 478022.0,
-      "DYZ17_bp": 894060.5,
-      "DYZ19_bp": 329515.0,
-      "Yq12_bp": 32368892.0,
-      "DYZ18S_bp": 404628.0,
-      "DYZ1_bp": 17761479.5,
-      "DYZ2_bp": 13577523.0
+      "DYZ3_bp": 477431.5,
+      "DYZ17_bp": 893783.0,
+      "DYZ19_bp": 328865.0,
+      "Yq12_bp": 31886151.5,
+      "DYZ18S_bp": 398549.0,
+      "DYZ1_bp": 17560779.5,
+      "DYZ2_bp": 13304699.5
     },
     "E": {
-      "DYZ3_bp": 1091996.0,
-      "DYZ17_bp": 865703.0,
-      "DYZ19_bp": 242090.0,
-      "Yq12_bp": 26974631.0,
-      "DYZ18S_bp": 302605.0,
-      "DYZ1_bp": 15936802.0,
-      "DYZ2_bp": 10457732.0
+      "DYZ3_bp": 1090203.5,
+      "DYZ17_bp": 862723.0,
+      "DYZ19_bp": 241864.0,
+      "Yq12_bp": 26932369.0,
+      "DYZ18S_bp": 296775.0,
+      "DYZ1_bp": 15829037.0,
+      "DYZ2_bp": 10552084.5
     },
     "F": {
-      "DYZ3_bp": 1431029.0,
-      "DYZ17_bp": 788797.0,
-      "DYZ19_bp": 318880.0,
-      "Yq12_bp": 38131930.0,
-      "DYZ18S_bp": 320894.0,
-      "DYZ1_bp": 19307260.0,
-      "DYZ2_bp": 18267192.0
+      "DYZ3_bp": 1430400.0,
+      "DYZ17_bp": 788746.0,
+      "DYZ19_bp": 318794.0,
+      "Yq12_bp": 37901423.0,
+      "DYZ18S_bp": 314600.0,
+      "DYZ1_bp": 19279119.0,
+      "DYZ2_bp": 18031900.0
     },
     "G": {
-      "DYZ3_bp": 1146837.5,
-      "DYZ17_bp": 869883.5,
-      "DYZ19_bp": 341641.5,
-      "Yq12_bp": 24690123.0,
-      "DYZ18S_bp": 324204.0,
-      "DYZ1_bp": 13842000.5,
-      "DYZ2_bp": 10241786.0
+      "DYZ3_bp": 1146094.5,
+      "DYZ17_bp": 871877.5,
+      "DYZ19_bp": 341723.5,
+      "Yq12_bp": 25180565.5,
+      "DYZ18S_bp": 329051.0,
+      "DYZ1_bp": 14161802.0,
+      "DYZ2_bp": 10264274.5
     },
     "H": {
-      "DYZ3_bp": 1349481.0,
-      "DYZ17_bp": 790521.0,
-      "DYZ19_bp": 401693.0,
-      "Yq12_bp": 22990614.0,
-      "DYZ18S_bp": 309439.0,
-      "DYZ1_bp": 12587177.0,
-      "DYZ2_bp": 9264177.0
+      "DYZ3_bp": 1350977.0,
+      "DYZ17_bp": 791809.0,
+      "DYZ19_bp": 402121.0,
+      "Yq12_bp": 23150737.0,
+      "DYZ18S_bp": 302541.0,
+      "DYZ1_bp": 12889844.0,
+      "DYZ2_bp": 9220694.0
     },
     "I": {
-      "DYZ3_bp": 982951.0,
-      "DYZ17_bp": 812869.0,
-      "DYZ19_bp": 256690.5,
-      "Yq12_bp": 30804552.0,
-      "DYZ18S_bp": 279267.0,
-      "DYZ1_bp": 17000242.0,
-      "DYZ2_bp": 13051648.5
+      "DYZ3_bp": 980854.0,
+      "DYZ17_bp": 813605.0,
+      "DYZ19_bp": 257165.5,
+      "Yq12_bp": 31223446.0,
+      "DYZ18S_bp": 269897.5,
+      "DYZ1_bp": 17330668.0,
+      "DYZ2_bp": 13154067.0
     },
     "J": {
-      "DYZ3_bp": 643474.5,
-      "DYZ17_bp": 786570.5,
-      "DYZ19_bp": 228889.5,
-      "Yq12_bp": 27887261.5,
-      "DYZ18S_bp": 305383.5,
-      "DYZ1_bp": 16043299.5,
-      "DYZ2_bp": 11551821.5
+      "DYZ3_bp": 643174.5,
+      "DYZ17_bp": 791237.5,
+      "DYZ19_bp": 256627.5,
+      "Yq12_bp": 28461306.5,
+      "DYZ18S_bp": 310983.0,
+      "DYZ1_bp": 16314631.5,
+      "DYZ2_bp": 11635274.5
     },
     "L": {
-      "DYZ3_bp": 1103616.0,
-      "DYZ17_bp": 864273.0,
-      "DYZ19_bp": 350343.0,
-      "Yq12_bp": 30609140.0,
-      "DYZ18S_bp": 291673.0,
-      "DYZ1_bp": 17171977.0,
-      "DYZ2_bp": 12717472.0
+      "DYZ3_bp": 1103514.0,
+      "DYZ17_bp": 867063.0,
+      "DYZ19_bp": 350965.0,
+      "Yq12_bp": 30987951.0,
+      "DYZ18S_bp": 300981.0,
+      "DYZ1_bp": 17499621.0,
+      "DYZ2_bp": 12772701.0
     },
     "N": {
-      "DYZ3_bp": 1048778.0,
-      "DYZ17_bp": 953314.5,
-      "DYZ19_bp": 354400.0,
-      "Yq12_bp": 31621133.0,
-      "DYZ18S_bp": 334482.0,
-      "DYZ1_bp": 18659350.5,
-      "DYZ2_bp": 12379117.5
+      "DYZ3_bp": 1053178.0,
+      "DYZ17_bp": 952755.0,
+      "DYZ19_bp": 355093.0,
+      "Yq12_bp": 31963198.5,
+      "DYZ18S_bp": 334050.5,
+      "DYZ1_bp": 18861480.5,
+      "DYZ2_bp": 12330332.5
+    },
+    "NO": {
+      "DYZ3_bp": 387358.0,
+      "DYZ17_bp": 969943.0,
+      "DYZ19_bp": 284976.0,
+      "Yq12_bp": 34898828.0,
+      "DYZ18S_bp": 330439.0,
+      "DYZ1_bp": 18765615.0,
+      "DYZ2_bp": 15518638.0
     },
     "O": {
-      "DYZ3_bp": 844583.0,
-      "DYZ17_bp": 822151.0,
-      "DYZ19_bp": 345062.0,
-      "Yq12_bp": 34780848.0,
-      "DYZ18S_bp": 306381.0,
-      "DYZ1_bp": 19219114.0,
-      "DYZ2_bp": 14812181.0
+      "DYZ3_bp": 844260.5,
+      "DYZ17_bp": 824550.5,
+      "DYZ19_bp": 345588.0,
+      "Yq12_bp": 35176971.5,
+      "DYZ18S_bp": 303245.0,
+      "DYZ1_bp": 19683323.5,
+      "DYZ2_bp": 14718327.5
     },
     "Q": {
-      "DYZ3_bp": 1081429.0,
-      "DYZ17_bp": 855369.5,
-      "DYZ19_bp": 409018.0,
-      "Yq12_bp": 22600870.5,
-      "DYZ18S_bp": 297063.5,
-      "DYZ1_bp": 12810626.0,
-      "DYZ2_bp": 9235461.0
+      "DYZ3_bp": 1077557.0,
+      "DYZ17_bp": 852668.0,
+      "DYZ19_bp": 407062.0,
+      "Yq12_bp": 22422684.0,
+      "DYZ18S_bp": 301591.0,
+      "DYZ1_bp": 12590190.0,
+      "DYZ2_bp": 9183835.0
     },
     "R": {
-      "DYZ3_bp": 478530.5,
-      "DYZ17_bp": 865318.5,
-      "DYZ19_bp": 412897.5,
-      "Yq12_bp": 29873919.5,
-      "DYZ18S_bp": 272616.5,
-      "DYZ1_bp": 17109380.0,
-      "DYZ2_bp": 12084181.0
+      "DYZ3_bp": 478820.5,
+      "DYZ17_bp": 864414.5,
+      "DYZ19_bp": 411634.5,
+      "Yq12_bp": 29844014.0,
+      "DYZ18S_bp": 278720.5,
+      "DYZ1_bp": 17089440.0,
+      "DYZ2_bp": 11991288.5
     },
     "R1a": {
-      "DYZ3_bp": 540669.5,
-      "DYZ17_bp": 895893.0,
-      "DYZ19_bp": 415431.5,
-      "Yq12_bp": 28100201.5,
-      "DYZ18S_bp": 310988.0,
-      "DYZ1_bp": 15820776.5,
-      "DYZ2_bp": 11760613.5
+      "DYZ3_bp": 541422.0,
+      "DYZ17_bp": 895342.0,
+      "DYZ19_bp": 414202.0,
+      "Yq12_bp": 28061233.0,
+      "DYZ18S_bp": 310711.5,
+      "DYZ1_bp": 15830023.0,
+      "DYZ2_bp": 11613276.5
     },
     "R1b": {
-      "DYZ3_bp": 318768.0,
-      "DYZ17_bp": 866625.0,
-      "DYZ19_bp": 398437.0,
-      "Yq12_bp": 24640034.5,
-      "DYZ18S_bp": 305964.5,
-      "DYZ1_bp": 13743877.5,
-      "DYZ2_bp": 10260076.5
+      "DYZ3_bp": 318348.0,
+      "DYZ17_bp": 865418.0,
+      "DYZ19_bp": 396431.0,
+      "Yq12_bp": 24620640.0,
+      "DYZ18S_bp": 306437.0,
+      "DYZ1_bp": 13788537.0,
+      "DYZ2_bp": 10191896.0
     },
     "T": {
-      "DYZ3_bp": 565980.0,
-      "DYZ17_bp": 774964.0,
-      "DYZ19_bp": 331760.0,
-      "Yq12_bp": 18667424.0,
-      "DYZ18S_bp": 289304.0,
-      "DYZ1_bp": 7973404.0,
-      "DYZ2_bp": 8491374.0
+      "DYZ3_bp": 564178.0,
+      "DYZ17_bp": 774023.0,
+      "DYZ19_bp": 332485.0,
+      "Yq12_bp": 18467948.0,
+      "DYZ18S_bp": 287518.0,
+      "DYZ1_bp": 7916793.0,
+      "DYZ2_bp": 8300558.0
     }
   },
   "pair_stats": {
     "all": {
       "n": 309,
       "DYZ3_bp": {
-        "median_signed_pct": -0.684337737673224,
-        "median_absolute_pct": 1.8613221397814517,
-        "p90_absolute_pct": 6.159385588229052
+        "median_signed_pct": -0.681901299753418,
+        "median_absolute_pct": 1.8783718142911798,
+        "p90_absolute_pct": 6.090987633309937
       },
       "Yq12_bp": {
-        "median_signed_pct": -0.07740508591793649,
-        "median_absolute_pct": 1.8081922199189582,
-        "p90_absolute_pct": 6.487517498140065
+        "median_signed_pct": -0.3525403736977628,
+        "median_absolute_pct": 1.5627158195620439,
+        "p90_absolute_pct": 6.267344562017931
       }
     },
     "cross_batch": {
       "n": 284,
       "DYZ3_bp": {
-        "median_signed_pct": -0.7946370558610416,
-        "median_absolute_pct": 2.0078632988108858,
-        "p90_absolute_pct": 6.180431107115301
+        "median_signed_pct": -0.8710178064536,
+        "median_absolute_pct": 2.0674163918891986,
+        "p90_absolute_pct": 6.293453793495413
       },
       "Yq12_bp": {
-        "median_signed_pct": -0.08835623607094112,
-        "median_absolute_pct": 1.8131075157204524,
-        "p90_absolute_pct": 6.463183031826159
+        "median_signed_pct": -0.3593936912978657,
+        "median_absolute_pct": 1.581352835256522,
+        "p90_absolute_pct": 6.254990525720148
       }
     },
     "same_batch": {
       "n": 25,
       "DYZ3_bp": {
-        "median_signed_pct": 0.22035182803601394,
-        "median_absolute_pct": 1.1563854992929556,
-        "p90_absolute_pct": 3.375474308507794
+        "median_signed_pct": 0.19005903548725556,
+        "median_absolute_pct": 1.1015409233972706,
+        "p90_absolute_pct": 3.3755982128481863
       },
       "Yq12_bp": {
-        "median_signed_pct": 0.2916083265295466,
-        "median_absolute_pct": 1.77235284283781,
-        "p90_absolute_pct": 7.761317601903981
+        "median_signed_pct": -0.054153783527499666,
+        "median_absolute_pct": 1.486196989693278,
+        "p90_absolute_pct": 6.882975523134427
       }
     }
   },
   "subsets": {
     "all_valid": {
-      "n": 1587,
-      "families": 1260,
-      "j_n": 86,
+      "n": 1597,
+      "families": 1267,
+      "j_n": 90,
       "j2a1a1_n": 42,
-      "other_j_n": 44,
+      "other_j_n": 48,
       "j2a1a1_families": 37,
-      "other_j_families": 37,
-      "j2a1a1_dyz19_min_bp": 59169.0,
-      "j2a1a1_dyz19_max_bp": 74656.0,
-      "other_j_dyz19_min_bp": 220914.0,
-      "other_j_dyz19_max_bp": 305264.0,
-      "ratio_bp_median": 1.399182714929508,
-      "ratio_bp_p1": 0.9815036898296068,
-      "ratio_bp_p99": 2.1144840470235007,
-      "dyz1_dyz2_spearman": 0.8179588882592981
+      "other_j_families": 40,
+      "j2a1a1_dyz19_min_bp": 58974.0,
+      "j2a1a1_dyz19_max_bp": 74459.0,
+      "other_j_dyz19_min_bp": 221809.0,
+      "other_j_dyz19_max_bp": 328739.0,
+      "ratio_bp_median": 1.4087116420788415,
+      "ratio_bp_p1": 1.003959286952165,
+      "ratio_bp_p99": 2.0786079520774225,
+      "dyz1_dyz2_spearman": 0.8442051003026668
     },
     "outside_reference_panel": {
-      "n": 1451,
-      "families": 1201,
-      "j_n": 77,
+      "n": 1461,
+      "families": 1209,
+      "j_n": 81,
       "j2a1a1_n": 37,
-      "other_j_n": 40,
+      "other_j_n": 44,
       "j2a1a1_families": 34,
-      "other_j_families": 36,
-      "j2a1a1_dyz19_min_bp": 61703.0,
-      "j2a1a1_dyz19_max_bp": 74656.0,
-      "other_j_dyz19_min_bp": 220914.0,
-      "other_j_dyz19_max_bp": 305264.0,
-      "ratio_bp_median": 1.3981876820881105,
-      "ratio_bp_p1": 0.9852519396782708,
-      "ratio_bp_p99": 2.0983196337627983,
-      "dyz1_dyz2_spearman": 0.8192146806115768
+      "other_j_families": 39,
+      "j2a1a1_dyz19_min_bp": 61391.0,
+      "j2a1a1_dyz19_max_bp": 74459.0,
+      "other_j_dyz19_min_bp": 221809.0,
+      "other_j_dyz19_max_bp": 328739.0,
+      "ratio_bp_median": 1.4075021894409125,
+      "ratio_bp_p1": 1.0066749869981497,
+      "ratio_bp_p99": 2.0720107935565784,
+      "dyz1_dyz2_spearman": 0.8454032724071363
     }
   },
   "relatedness": {
@@ -364,8 +364,8 @@
     "valid_reported_pairs_union": 321,
     "cross_family_pairs_consensus": 10,
     "cross_family_pairs_union": 12,
-    "family_representatives": 1260,
-    "king_component_representatives": 1273,
+    "family_representatives": 1267,
+    "king_component_representatives": 1268,
     "selection_rule": "lexicographically first sample per group; no satellite phenotype used",
     "scope": "Published first/second-degree reports; absence does not establish no more-distant relatedness."
   }

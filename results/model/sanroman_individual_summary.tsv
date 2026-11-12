@@ -1,0 +1,7 @@
+class	males	families	method	abs_error_mean	abs_error_median	abs_error_p90	abs_error_max	spearman_signal_truth	cv_truth_signal	males_smaller_mean_abs_error	wilcoxon_p	spearman_signed_errors
+dyz1	83	82	San Roman 2024 (Teitz GC), their code	2.47	1.67	5.39	8.91	0.9841	3.17	50	0.18	0.7510
+dyz1	83	82	Yruler, cross-validation	2.78	2.34	5.85	10.55		3.45	33	0.18	0.7510
+yq12	82	81	San Roman 2024 (Teitz GC), their code	5.51	4.12	12.10	22.90	0.9312	7.65	19	1.2e-08	0.1287
+yq12	82	81	Yruler, cross-validation	2.10	1.47	4.71	8.33		2.69	63	1.2e-08	0.1287
+dyz2	82	81	San Roman 2024 (Teitz GC), their code	13.47	10.03	31.85	75.13	0.7496	17.81	11	4.9e-13	-0.0433
+dyz2	82	81	Yruler, cross-validation	2.73	2.29	5.26	14.16		3.62	71	4.9e-13	-0.0433

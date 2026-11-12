@@ -2,7 +2,7 @@
 """Tests on the final estimates: lineages, arrays, father-son ratio, composition, HGDP/SGDP DYZ19, quantiles of one CV score per man, sister pairs, annotation floor.
 
 usage: python3 scripts/biology_tests.py <results dir> <ours indep.tsv> <hallast indep.tsv> <out.tsv> [Dunn pairs out.tsv]
-inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units,holdout_21_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, results/figures/pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx (downloaded if missing), both Y trees
+inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units}.tsv, results/estimates_1kgp.relatedness_samples.tsv, results/figures/pedigree_pairs.tsv, data/method/yq12_truth_hallast.tsv, data/figure_metadata/hallast2021_supplement.xlsx (downloaded if missing), both Y trees
 """
 import sys, csv, re, math, collections as co, itertools
 from pathlib import Path
@@ -11,19 +11,21 @@ from scipy.stats import spearmanr, pearsonr, kruskal, norm, rankdata, wilcoxon
 sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs
 D, OURS, HAL, OUT = sys.argv[1:5]; DP = sys.argv[5] if len(sys.argv) > 5 else None; D = Path(D); N = []; rng = np.random.default_rng(20261102); rng2 = np.random.default_rng(20261103)
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))
+LIN = lambda h: h[:3] if h.startswith('R1') else (lambda t: t if len(t) > 1 else t[0])(re.match('[A-Z]+', h).group(0))   # lineage of a haplogroup call, as um_apply.py (R1a/R1b split, stem clades kept)
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)
-X = rd(D / 'cohort_1kgp.tsv'); C = {x['sample']: x for x in X}; b = lambda x, c: float(x[f'{c}_bp']); U1, U2 = 3478.9, 2404.4
-keep = ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain'); inc = [x for x in X if x['sex'] == 'male' and x['estimate_basis'] == 'ruler' and x['y_state'] in keep]
+X = rd(D / 'cohort_1kgp.tsv'); C = {x['sample']: x for x in X}; b = lambda x, c: float(x[f'{c}_bp']); U1, U2 = 3478.9, 2404.6
+STRUCT = ('partial', 'yq_loss', 'yp_deletion', 'par2_gain')   # structural Y profiles: estimates do not measure single arrays, out of population tests (user 2026-11-11)
+inc = [x for x in X if x['sex'] == 'male' and x['y_status'] == 'y_found']
 kin = {r['sample']: r['kinship_component_id'] for r in rd('results/estimates_1kgp.relatedness_samples.tsv')}; rep = {}
-for x in sorted(inc, key=lambda r: r['sample']): rep.setdefault(kin.get(x['sample'], x['sample']), x)
-R1 = list(rep.values()); put('one_per_component_men', f'{len(R1)} of {len(inc)} (PAR2-gain men left out)')
+for x in sorted((x for x in inc if x['reference_male'] != 'yes' and x['y_state'] not in STRUCT), key=lambda r: r['sample']): rep.setdefault(kin.get(x['sample'], x['sample']), x)  # one non-reference male per kinship group (user 2026-11-11: males with reference assemblies out of every population test)
+R1 = list(rep.values()); put('one_per_component_men', f'{len(R1)} of {len(inc)} males with Y estimates')
 CL = ['DYZ3', 'Yq12', 'DYZ1', 'DYZ2', 'DYZ18S', 'DYZ19', 'DYZ17']; val = lambda x, c: b(x, 'DYZ1') / b(x, 'DYZ2') * U2 / U1 if c == 'ratio' else b(x, c)
 G = co.defaultdict(list)
 for x in R1: G[x['lineage']].append(x)
 LN = sorted(k for k, v in G.items() if len(v) >= 20 and k not in ('.', '?', '')); put('lineages_ge20', f"{len(LN)}: " + ', '.join(f'{k} {len(G[k])}' for k in LN)); P = []
 for c in CL + ['ratio']:
     g = [np.array([val(x, c) for x in G[k]]) for k in LN]; H, p = kruskal(*g); put(f'kruskal_{c}', f'H {H:.1f}, p {p:.3g}')
-    lg = [np.log(v) for v in g]; la = np.concatenate(lg); put(f'lineage_r2_{c}', f'{1 - sum(((v - v.mean()) ** 2).sum() for v in lg) / ((la - la.mean()) ** 2).sum():.3f} of log variance between {len(LN)} lineages, {len(la)} men')   # share of variance
+    A = np.concatenate(g); put(f'lineage_r2_{c}', f'{1 - sum(((v - v.mean()) ** 2).sum() for v in g) / ((A - A.mean()) ** 2).sum():.3f} of variance between {len(LN)} lineages, {len(A)} men')   # share of variance on the original scale
     A = np.concatenate(g); r = rankdata(A); n = len(A); o = 0; m = {}; tc = (lambda t: (t ** 3 - t).sum() / (12 * (n - 1)))(np.unique(A, return_counts=True)[1].astype(float))   # Dunn tie correction
     for k, v in zip(LN, g): m[k] = (r[o:o + len(v)].mean(), len(v)); o += len(v)
     T = [(a, q, 2 * norm.sf(abs(m[a][0] - m[q][0]) / math.sqrt((n * (n + 1) / 12 - tc) * (1 / m[a][1] + 1 / m[q][1])))) for a, q in itertools.combinations(LN, 2)]; T.sort(key=lambda t: t[2]); adj = []; run = 0
@@ -85,31 +87,39 @@ def call(s):
         if pc.norm(k) in H: return H[pc.norm(k)]
 for x in sorted(Q, key=lambda r: r['sample']):
     c = call(x['sample']); nh += c is not None
-    if c is None or x['library'] != 'PCR-free' or x['estimate_basis'] != 'ruler' or x['y_state'] not in keep or x['sex'] == 'female': continue
+    if c is None or x['library'] != 'PCR-free' or x['y_status'] != 'y_found' or x['sex'] == 'female': continue
     i = x['sample'].replace('SGDP_', '')
     if i in seen or i in C: continue
     seen.add(i); got.append((x, c))
-put('hgsg_calls', f'{nh} of {len(Q)} with a HaploGrouper call; {len(got)} PCR-free individuals after removing 1kGP aliases and duplicates'); JJ = [(x, c) for x, c in got if c[0].startswith('J')]
+put('hgsg_calls', f'{nh} of {len(Q)} with a HaploGrouper call; {len(got)} PCR-free individuals after removing 1kGP aliases and duplicates')
+with open(D / 'hgsg_calls.tsv', 'w') as o:   # input of Fig. 2
+    o.write('sample\tcohort\tcall\tDYZ3_bp\tDYZ19_bp\n'); o.writelines(f"{x['sample']}\t{x['cohort']}\t{c[0]}\t{x['DYZ3_bp']}\t{x['DYZ19_bp']}\n" for x, c in got)
+STRUCT_H = STRUCT
+kin_hgsg = rd(D / 'hgsg_kinship_representatives.tsv')   # hgsg_calls.tsv first: scripts/hgsg_kinship_representatives.py builds the groups from it
+if {r['sample'] for r in kin_hgsg} != {x['sample'] for x, _ in got}: raise ValueError('HGDP/SGDP kinship groups do not match cohort; rebuild representatives')
+GX = {x['sample']: x for x, _ in got}; rep_hgsg = {}
+for r in sorted(kin_hgsg, key=lambda r: r['sample']):   # first member of each group without a structural Y profile
+    if GX[r['sample']]['y_state'] not in STRUCT_H: rep_hgsg.setdefault(r['kinship_group'], r['sample'])
+rep_hgsg = set(rep_hgsg.values())
+got_test = [(x, c) for x, c in got if x['sample'] in rep_hgsg]
+put('hgsg_one_per_component', f'{len(got_test)} of {len(got)} individuals, one per kinship group')
+JJ = [(x, c) for x, c in got if c[0].startswith('J')]
 sh = [(x, c) for x, c in JJ if b(x, 'DYZ19') < 1e5]; put('hgsg_j', f"{len(JJ)} J men; DYZ19 below 100 kb in {len(sh)}: {min(b(x, 'DYZ19') for x, _ in sh) / 1e3:.1f}-{max(b(x, 'DYZ19') for x, _ in sh) / 1e3:.1f} kb; others min {min(b(x, 'DYZ19') for x, _ in JJ if b(x, 'DYZ19') >= 1e5) / 1e3:.1f} kb")
 for co_ in ('HGDP', 'SGDP'):
-    G = [(x, c) for x, c in got if x['cohort'] == co_]; sdratio(np.array([b(x, 'DYZ1') for x, _ in G]), np.array([b(x, 'DYZ2') for x, _ in G]), np.array([c[0][:1] for _, c in G]), co_.lower())
+    G = [(x, c) for x, c in got_test if x['cohort'] == co_]; sdratio(np.array([b(x, 'DYZ1') for x, _ in G]), np.array([b(x, 'DYZ2') for x, _ in G]), np.array([LIN(c[0]) for _, c in G]), co_.lower())
 for co_ in ('HGDP', 'SGDP'):   # same contrasts per cohort, never pooled
-    G2 = [(x, c[0]) for x, c in got if x['cohort'] == co_]
+    G2 = [(x, c[0]) for x, c in got_test if x['cohort'] == co_]
     mw(f'dyz3_r1b_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('R1b')], [b(x, 'DYZ3') for x, h in G2 if not h.startswith('R1b')])
     mw(f'dyz3_o2a2b1a1_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a1')], [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a2')])
     mw(f'dyz19_j2a1a1_{co_.lower()}', [b(x, 'DYZ19') for x, h in G2 if h.startswith('J2a1a1')], [b(x, 'DYZ19') for x, h in G2 if h.startswith('J') and not h.startswith('J2a1a1')])
-with open(D / 'hgsg_calls.tsv', 'w') as o:   # input of Fig. 2
-    o.write('sample\tcohort\tcall\tDYZ3_bp\tDYZ19_bp\n'); o.writelines(f"{x['sample']}\t{x['cohort']}\t{c[0]}\t{x['DYZ3_bp']}\t{x['DYZ19_bp']}\n" for x, c in got)
 M3 = lambda f: [b(x, 'DYZ3') for x, c in got if f(c[0])]; put('hgsg_dyz3', f"R1b {len(M3(lambda h: h.startswith('R1b')))} men, median {np.median(M3(lambda h: h.startswith('R1b'))):.0f}; others {len(M3(lambda h: not h.startswith('R1b')))}, median {np.median(M3(lambda h: not h.startswith('R1b'))):.0f}; O2a2b1a1 {len(M3(lambda h: h.startswith('O2a2b1a1')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a1'))):.0f}; O2a2b1a2 {len(M3(lambda h: h.startswith('O2a2b1a2')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a2'))):.0f}")
 put('hgsg_j_labels_short', str(co.Counter(c[0] for _, c in sh).most_common())); put('hgsg_j_labels_other', str(co.Counter(c[0] for x, c in JJ if b(x, 'DYZ19') >= 1e5).most_common(14)))
 put('hgsg_short_outside_j', str([(x['sample'], c[0], round(b(x, 'DYZ19'))) for x, c in got if b(x, 'DYZ19') < 1e5 and not c[0].startswith('J')]))
-H21 = co.defaultdict(list)
-for r in rd(D / 'holdout_21_units.tsv'): H21[r['class']].append(float(r['error_pct']))
 for c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17'):
     sc2 = np.sort([np.median(np.abs(np.log1p(np.array(v) / 100))) for v in E[c].values()]); n = len(sc2); o = []
     for al in (.2, .1, .05):
         k = math.ceil((n + 1) * (1 - al)); q = sc2[min(k, n) - 1]; o.append(f'{100 * (math.exp(q) - 1):.2f}%')
-    q90 = sc2[min(math.ceil((n + 1) * .9), n) - 1]; h = np.abs(np.log1p(np.array(H21[c]) / 100)); put(f'cv_score_quantile_{c}', f'80/90/95% {" / ".join(o)}; holdout within 90%: {int((h <= q90).sum())} of {len(h)}; {n} men')
+    put(f'cv_score_quantile_{c}', f'80/90/95% {" / ".join(o)}; {n} men')
 fam = {x['sample']: x['lineage'] for x in X}
 IN = {r['sample']: float(r['overlap_share']) for r in rd('results/checks/insert_1kgp.tsv')}; PX = [p for p, g in pairs.items() if g == 'Cross batch' and p[0] in IN and p[1] in IN]
 for c in ('DYZ3', 'Yq12', 'DYZ1', 'DYZ2', 'DYZ18S', 'DYZ19', 'DYZ17'):

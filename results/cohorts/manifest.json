@@ -1,26 +1,26 @@
 {
   "summary": {
-    "input_call_records": 31,
+    "input_call_records": 32,
     "call_status_counts": {
-      "called": 23,
+      "called": 24,
       "no Y signal (y_dose below 0.01, few informative sites)": 2,
       "no chrY genotypes yet": 6
     },
     "assigned_by_cohort": {
-      "HGDP": 18,
+      "HGDP": 19,
       "SGDP": 5
     },
-    "original_cohort_records": 2332,
-    "retained_cohort_records": 2324,
+    "original_cohort_records": 2343,
+    "retained_cohort_records": 2335,
     "retained_by_cohort": {
       "1kGP": 1597,
-      "HGDP": 552,
-      "SGDP": 175
+      "HGDP": 561,
+      "SGDP": 177
     },
     "retained_assigned_by_cohort": {
       "1kGP": 1597,
-      "HGDP": 552,
-      "SGDP": 174
+      "HGDP": 554,
+      "SGDP": 175
     },
     "excluded_map_records": 8,
     "excluded_samples": [
@@ -33,15 +33,15 @@
       "SGDP_ALB212",
       "SGDP_NOR111"
     ],
-    "unique_map_individuals": 2302,
-    "shared_individuals": 22,
+    "unique_map_individuals": 2312,
+    "shared_individuals": 23,
     "reported_locations": 132,
     "lineage_counts": {
       "R": 567,
       "I": 83,
       "J": 167,
       "N": 73,
-      "O": 344,
+      "O": 346,
       "B": 29,
       "C": 70,
       "T": 14,
@@ -55,15 +55,25 @@
       "NO": 1,
       "D": 30,
       "M": 11,
-      "S": 5
+      "S": 5,
+      "Unassigned": 8
     },
-    "remaining_unassigned": []
+    "remaining_unassigned": [
+      "HGDP00916",
+      "HGDP01006",
+      "HGDP01024",
+      "HGDP01051",
+      "HGDP01219",
+      "HGDP01273",
+      "HGDP01381",
+      "SGDP_IHW9118"
+    ]
   },
   "policy": "No lineage inferred from geography. Supplement existing missing calls by exact cohort/sample ID. Exclude documented SGDP females and delivered no-Y-signal samples from the paternal-lineage map only. Preserve complete joins for QC.",
   "inputs": [
     {
       "path": "data/figure_metadata/cohort_pie_samples.tsv",
-      "sha256": "6374f29bc8d3e2c9900de566753652f9daf987f26cf3d4e9a0790a9ef540e0db"
+      "sha256": "42f9e4df50accc58642fffb319ade799250f81a5ee7c2a3a83c54fd69c373158"
     },
     {
       "path": "data/figure_metadata/sgdp_metadata.txt",
@@ -71,7 +81,7 @@
     },
     {
       "path": "results/cohorts/lineage_calls.tsv",
-      "sha256": "4f78d851947e5b61bdc592f16c78f10435fbae7b1321d4873a7fcca7f26f7ebd"
+      "sha256": "19263479e449b9e1f2895d6c0b9a187b17c7f7bc32b773dba97f5810ba032763"
     },
     {
       "path": "scripts/cohort_lineages.py",

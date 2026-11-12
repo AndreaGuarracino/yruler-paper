@@ -27,7 +27,7 @@ E = collections.defaultdict(dict)
 for l in list(open(CVU))[1:]:
     c, r, m, e = l.rstrip('\n').split('\t'); E[c][(r, m)] = float(e)
 X = [l.rstrip('\n').split('\t') for l in open(COH)]; HC = X[0]; X = [dict(zip(HC, x)) for x in X[1:]]
-inc = {x['sample']: x for x in X if x['estimate_basis'] == 'ruler' and x['sex'] != 'female' and x['y_state'] in ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain')}
+inc = {x['sample']: x for x in X if x['y_status'] == 'y_found' and x['sex'] != 'female' and x['y_state'] in ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain')}
 def st(v): v = np.abs(np.array(v)); return np.mean(v), np.median(v), np.percentile(v, 90), np.max(v)
 rows = []
 for (c, col), (sname, sr) in [(x, y) for x in (('yq12', 'Yq12_bp'), ('dyz1', 'DYZ1_bp')) for y in SIG.items()]:

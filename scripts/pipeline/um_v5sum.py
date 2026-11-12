@@ -90,27 +90,13 @@ for (c, u), e in EB.items():
     if c != 'yq12' and c not in FC: R[c][u] = e
 for c in FC: R[c] = {u: e for (cc, u), e in EF.items() if cc == c}
 EX = {l.split()[0] for l in open(os.environ['EXCL'])} if os.environ.get('EXCL') else set()
-RS = {m: T['yq12'][m] - T['dyz1'][m] - T['dyz2'][m] for m in T['yq12'] if m in T['dyz1'] and m in T['dyz2']}   # Yq12 rest per truth male
-D2 = EF if EF else EB; R['yq12'] = {}; nr = []
-for (c, u), e1 in EB.items():   # Yq12 = DYZ1 + DYZ2 + training median rest
+RS = {m: T['yq12'][m] - T['dyz1'][m] - T['dyz2'][m] - T['dyz18s'][m] for m in T['yq12'] if all(m in T[c] for c in ('dyz1', 'dyz2', 'dyz18s'))}   # Yq12 rest per truth male
+D2 = EF if EF else EB; R['yq12'] = {}
+for (c, u), e1 in EB.items():   # Yq12 = DYZ1 + DYZ2 + DYZ18S + rest (class yq12rest2), the only definition
     s = u[1] if K == 'cv' else u
-    if c != 'dyz1' or s not in RS or ('dyz2', u) not in D2 or ('yq12', u) not in EB: continue
-    g = G[('yq12', u)]; tr = [r for m, r in RS.items() if m not in EX and m != s and (K == 'holdout' or (('yq12', (u[0], m) if K == 'cv' else m) in G and G[('yq12', (u[0], m) if K == 'cv' else m)] != g))]
-    t12, t1, t2 = (TRU.get((c0, u), T[c0][s]) for c0 in ('yq12', 'dyz1', 'dyz2')); est = t1 * (1 + e1 / 100) + t2 * (1 + D2[('dyz2', u)] / 100) + np.median(tr); R['yq12'][u] = 100 * (est / t12 - 1); nr.append(len(tr))
-if os.environ.get('YQ12') == 'plain': R['yq12'] = {u: e for (c, u), e in EB.items() if c == 'yq12'}   # B: Yq12 from its own markers
-if os.environ.get('YQ12', 'rest') == 'rest':   # A (default): Yq12 = DYZ1 + DYZ2 + estimated rest (class yq12rest)
-    R['yq12'] = {}
-    for (c, u), e1 in EB.items():
-        s = u[1] if K == 'cv' else u
-        if c != 'dyz1' or ('dyz2', u) not in D2 or ('yq12rest', u) not in EB or ('yq12', u) not in EB: continue
-        t12, t1, t2, tr = (TRU[(c0, u)] if (c0, u) in TRU else T[c0][s] for c0 in ('yq12', 'dyz1', 'dyz2', 'yq12rest')); R['yq12'][u] = 100 * ((t1 * (1 + e1 / 100) + t2 * (1 + D2[('dyz2', u)] / 100) + tr * (1 + EB[('yq12rest', u)] / 100)) / t12 - 1)
-if os.environ.get('YQ12') == 'rest2':   # B: Yq12 = DYZ1 + DYZ2 + DYZ18S + estimated rest without DYZ18S (class yq12rest2)
-    R['yq12'] = {}
-    for (c, u), e1 in EB.items():
-        s = u[1] if K == 'cv' else u
-        if c != 'dyz1' or ('dyz2', u) not in D2 or ('yq12rest2', u) not in EB or ('dyz18s', u) not in EB or ('yq12', u) not in EB: continue
-        t12, t1, t2, t18, tr = (TRU[(c0, u)] if (c0, u) in TRU else T[c0][s] for c0 in ('yq12', 'dyz1', 'dyz2', 'dyz18s', 'yq12rest2')); R['yq12'][u] = 100 * ((t1 * (1 + e1 / 100) + t2 * (1 + D2[('dyz2', u)] / 100) + t18 * (1 + EB[('dyz18s', u)] / 100) + tr * (1 + EB[('yq12rest2', u)] / 100)) / t12 - 1)
-log(f'Yq12 sum: {len(R["yq12"])} predictions, training rest males median {np.median(nr) if nr else 0:.0f} (min {min(nr) if nr else 0}, max {max(nr) if nr else 0}), rest median of all truth males {np.median(list(RS.values())):.0f} bp')
+    if c != 'dyz1' or ('dyz2', u) not in D2 or ('yq12rest2', u) not in EB or ('dyz18s', u) not in EB or ('yq12', u) not in EB: continue
+    t12, t1, t2, t18, tr = (TRU[(c0, u)] if (c0, u) in TRU else T[c0][s] for c0 in ('yq12', 'dyz1', 'dyz2', 'dyz18s', 'yq12rest2')); R['yq12'][u] = 100 * ((t1 * (1 + e1 / 100) + t2 * (1 + D2[('dyz2', u)] / 100) + t18 * (1 + EB[('dyz18s', u)] / 100) + tr * (1 + EB[('yq12rest2', u)] / 100)) / t12 - 1)
+log(f'Yq12 = DYZ1 + DYZ2 + DYZ18S + rest: {len(R["yq12"])} predictions, rest median of all truth males {np.median(list(RS.values())):.0f} bp')
 CL = ['dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'yq2k7', 'dyz18sub', 'dyz19', 'dyz17', 'yq2k7a', 'dyz18suba', 'dyz17a']   # last 3: amount variants
 with open(OUT[:-4] + '_units.tsv', 'w') as o:   # per prediction, for paired comparisons
     o.write('class\trepeat\tmale\terror_pct\n')
@@ -136,9 +122,8 @@ if K == 'cv':   # test females: bp, truth 0
                 c = c.split('|')[0]
                 if (cs and c not in cs) or (cs is None and c in FC): continue
                 FB[c][(x[0], x[1], x[3])] = float(x[6])
-    if os.environ.get('YQ12', 'rest') == 'rest': FB['yq12'] = {u: FB['dyz1'][u] + FB['dyz2'][u] + FB['yq12rest'][u] for u in FB['dyz1'] if u in FB['dyz2'] and u in FB['yq12rest']}   # Yq12 = DYZ1 + DYZ2 + rest, same female, repeat and fold
-    if os.environ.get('YQ12') == 'rest2': FB['yq12'] = {u: FB['dyz1'][u] + FB['dyz2'][u] + FB['dyz18s'][u] + FB['yq12rest2'][u] for u in FB['dyz1'] if all(u in FB[c] for c in ('dyz2', 'dyz18s', 'yq12rest2'))}   # B: Yq12 = DYZ1 + DYZ2 + DYZ18S + rest2, same female, repeat and fold
-    log('female Yq12 predictions', len(FB['yq12']), 'from DYZ1', len(FB['dyz1']), 'DYZ2', len(FB['dyz2']), 'rest', len(FB['yq12rest']), 'DYZ18S', len(FB['dyz18s']), 'rest2', len(FB['yq12rest2']))
+    FB['yq12'] = {u: FB['dyz1'][u] + FB['dyz2'][u] + FB['dyz18s'][u] + FB['yq12rest2'][u] for u in FB['dyz1'] if all(u in FB[c] for c in ('dyz2', 'dyz18s', 'yq12rest2'))}   # Yq12 = DYZ1 + DYZ2 + DYZ18S + rest2, same female, repeat and fold
+    log('female Yq12 predictions', len(FB['yq12']), 'from DYZ1', len(FB['dyz1']), 'DYZ2', len(FB['dyz2']), 'DYZ18S', len(FB['dyz18s']), 'rest2', len(FB['yq12rest2']))
     with open(OUT[:-4] + '_females.tsv', 'w') as o:
         o.write('class\tn_predictions\tmedian_bp\tp90_bp\tmax_bp\tmedian_pct_of_median_truth\tmax_pct_of_median_truth\n')
         for c in CL:

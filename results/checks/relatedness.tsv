@@ -1,40 +1,40 @@
 item	value
-kgp_new_links_3rd	11 pairs above kinship 0.0442 join different current components: [('HG00577', 'HG00595'), ('HG02353', 'HG02379'), ('HG02356', 'HG02379'), ('HG03454', 'HG03457'), ('HG03469', 'HG03478'), ('HG03556', 'HG03574')]
+kgp_new_links_3rd	0 pairs above kinship 0.0442 join different current components: []
 kgp_new_links_2nd	0 pairs above kinship 0.0884 join different current components: []
 kgp_new_links_1st	0 pairs above kinship 0.177 join different current components: []
-kgp_current	1271 representatives; SD ratio outside panel 1196: ratio 0.762 (95% 0.724 to 0.802); HL DYZ3 R1b/other 0.339; HL DYZ19 J2a1a1/other J 0.235; Kruskal H DYZ3 794.8 over 14 lineages
-kgp_with_3rd_degree	1260 representatives; SD ratio outside panel 1186: ratio 0.762 (95% 0.724 to 0.798); HL DYZ3 R1b/other 0.340; HL DYZ19 J2a1a1/other J 0.235; Kruskal H DYZ3 791.0 over 14 lineages
-hgsg_relatedness_coverage	{('HGDP', 'gnomAD'): 386, ('SGDP', 'own KING'): 75, ('SGDP', 'gnomAD'): 62, ('SGDP', 'none'): 3}
+kgp_current	1268 representatives; SD ratio outside panel 1192: ratio 0.772 (95% 0.736 to 0.809); HL DYZ3 R1b/other 0.340; HL DYZ19 J2a1a1/other J 0.233; Kruskal H DYZ3 796.6 over 14 lineages
+kgp_with_3rd_degree	1268 representatives; SD ratio outside panel 1192: ratio 0.772 (95% 0.738 to 0.808); HL DYZ3 R1b/other 0.340; HL DYZ19 J2a1a1/other J 0.233; Kruskal H DYZ3 796.6 over 14 lineages
+hgsg_relatedness_coverage	{('HGDP', 'gnomAD'): 393, ('SGDP', 'own KING'): 78, ('SGDP', 'gnomAD'): 62, ('SGDP', 'none'): 3}
 hgsg_pairs_3rd	12 pairs: [('HGDP00102', 'HGDP00108', 0.093), ('HGDP00173', 'HGDP00175', 0.059), ('HGDP00622', 'HGDP00642', 0.07), ('HGDP00720', 'HGDP00758', 0.492), ('HGDP01317', 'HGDP01318', 0.072), ('HGDP01317', 'HGDP01322', 0.068), ('HGDP01318', 'HGDP01322', 0.087), ('HGDP01321', 'HGDP01322', 0.054), ('HGDP01321', 'SGDP_HGDP01320', 0.052), ('HGDP01322', 'SGDP_HGDP01320', 0.054), ('HGDP01327', 'HGDP01330', 0.097), ('HGDP01339', 'HGDP01342', 0.128)]
 hgsg_pairs_2nd	4 pairs: [('HGDP00102', 'HGDP00108', 0.093), ('HGDP00720', 'HGDP00758', 0.492), ('HGDP01327', 'HGDP01330', 0.097), ('HGDP01339', 'HGDP01342', 0.128)]
 hgsg_pairs_1st	1 pairs: [('HGDP00720', 'HGDP00758', 0.492)]
-hgsg_sd_HGDP_all	386: ratio 0.799 (95% 0.756 to 0.848)
-hgsg_sd_SGDP_all	140: ratio 0.658 (95% 0.592 to 0.748)
-hgsg_dyz19_all	526 individuals; 22 of 64 J below 100 kb, all J2a1a1: True; other lineages below 100 kb: 0
-hgsg_dyz3_all	R1b 51 360604; other 475 880973; O2a2b1a1 13 265428; O2a2b1a2 14 1040524
-hgsg_mw_dyz3_r1b_hgdp_all	43 against 343 men, medians 358 and 868 kb, U 1389, P 4e-18
-hgsg_mw_dyz3_o2a2b1a1_hgdp_all	10 against 10 men, medians 267 and 1054 kb, U 1, P 0.00025
-hgsg_mw_dyz19_j2a1a1_hgdp_all	16 against 29 men, medians 71 and 291 kb, U 0, P 4e-08
-hgsg_mw_dyz3_r1b_sgdp_all	8 against 132 men, medians 389 and 964 kb, U 102, P 1.8e-05
-hgsg_mw_dyz3_o2a2b1a1_sgdp_all	3 against 4 men, medians 257 and 967 kb, U 0, P 0.057
-hgsg_mw_dyz19_j2a1a1_sgdp_all	6 against 13 men, medians 74 and 303 kb, U 0, P 7.4e-05
-hgsg_sd_HGDP_one_per_component	377: ratio 0.803 (95% 0.758 to 0.853)
-hgsg_sd_SGDP_one_per_component	139: ratio 0.658 (95% 0.591 to 0.747)
-hgsg_dyz19_one_per_component	516 individuals; 22 of 63 J below 100 kb, all J2a1a1: True; other lineages below 100 kb: 0
-hgsg_dyz3_one_per_component	R1b 50 359290; other 466 877814; O2a2b1a1 13 265428; O2a2b1a2 14 1040524
-hgsg_mw_dyz3_r1b_hgdp_one_per_component	42 against 335 men, medians 356 and 862 kb, U 1274, P 5e-18
-hgsg_mw_dyz3_o2a2b1a1_hgdp_one_per_component	10 against 10 men, medians 267 and 1054 kb, U 1, P 0.00025
-hgsg_mw_dyz19_j2a1a1_hgdp_one_per_component	16 against 28 men, medians 71 and 291 kb, U 0, P 5e-08
-hgsg_mw_dyz3_r1b_sgdp_one_per_component	8 against 131 men, medians 389 and 963 kb, U 102, P 1.9e-05
-hgsg_mw_dyz3_o2a2b1a1_sgdp_one_per_component	3 against 4 men, medians 257 and 967 kb, U 0, P 0.057
-hgsg_mw_dyz19_j2a1a1_sgdp_one_per_component	6 against 13 men, medians 74 and 303 kb, U 0, P 7.4e-05
+hgsg_sd_HGDP_all	393: ratio 0.799 (95% 0.756 to 0.845)
+hgsg_sd_SGDP_all	143: ratio 0.716 (95% 0.637 to 0.832)
+hgsg_dyz19_all	536 individuals; 24 of 67 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
+hgsg_dyz3_all	R1b 51 367835; other 485 880466; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
+hgsg_mw_dyz3_r1b_hgdp_all	44 against 349 men, medians 360 and 875 kb, U 1431, P 1.4e-18
+hgsg_mw_dyz3_o2a2b1a1_hgdp_all	10 against 10 men, medians 266 and 1057 kb, U 1, P 0.00025
+hgsg_mw_dyz19_j2a1a1_hgdp_all	16 against 30 men, medians 71 and 291 kb, U 0, P 3.3e-08
+hgsg_mw_dyz3_r1b_sgdp_all	7 against 136 men, medians 411 and 930 kb, U 115, P 0.00023
+hgsg_mw_dyz3_o2a2b1a1_sgdp_all	3 against 4 men, medians 256 and 969 kb, U 0, P 0.057
+hgsg_mw_dyz19_j2a1a1_sgdp_all	7 against 14 men, medians 74 and 301 kb, U 5, P 0.00033
+hgsg_sd_HGDP_one_per_component	384: ratio 0.802 (95% 0.757 to 0.851)
+hgsg_sd_SGDP_one_per_component	142: ratio 0.716 (95% 0.637 to 0.833)
+hgsg_dyz19_one_per_component	526 individuals; 24 of 66 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
+hgsg_dyz3_one_per_component	R1b 50 364563; other 476 879106; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
+hgsg_mw_dyz3_r1b_hgdp_one_per_component	43 against 341 men, medians 358 and 869 kb, U 1314, P 1.7e-18
+hgsg_mw_dyz3_o2a2b1a1_hgdp_one_per_component	10 against 10 men, medians 266 and 1057 kb, U 1, P 0.00025
+hgsg_mw_dyz19_j2a1a1_hgdp_one_per_component	16 against 29 men, medians 71 and 291 kb, U 0, P 4e-08
+hgsg_mw_dyz3_r1b_sgdp_one_per_component	7 against 135 men, medians 411 and 927 kb, U 115, P 0.00024
+hgsg_mw_dyz3_o2a2b1a1_sgdp_one_per_component	3 against 4 men, medians 256 and 969 kb, U 0, P 0.057
+hgsg_mw_dyz19_j2a1a1_sgdp_one_per_component	7 against 14 men, medians 74 and 301 kb, U 5, P 0.00033
 cv_males_not_in_tree	0: []
-cv_tree_distance_dyz3	1010 predictions, 101 males (mean over repeats); nearest training male at median 2.23e-05 substitutions per site (10th percentile 9.98e-06); Spearman |error| vs distance -0.049 (P 0.62); median of male mean |error| 2.32% in the closest 10% and 2.42% in the rest
-cv_tree_distance_yq12	800 predictions, 80 males (mean over repeats); nearest training male at median 2.70e-05 substitutions per site (10th percentile 1.15e-05); Spearman |error| vs distance +0.049 (P 0.66); median of male mean |error| 1.86% in the closest 10% and 1.64% in the rest
-cv_tree_distance_dyz1	810 predictions, 81 males (mean over repeats); nearest training male at median 2.67e-05 substitutions per site (10th percentile 1.16e-05); Spearman |error| vs distance +0.173 (P 0.12); median of male mean |error| 2.03% in the closest 10% and 2.33% in the rest
-cv_tree_distance_dyz2	800 predictions, 80 males (mean over repeats); nearest training male at median 2.70e-05 substitutions per site (10th percentile 1.15e-05); Spearman |error| vs distance +0.235 (P 0.036); median of male mean |error| 1.52% in the closest 10% and 2.48% in the rest
-cv_tree_distance_dyz18s	810 predictions, 81 males (mean over repeats); nearest training male at median 2.67e-05 substitutions per site (10th percentile 1.16e-05); Spearman |error| vs distance +0.169 (P 0.13); median of male mean |error| 4.24% in the closest 10% and 3.87% in the rest
-cv_tree_distance_dyz19	1150 predictions, 115 males (mean over repeats); nearest training male at median 2.23e-05 substitutions per site (10th percentile 9.91e-06); Spearman |error| vs distance +0.048 (P 0.61); median of male mean |error| 1.66% in the closest 10% and 2.50% in the rest
-cv_tree_distance_dyz17	1150 predictions, 115 males (mean over repeats); nearest training male at median 2.23e-05 substitutions per site (10th percentile 9.91e-06); Spearman |error| vs distance +0.123 (P 0.19); median of male mean |error| 2.97% in the closest 10% and 2.11% in the rest
+cv_tree_distance_dyz3	1140 predictions, 114 males (mean over repeats); nearest training male at median 2.24e-05 substitutions per site (10th percentile 8.25e-06); Spearman |error| vs distance -0.078 (P 0.41); median of male mean |error| 2.47% in the closest 10% and 2.07% in the rest
+cv_tree_distance_yq12	820 predictions, 82 males (mean over repeats); nearest training male at median 2.86e-05 substitutions per site (10th percentile 1.14e-05); Spearman |error| vs distance +0.104 (P 0.35); median of male mean |error| 1.97% in the closest 10% and 1.45% in the rest
+cv_tree_distance_dyz1	830 predictions, 83 males (mean over repeats); nearest training male at median 2.83e-05 substitutions per site (10th percentile 1.14e-05); Spearman |error| vs distance +0.236 (P 0.032); median of male mean |error| 2.18% in the closest 10% and 2.38% in the rest
+cv_tree_distance_dyz2	820 predictions, 82 males (mean over repeats); nearest training male at median 2.86e-05 substitutions per site (10th percentile 1.14e-05); Spearman |error| vs distance +0.128 (P 0.25); median of male mean |error| 2.74% in the closest 10% and 2.19% in the rest
+cv_tree_distance_dyz18s	830 predictions, 83 males (mean over repeats); nearest training male at median 2.83e-05 substitutions per site (10th percentile 1.14e-05); Spearman |error| vs distance +0.128 (P 0.25); median of male mean |error| 3.05% in the closest 10% and 3.75% in the rest
+cv_tree_distance_dyz19	1250 predictions, 125 males (mean over repeats); nearest training male at median 2.22e-05 substitutions per site (10th percentile 7.75e-06); Spearman |error| vs distance +0.071 (P 0.43); median of male mean |error| 1.41% in the closest 10% and 2.65% in the rest
+cv_tree_distance_dyz17	1260 predictions, 126 males (mean over repeats); nearest training male at median 2.22e-05 substitutions per site (10th percentile 7.75e-06); Spearman |error| vs distance -0.020 (P 0.83); median of male mean |error| 4.51% in the closest 10% and 1.76% in the rest
 sibling_pairs	1 recorded full-sibling male pairs, 2 inferred first-degree non-parent pairs, 2 unique
-sibling_abs_diff	DYZ3 1.80%; Yq12 1.47%; DYZ1 0.86%; DYZ2 2.33%; DYZ18S 2.97%; DYZ19 0.70%; DYZ17 1.97% (2 pairs)
+sibling_abs_diff	DYZ3 1.87%; Yq12 1.41%; DYZ1 0.90%; DYZ2 2.12%; DYZ18S 2.30%; DYZ19 0.67%; DYZ17 1.87% (2 pairs)

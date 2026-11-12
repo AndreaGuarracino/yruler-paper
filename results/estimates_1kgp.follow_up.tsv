@@ -1,10 +1,10 @@
 sample	family	haplogroup	reference_male	y_dose	DYZ3_bp	Yq12_bp	DYZ1_bp	DYZ2_bp	DYZ18S_bp	DYZ19_bp	ratio_bp	follow_up
-HG01967	PEL023	Q1b1a1a1k1a1	no	1.315	992956.0	5255225.0	3274624.0	1842491.0	66657.0	87370.0	1.777280865958097	Short DYZ19 with elevated Y dosage; independent technical/structural follow-up
-HG02966	NG20	E1b1a1a1a1c1a1a3c2b	no	1.1862	1560077.0	38470.0	18054.0	17341.0	759.0	266.0	1.0411164292716684	Near-absent Yq12/DYZ19 marker signal; estimates below reference range; structural confirmation pending
-HG01527	IBS010	I2a1b1a1b1a1	no	0.9994	1068229.0	43833555.0	24714145.0	18079346.0	590804.0	269017.0	1.366982245928586	Father of HG01529; high DYZ18S is one familial observation
-HG01529	IBS010	I2a1b1a1b1a1	no	1.0007	1137402.0	44366627.0	24329824.0	18997877.0	584440.0	278284.0	1.2806601495525	Son of HG01527; high DYZ18S is one familial observation
-HG02965	NG20	E1b1a1a1a1c1a1a3c2b	yes	0.9965	950600.0	27544484.0	16461499.0	10542067.0	294734.0	238403.0	1.561505822340154	Reference father of HG02966; compare Yq marker depletion in son
-HG02804	GB62	E1b1a1a1a3	no	1.0048	1400055.0	8038863.0	5953383.0	1539131.0	314913.0	251300.0	3.868015782932057	High DYZ1:DYZ2 base-pair ratio; low Yq12 outside reference range; daughter HG02806 (pedigree sex 2); no paternal Y transmission comparison
-HG02684	PK17	H3b2a	no	0.9997	2509545.0	28840712.0	20040417.0	8231986.0	316941.0	355055.0	2.4344571285714043	Father of HG02686; long DYZ3 beyond reference range and high base-pair ratio require independent checks
-HG02686	PK17	H3b2a	no	0.983	2578408.0	29574190.0	20961304.0	8016779.0	337224.0	378430.0	2.614679037553611	Son of HG02684; familial long DYZ3/high base-pair ratio, not a validated unit-balance exception
-HG04006	ST078	H1a1a4b2c1b	no	0.9972	2767984.0	19053789.0	11172818.0	7303625.0	317437.0	406907.0	1.5297633709288196	Largest current DYZ3 estimate; beyond calibration range, requires independent measurement
+HG01967	PEL023	Q1b1a1a1k1a1	no	1.3161	992313.0	5222274.0	3220725.0	1865493.0	67374.0	87015.0	1.7264739133301492	Short DYZ19 with elevated Y dosage; independent technical/structural follow-up
+HG02966	NG20	E1b1a1a1a1c1a1a3c2b	no	1.1856	1557052.0	31406.0	18276.0	12125.0	347.0	252.0	1.507298969072165	Near-absent Yq12/DYZ19 marker signal; estimates below reference range; structural confirmation pending
+HG01527	IBS010	I2a1b1a1b1a1	no	0.9998	1066735.0	43593973.0	24551159.0	18006209.0	565526.0	269314.0	1.3634829519084222	Father of HG01529; high DYZ18S is one familial observation
+HG01529	IBS010	I2a1b1a1b1a1	no	1.0007	1135368.0	44467364.0	24456050.0	18980114.0	561287.0	278913.0	1.2885091206512247	Son of HG01527; high DYZ18S is one familial observation
+HG02965	NG20	E1b1a1a1a1c1a1a3c2b	yes	0.997	948575.0	27485447.0	16291459.0	10654098.0	290340.0	238084.0	1.5291260696118996	Reference father of HG02966; compare Yq marker depletion in son
+HG02804	GB62	E1b1a1a1a3	no	1.0056	1397396.0	8072915.0	6000449.0	1560205.0	309035.0	251150.0	3.8459362711951313	High DYZ1:DYZ2 base-pair ratio; low Yq12 outside reference range; daughter HG02806 (pedigree sex 2); no paternal Y transmission comparison
+HG02684	PK17	H3b2a	no	0.9997	2508858.0	28991871.0	19930041.0	8471665.0	320293.0	354734.0	2.3525530105357095	Father of HG02686; long DYZ3 beyond reference range and high base-pair ratio require independent checks
+HG02686	PK17	H3b2a	no	0.9835	2575764.0	29291883.0	20414040.0	8260879.0	341042.0	378314.0	2.471170440821128	Son of HG02684; familial long DYZ3/high base-pair ratio, not a validated unit-balance exception
+HG04006	ST078	H1a1a4b2c1b	no	0.9969	2768134.0	19167273.0	11269733.0	7338877.0	311609.0	407842.0	1.5356209131179062	Largest current DYZ3 estimate; beyond calibration range, requires independent measurement

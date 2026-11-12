@@ -14,7 +14,7 @@ from palette import FS, MM, save, letter, REF, REF_HANDLE, BATCH, MUTED, head, t
 from validation_ratio import KEY as RATIO, LABEL as RATIO_LABEL, COLOR as RATIO_COLOR
 
 MEASUREMENTS=[(key,col,label,scale,unit,color) for (key,col,label,scale,unit),color in zip(f.TARGETS,COLORS)]
-MEASUREMENTS.append((RATIO,'ratio_bp',RATIO_LABEL,1,'',RATIO_COLOR))
+MEASUREMENTS.append((RATIO,'ratio_bp',RATIO_LABEL,3478.9/2404.6,'',RATIO_COLOR))   # unit ratio: median unit lengths of DYZ1 and DYZ2
 LOOKUP={row[0]:row for row in MEASUREMENTS}
 GROUPS=['Cross batch','Same batch','Reverse cross batch']
 MARKERS=[BATCH[g] for g in GROUPS]

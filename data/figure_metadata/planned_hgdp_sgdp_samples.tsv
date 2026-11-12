@@ -733,3 +733,14 @@ SGDP_HG03006	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_
 SGDP_HGDP01079	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_diversity_data/data/Sardinian/SAMEA3302822/alignment/SAMEA3302822.alt_bwamem_GRCh38DH.20200922.Sardinian.simons.cram	c6764b24051e940475964efd25f93ca8
 SGDP_HGDP01076	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_diversity_data/data/Sardinian/SAMEA3302876/alignment/SAMEA3302876.alt_bwamem_GRCh38DH.20200922.Sardinian.simons.cram	f99dfc739514350e67c039f49635b716
 SGDP_ND19394	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_diversity_data/data/Korean/SAMEA3302778/alignment/SAMEA3302778.alt_bwamem_GRCh38DH.20200922.Korean.simons.cram	4989fa5ae00a16ddb349356229536b94
+HGDP00763	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Japanese/HGDP00763/alignment/HGDP00763.alt_bwamem_GRCh38DH.20181023.Japanese.cram	670587cf68d2221f5807bbd4a490593f
+HGDP00916	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Mandenka/HGDP00916/alignment/HGDP00916.alt_bwamem_GRCh38DH.20181023.Mandenka.cram	d3ea0510228df66e1d7086d87a772253
+HGDP01006	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Karitiana/HGDP01006/alignment/HGDP01006.alt_bwamem_GRCh38DH.20181023.Karitiana.cram	6065d87d9feb899e8f37ac0753a3ea8b
+HGDP01024	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Han/HGDP01024/alignment/HGDP01024.alt_bwamem_GRCh38DH.20181023.Han.cram	29eeaea5cf16dd9b100d3c9c17b13a0a
+HGDP01051	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Pima/HGDP01051/alignment/HGDP01051.alt_bwamem_GRCh38DH.20181023.Pima.cram	3fdbc2dde1b8494be11dd4d2edbca002
+HGDP01219	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Daur/HGDP01219/alignment/HGDP01219.alt_bwamem_GRCh38DH.20181023.Daur.cram	ff07f6ef7d596386ba8db07640f44121
+HGDP01239	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Hezhen/HGDP01239/alignment/HGDP01239.alt_bwamem_GRCh38DH.20181023.Hezhen.cram	d02f2cfd3ee330756b0abf615eb75f10
+HGDP01273	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Mozabite/HGDP01273/alignment/HGDP01273.alt_bwamem_GRCh38DH.20181023.Mozabite.cram	fbb7adf01d2c4359c5af5944fa5dfa1d
+HGDP01381	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/Adygei/HGDP01381/alignment/HGDP01381.alt_bwamem_GRCh38DH.20181023.Adygei.cram	a8462a98422c4e7bd608a72fc200479c
+SGDP_HG00126	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_diversity_data/data/English/SAMEA3302707/alignment/SAMEA3302707.alt_bwamem_GRCh38DH.20200922.English.simons.cram	eec3077db11e59843719df7ce1bc793d
+SGDP_IHW9118	https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/simons_diversity_data/data/Australian/SAMEA3302719/alignment/SAMEA3302719.alt_bwamem_GRCh38DH.20200922.Australian.simons.cram	3790723d40bc6faa4003ac880eef2e21

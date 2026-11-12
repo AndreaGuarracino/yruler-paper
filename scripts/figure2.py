@@ -26,7 +26,7 @@ FX = 523.3 - (544.2 - 434.9) * BK   # f left edge, square axes
 Y1 = g(Y1)
 BAND_A, BAND, DIA, FRAME = '#EDEEEE', '#F2F4F5', '#7D8A91', '#231F20'   # v3 row bands, diamonds, frames
 HI = {'DYZ3': '#CFE0EE', 'DYZ19': '#F1D2D9', 'c': '#ECF3F8'}   # v3 highlighted rows
-UNIT = 2404.4 / 3478.9   # bp per Hallast 2026 unit, as figures_1kgp
+UNIT = 2404.6 / 3478.9   # bp per Hallast 2026 unit, as figures_1kgp
 fig = plt.figure(figsize=(W * S / 72, (Y1 - Y0) * S / 72))
 fx, fy = (lambda x: x / W), (lambda y: 1 - (g(y) - Y0) / (Y1 - Y0))
 rd = F.read_tsv
@@ -209,15 +209,15 @@ def panel_c(valid, Q):
 
 
 def panel_d(Q):
-    C = rd(M / 'cohort_1kgp.tsv'); keep = ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain', 'par2_gain')   # as figures_1kgp.biology_inputs
-    J = [r for r in C if r['sex'] == 'male' and r['estimate_basis'] == 'ruler' and r['y_state'] in keep and r['lineage'] == 'J']; Jq = [r for r in Q if r['call'].startswith('J')]
+    C = rd(M / 'cohort_1kgp.tsv')   # all males with Y estimates
+    J = [r for r in C if r['sex'] == 'male' and r['y_status'] == 'y_found' and r['lineage'] == 'J']; Jq = [r for r in Q if r['call'].startswith('J')]
     kb = lambda R: ([float(r['DYZ19_bp']) / 1e3 for r in R], [r['sample'] in F.TRUTH['dyz19'] for r in R])
     G = [('1kGP', kb([r for r in J if r['haplogroup'].startswith('J2a1a1')]), kb([r for r in J if not r['haplogroup'].startswith('J2a1a1')]))]
     G += [(c, kb([r for r in Jq if r['cohort'] == c and r['call'].startswith('J2a1a1')]), kb([r for r in Jq if r['cohort'] == c and not r['call'].startswith('J2a1a1')])) for c in ('HGDP', 'SGDP')]
     DR = 152; k = (DR - 38.7) / (167.3 - 38.7); dx = lambda x: 38.7 + (x - 38.7) * k   # d narrowed for e
-    ax = axes(38.7, 435.3, DR, 544.3); ax.set_ylim(0, 405); ax.set_xlim(38.7, DR); print('d: DYZ19, J2a1a1 vs other J', flush=True)
+    ax = axes(38.7, 435.3, DR, 544.3); ax.set_ylim(0, 460); ax.set_xlim(38.7, DR); print('d: DYZ19, J2a1a1 vs other J', flush=True)
     pairs(ax, G, [dx(x) for x in (48.3, 67.1, 93.7, 112.4, 137.9, 156.6)], ((CLASS['DYZ19'], .8), (GREY, .65)), 544.3 - 435.3, 552.9, 561.7, 4.5, 5 * k, 6.5 * k)
-    ax.set_xticks([]); ax.set_yticks([0, 100, 200, 300]); style(ax, ('left', 'bottom', 'top', 'right'))
+    ax.set_xticks([]); ax.set_yticks([0, 100, 200, 300, 400]); style(ax, ('left', 'bottom', 'top', 'right'))
     from matplotlib.textpath import TextPath; from matplotlib.font_manager import FontProperties
     wt = max(TextPath((0, 0), t, size=8 * S, prop=FontProperties(family=plt.rcParams['font.sans-serif'])).get_extents().width for t in ('J2a1a1', 'Other J')) / S
     xm = (dx(93.7) + dx(137.9)) / 2 - (4.3 + wt - 1.6) / 2; print(f'  d legend centred between legs {dx(93.7):.1f} and {dx(137.9):.1f}: marker x {xm:.1f}, text width {wt:.1f}', flush=True)   # equidistant
@@ -231,15 +231,15 @@ def panel_e():
     C = rd(M / 'cohort_1kgp.tsv'); r2 = {r['haplogroup'][:2] for r in C if r['sex'] == 'male' and r['lineage'] == 'R'}   # table lineage R: all R2?
     name = lambda l: 'R2' if l == 'R' and r2 == {'R2'} else l; print(f'e: {len(U)} lineages; 1kGP lineage R haplogroups start with {sorted(r2)}', flush=True)
     U.sort(key=lambda r: float(r['unit_ratio_median'])); lo, hi = min(float(r['ci95_low']) for r in U), max(float(r['ci95_high']) for r in U)
-    ax = axes(195, 435.2, 346, 544.4); xl = (min(.7768, lo - .01), max(1.1685, hi + .01)); ax.set_xlim(*xl); ax.set_ylim(len(U) - 1 + .7, -.7); c = CLASS['DYZ3']
+    ax = axes(195, 435.2, 346, 544.4); xl = (0.79, 1.21); ax.set_xlim(*xl); ax.set_ylim(len(U) - 1 + .7, -.7); c = CLASS['DYZ3']
     for i, r in enumerate(U):
         if i % 2 == 0: ax.axhspan(i - .5, i + .5, color=BAND, lw=0, zorder=0)
         ax.plot([float(r['ci95_low']), float(r['ci95_high'])], [i, i], color=c, lw=1.1 * S, zorder=3); ax.plot(float(r['unit_ratio_median']), i, 'o', ms=2.6, color=c, mew=0, zorder=4)
         if r['lineage'] in A: ax.plot(A[r['lineage']], i, 'x', ms=3.4, color=ORANGE, mew=.8 * S, zorder=5)
         print(f'  e {name(r["lineage"])} ({r["men"]}): median {r["unit_ratio_median"]} ({r["ci95_low"]}-{r["ci95_high"]})' + (f', assemblies {A[r["lineage"]]}' if r['lineage'] in A else ''), flush=True)
     ax.axvline(1, color=RATIO, lw=.6 * S, ls=(0, (3.7, 1.6)), zorder=2)
-    for t in (.8, .9, 1, 1.1): ax.axvline(t, color=GRID, lw=.4 * S, zorder=1)
-    ax.set_yticks(range(len(U)), [f'{name(r["lineage"])} ({r["men"]})' for r in U]); ax.set_xticks([.8, .9, 1, 1.1], ['0.8', '0.9', '1.0', '1.1']); style(ax, ('left', 'bottom', 'top', 'right')); ax.tick_params(axis='y', length=0)
+    for t in (.8, .9, 1, 1.1, 1.2): ax.axvline(t, color=GRID, lw=.4 * S, zorder=1)
+    ax.set_yticks(range(len(U)), [f'{name(r["lineage"])} ({r["men"]})' for r in U]); ax.set_xticks([.8, .9, 1, 1.1, 1.2], ['0.8', '0.9', '1.0', '1.1', '1.2']); style(ax, ('left', 'bottom', 'top', 'right')); ax.tick_params(axis='y', length=0)
     line([201.3], [531.6], marker='x', ms=3.4, color=ORANGE, mew=.8 * S); put(204.9, 534.5, 'Assembly median'); line([201.3], [539.6], marker='o', ms=2.6, color=c, mew=0); put(205, 542.5, 'Read median')
     put(270.5, 568.5, 'DYZ1:DYZ2 unit ratio (median, 95% interval)', 10, ha='center', style='italic')
     put(166, 429.7, 'e', 20, fontweight='bold'); put(270.5, 429.6, 'Unit ratio by lineage', 12, ha='center', fontweight='bold')
@@ -250,7 +250,7 @@ def panel_f():
     from matplotlib.legend_handler import HandlerTuple
     _, C, _, N, inc = F.biology_inputs(); lin = {r['sample']: r['lineage'] for r in C}
     kin = {r['sample']: r['kinship_component_id'] for r in rd(ROOT / 'results/estimates_1kgp.relatedness_samples.tsv')}; rep = {}
-    for r in sorted((r for r in inc if r['y_state'] != 'par2_gain'), key=lambda r: r['sample']): rep.setdefault(kin.get(r['sample'], r['sample']), r)   # one male per kinship component
+    for r in sorted((r for r in inc if r['reference_male'] != 'yes' and r['y_state'] not in ('partial', 'yq_loss', 'yp_deletion', 'par2_gain')), key=lambda r: r['sample']): rep.setdefault(kin.get(r['sample'], r['sample']), r)   # one non-reference male per kinship component
     def centred(P):
         a, b, l = np.log2([p[0] for p in P]), np.log2([p[1] for p in P]), np.array([p[2] for p in P])
         for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
@@ -282,7 +282,7 @@ def panel_f():
     ins.set_xticks([.7, 1], ['0.7', '1.0']); ins.set_xticks([.8, .9], minor=True); style(ins, ('left', 'bottom')); ins.tick_params(length=1.5, pad=1); ins.patch.set_alpha(.85)
     ins.set_xlabel('SD ratio', fontsize=8 * S, labelpad=1.5, style='italic', color=INK, x=.5 + 2.5 / (.25 * (523.3 - FX)))   # 2.5 units right
     put(FX - 21, 489.55, 'DYZ1 / lineage geometric mean', 10, rotation=90, rotation_mode='anchor', ha='center', style='italic'); put((FX + 523.3) / 2, 568.5, 'DYZ2 / lineage geometric mean', 10, ha='center', style='italic')
-    put(FX - 39.5, 429.7, 'f', 20, fontweight='bold'); put((FX + 523.3) / 2, 430.2, 'DYZ2 varies more than DYZ1', 12, ha='center', fontweight='bold')
+    put(FX - 39.5, 429.7, 'f', 20, fontweight='bold'); put((FX + 523.3) / 2, 430.2, 'DYZ2 varies more for its size', 12, ha='center', fontweight='bold')
 
 
 def check():

@@ -6,17 +6,18 @@ usage: python3 scripts/relatedness_checks.py results/model results/checks/relate
 inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,hgsg_calls}.tsv, <results dir>/depth/depth_f1.tsv, results/estimates_1kgp.relatedness_samples.tsv,
 results/tree/tree.rooted.nwk, data/catalog_d376/ped.txt, data/figure_metadata/sgdp_metadata.txt, results/figures/pedigree_pairs.tsv
 """
-import sys, csv, math, collections as co
+import sys, re, csv, math, collections as co
 from pathlib import Path
 import numpy as np
 from scipy.stats import spearmanr, kruskal, mannwhitneyu
 sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs, prepare_cohort_pies as pc
 D, GN, OUT = Path(sys.argv[1]), sys.argv[2], sys.argv[3]; OWN = sys.argv[4] if len(sys.argv) > 4 else None
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t')); N = []; rng = np.random.default_rng(20261103)
+LIN = lambda h: h[:3] if h.startswith('R1') else (lambda t: t if len(t) > 1 else t[0])(re.match('[A-Z]+', h).group(0))   # lineage of a haplogroup call, as um_apply.py
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)
 b = lambda x, c: float(x[f'{c}_bp']); CL = ['DYZ3', 'Yq12', 'DYZ1', 'DYZ2', 'DYZ18S', 'DYZ19', 'DYZ17']; DEG = (('3rd', 0.0442), ('2nd', 0.0884), ('1st', 0.177))
-X = rd(D / 'cohort_1kgp.tsv'); C = {x['sample']: x for x in X}; keep = ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain')
-inc = [x for x in X if x['sex'] == 'male' and x['estimate_basis'] == 'ruler' and x['y_state'] in keep]; IN = {x['sample'] for x in inc}
+X = rd(D / 'cohort_1kgp.tsv'); C = {x['sample']: x for x in X}
+inc = [x for x in X if x['sex'] == 'male' and x['y_status'] == 'y_found']; IN = {x['sample'] for x in inc}
 GP = [(r['s1'], r['s2'], float(r['kin']), float(r['ibd0'])) for r in rd(GN)]
 if OWN: GP += [(r['s1'], r['s2'], float(r['kin']), float('nan')) for r in rd(OWN)]
 def comps(nodes, links):   # union-find, one id per component
@@ -71,11 +72,11 @@ oids = {pc.norm(l.strip()) for l in open(Path(OWN).parent / 'sgdp_plink_ids.txt'
 cov = co.Counter((x['cohort'], 'gnomAD' if keys(x['sample']) & gids else 'own KING' if keys(x['sample']) & oids else 'none') for x in HS); put('hgsg_relatedness_coverage', str(dict(cov)))
 L1 = [(kmap[pc.norm(a)], kmap[pc.norm(q)], k) for a, q, k, _ in GP if pc.norm(a) in kmap and pc.norm(q) in kmap and kmap[pc.norm(a)] != kmap[pc.norm(q)]]
 for name, thr in DEG: put(f'hgsg_pairs_{name}', f"{len([1 for *_, k in L1 if k >= thr])} pairs: {sorted({(a, q, round(k, 3)) for a, q, k in L1 if k >= thr})[:12]}")
-ch = comps(list(own), [(a, q) for a, q, k in L1 if k >= 0.0442])
+ch = comps(list(own), [(a, q) for a, q, k in L1 if k > 0.05])
 for lab, R in (('all', HS), ('one_per_component', one_per(HS, ch))):
     rows = [dict(Q[x['sample']], call=x['call']) for x in R]
     for co_ in ('HGDP', 'SGDP'):
-        g = [x for x in rows if x['cohort'] == co_]; put(f'hgsg_sd_{co_}_{lab}', sdr(g, [x['call'][:1] for x in g]))
+        g = [x for x in rows if x['cohort'] == co_]; put(f'hgsg_sd_{co_}_{lab}', sdr(g, [LIN(x['call']) for x in g]))
     JJ = [x for x in rows if x['call'].startswith('J')]; sh = [x for x in JJ if b(x, 'DYZ19') < 1e5]
     put(f'hgsg_dyz19_{lab}', f"{len(rows)} individuals; {len(sh)} of {len(JJ)} J below 100 kb, all J2a1a1: {all(x['call'].startswith('J2a1a') for x in sh)}; other lineages below 100 kb: {sum(b(x, 'DYZ19') < 1e5 for x in rows if not x['call'].startswith('J'))}")
     m = lambda f: (len(v := [b(x, 'DYZ3') for x in rows if f(x['call'])]), np.median(v))

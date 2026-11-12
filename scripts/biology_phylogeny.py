@@ -130,7 +130,7 @@ def main():
     tree=f.parse_newick(args.tree);cache={};summary=[];profiles=[];pairs=[];states_summary=[];states_edges=[];checks=[];inputs=[]
     with threadpool_limits(limits=2):
         for spec in args.cohort:
-            label,path=spec.split('=',1);path=Path(path);_,valid,_=f.load_snapshot(path);pop=[r for r in f.population_rows(valid) if r['y_status']!='par2_gain']
+            label,path=spec.split('=',1);path=Path(path);_,valid,_=f.load_snapshot(path);pop=f.population_rows(valid)
             inputs.append(dict(model=label,path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
             group=scopes(pop,kin)
             unrelated_out=scopes([r for r in pop if not r['reference']],kin)['one_per_kinship_component']

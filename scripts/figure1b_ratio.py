@@ -3,7 +3,7 @@
 
 usage: python3 scripts/figure1b_ratio.py <cv_units.tsv> <cohort_1kgp.tsv> <out.pdf> <lineage table out.tsv>
 DYZ1:DYZ2 ratio error per prediction = (1 + e_DYZ1) / (1 + e_DYZ2) - 1 from the same male, repeat and fold.
-Unit ratio = base-pair ratio x U2 / U1, Hallast 2026 units (one HMMER hit): median bp per hit DYZ1 3,478.9, DYZ2 2,404.4 in 83 assemblies (their filter).
+Unit ratio = base-pair ratio x U2 / U1, Hallast 2026 units (one HMMER hit): median bp per hit DYZ1 3,478.9, DYZ2 2,404.6 in the 91 reference assemblies (Hallast filter).
 """
 import sys, collections
 import numpy as np
@@ -21,7 +21,7 @@ pm = lambda d: {m: np.mean([v for (r, mm), v in d.items() if mm == m]) for m in 
 R = {k: 100 * ((1 + E['dyz1'][k] / 100) / (1 + E['dyz2'][k] / 100) - 1) for k in E['dyz1'] if k in E['dyz2']}
 L = [l.rstrip('\n').split('\t') for l in open(COH)]; H = L[0]; X = [dict(zip(H, x)) for x in L[1:]]
 lin = {x['sample']: x['lineage'] for x in X}
-inc = [x for x in X if x['estimate_basis'] == 'ruler' and x['sex'] != 'female' and x['y_state'] in ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain')]
+inc = [x for x in X if x['y_status'] == 'y_found' and x['sex'] == 'male']
 print(f'CV predictions: ratio {len(R)}; cohort men included {len(inc)}', flush=True)
 plt.rcParams.update({'font.size': 7.5, 'axes.spines.top': False, 'axes.spines.right': False, 'axes.edgecolor': MUTED, 'xtick.color': MUTED, 'ytick.color': MUTED})
 fig, ax = plt.subplots(1, 3, figsize=(7.2, 2.7), constrained_layout=True, gridspec_kw={'width_ratios': [1.5, 1, 1.15]})
@@ -41,7 +41,7 @@ for i, (k, v) in enumerate(groups):
     a.scatter(i + np.random.default_rng(10 + i).uniform(-0.25, 0.25, len(v)), v, s=4, c=ORANGE, lw=0, alpha=0.85); a.plot([i - 0.3, i + 0.3], [np.median(v)] * 2, color=INK, lw=1)
     print(f'ratio signed CV error, lineage {k}: males {len(v)}, median {np.median(v):+.2f}%', flush=True)
 a.axhline(0, color=MUTED, lw=0.6, ls=':'); a.set_xticks(range(len(groups)), [f'{k}\n{len(v)}' for k, v in groups], fontsize=6.5); a.set_ylabel('DYZ1:DYZ2 signed CV error (%)')
-U1, U2 = 3478.9, 2404.4   # bp per Hallast unit (hit), DYZ1 and DYZ2
+U1, U2 = 3478.9, 2404.6   # bp per Hallast unit (hit), DYZ1 and DYZ2
 u = {x['sample']: (float(x['DYZ1_bp']) / U1) / (float(x['DYZ2_bp']) / U2) for x in inc}
 gl = collections.defaultdict(list)
 for x in inc: gl[x['lineage']].append(x['sample'])

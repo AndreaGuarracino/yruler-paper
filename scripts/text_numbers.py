@@ -11,27 +11,27 @@ import numpy as np
 from scipy.stats import spearmanr
 sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs
 
-D, OUT = Path(sys.argv[1]), sys.argv[2]; ROOT = fs.ROOT; U1, U2 = 3478.9, 2404.4
+D, OUT = Path(sys.argv[1]), sys.argv[2]; ROOT = fs.ROOT; U1, U2 = 3478.9, 2404.6
 rows = lambda f: list(csv.DictReader(open(f), delimiter='\t')); N = []
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)
-st = {(r['class']): r for r in rows(D / 'cv.tsv')}
+st = {(r['class']): r for r in rows(D / 'cv_individual_summary.tsv')}
 for c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17'): put(f'cv_median_{c}', st[c]['median_abs'])
 E = collections.defaultdict(dict)
 for r in rows(D / 'cv_units.tsv'): E[r['class']][(r['repeat'], r['male'])] = float(r['error_pct'])
 R = {k: 100 * ((1 + E['dyz1'][k] / 100) / (1 + E['dyz2'][k] / 100) - 1) for k in E['dyz1'] if k in E['dyz2']}
-put('cv_median_ratio', f'{np.median(np.abs(list(R.values()))):.2f}')
+put('cv_median_ratio', f'{np.median([np.mean([abs(v) for (rep, male), v in R.items() if male == m]) for m in {male for rep, male in R}]):.2f}')
 pm = lambda d: {m: np.mean([v for (r, mm), v in d.items() if mm == m]) for m in {k[1] for k in d}}   # per-man mean signed error
 pma = lambda d: {m: np.mean([abs(v) for (r, mm), v in d.items() if mm == m]) for m in {k[1] for k in d}}
 rr = pma(R); put('ratio_per_man_abs_median_p90', f'{np.median(list(rr.values())):.2f} / {np.percentile(list(rr.values()), 90):.2f}')
 d19 = pma(E['dyz19']); put('dyz19_short_truth_men', ', '.join(f'{m} {d19[m]:.2f}' for m in ('HG02492', 'HG02735', 'NA20809') if m in d19))
 for f, k in (('lolo.tsv', 'lolo'), ('holdout_21.tsv', 'h21')):
     t = {r['class']: r for r in rows(D / f)}; put(f'{k}_median', ', '.join(f"{c} {t[c]['median_abs']} ({t[c]['n_males']})" for c in ('dyz3', 'yq12', 'dyz19')))
-t = {(r['depth'], r['class']): r for r in rows(D / 'depth.tsv')}; put('depth_1x_median', ', '.join(f"{c} {t[('d1x', c)]['median_abs']}" for c in ('dyz3', 'yq12', 'dyz19')))
+t = {(r['depth'], r['class']): r for r in rows(D / 'depth_individual_summary.tsv')}; put('depth_1x_median', ', '.join(f"{c} {t[('d1x', c)]['median_abs']}" for c in ('dyz3', 'yq12', 'dyz19')))
 t = {r['class']: r for r in rows(D / 'father_son.tsv') if r['pairs'] == 'all'}; put('father_son_median_signed', ', '.join(f"{c} {t[c]['median_abs']} / {t[c]['signed_median']} ({t[c]['n_pairs']})" for c in ('DYZ3', 'Yq12', 'DYZ19')))
 t = {r['class']: r for r in rows(D / 'cv_females.tsv')}; put('female_bg_pct_median', ', '.join(f"{c} {t[c]['median_pct_of_median_truth']}" for c in ('dyz3', 'dyz17', 'dyz19', 'yq12', 'dyz18s', 'dyz1', 'dyz2')))
 put('female_bg_pct_max_any', f"{max(float(r['max_pct_of_median_truth']) for c, r in t.items() if c in ('dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17')):.2f}")
 X = rows(D / 'cohort_1kgp.tsv'); ref = {x['sample']: x['reference_male'] == 'yes' for x in X}
-inc = [x for x in X if x['estimate_basis'] == 'ruler' and x['sex'] != 'female' and x['y_state'] in ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain', 'par2_gain')]; I = {x['sample']: x for x in inc}; incq = [x for x in inc if x['y_state'] != 'par2_gain']   # incq: Yq12, DYZ1, DYZ2 summaries
+inc = [x for x in X if x['y_status'] == 'y_found' and x['sex'] == 'male']; I = {x['sample']: x for x in inc}; incq = inc   # all males with Y estimates for every target
 val = [x for x in X if x['estimate_status'] in ('ok', 'low_y_dose') and x['sex'] == 'male']; put('men_estimated_included', f'{len(val)} / {len(inc)}')
 b = lambda x, c: float(x[f'{c}_bp']); r1 = [b(x, 'DYZ3') for x in inc if x['lineage'] == 'R1b']; ot = [b(x, 'DYZ3') for x in inc if x['lineage'] != 'R1b']
 put('dyz3_r1b_vs_other', f'{np.median(r1) / 1e3:.1f} kb ({len(r1)}) vs {np.median(ot) / 1e3:.1f} kb ({len(ot)})')
@@ -46,7 +46,7 @@ def cherries(n, out):   # sister tip pairs among included men
     k = n['children']
     if len(k) == 2 and not k[0]['children'] and not k[1]['children'] and k[0]['name'] in I and k[1]['name'] in I: out.append((k[0]['name'], k[1]['name']))
     for c in k: cherries(c, out)
-P = []; cherries(fs.parse_newick(ROOT / 'results/tree/tree.rooted.nwk'), P); P = [(a, s) for a, s in P if 'par2_gain' not in (I[a]['y_state'], I[s]['y_state'])]   # PAR2-gain males left out
+P = []; cherries(fs.parse_newick(ROOT / 'results/tree/tree.rooted.nwk'), P); P = list(P)   # retain flagged profiles
 put('sister_pairs_over_25pct', f'{len(P)} pairs: ' + ', '.join(f"{c} {sum(abs(np.log(b(I[a], c) / b(I[s], c))) > np.log(1.25) for a, s in P)}" for c in ('DYZ19', 'DYZ3', 'Yq12')))
 fsr = collections.defaultdict(dict)
 for r in rows(ROOT / 'results/figures/pedigree_pairs.tsv'): fsr[(r['father'], r['son'])][r['target']] = abs(float(r['signed_difference_pct']))

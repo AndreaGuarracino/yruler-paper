@@ -2,7 +2,7 @@
 """DYZ1:DYZ2 ratio on Yq12 length with a phylogenetic model.
 
 usage: python3 scripts/pgls_composition.py <cohort_1kgp.tsv> <out.tsv>
-GLS of log2 ratio on log2 Yq12 on tree v4 with Pagel lambda (ML), one man per kinship component, without PAR2-gain men; also with lineage terms; t test on the slope
+GLS of log2 ratio on log2 Yq12 on tree v4 with Pagel lambda (ML), one man per kinship component, including flagged Y profiles; also with lineage terms; t test on the slope
 """
 import sys, csv, math
 import numpy as np
@@ -12,9 +12,9 @@ sys.path.insert(0, 'scripts'); import figures_1kgp as f
 from biology_phylogeny import covariance
 COH, OUT = sys.argv[1:3]; rd = lambda p: list(csv.DictReader(open(p), delimiter='\t')); N = []
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)
-X = rd(COH); keep = ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain'); inc = [x for x in X if x['sex'] == 'male' and x['estimate_basis'] == 'ruler' and x['y_state'] in keep]
+X = rd(COH); keep = ('normal', 'mosaic_loss', 'mosaic_gain', 'Y_gain'); inc = [x for x in X if x['sex'] == 'male' and x['y_status'] == 'y_found']
 kin = {r['sample']: r['kinship_component_id'] for r in rd('results/estimates_1kgp.relatedness_samples.tsv')}; rep = {}
-for x in sorted(inc, key=lambda r: r['sample']): rep.setdefault(kin.get(x['sample'], x['sample']), x)
+for x in sorted((x for x in inc if x['reference_male'] != 'yes' and x['y_state'] not in ('partial', 'yq_loss', 'yp_deletion', 'par2_gain')), key=lambda r: r['sample']): rep.setdefault(kin.get(x['sample'], x['sample']), x)  # one non-reference male per kinship group (user 2026-11-11: males with reference assemblies out of every population test)
 tree = f.parse_newick(f.TREE_SOURCE)
 def tips(n, o):
     if not n['children']: o.add(n['name'])

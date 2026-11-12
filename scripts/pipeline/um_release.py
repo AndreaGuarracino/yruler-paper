@@ -1,5 +1,5 @@
 # Release markers and model.tsv for yruler
-# usage: [UM=markers_v6 DENOMK=<window keys npy>[,<npy>...] YDN=<reference raw y_dose> NOY=<no-Y cut, scaled y_dose>] python3 um_release.py [model dir]; writes <model dir>/release/markers.fa and model.tsv; denominator classes depth1..depthN = the window keys (default: chr2depth = chr2 50-60 markers); YDN -> #y_dose_scale in model.tsv
+# usage: DENOMK=<window keys npy>[,<npy>...] [UM=markers_v6 YDN=<reference raw y_dose> NOY=<no-Y cut, scaled y_dose>] python3 um_release.py [model dir]; writes <model dir>/release/markers.fa and model.tsv; denominator classes depth1..depthN = the window keys (chr8:91-101 Mb first); YDN -> #y_dose_scale in model.tsv
 import os, sys, numpy as np
 P = os.environ['P']; O = f'{P}/{os.environ.get("UM", "markers_u25")}'; sys.path.insert(0, f'{P}/scripts'); import um_model
 MD = sys.argv[1] if len(sys.argv) > 1 else f'{P}/model'; R = f'{MD}/release'; os.makedirs(R, exist_ok=True)
@@ -17,7 +17,7 @@ def dec(keys):   # uint64 keys -> 31-mers
     for i in range(31): b[:, 30 - i] = ((keys >> np.uint64(2 * i)) & np.uint64(3)).astype(np.uint8)
     return np.frombuffer(b'ACGT', np.uint8)[b]
 if os.environ.get('DENOMK'): DW = [(f'depth{i + 1}', np.unique(np.load(f).astype(np.uint64))) for i, f in enumerate(os.environ['DENOMK'].split(','))]
-else: fa = open(f'{O}/markers_u.fa').read().split('\n'); DW = [('chr2depth', U[np.unique(np.searchsorted(U, enc([fa[i + 1] for i in range(0, len(fa) - 1, 2) if fa[i].startswith('>chr2depth_')])))])]
+else: raise SystemExit('ERROR DENOMK (chr8 window keys) is required')
 y0 = fm[f'ysc_{M[0]["class"]}']
 for r in M:
     if not np.array_equal(fm[f'ysc_{r["class"]}'], y0): raise SystemExit(f'ERROR ruler of {r["class"]} differs')

@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch, Polygon
 from matplotlib.colors import to_rgba
+import collections
 import numpy as np
 from scipy.stats import spearmanr
 
@@ -32,6 +33,13 @@ from figure2_tree import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def rec_sex(r, _F={}):
+    """Recorded sex: the cohort table, else the SGDP metadata Gender (results/checks/sgdp_sex_fill.tsv); "" when neither records it."""
+    if r["sex"] in ("male", "female"): return r["sex"]
+    if not _F: _F.update({x["sample"]: {"M": "male", "F": "female"}.get(x["sgdp_gender"], "") for x in read_tsv(ROOT / "results/checks/sgdp_sex_fill.tsv")})
+    return _F.get(r["sample"], "")
 AUX = ROOT / "results/figures"   # figure tables, not figures
 DEFAULT_SNAPSHOT = ROOT / "results/estimates_1kgp.tsv"
 TREE_SOURCE = ROOT / "results/tree/tree.rooted.nwk"
@@ -103,18 +111,18 @@ def load_snapshot(path=DEFAULT_SNAPSHOT):
         status = {"riarrangiamento": "rearrangement", "mosaico": "mosaic"}.get(status.lower(), status)
         row["y_status"] = status
         row["y_status_source"] = (str(Path(path).resolve().relative_to(ROOT)) if Path(path).resolve().is_relative_to(ROOT) else Path(path).name) if supplied else reported_status.get(row["sample"], {}).get("source", "not_reported")
-        row["population_included"] = status.lower() not in {"rearrangement", "partial", "yp_deletion", "yq_loss"}
+        row["population_included"] = True  # retain all males with Y estimates, including flagged profiles
         valid.append(row)
     return raw, valid, pedigree
 
 
 def in_summary(row, key):
-    """Population summary of one target: a PAR2 gain leaves Yq12, DYZ1, DYZ2 and their ratio."""
-    return row["population_included"] and not (row["y_status"] == "par2_gain" and key in {"Yq12_bp", "DYZ1_bp", "DYZ2_bp", "ratio_bp", "unit_ratio"})
+    """Include all males with Y estimates in the population summary."""
+    return row["population_included"]
 
 
 def population_rows(rows):
-    """Keep flagged arm profiles visible, but outside population summaries."""
+    """Return all males included in population summaries."""
     return [row for row in rows if row.get("population_included", True)]
 
 
@@ -395,6 +403,10 @@ def autosomal_check(raw, valid, pedigree):
     for row in result:
         if row["both_valid_males"]:
             parents[root(row["sample1"])] = root(row["sample2"])
+    gn = [(r["s1"], r["s2"]) for r in read_tsv(ROOT / "results/checks/relatedness/gnomad_related_pairs.tsv") if float(r["kin"]) > 0.05]   # gnomAD (Koenig 2024) lists pairs above 0.05, as used for HGDP and SGDP
+    gl = [(a, b) for a, b in gn if a in valid_index and b in valid_index and root(a) != root(b)]
+    for a, b in gl: parents[root(a)] = root(b)
+    print(f"kinship components: {len(gl)} gnomAD third-degree links join KING components", flush=True)
     components = defaultdict(list)
     families = defaultdict(list)
     for row in valid:
@@ -586,7 +598,7 @@ def biology_inputs():
     """1kGP males on the ruler, HGDP/SGDP calls, test results."""
     R = ROOT / "results/model"
     C = read_tsv(R / "cohort_1kgp.tsv"); Q = read_tsv(R / "hgsg_calls.tsv"); N = {r["item"]: r["value"] for r in read_tsv(R / "biology_tests.tsv")}
-    keep = ("normal", "mosaic_loss", "mosaic_gain", "Y_gain", "par2_gain"); inc = [r for r in C if r["sex"] == "male" and r["estimate_basis"] == "ruler" and r["y_state"] in keep]
+    inc = [r for r in C if r["sex"] == "male" and r["y_status"] == "y_found"]
     return R, C, Q, N, inc
 
 
@@ -674,16 +686,16 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     ax.axvline(1, color=MUTED, lw=.6, ls="--"); ax.set_yticks(range(len(U)), [f'{r["lineage"]} ({r["men"]})' for r in U]); ax.set_xlim(.76, 1.2); ax.set_xlabel("DYZ1:DYZ2 unit ratio"); style(ax, "d")
     ax.legend(handles=[Line2D([], [], ls="none", marker="x", ms=2.5, color=ORANGE, mew=.6, label="From assemblies"), Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads")], **on_top(ax))
     # DYZ2 varies more than DYZ1
-    ax = box(.725, .99); T = {r["assembly"].removesuffix("_R2"): r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}   # release 2 replacements keyed by donor; lin = {r["sample"]: r["lineage"] for r in C}
+    ax = box(.725, .99); T = {r["assembly"].removesuffix("_R2"): r for r in read_tsv(ROOT / "data/method/yq12_truth_hallast.tsv")}; lin = {r["sample"]: r["lineage"] for r in C}   # release 2 replacements keyed by donor
     kin = {r["sample"]: r["kinship_component_id"] for r in read_tsv(ROOT / "results/estimates_1kgp.relatedness_samples.tsv")}; rep = {}
-    for r in sorted((r for r in inc if r["y_state"] != "par2_gain"), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)
+    for r in sorted((r for r in inc if r["reference_male"] != "yes" and r["y_state"] not in ("partial", "yq_loss", "yp_deletion", "par2_gain")), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)   # one non-reference male per kinship component
     def centred(P):
         a = np.log2([p[0] for p in P]); b = np.log2([p[1] for p in P]); l = np.array([p[2] for p in P])
         for k in set(l): a[l == k] -= a[l == k].mean(); b[l == k] -= b[l == k].mean()
         return b, a
     P = [r for r in rep.values() if r["reference_male"] != "yes"]; tri = np.array([r["sample"] in TRUTH["yq12"] for r in P]); print("Fig. 2f diamonds (Yq12 truth):", int(tri.sum()), flush=True)
     men = centred([(float(r["DYZ1_bp"]), float(r["DYZ2_bp"]), r["lineage"]) for r in P]); asm = centred([(float(r["dyz1_units"]), float(r["dyz2_units"]), lin[s]) for s, r in T.items() if s in lin and s != "HG01261"])
-    assert len(men[0]) == 1196 and len(asm[0]) == 83, (len(men[0]), len(asm[0]))
+    assert len(men[0]) == int(N['composition_sd_1kgp'].split(':')[0]) and len(asm[0]) == int(N['composition_sd_assemblies'].split(':')[0]), (len(men[0]), len(asm[0]))   # same males as biology_tests.tsv
     ax.scatter(men[0][~tri], men[1][~tri], s=2, c=GREY, lw=0, alpha=.6, label="From reads (1kGP, 1,196)", rasterized=True); ax.scatter(men[0][tri], men[1][tri], edgecolors=GREY, rasterized=True, **REF); ax.scatter(*asm, s=6, marker="x", c=ORANGE, linewidths=.6, alpha=.9, label="From assemblies (75)", rasterized=True)
     L = .5 * np.ceil(max(np.abs(np.concatenate([*men, *asm]))) / .5); print("Fig. 2f symmetric range", L, flush=True); sd = lambda k: float(re.search(r"ratio ([0-9.]+)", N[k]).group(1)); ax.plot([-L, L], [-L, L], color=MUTED, lw=.6, ls="--", label="Equal variation"); r, a = sd("composition_sd_1kgp"), sd("composition_sd_assemblies"); ax.plot([-L, L], [-L * r, L * r], color=INK, lw=.9); ax.plot([-L, L], [-L * a, L * a], color=ORANGE, lw=.9)   # SD-ratio lines through the origin
     ax.set_xlim(-L, L); ax.set_ylim(-L, L); ax.set_aspect("equal"); F = {-3: "1/8×", -2: "1/4×", -1: "1/2×", 0: "1×", 1: "2×", 2: "4×", 3: "8×"}; T = [t for t in F if abs(t) <= L]; ax.set_xticks(T, [F[t] for t in T]); ax.set_yticks(T, [F[t] for t in T]); print("Fig. 2f points outside the former +-1.5 x +-1.2 view:", int(sum(((abs(x) > 1.5) | (abs(y) > 1.2)).sum() for x, y in (men, asm))), flush=True); ax.set_xlabel("DYZ2 / lineage geometric mean"); ax.set_ylabel("DYZ1 / lineage geometric mean"); from matplotlib.legend_handler import HandlerTuple
@@ -696,13 +708,30 @@ def biology_panels(fig, bottom=10, tall=46, sub=(70, 43)):
     return stats
 
 
+def analysed_map_samples(valid):
+    """Geographic metadata for the samples used in the population analyses."""
+    from cohort_lineages import build_metadata
+    from prepare_cohort_pies import META, combine_individuals, read_tsv as read_metadata
+    calls = read_tsv(ROOT / "results/model/hgsg_calls.tsv")
+    wanted = {("1kGP", r["sample"]) for r in valid}
+    wanted.update((r["cohort"], r["sample"]) for r in calls)
+    metadata = build_metadata()
+    rows = [r for r in metadata["included"] if (r["cohort"], r["sample"]) in wanted]
+    found = {(r["cohort"], r["sample"]) for r in rows}
+    if found != wanted:
+        raise ValueError(f"Analysed samples missing geographic metadata: {sorted(wanted - found)}")
+    sgdp = read_metadata(META / "sgdp_metadata.txt", encoding="latin-1")
+    combined, _ = combine_individuals(rows, sgdp)
+    print(f"Map: {len(rows)} cohort records, {len(combined)} unique individuals", flush=True)
+    return combined
+
+
 def population_figure(valid, out, snapshot_path, completed):
     samples = {r["sample"]: r for r in valid}
     tree = prune_tree(parse_newick(TREE_SOURCE), set(samples))
     root, leaves = collapse_tree(tree, samples)
     assert all(n == 1 for n in Counter(leaf["group"] for leaf in leaves).values())
-    from cohort_lineages import load_combined_samples
-    map_samples = load_combined_samples()
+    map_samples = analysed_map_samples(valid)
     land = json.loads((ROOT / "data/figure_metadata/world_land.geojson").read_text())
     from palette import MM
     H = 210   # mm: d-f 10-56, b-c 70-113, a 124-197, legend 203-209
@@ -728,7 +757,7 @@ def population_figure(valid, out, snapshot_path, completed):
                           "Yq12", "d", "Length (Mb)", lambda g: False, show_panel=False)
     stats += frozen_trait(axes[2], leaves, "DYZ19_bp", PURPLE, 1e3, 550, [0, 200, 400],
                           "DYZ19", "e", "Length (kb)", lambda g: g.startswith("J2a1a1"), show_panel=False)
-    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
+    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.6 / 3478.9   # bp per Hallast 2026 unit
     ratio_limit = max(2.5, .5 * np.ceil(max(r["unit_ratio"] for r in valid) / .5))
     stats += frozen_trait(axes[4], leaves, "unit_ratio", RATIO, 1, ratio_limit, np.arange(0, ratio_limit + .01, 1),
                           "DYZ1:DYZ2", "f", "Unit ratio", lambda g: False, show_panel=False)
@@ -757,7 +786,7 @@ def population_figure(valid, out, snapshot_path, completed):
     anchor=pie_fig.transFigure.inverted().transform(pie_ax.transData.transform((55.38,-42.63)))
     map_legend=lineage_legend(pie_fig, map_samples, anchor[1], x=anchor[0], fontsize=FS["legend"])
     align_map_legend_titles(pie_ax,map_legend)
-    save(pie_fig, out, "supp/suppfig2_world_map")
+    save(pie_fig, out, "supp/suppfig1_world_map")
     return root, leaves
 
 
@@ -767,7 +796,7 @@ def population_supplement(valid, out):
     clades = [("I–J", "I", "J"), ("N–O", "NO", "O"), ("P (Q, R)", "Q", "R2")]   # brackets over sister lineages
     print("ED7 n per lineage:", ";  ".join(f"{g}: {sum(r['lineage_display'] == g for r in valid)}" for g in order), flush=True)
     panels = TARGETS + [("unit_ratio", "unit_ratio", "DYZ1:DYZ2", 1, "Unit ratio")]   # h as Fig. 2a; Y dosage by lineage: ED5b
-    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.4 / 3478.9   # bp per Hallast 2026 unit
+    for r in valid: r["unit_ratio"] = r["ratio_bp"] * 2404.6 / 3478.9   # bp per Hallast 2026 unit
     fig, axes = plt.subplots(4, 2, figsize=(180 * MM, 184 * MM), gridspec_kw={"hspace": .5, "wspace": .12})
     fig.subplots_adjust(left=.065, right=.995, top=.94, bottom=.045)
     rng = np.random.default_rng(271)
@@ -805,62 +834,277 @@ def population_supplement(valid, out):
         ax.set_axisbelow(True)
     for ax in axes.flat[len(panels):]: ax.set_visible(False)
     reads_legend(fig)
-    save(fig, out, "ed/ed8_population")
+    save(fig, out, "ed/ed7_population")
 
 
-def dosage_by_sex(axes, out_cut=.02):
-    """ED5a: Y dosage of 1kGP samples by recorded sex, broken axis (was Fig. 1g)."""
-    from palette import DOSE
+def dosage_by_sex(axes, out_cut=.025):
+    """ED7a: Y dosage by recorded sex, females of the three cohorts stacked, broken axis."""
+    from palette import FEMALE, MALE
     a1, a2 = axes; top = .03   # end of the log part
-    F = read_tsv(ROOT / "results/model/cohort_fem.tsv")   # all three cohorts: the cut is set by the highest female
-    males = [r for r in read_tsv(ROOT / "results/model/cohort_1kgp.tsv") if r["sex"] == "male"]
-    fd = np.array([float(r["y_dose"]) for r in F]); md = np.array([float(r["y_dose"]) for r in males])
-    gap = int(((fd > top) & (fd < .2)).sum() + ((md > top) & (md < .2)).sum())
-    if gap: sys.exit(f"ERROR {gap} samples in the hidden {top}-0.2 part of the dosage axis")
-    print(f"ED7a: {len(fd)} recorded females (max Y dosage {fd.max():.4f}, above the cut {out_cut}: {int((fd > out_cut).sum())}), {len(md)} recorded males (min {md.min():.4f}, at or below the cut: {int((md <= out_cut).sum())})", flush=True)
-    E = np.concatenate([np.geomspace(1e-4, out_cut, 24), [top]])   # the cut is a bin edge: no bar crosses the line
-    for ax, bins, clip in ((a1, E, (1.01e-4, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
-        for v, c, lab in ((fd, "#b07aa1", f"Recorded females (n = {len(fd)})"), (md, DOSE, f"Recorded 1kGP males (n = {len(md):,})")):
-            w = v[(v >= clip[0] * .99) & (v <= top)] if ax is a1 else v[v >= .2]
-            ax.hist(np.clip(w, *clip), bins, color=c, label=lab, zorder=2)
+    F = read_tsv(ROOT / "results/checks/female_all.tsv")   # every female of the three cohorts (female_all.py)
+    males = [r for f in ("cohort_1kgp", "cohort_hgdp_sgdp") for r in read_tsv(ROOT / f"results/model/{f}.tsv") if rec_sex(r) == "male"]   # recorded males of the three cohorts
+    nc = [r["sample"] for r in males if r["y_dose"] in ("nan", "NA", ".")]; males = [r for r in males if r["sample"] not in nc]; print(f"ED7a: males without Y dosage left out: {nc}", flush=True)   # no counts
+    FD = {c: np.array([float(r["y_dose"]) for r in F if r["cohort"] == c]) for c in FEMALE}; fd = np.concatenate(list(FD.values()))
+    MD = {c: np.array([float(r["y_dose"]) for r in males if r["cohort"] == c]) for c in MALE}; md = np.concatenate(list(MD.values()))
+    gap = int(((fd > top) & (fd < .2)).sum() + ((md > top) & (md < .2)).sum()); low = int((fd < 1e-3).sum() + (md < 1e-3).sum())
+    if gap or low: sys.exit(f"ERROR {gap} samples in the hidden {top}-0.2 part and {low} below 0.001 of the dosage axis")
+    print(f"ED7a: {len(fd)} recorded females ({', '.join(f'{c} {len(v)}' for c, v in FD.items())}; max Y dosage {fd.max():.4f}, above the cut {out_cut}: {int((fd > out_cut).sum())}), {len(md)} recorded males (min {md.min():.4f}, at or below the cut: {int((md <= out_cut).sum())})", flush=True)
+    E = np.concatenate([np.geomspace(1e-3, out_cut, 20), [top]])   # the cut is a bin edge: no bar crosses the line
+    for ax, bins, lo_hi in ((a1, E, (1e-3, top)), (a2, np.arange(.2, 2.225, .025), (.2, 2.2))):
+        sel = lambda v: v[(v >= lo_hi[0]) & (v <= lo_hi[1])]
+        ax.hist([sel(v) for v in FD.values()], bins, stacked=True, color=list(FEMALE.values()), label=[f"{c} females (n = {len(v):,})" for c, v in FD.items()], zorder=2)
+        ax.hist([sel(v) for v in MD.values()], bins, stacked=True, color=list(MALE.values()), label=[f"{c} males (n = {len(v):,})" for c, v in MD.items()], zorder=2)
         ax.set_yscale("log"); ax.set_ylim(.7, 5e3)
-    a1.set_xscale("log"); a1.set_xlim(1e-4, top); a1.set_xticks([1e-4, 1e-3, 1e-2], ["0.0001", "0.001", "0.01"]); a1.minorticks_off()
+    a1.set_xscale("log"); a1.set_xlim(1e-3, top); a1.set_xticks([1e-3, 1e-2], ["0.001", "0.01"]); a1.minorticks_off()
     a1.set_yticks([1, 10, 100, 1000], ["1", "10", "100", "1000"]); a1.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     a1.set_ylabel("Samples", labelpad=2); a1.axvline(out_cut, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=1)
-    a1.text(out_cut / 1.25, 2.6e3, f"{out_cut:g}", fontsize=FS["point"], ha="right", va="center")
+    a1.text(out_cut / 1.05, 2.6e3, f"{out_cut:g}", fontsize=FS["point"], ha="right", va="center")
     a2.set_xlim(.2, 2.2); a2.set_xticks([.5, 1, 1.5, 2], ["0.5", "1", "1.5", "2"]); a2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)
     a2.tick_params(which="minor", width=.4, length=1.5); a2.set_yticks([]); a2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     a2.spines["left"].set_visible(False); a1.spines["right"].set_visible(False)
     for ax, x in ((a1, 1), (a2, 0)): ax.plot([x], [0], transform=ax.transAxes, clip_on=False, marker=[(-1.4, -2.6), (1.4, 2.6)], ms=4, mew=.5, color="k", ls="none")   # break on the x axis
-    for r in males:
-        if float(r["y_dose"]) <= out_cut:   # recorded male without Y
-            j = int(np.searchsorted(E, float(r["y_dose"]))) - 1
-            a1.annotate(r["sample"], (np.sqrt(E[j] * E[j + 1]), .7), xytext=(.02, -.21), textcoords="axes fraction", annotation_clip=False,
-                        fontsize=FS["point"], ha="left", va="top", arrowprops=dict(arrowstyle="-|>", color="k", lw=.5, mutation_scale=4, shrinkA=1.5, shrinkB=0))   # label under the x axis, tip at the base of its bar
-            print(f"ED5a: labelled {r['sample']} (recorded male, Y dosage {r['y_dose']}, X dosage {r['x_dose']}, {r['sex_chromosomes']})", flush=True)
-    a2.legend(loc="upper left", fontsize=FS["legend"], handlelength=1.1, frameon=False, labelspacing=.3, borderaxespad=.2)   # level with the b legend
+    fmax = max(F, key=lambda r: float(r["y_dose"]))   # highest female, named in the Methods (user 2026-11-10)
+    lab = [(r["sample"], float(r["y_dose"])) for r in males if float(r["y_dose"]) <= out_cut] + [(r["sample"], float(r["y_dose"])) for r in F if float(r["y_dose"]) > out_cut or r is fmax]   # recorded male without Y, highest female
+    for s_, d in lab:
+        k = int(np.searchsorted(E, d)) - 1
+        a1.annotate(s_, (np.sqrt(E[k] * E[k + 1]), .7), xytext=(-12, -16), textcoords="offset points", annotation_clip=False, fontsize=FS["point"], ha="right", va="top",
+                    arrowprops=dict(arrowstyle="-|>", color="k", lw=.5, mutation_scale=4, shrinkA=1, shrinkB=0))   # label close under its bar
+        print(f"ED7a: labelled {s_} (Y dosage {d:.4f})", flush=True)
+    a2.legend(loc="upper right", fontsize=FS["legend"], frameon=False)
     return a1, a2
 
 
-def specificity_bars(ax):
-    """ED5c: highest Y signal in held-out females against the error in males (was Fig. 1g)."""
+def specificity_bars(ax, clean=.005):
+    """ED7b: highest background in females without male DNA (Y dosage at most clean) against the error in males (female_all.py)."""
     from palette import CLASS
-    T = {r["class"]: r for r in read_tsv(ROOT / "results/model/cv_females.tsv")}
+    F = [r for r in read_tsv(ROOT / "results/checks/female_all.tsv") if r["dyz3_bp"] != "NA"]
+    T = defaultdict(list)
+    for r in read_tsv(ROOT / "results/checks/truth_long_v9bBx.tsv"): T[r["class"]].append(float(r["truth_bp"]))
+    med = {c: float(np.median(v)) for c, v in T.items()}
     CV = {r["class"]: float(r["median_abs"]) for r in read_tsv(ROOT / "results/model/cv.tsv")}
+    C = [r for r in F if float(r["y_dose"]) <= clean and r["sample"] not in ("HGDP00247", "HG02772")]   # explained females left out (female_all.py EXPLAINED)
     n7 = ["DYZ3", "DYZ17", "DYZ19", "Yq12", "DYZ18S", "DYZ1", "DYZ2"]
     for i, n in enumerate(n7):
-        r = T[n.lower()]; mx = float(r["max_pct_of_median_truth"]); c = CLASS[n]
+        p = np.array([100 * float(r[n.lower() + "_bp"]) / med[n.lower()] for r in C]); mx = p.max(); c = CLASS[n]
         ax.bar(i - .19, mx, .36, facecolor="white", edgecolor=c, hatch="//////", lw=.6, zorder=2)
         ax.bar(i + .19, CV[n.lower()], .36, facecolor=to_rgba(c, .28), edgecolor=c, lw=.6, zorder=2)
-        print(f'ED5c {n}: female median {r["median_pct_of_median_truth"]}% max {mx}% of the median length ({r["n_predictions"]} predictions); CV median error {CV[n.lower()]}%', flush=True)
+        print(f'ED7b {n}: {len(C)} females with Y dosage <= {clean}: median {np.median(p):.4f}% p90 {np.percentile(p, 90):.4f}% max {mx:.4f}% ({C[int(np.argmax(p))]["sample"]}) of the median length; CV median error in males {CV[n.lower()]}%', flush=True)
     ax.set_ylim(0, 5.3); ax.set_xlim(-.6, len(n7) - .4); ax.set_yticks([0, 1, 2, 3, 4])
     ax.set_xticks(range(len(n7)), n7, rotation=90)
     for t, n in zip(ax.get_xticklabels(), n7): t.set_color(CLASS[n]); t.set_fontweight("bold")
     ax.tick_params(axis="x", length=0); ax.set_ylabel("% of median satellite length", labelpad=2)
-    ax.legend(handles=[Patch(facecolor="white", edgecolor=GREY, hatch="//////", lw=.6, label="Highest female signal"),
+    ax.legend(handles=[Patch(facecolor="white", edgecolor=GREY, hatch="//////", lw=.6, label=f"Highest female signal (Y dosage at most {clean:g})"),
                        Patch(facecolor=to_rgba(GREY, .28), edgecolor=GREY, lw=.6, label="Error in males (CV median)")],
               loc="upper left", fontsize=FS["legend"], frameon=False, handlelength=1.1, labelspacing=.3, borderaxespad=.2)
-    return int(T["dyz3"]["n_predictions"]) // 10
+    return len(C)
+
+
+def specificity_scatter(axes, out_cut=.025):
+    """ED7b: estimated length on one Y copy (estimate x raw Y dosage) against Y dosage, cohort females (left, log) and 1kGP males (right, linear), broken axis as ED7a."""
+    from palette import CLASS
+    b1, b2 = axes; top = .03; ys = .9614   # y_dose_scale of the model: raw dosage = y_dose x ys
+    F = [r for r in read_tsv(ROOT / "results/model/cohort_fem.tsv") if r["sex"] == "female"]
+    MA = [r for f in ("cohort_1kgp", "cohort_hgdp_sgdp") for r in read_tsv(ROOT / f"results/model/{f}.tsv") if rec_sex(r) == "male" and r["y_dose"] not in ("nan", "NA", ".")]   # recorded males of the three cohorts
+    M = [r for r in MA if float(r["y_dose"]) > out_cut]; LO = [r for r in MA if float(r["y_dose"]) <= out_cut]   # LO: recorded males without Y, drawn on the female side
+    n7 = ["DYZ3", "DYZ17", "DYZ19", "Yq12", "DYZ18S", "DYZ1", "DYZ2"]; one = lambda r, n: float(r[n + "_bp"]) * float(r["y_dose"]) * ys   # checked against the haploid runs of v9bBx: median ratio 0.997-1.000
+    for ax, R, edges, sz in ((b1, F, np.geomspace(1.2e-3, 2.4e-2, 11), 1.6), (b2, M, np.linspace(.6, 1.4, 9), 1.2)):
+        yd = np.array([float(r["y_dose"]) for r in R])
+        for n in n7:
+            p = np.maximum(np.array([one(r, n) for r in R]), 1)
+            ax.scatter(yd, p, s=sz, color=CLASS[n], alpha=.3, lw=0, zorder=1, rasterized=True)
+            m = [((a + b) / 2 if ax is b2 else np.sqrt(a * b), np.median(p[(yd >= a) & (yd < b)])) for a, b in zip(edges[:-1], edges[1:]) if ((yd >= a) & (yd < b)).sum() >= 5]
+            ax.plot(*zip(*m), color=CLASS[n], lw=1, zorder=3, label=n if ax is b1 else None)
+            print(f"ED7b {n} {'females' if ax is b1 else 'males'}: {len(p)}, median {np.median(p):.0f} bp, max {p.max():.0f} bp", flush=True)
+        ax.set_yscale("log"); ax.set_ylim(1, 1e8)
+    for r in LO:   # recorded male without Y: every class, black edge, labelled
+        d = float(r["y_dose"]); v = [max(one(r, n), 1) for n in n7]
+        for n, x in zip(n7, v): b1.scatter([d], [x], s=7, color=CLASS[n], edgecolors="k", linewidths=.3, zorder=4)
+        b1.annotate(r["sample"], (d, max(v)), xytext=(0, 5), textcoords="offset points", ha="center", va="bottom", fontsize=FS["point"]); print(f"ED7b: {r['sample']} (recorded male, Y dosage {d:.4f}) on the female side", flush=True)
+    b1.set_xscale("log"); b1.set_xlim(1e-3, top); b1.set_xticks([1e-3, 1e-2], ["0.001", "0.01"]); b1.minorticks_off(); b1.axvline(out_cut, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=0)
+    b1.text(out_cut / 1.05, 3e7, f"{out_cut:g}", fontsize=FS["point"], ha="right", va="center")   # as in ED7a
+    b1.set_yticks([1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8], ["1", "10", "100", "1 kb", "10 kb", "100 kb", "1 Mb", "10 Mb", "100 Mb"]); b1.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    b1.set_ylabel("Estimated length (bp)", labelpad=2)
+    b2.set_xlim(.2, 2.2); b2.set_xticks([.5, 1, 1.5, 2], ["0.5", "1", "1.5", "2"]); b2.set_xticks([x / 10 for x in range(2, 23) if x % 5], minor=True)
+    b2.tick_params(which="minor", width=.4, length=1.5); b2.set_yticks([]); b2.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    b2.spines["left"].set_visible(False); b1.spines["right"].set_visible(False)
+    for ax, x in ((b1, 1), (b2, 0)): ax.plot([x], [0], transform=ax.transAxes, clip_on=False, marker=[(-1.4, -2.6), (1.4, 2.6)], ms=4, mew=.5, color="k", ls="none")   # break on the x axis
+    b1.legend(loc="upper left", bbox_to_anchor=(.08, 1.02), fontsize=FS["legend"], frameon=False, handlelength=1.1, labelspacing=.25, ncol=4, columnspacing=.8)
+    return len(F), len(M) + len(LO)
+
+
+def dosage_boxes(ax, out_cut=.025):
+    """ED7a: Y dosage by cohort and recorded sex, horizontal boxes over every sample (log axis); samples on the wrong side of the no-Y cut for their recorded sex are labelled. Recorded sex: cohort table, else the SGDP metadata (rec_sex); SGDP_NOR111 (Gender U) has none and is left out."""
+    from palette import DOSE, FEMALE
+    F = read_tsv(ROOT / "results/checks/female_all.tsv")
+    M = [r for f in ("cohort_1kgp.tsv", "cohort_hgdp_sgdp.tsv") for r in read_tsv(ROOT / "results/model" / f) if r["estimate_status"] not in ("no_counts", "female") and r["y_dose"] not in ("", "NA", ".")]
+    rng = np.random.default_rng(7); LAB = []; YT = []; XY = {}   # sample -> plotted (x, y), jitter included
+    for i, co in enumerate(("1kGP", "HGDP", "SGDP")):
+        y0 = 2 - i
+        for sex, rows, col, dy in (("female", [r for r in F if r["cohort"] == co], FEMALE[co], .2),
+                                   ("male", [r for r in M if r["cohort"] == co and rec_sex(r) == "male"], DOSE, -.2)):
+            v = np.array([float(r["y_dose"]) for r in rows]); yj = y0 + dy + rng.uniform(-.07, .07, len(v))
+            ax.scatter(v, yj, s=2, color=col, alpha=.75, lw=0, zorder=1, rasterized=True); XY.update({r["sample"]: (x, yy) for r, x, yy in zip(rows, v, yj)})
+            ax.boxplot(v, positions=[y0 + dy], vert=False, widths=.16, showfliers=False, whis=1.5, patch_artist=True, zorder=2,
+                       boxprops=dict(facecolor="none", edgecolor=col, lw=.8), medianprops=dict(color=col, lw=1.2), whiskerprops=dict(color=col, lw=.6), capprops=dict(color=col, lw=.6))
+            print(f"ED7a {co} {sex}: n {len(v)}, median {np.median(v):.4f}, IQR {np.percentile(v, 25):.4f} to {np.percentile(v, 75):.4f}, min {v.min():.4f}, max {v.max():.4f}", flush=True)
+            YT.append((y0 + dy, f"{co} {sex}s ({len(v):,})", col))
+        LAB += [(r["sample"], "male, no Y", (8, 0)) for r in M if r["cohort"] == co and rec_sex(r) == "male" and float(r["y_dose"]) <= out_cut]
+        LAB += [(r["sample"], "female, male DNA", (8, 0)) for r in F if r["cohort"] == co and float(r["y_dose"]) > out_cut]
+    LAB += [("HG02772", "Yq12 only", (14, 11))]   # sex named only for males at or below the no-Y cut and females above it (user 2026-11-06)   # the other female of ED7b, labelled above its row
+    for k, (smp, t, off) in enumerate(LAB):
+        d, yy = XY[smp]; ax.scatter([d], [yy], s=14, facecolors="none", edgecolors="k", linewidths=.5, zorder=4)
+        ax.annotate(f"{smp} ({t})", (d, yy), xytext=off, textcoords="offset points", fontsize=FS["point"], ha="left" if off[0] >= 0 else "right", va="center",
+                    arrowprops=dict(arrowstyle="-", color="k", lw=.4, shrinkA=0, shrinkB=1.5), zorder=5)
+        print(f"ED7a labelled {smp} ({t}), y_dose {d}, plotted y {yy:.4f}", flush=True)
+    ax.axvline(out_cut, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=0); ax.text(out_cut * 1.06, 2.62, f"{out_cut:g}", fontsize=FS["point"], va="center")
+    ax.set_xscale("log"); ax.set_xlim(1e-3, 3); xt = [1e-3, 2e-3, 5e-3, 1e-2, 2.5e-2, 5e-2, .1, .2, .5, 1, 2]; ax.set_xticks(xt, [f"{v:g}" for v in xt]); ax.minorticks_off()
+    ax.set_yticks([t[0] for t in YT], [t[1] for t in YT]); ax.set_ylim(-.55, 2.75); ax.tick_params(axis="y", length=0); ax.tick_params(labelsize=FS["tick"])
+    for tl, t in zip(ax.get_yticklabels(), YT): tl.set_color(t[2])
+    ax.set_xlabel("Y dosage", labelpad=2); ax.spines["left"].set_visible(False)
+
+
+def estimates_vs_dose(ax, cohort=None, src=None):
+    """ED7c: estimate in bp of every class against Y dosage, males (tool output, length per Y) and females (signal at haploid depth, female_all.py) on one axis.
+    Labelled (user 2026-11-06): NA19226, the recorded male without Y, the outlier females HG02772 (Yq12 without other Y) and HGDP00247 (the female above the no-Y cut),
+    and every male with an estimate below the highest female of the row in any class (those two females left out of that maximum)."""
+    from palette import CLASS
+    n7 = ["DYZ3", "DYZ17", "DYZ19", "Yq12", "DYZ18S", "DYZ1", "DYZ2"]; MK = {"1kGP": "o", "HGDP": "^", "SGDP": "s"}
+    G = []
+    if src:   # one basis for every sample (user 2026-11-06): cohort tables of um_apply.py with NOY=100 (haploid) or NOY=-1 (ruler), males and females with per-k-mer counts
+        for f in ("cohort_1kgp.tsv", "cohort_fem.tsv", "cohort_hgdp_sgdp.tsv"):
+            for r in read_tsv(src / f):
+                if r["DYZ3_bp"] in ("", "NA", ".", "nan") or rec_sex(r) not in ("male", "female"): continue
+                G.append({"sex": rec_sex(r), "cohort": r["cohort"], "y": float(r["y_dose"]), "s": r["sample"], **{n: float(r[f"{n}_bp"]) for n in n7}})
+    else:
+        for f in ("cohort_1kgp.tsv", "cohort_hgdp_sgdp.tsv"):
+            for r in read_tsv(ROOT / "results/model" / f):
+                if r["estimate_status"] in ("no_counts", "female") or r["DYZ3_bp"] in ("", "NA", "."): continue
+                if rec_sex(r) == "male": G.append({"sex": "male", "cohort": r["cohort"], "y": float(r["y_dose"]), "s": r["sample"], **{n: float(r[f"{n}_bp"]) for n in n7}})
+        G += [{"sex": "female", "cohort": r["cohort"], "y": float(r["y_dose"]), "s": r["sample"], **{n: float(r[f"{n.lower()}_bp"]) for n in n7}} for r in read_tsv(ROOT / "results/checks/female_all.tsv") if r["dyz3_bp"] != "NA"]
+    if cohort: G = [g for g in G if g["cohort"] == cohort]
+    y = np.array([g["y"] for g in G]); sx = np.array([g["sex"] for g in G])
+    for n in n7:
+        v = np.array([max(g[n], 1) for g in G])
+        for co, mk in MK.items():
+            m = np.array([g["cohort"] == co for g in G])
+            if m.any(): ax.scatter(y[m], v[m], s=2.5 if mk != "o" else 1.2, marker=mk, color=CLASS[n], alpha=.25, lw=0, zorder=1, rasterized=True)
+        for sex, (lo, hi) in (("female", (1e-3, .03)), ("male", (.1, 3))):
+            k = (sx == sex) & (y >= lo) & (y <= hi)
+            if k.sum() < 10: continue
+            e = np.geomspace(y[k].min(), y[k].max(), 11)
+            md = [(np.sqrt(a * b), np.median(v[k & (y >= a) & (y < b)])) for a, b in zip(e[:-1], e[1:]) if (k & (y >= a) & (y < b)).sum() >= 10]
+            ax.plot(*zip(*md), color=CLASS[n], lw=1, zorder=3, label=n if sex == "male" else None)
+        print(f"ED7c {cohort or 'all'} {n}: males {int((sx == 'male').sum())} median {np.median(v[sx == 'male']) if (sx == 'male').any() else float('nan'):,.0f} bp, females {int((sx == 'female').sum())} median {np.median(v[sx == 'female']) if (sx == 'female').any() else float('nan'):,.0f} bp", flush=True)
+    LAB = {"NA19226": ("male, no Y", "DYZ17", (30, -14)), "HG02772": ("Yq12 only", "DYZ2", (10, 4)), "HGDP00247": ("female, male DNA", "DYZ3", (10, -14))}
+    FM = {n: max((g[n] for g in G if g["sex"] == "female" and g["s"] not in ("HG02772", "HGDP00247")), default=None) for n in n7}   # highest female per class in the row, the two labelled females left out
+    for g in G:   # males below that female maximum in any class (user 2026-11-06)
+        low = [n for n in n7 if g["sex"] == "male" and FM[n] is not None and g[n] < FM[n]]
+        if not low or src: continue   # basis views: no labels for these males (on the ruler basis most males fall below the female background)
+        print(f"ED7c {cohort or 'all'} male {g['s']} (y_dose {g['y']}) below the highest female in {len(low)} classes: " + ", ".join(f"{n} {g[n]:,.0f} < {FM[n]:,.0f}" for n in low), flush=True)
+        if g["s"] not in LAB: LAB[g["s"]] = (f"{'all classes' if len(low) == len(n7) else ', '.join(low)}\nbelow the highest female", min(low, key=lambda c: g[c]), (-12, 16) if g["y"] > .1 else (8, -12))   # two lines, right of the 0.02 line
+    for g in G:
+        if g["s"] in LAB:
+            t, n, off = LAB[g["s"]]
+            ax.scatter([g["y"]], [max(g[n], 1)], s=14, facecolors="none", edgecolors="k", linewidths=.5, zorder=4)
+            ax.annotate(f'{g["s"]} ({t})', (g["y"], max(g[n], 1)), xytext=off, textcoords="offset points", fontsize=FS["point"], ha="left" if off[0] > 0 else "right", va="center",
+                        arrowprops=dict(arrowstyle="-", color="k", lw=.4, shrinkA=0, shrinkB=1.5), zorder=5)
+            print(f"ED7c labelled {g['s']} ({t}), y_dose {g['y']}, {n} {g[n]:,.0f} bp", flush=True)
+    ax.axvline(.025, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=0)   # no-Y cut
+    hi = max(1e8, 10 ** np.ceil(np.log10(max(max(g[n] for n in n7) for g in G))))   # the ruler basis puts female signal above 100M
+    ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlim(1e-3, 3); ax.set_ylim(1, hi); ax.minorticks_off()
+    xt = [1e-3, 2e-3, 5e-3, 1e-2, 2.5e-2, 5e-2, .1, .2, .5, 1, 2]; ax.set_xticks(xt, [f"{v:g}" for v in xt])
+    yt = [10 ** k for k in range(int(np.log10(hi)) + 1)]; ax.set_yticks(yt, [("1", "10", "100")[k % 3] + ("", "K", "M", "G", "T")[k // 3] for k in range(len(yt))]); ax.tick_params(labelsize=FS["tick"])
+    ax.set_xlabel("Y dosage", labelpad=2); ax.set_ylabel("Estimate (bp)", labelpad=2)
+    return int((sx == "male").sum()), int((sx == "female").sum())
+
+
+ED7B_ROWS = [("HG02772", "Yq12 only"), ("HGDP00247", "female, male DNA"), ("HGDP00760", ""), ("HGDP01380", ""), ("HGDP00323", ""), ("HGDP01388", ""), ("HGDP01398", ""), ("NA19226", "male, no Y"), ("HG02966", "partial Y")]   # the two unusual females, the next five by Y dosage, the two males below the highest female in ED7c (user 2026-11-06)
+
+
+def unusual_females(axt, ax, ay, axx, aco):
+    """ED7b: chrY profiles of the unusual females in the ED3 style (100-kb CHM13 windows, dose relative to the median of 100 reference males, chr8 denominator,
+    continuous log scale, PAR windows Y = 2 (X + Y) - X), with Y dose, X dose and cohort columns; HG02772, HGDP00247 and the next five females by Y dosage (ED7B_ROWS)."""
+    import palette as PL
+    from matplotlib.colors import ListedColormap, BoundaryNorm
+    BANDS = [("p11.32", 0, 127522, "gneg"), ("p11.31", 127522, 454425, "gpos50"), ("p11.2", 454425, 10568667, "gneg"), ("p11.1", 10568667, 10703039, "acen"), ("cen", 10703039, 10726286, "acen"),
+             ("q11.1", 10726286, 10883195, "acen"), ("q11.21", 10883195, 13307633, "gneg"), ("q11.221", 13307633, 18006534, "gpos50"), ("q11.222", 18006534, 20506564, "gneg"),
+             ("q11.223", 20506564, 25062557, "gpos50"), ("q11.23", 25062557, 27449937, "gneg"), ("q12", 27449937, 62460029, "gvar")]   # KaryoScope-ISCN chm13v2.0 cytobands, as ED3
+    from matplotlib.colors import LinearSegmentedColormap, LogNorm   # continuous log scale (user 2026-11-06): trace male DNA at 0.02 stays visible, unlike the ED3 classes
+    lo, hi = 1e-3, 2; pos = lambda v: (np.log10(v) - np.log10(lo)) / (np.log10(hi) - np.log10(lo))
+    cm = LinearSegmentedColormap.from_list("ed7b", list(zip([0, pos(.03), pos(.5), pos(1), pos(1.25), pos(1.5), 1], PL.HEAT))); cm.set_bad("white"); nrm = LogNorm(lo, hi); BOUND = None
+    P = read_tsv(ROOT / "results/checks/ed7b_profiles_100kb.tsv"); S = {r["sample"]: r for r in read_tsv(ROOT / "results/checks/ed7b_profiles_summary.tsv")}
+    YD = {r["sample"]: (float(r["y_dose"]), r["cohort"]) for r in read_tsv(ROOT / "results/checks/female_all.tsv")}; MALE = {"NA19226", "HG02966"}   # the two males of ED7B_ROWS
+    YD.update({r["sample"]: (float(r["y_dose"]), r["cohort"]) for r in read_tsv(ROOT / "results/model/cohort_1kgp.tsv") if r["sample"] in MALE})
+    rows = ED7B_ROWS
+    rows = [(s, t) for s, t in rows if s in S]; step, nw, MB = 100_000, 625, 1e6
+    par = [(int(x[1]), int(x[2])) for x in (l.split("\t") for l in open(ROOT / "data/chm13_annot/chm13v2.0_chrXY_sequence_class_v1.bed")) if x[0] == "chrY" and x[3] in ("PAR1", "PAR2")]
+    M = np.full((len(rows), nw), np.nan)
+    for i, (smp, _) in enumerate(rows):
+        xk = float(S[smp]["x_kmer"])
+        for r in P:
+            if r["sample"] != smp or int(r["key_positions"]) < 50 or r["ratio"] == "nan": continue
+            j = int(r["start"]) // step; mid = int(r["start"]) + step / 2; inpar = any(a <= mid < e for a, e in par)
+            if j >= nw: continue
+            if r["chrom"] == "chrY" and not inpar: M[i, j] = float(r["ratio"])
+            elif r["chrom"] == "chrY_XY" and inpar: M[i, j] = 2 * float(r["ratio"]) - xk
+        print(f"ED7b {smp}: windows with data {int(np.isfinite(M[i]).sum())}, Y dose {YD[smp][0]}, X {S[smp]['x_kmer']}, PAR2 {S[smp]['par2']}", flush=True)
+    n, xmax = len(rows), nw * step / MB
+    for nm, a, b, st in BANDS:
+        axt.add_patch(plt.Rectangle((a / MB, 0), (b - a) / MB, 1, fc=PL.STAIN[st], ec=PL.STAIN["acen"], lw=.4, hatch="////" if st == "gvar" else None))
+    for nm, a, b, st in BANDS:
+        if b - a > 4e6: axt.text((a + b) / 2 / MB, 1.25, nm, ha="center", va="bottom", fontsize=FS["point"])
+    for lab, a, b in (("PAR1", 0, 2.458), ("PAR2", 62.123, 62.46)): axt.text((a + b) / 2, -.35, lab, ha="center", va="top", fontsize=FS["point"])
+    axt.set_xlim(0, xmax); axt.set_ylim(-1.2, 2.4); axt.axis("off")
+    im = ax.imshow(np.clip(M, 1e-3, 2), aspect="auto", cmap=cm, norm=nrm, interpolation="nearest", extent=(0, xmax, n, 0))
+    ax.hlines(np.arange(1, n), 0, xmax, color="white", lw=.5)
+    ax.set_yticks(np.arange(n) + .5, [f"{smp} ({t})" if t else smp for smp, t in rows], fontsize=FS["tick"]); ax.tick_params(axis="y", length=0)
+    ax.set_xlabel("CHM13v2 chrY position (Mb)", labelpad=2); ax.set_xlim(0, xmax); ax.tick_params(axis="x", labelsize=FS["tick"])
+    for a_, lab, vals in ((ay, "Y dose", [YD[s][0] for s, _ in rows]), (axx, "X dose", [float(S[s]["x_kmer"]) for s, _ in rows])):
+        a_.barh(np.arange(n) + .5, vals, height=.62, color=GREY, lw=0)
+        for k, v in enumerate(vals): a_.text(min(v, 2.25) + .05, k + .5, f"{v:.2f}" if v >= .1 else f"{v:.4f}", va="center", ha="left", fontsize=FS["point"])
+        for g in (1, 2): a_.axvline(g, color=GREY, lw=.5, ls=":")
+        a_.set_xlim(0, 2.9); a_.set_ylim(n, 0); a_.set_yticks([]); a_.set_xticks([0, 1, 2]); a_.set_xlabel(lab, labelpad=2); a_.tick_params(labelsize=FS["tick"])
+        for sp_ in ("top", "right"): a_.spines[sp_].set_visible(False)
+    aco.set_ylim(n, 0); aco.set_xlim(0, 1); aco.axis("off")
+    for k, (smp, _) in enumerate(rows): aco.text(.05, k + .5, YD[smp][1], va="center", ha="left", fontsize=FS["tick"], color=PL.DOSE if smp in MALE else PL.FEMALE[YD[smp][1]])   # cohort names in the sample colours of a
+    return im, BOUND
+
+
+def ed7c_bases(path, d=ROOT / "results/checks/ed7c_bases"):
+    """ED7c with one basis for every sample (user 2026-11-06): rows haploid basis (NOY=100) and ruler basis (NOY=-1), columns 1kGP, HGDP, SGDP; cohort-table samples only."""
+    fig, A = plt.subplots(2, 3, figsize=(180 * MM, 130 * MM), gridspec_kw=dict(hspace=.5, wspace=.32, left=.07, right=.99, top=.92, bottom=.08))
+    for i, (sub, lab) in enumerate((("noy100", "haploid basis"), ("noy-1", "ruler basis"))):
+        for j, co in enumerate(("1kGP", "HGDP", "SGDP")):
+            nm, nf = estimates_vs_dose(A[i, j], co, d / sub); A[i, j].set_title(f"{co}, {lab}\n{nm:,} males, {nf:,} females", fontsize=FS["tick"] + 1, pad=3)
+    for ax in A.flat: xt = [1e-3, 1e-2, 2.5e-2, .1, 1]; ax.set_xticks(xt, [f"{v:g}" for v in xt])   # fewer ticks in the narrow panels
+    A[0, 0].legend(fontsize=FS["point"], frameon=False, loc="upper left", ncol=2, handlelength=1)
+    fig.savefig(path); print("wrote", path)
+
+
+def ed7_preview(path):
+    """ED7 draft: a Y dosage by cohort and recorded sex, b unusual females on chrY (ED3 style), c estimates in bp against Y dosage by cohort."""
+    from palette import head
+    fig = plt.figure(figsize=(180 * MM, 225 * MM))
+    nb = sum(s in {r["sample"] for r in read_tsv(ROOT / "results/checks/ed7b_profiles_summary.tsv")} for s, _ in ED7B_ROWS)   # rows with a profile
+    G = fig.add_gridspec(5, 1, height_ratios=[.78, (8 + 2.5 * nb) / 40.4, .82, .82, .82], hspace=.42, left=.15, right=.955, top=.965, bottom=.04)
+    s1 = fig.add_subplot(G[0]); dosage_boxes(s1); head(s1, "Y dosage by cohort and recorded sex")
+    B = G[1].subgridspec(2, 4, height_ratios=[8, 2.5 * nb], width_ratios=[1, .07, .07, .08], hspace=.04, wspace=.06)   # mm: tracks 8, female rows of 2.5 as in ED3
+    bt, bh, by, bx, bc, cl = fig.add_subplot(B[0, 0]), fig.add_subplot(B[1, 0]), fig.add_subplot(B[1, 1]), fig.add_subplot(B[1, 2]), fig.add_subplot(B[1, 3]), fig.add_subplot(B[0, 1:])
+    cl.axis("off"); cb = cl.inset_axes([.14, .5, .82, .18])   # horizontal colour bar above the side columns: room for the 1 and 2 labels
+    im, BOUND = unusual_females(bt, bh, by, bx, bc); head(bt, "Unusual samples on chrY")
+    c = fig.colorbar(im, cax=cb, orientation="horizontal", ticks=[1e-3, 1e-2, .1, 1, 2]); c.ax.set_xticklabels(["0.001", "0.01", "0.1", "1", "2"], fontsize=FS["tick"])
+    c.ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator()); c.ax.tick_params(length=1.5, pad=1); c.ax.set_title("Window dose (male = 1)", fontsize=FS["tick"], pad=2)
+    C = []
+    for i, co in enumerate(("1kGP", "HGDP", "SGDP")):
+        ax = fig.add_subplot(G[2 + i]); nm, nf = estimates_vs_dose(ax, co); C.append(ax)
+        ax.set_title(f"{co}: {nf:,} females (signal at haploid depth), {nm:,} males (length per Y)", fontsize=FS["label"], fontweight="bold", pad=3)
+        if i < 2: ax.set_xlabel("")
+    for ax in (bt, bh): p_ = ax.get_position(); ax.set_position([.185, p_.y0, p_.x1 - .185, p_.height])   # room for the longest row label of b
+    for ax in C: p_ = ax.get_position(); ax.set_position([.075, p_.y0, .955 - .075, p_.height])   # c uses the width a needs for its row labels (user 2026-11-06)
+    C[0].legend(loc="lower left", bbox_to_anchor=(.42, .02), fontsize=FS["legend"], frameon=False, ncol=4, handlelength=1.6, columnspacing=1.1, borderaxespad=.1)
+    fig.canvas.draw(); print(f"ED7b heatmap {bh.get_position().height * 225:.2f} mm for {len(bh.get_yticks())} rows, tracks {bt.get_position().height * 225:.2f} mm", flush=True)
+    for t, ax in (("a", s1), ("b", bt), ("c", C[0])): fig.text(.012, ax.get_position().y1 + .008, t, fontsize=FS["letter"], fontweight="bold", va="baseline")
+    fig.savefig(path, dpi=300); print("saved", path, flush=True)   # PDF, rasterized scatter layers
 
 
 def depth_supplement(valid, out):
@@ -876,8 +1120,11 @@ def depth_supplement(valid, out):
     ax.fill_between(x, q[:, 0], q[:, 2], color=DOSE, alpha=.15, lw=0, label="10th to 90th percentile"); ax.plot(x, q[:, 1], "o-", color=DOSE, ms=2.5, lw=.75, label="Median")
     ax.set_xscale("log"); ax.set_xticks([1, 2, 5, 10, 20, DEPTHS["1"]], ["1", "2", "5", "10", "20", f"{DEPTHS['1']:.0f}"]); ax.minorticks_off(); ax.set_ylim(0, None); ax.grid(True)
     ax.set_xlabel("Median autosomal coverage (×)"); ax.set_ylabel("Difference from full depth (%)"); ax.legend(loc="upper right")
-    head(ax, f"Coverage ({len(D[lv[0]])} males)")
+    head(ax, "Y dosage across coverage")
     tree = ["A", "B", "D", "E", "C", "F", "G", "H", "I", "J", "L", "T", "NO", "N", "O", "Q", "R1a", "R1b", "R2"]   # ED7 and Fig. 2a order
+    kin = {r["sample"]: r["kinship_component_id"] for r in read_tsv(ROOT / "results/estimates_1kgp.relatedness_samples.tsv")}; rep = {}
+    for r in sorted((r for r in valid if r["reference_male"] != "yes" and r["y_state"] not in ("partial", "yq_loss", "yp_deletion", "par2_gain")), key=lambda r: r["sample"]): rep.setdefault(kin.get(r["sample"], r["sample"]), r)   # one non-reference male per kinship component, plot and test
+    valid = list(rep.values()); print(f"ED5b: {len(valid)} males, one per kinship component", flush=True)
     order = [g for g in tree if any(r["lineage_display"] == g for r in valid)]; lo, hi = .94, 1.06; rng = np.random.default_rng(5)
     V = {g: np.array([float(r["y_dose"]) for r in valid if r["lineage_display"] == g]) for g in order}
     for i, g in enumerate(order):
@@ -888,28 +1135,65 @@ def depth_supplement(valid, out):
     big = [g for g in order if len(V[g]) >= 20]; kw = kruskal(*[V[g] for g in big])   # at least 20, as Statistics
     med = {g: float(np.median(V[g])) for g in big}; g0, g1 = min(med, key=med.get), max(med, key=med.get)
     print(f"ED5b: {len(valid)} males, {len(big)} lineages with at least 20 males, medians {g0} {med[g0]:.4f} to {g1} {med[g1]:.4f}, Kruskal-Wallis H {kw.statistic:.2f} P {kw.pvalue:.2e}; outside {lo}-{hi}: {sum(int(((V[g] <= lo) | (V[g] >= hi)).sum()) for g in order)}", flush=True)
-    b.text(.01, .97, f"Kruskal–Wallis P = {kw.pvalue:.1e} ({len(big)} lineages with at least 20 males)", transform=b.transAxes, va="top", fontsize=FS["point"])
     b.set_xticks(range(len(order)), [f"{g} ({len(V[g])})" for g in order], rotation=90); b.set_xlim(-.7, len(order) - .3)
     b.set_ylim(lo, hi + .016); b.set_yticks(np.arange(lo, hi + .001, .02)); b.set_ylabel("Y dosage (relative)")   # room for the test line; b.grid(axis="y"); b.set_axisbelow(True)
-    head(b, f"Lineage (1000 Genomes, {len(valid):,} males)")
+    head(b, "Y dosage by lineage")
     fig.tight_layout(w_pad=2.5)
     for s_, a_ in zip("ab", (ax, b)): fig.text(a_.get_position().x0 - (.075 if s_ == "a" else .06), a_.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight(), s_, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baselines
     save(fig, out, "ed/ed5_y_dosage")
 
 
+XLIM = (1e-4, 3)   # ED7: one log Y dosage axis in every panel (A1pg female dosages reach 0.0002)
+
+
+def dosage_by_sex_log(ax, out_cut=.025):
+    """ED7a: Y dosage by recorded sex, cohorts stacked, one log axis."""
+    from palette import FEMALE, MALE, head
+    F = read_tsv(ROOT / "results/model/cohort_fem_all.tsv")   # recorded females, one row per individual (scripts/females_merge.py)
+    males = [r for f in ("cohort_1kgp", "cohort_hgdp_sgdp") for r in read_tsv(ROOT / f"results/model/{f}.tsv") if rec_sex(r) == "male"]
+    nc = [r["sample"] for r in males if r["y_dose"] in ("nan", "NA", ".")]; males = [r for r in males if r["sample"] not in nc]; print(f"ED7a: males without Y dosage left out: {nc}", flush=True)
+    FD = {c: np.array([float(r["y_dose"]) for r in F if r["cohort"] == c]) for c in FEMALE}; MD = {c: np.array([float(r["y_dose"]) for r in males if r["cohort"] == c]) for c in MALE}
+    fd, md = np.concatenate(list(FD.values())), np.concatenate(list(MD.values()))
+    out = int(((fd < XLIM[0]) | (fd > XLIM[1])).sum() + ((md < XLIM[0]) | (md > XLIM[1])).sum())
+    if out: sys.exit(f"ERROR {out} samples outside the Y dosage axis {XLIM}")
+    print(f"ED7a: {len(fd)} recorded females (max {fd.max():.4f}, above {out_cut}: {int((fd > out_cut).sum())}), {len(md)} recorded males (min {md.min():.4f}, at or below the cut: {int((md <= out_cut).sum())})", flush=True)
+    E = np.concatenate([[XLIM[0]], np.arange(1.5, 11, 1) * 1e-4, np.geomspace(1.05e-3, out_cut, 12)[1:], np.geomspace(out_cut, XLIM[1], 41)[1:]])   # y_dose has 4 decimals: one 1e-4 step per bin below 0.001 (no empty bins); the cut is a bin edge
+    ax.hist(list(FD.values()), E, histtype="stepfilled", alpha=.55, color=list(FEMALE.values()), label=[f"{c} females (n = {len(v):,})" for c, v in FD.items()], zorder=2)   # overlaid cohorts, alpha (user 2026-11-11)
+    ax.hist(list(MD.values()), E, histtype="stepfilled", alpha=.55, color=list(MALE.values()), label=[f"{c} males (n = {len(v):,})" for c, v in MD.items()], zorder=2)
+    ax.set_yscale("log"); ax.set_ylim(.7, 5e3); ax.set_yticks([1, 10, 100, 1000], ["1", "10", "100", "1000"]); ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator()); ax.set_ylabel("Samples")
+    ax.axvline(out_cut, color=GREY, lw=.6, ls=(0, (3, 2)), zorder=1); ax.text(out_cut / 1.08, 2.6e3, f"{out_cut:g}", fontsize=FS["point"], ha="right", va="center")
+    fmax = max((r for r in F if float(r["y_dose"]) <= out_cut), key=lambda r: float(r["y_dose"]))
+    lab = [(r["sample"], float(r["y_dose"])) for r in males if float(r["y_dose"]) <= out_cut] + [(fmax["sample"], float(fmax["y_dose"]))] + [(r["sample"], float(r["y_dose"])) for r in F if float(r["y_dose"]) > out_cut]   # male without Y, highest female below the cut, recorded females with a Y
+    fem = {r["sample"] for r in F}; LC = {"female": FEMALE["1kGP"], "male": MALE["1kGP"]}   # label colour = recorded sex
+    for s_, d in lab:
+        k = int(np.searchsorted(E, d)) - 1; c_ = LC["female" if s_ in fem else "male"]
+        ax.annotate(s_, (np.sqrt(E[k] * E[k + 1]), .7), xytext={"HGDP00760": (-20, -16), "HGDP00247": (-20, -16), "HGDP01273": (-34, -16), "HGDP01239": (30, -16)}.get(s_, (-12, -16)), textcoords="offset points", annotation_clip=False, fontsize=FS["point"], ha="right", va="top", color=c_, fontweight="bold",
+                    arrowprops=dict(arrowstyle="-|>", color=c_, lw=.6, mutation_scale=4, shrinkA=1, shrinkB=0)); print(f"ED7a: labelled {s_} (Y dosage {d:.4f})", flush=True)
+    from matplotlib.lines import Line2D
+    sex_legend = ax.legend([Line2D([], [], color=LC[k], marker="$A$", ls="", ms=5) for k in LC], [f"recorded {k}" for k in LC], loc="lower left", bbox_to_anchor=(out_cut * 1.15, .0), bbox_transform=matplotlib.transforms.blended_transform_factory(ax.transData, ax.transAxes), fontsize=FS["legend"], frameon=False, handletextpad=.3)   # right of the no-Y cut line
+    ax.add_artist(sex_legend)
+    ax.axvspan(XLIM[0], out_cut, color="#e6e6e6", lw=0, zorder=0)   # no-Y range, as in b-d
+    handles, labels = ax.get_legend_handles_labels()
+    co = lambda h_l: [k for k in FEMALE].index(h_l[1].split()[0]); hl = sorted(zip(handles[:len(FD)], labels[:len(FD)]), key=co) + sorted(zip(handles[len(FD):], labels[len(FD):]), key=co); handles, labels = [h for h, _ in hl], [l for _, l in hl]   # cohort order 1kGP, HGDP, SGDP
+    female_legend = ax.legend(handles[:len(FD)], labels[:len(FD)], loc="upper center", bbox_to_anchor=((XLIM[0] * out_cut) ** .5, 1.0), bbox_transform=matplotlib.transforms.blended_transform_factory(ax.transData, ax.transAxes), fontsize=FS["legend"], frameon=False)
+    ax.add_artist(female_legend)
+    ax.legend(handles[len(FD):], labels[len(FD):], loc="upper right", bbox_to_anchor=(.84, 1.0), fontsize=FS["legend"], frameon=False)
+    head(ax, "Y dosage by recorded sex")
+
+
 def specificity_supplement(out):
-    """ED7: no Y in females and the background signal of the markers (was Fig. 1g)."""
-    from palette import head
-    fig = plt.figure(figsize=(180 * MM, 54 * MM))
-    T = fig.add_gridspec(1, 2, width_ratios=[1.12, .9], wspace=.42, bottom=.255, top=.845); L = T[0, 0].subgridspec(1, 2, width_ratios=[.42, .58], wspace=.06)
-    s1 = fig.add_subplot(L[0, 0]); s2 = fig.add_subplot(L[0, 1]); cb = fig.add_subplot(T[0, 1])
-    a1, a2 = dosage_by_sex((s1, s2)); nfem = specificity_bars(cb); head(cb, f"Background in {nfem} held-out females")
-    fig.canvas.draw(); p1, p2 = s1.get_position(), s2.get_position()
-    fig.text((p1.x0 + p2.x1) / 2, p1.y1 + TITLE_PAD / 72 / fig.get_figheight(), "Y dosage by recorded sex", fontsize=FS["title"], fontweight="bold", ha="center", va="baseline")
-    yb = min(t.get_window_extent(fig.canvas.get_renderer()).y0 for t in a1.get_xticklabels() + a2.get_xticklabels()) / fig.dpi / fig.get_figheight()
-    fig.text((p1.x0 + p2.x1) / 2, yb - 1.1 / 72 / fig.get_figheight(), "Y dosage", fontsize=FS["label"], fontstyle="italic", ha="center", va="top")
-    for s_, a_, dx in (("a", s1, .052), ("b", cb, .085)): fig.text(a_.get_position().x0 - dx, a_.get_position().y1 + TITLE_PAD / 72 / fig.get_figheight(), s_, fontsize=FS["letter"], fontweight="bold", va="baseline")
-    save(fig, out, "ed/ed7_specificity")
+    """ED7: Y dosage by recorded sex and the no-Y cut (a), male-female read mixtures (b-d, mixture_panels.py), one Y dosage axis."""
+    import mixture_panels
+    MIX = ROOT / "results/checks/mixtures_reads_ol_with10.tsv"; m10 = any(r["depth"] == "10.0" for r in read_tsv(MIX))   # e: 10x mixtures when present
+    fig, A = plt.subplots(5 if m10 else 4, 1, figsize=(180 * MM, 205 * MM), gridspec_kw=dict(height_ratios=[1] * 5 if m10 else [1, 1, 1.4, 1.4], hspace=.62, bottom=.05, top=.965, left=.09, right=.97))   # c, d taller (user 2026-11-11)
+    dosage_by_sex_log(A[0])
+    mixture_panels.draw(A[1:], MIX, ROOT / "results/model/cohort_1kgp.tsv", ROOT / "results/checks/ed7_mixtures_summary.tsv", xlim=XLIM)
+    for ax in A:
+        ax.set_xscale("log"); ax.set_xlim(*XLIM); ax.set_xticks([1e-4, 1e-3, 1e-2, .02, .03, .05, .1, .2, .5, 1, 2], ["0.0001", "0.001", "0.01", "0.02", "0.03", "0.05", "0.1", "0.2", "0.5", "1", "2"])   # every simulated male fraction; ax.minorticks_off()
+        ax.spines[["top", "right"]].set_visible(False)
+    A[0].set_xlabel("Y dosage", fontstyle="italic", labelpad=2)
+    for s_, a_ in zip("abcde", A): a_.text(-.08, 1.03, s_, transform=a_.transAxes, fontsize=FS["letter"], fontweight="bold", va="bottom")
+    save(fig, out, "ed/ed2_no_y_cut")
 
 
 def j_subtree_figure(valid, out):
@@ -947,7 +1231,7 @@ def j_subtree_figure(valid, out):
     # one panel as Fig. 2a: no letters
     ax.legend(handles=[Line2D([], [], ls="none", marker="o", ms=2.5, color=MUTED, label="From reads"), Line2D([], [], markeredgecolor=MUTED, label="Individual with a reference assembly", **REF_HANDLE)], loc="lower left", borderaxespad=.4)   # empty left side of b
     ax.add_artist(ax.get_legend()); ax.legend(handles=[Patch(facecolor=v, label=SUPERPOP_NAME[k]) for k, v in SUPERPOP.items()], loc="center left", bbox_to_anchor=(0, .5), title=NM["superpop"], title_fontproperties=TT(FS["legend"]), borderaxespad=.4, alignment="left")   # empty left side of b
-    save(fig,out,"ed/ed9_J_DYZ19")
+    save(fig,out,"ed/ed8_J_DYZ19")
     write_rows(AUX / "figureS5_J_membership.tsv",[
         {"sample":r["sample"],"haplogroup":r["haplogroup"],"family":r["family"],
          "reference_male":r["reference_male"],"DYZ19_bp":r["DYZ19_bp"]}
@@ -965,7 +1249,7 @@ def assembly_supplement(out):
     _, order = pruned_tree(groups, parents, children)
     rows = load_composition(ROOT / "data/method/yq12_truth_hallast.tsv", ROOT / "data/markers_u/truth_regions.tsv",
                             calls, parents, groups)
-    pop = [r for r in load_snapshot()[1] if in_summary(r, 'Yq12_bp')]   # same Yq12 inclusion rule as the population summaries, excluding PAR2 gains
+    pop = [r for r in load_snapshot()[1] if in_summary(r, 'Yq12_bp')]   # same inclusion rule as the population summaries
     composition_supplement(rows, order, out, pop)
     write_rows(AUX / "figureS2_composition_samples.tsv", rows)
 
@@ -1023,7 +1307,7 @@ def render_snapshot(path, raw, valid, pedigree, benchmarks, depth, out):
     summary["relatedness"] = info
     root, leaves = population_figure(valid, out, path, len(raw))
     population_supplement(valid, out)
-    from figure1 import ed4   # ED4 in the Fig. 1c style
+    from figure1 import ed4   # ED4: pooled and earliest-branching lineages
     ed4(out / 'ed/ed4_lineage_validation.pdf')
     depth_supplement(valid, out)
     specificity_supplement(out)

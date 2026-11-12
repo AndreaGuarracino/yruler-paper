@@ -602,7 +602,7 @@ def composition_supplement(rows, order, out, pop=()):
     a.set_xticks(centers, labels, rotation=90); a.set_xlim(x[0] - 1, x[-1] + 1); a.set_ylim(0, 100); a.set_ylabel("Annotated Yq12 bases (%)")
     leg = a.legend(loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=4, borderaxespad=0.2, columnspacing=0.8)   # one line at the top right
     fig.canvas.draw(); bb = leg.get_window_extent().transformed(a.transAxes.inverted())
-    a.text(bb.x0, (bb.y0 + bb.y1) / 2, NAMES["class"], transform=a.transAxes, ha="right", va="center", fontsize=FS["legend"], fontweight="bold")   # legend title on the same line
+    a.text(bb.x0, (bb.y0 + bb.y1) / 2, "Components", transform=a.transAxes, ha="right", va="center", fontsize=FS["legend"], fontweight="bold")   # legend title on the same line
     a.text(.33, 1.0 + 4 / 72 / (fig.get_figheight() * .44), f"Yq12 composition in {len(ordered)} reference assemblies", transform=a.transAxes, ha="center", va="baseline", fontsize=FS["title"], fontweight="bold")   # title left of the legend
     major = lambda g: g if g in ("R1a", "R1b") else ("NO" if g.startswith("NO") else g[0])
     lins = ["E", "R1b", "O", "R1a", "J"]
@@ -615,7 +615,10 @@ def composition_supplement(rows, order, out, pop=()):
         ax.scatter([r["annotated_span_bp"] / 1e6 for r in A], [100 * r["dyz1_fraction"] for r in A], marker="D", s=10, facecolor="white", edgecolor="k", lw=.6, zorder=4)
         sl, ic = np.polyfit(y, sh, 1); xs = np.array([np.percentile(y, 2), np.percentile(y, 98)]); ax.plot(xs, ic + sl * xs, color="k", lw=.9, zorder=3)
         rho = spearmanr(y, sh).statistic; ax.set_title(f"{lin} ({len(P)}), ρ = {rho:.2f}", color=c, fontsize=FS["title"] - 1.5)
-        ax.set_xlim(np.percentile(y, .5) - 1, np.percentile(y, 99.5) + 1); ax.set_ylim(47, 68)
+        ax.set_xlim(min([y.min()] + [r["annotated_span_bp"] / 1e6 for r in A]) - 1,
+                    max([y.max()] + [r["annotated_span_bp"] / 1e6 for r in A]) + 1)
+        ax.set_ylim(min(45, sh.min() - 1, *([100 * r["dyz1_fraction"] - 1 for r in A] or [45])),
+                    max(76, sh.max() + 1, *([100 * r["dyz1_fraction"] + 1 for r in A] or [76])))
         ax.set_xlabel("Yq12 length (Mb)")
         if k == 0: ax.set_ylabel("DYZ1 fraction of Yq12 (%)")
         else: ax.set_yticklabels([])
@@ -631,7 +634,7 @@ def composition_supplement(rows, order, out, pop=()):
     ta = .91 + 4 / 72 / fig.get_figheight()   # baseline of the panel a title
     for s_, x_, y_ in (("a", .005, ta), ("b", .005, .335)): fig.text(x_, y_, s_, fontsize=FS["letter"], fontweight="bold", va="baseline")   # letters on the title baselines
     for axx in fig.axes: axx.spines[["right", "top"]].set_visible(False)
-    save(fig, out, "ed/ed2_yq12_composition")
+    save(fig, out, "ed/ed9_yq12_composition")
 
 
 def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, dyz19_path, out):
@@ -705,7 +708,7 @@ def make_figure(catalog_path, calls_path, tree_path, locations_path, land_path, 
              ha="center", fontsize=7.5, color="#4d606b")
     fig.text(0.39, 0.012, "Haplogroup branches are schematic.  * Unresolved within NO.", ha="center", fontsize=7.5, color="#4d606b")
     plt.close(fig); print("old Fig. 2 layout not saved: main Fig. 2 comes from manuscript_figures.py", flush=True)
-    composition_supplement(composition, order, out)
+    # ED2 comes from figures_1kgp.py (with the cohort points)
 
     map_fig, map_ax = plt.subplots(figsize=(10.0, 4.5))
     world_map(map_ax, locations, land, label=None)

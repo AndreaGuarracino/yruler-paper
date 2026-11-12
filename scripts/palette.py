@@ -27,6 +27,8 @@ _mpl.rcParams.update({'legend.frameon': False, 'legend.handlelength': 1.0, 'lege
 
 
 DOSE = '#526774'   # Y dosage
+FEMALE = {'1kGP': '#7a4f72', 'HGDP': '#d0559a', 'SGDP': '#f2b8d2'}   # females by cohort: female purple (1kGP), magenta, light pink (user 2026-11-11: more distinct)
+MALE = {'1kGP': '#526774', 'HGDP': '#3f8fc0', 'SGDP': '#a6d6e6'}   # males by cohort: dosage grey-blue (1kGP = DOSE), blue, light cyan (user 2026-11-11: more distinct)
 INK, MUTED, LINE, GREY, ORANGE = '#22313a', '#55666f', '#60717a', '#a9b4ba', '#d9622b'   # text, guides, tree lines, other males, assemblies
 J2 = '#bd6078'   # J2a1a1 in ED8
 BAND = {'DYZ3': '#e8f1f7', 'DYZ19': '#f8e9ec'}   # highlighted rows
@@ -34,9 +36,9 @@ LAND = {'face': '#ebeff1', 'edge': '#bbc5ca'}
 CONTIG = {'face': '#f0f0f0', 'edge': '#bbbbbb'}   # ED1 contigs
 UNITS = {'Other units': '#a584b9', 'Unannotated': '#dbe1e5'}   # ED2 Yq12 composition
 SCHEME = {'reference': '#eef3f5', 'train': '#e7f1f7', 'test': '#f9eee7', 'output': '#eaf4ef'}   # Fig. 1a boxes
-LINEAGE = {'A': '#a73945', 'B': '#d3b183', 'C': '#2684b2', 'D': '#789bac', 'E': '#de915b', 'F': '#94a6ad', 'G': '#b6a14b', 'H': '#b3a1c8',
-           'I': '#8b6baa', 'J': '#439a88', 'L': '#83b955', 'M': '#68a5a7', 'NO': '#b0b6bf', 'N': '#9bbc59', 'O': '#62b9b5', 'Q': '#d8bb51',
-           'R': '#77628f', 'S': '#b78d69', 'T': '#c4d39e', 'Unassigned': '#dddddd'}   # Y lineages
+LINEAGE = {'A': '#00d2c3', 'B': '#4bb4d2', 'C': '#4bd2ff', 'D': '#4b96d2', 'E': '#5a78d2', 'F': '#5a5ac3', 'G': '#875a78', 'H': '#d25aa5',
+           'I': '#ff96b4', 'J': '#a56978', 'L': '#d28796', 'M': '#a53c3c', 'NO': '#a54b00', 'N': '#ffa53c', 'O': '#b47800', 'Q': '#c3964b',
+           'R': '#96875a', 'S': '#b4c387', 'T': '#00785a', 'Unassigned': '#dddddd'}   # Y lineages; colour-blind aware (min CAM02-UCS distance 9.1 over normal, deuteranopia, protanopia; was 0.5), 2026-11-09
 HEAT = ['#123c73', '#2a78d6', '#9cc3ee', '#d4d3ce', '#f2a6a5', '#e34948', '#8f1f1f']   # ED3 copy-number classes
 STAIN = {'gneg': '#fcfcfb', 'gpos50': '#a9a8a4', 'acen': '#5d5c58', 'gvar': '#d6d5d1'}   # cytoband stains
 COLOR = {**CLASS, 'DYZ1:DYZ2': RATIO, 'Y dosage': DOSE}   # every panel title colour
@@ -93,5 +95,7 @@ def crop_ink(path, pad=1.5, dpi=300):
     r = PdfReader(str(path)); w = PdfWriter(); pg = r.pages[0]; x0, y0, x1, y1 = (float(v) for v in pg.mediabox)
     box = (x0 + xs.min() * k - q, y1 - (ys.max() + 1) * k - q, x0 + (xs.max() + 1) * k + q, y1 - ys.min() * k + q)
     pg.mediabox.lower_left, pg.mediabox.upper_right = box[:2], box[2:]; pg.cropbox.lower_left, pg.cropbox.upper_right = box[:2], box[2:]
+    wm = (box[2] - box[0]) / 72 * 25.4
+    if wm > 180: pg.scale_by(180 / wm); print(f'scaled {path} by {180 / wm:.3f} to the 180-mm Nature width', flush=True)   # double-column limit
     w.add_page(pg); w.write(str(path))
-    print(f'cropped {path} to ink + {pad} mm: {(box[2] - box[0]) / 72 * 25.4:.1f} x {(box[3] - box[1]) / 72 * 25.4:.1f} mm', flush=True)
+    print(f'cropped {path} to ink + {pad} mm: {min(wm, 180):.1f} x {(box[3] - box[1]) / 72 * 25.4 * min(1, 180 / wm):.1f} mm', flush=True)

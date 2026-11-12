@@ -6,18 +6,18 @@ est, dup, nodup, out = sys.argv[1:5]
 E = {r['sample']: r for r in csv.DictReader(open(est), delimiter='\t')}
 D = {r['sample']: float(r['dup_fraction']) for r in csv.DictReader(open(dup), delimiter='\t')}
 C = {'dyz3': 'DYZ3', 'yq12': 'Yq12', 'dyz1': 'DYZ1', 'dyz2': 'DYZ2', 'dyz18s': 'DYZ18S', 'dyz19': 'DYZ19', 'dyz17': 'DYZ17'}
-YQ = {'Yq12', 'DYZ1', 'DYZ2'}   # PAR2 gains out of these
+valid = {r['sample'] for r in csv.DictReader(open('results/model/cohort_1kgp.tsv'), delimiter='\t') if r['sex'] == 'male' and r['y_status'] == 'y_found'}
 rows = []
 # population-summary males, lineage-centred Spearman
 for c in C.values():
-    S = [r for r in E.values() if r['comparable'] == 'yes' or (r['comparable'] == 'no_Yq12' and c not in YQ)]
+    S = [r for r in E.values() if r['sample'] in valid]
     miss = [r['sample'] for r in S if r['sample'] not in D]
     if miss: raise SystemExit(f'ERROR {len(miss)} males without a duplicate fraction, first {miss[:3]}')
     d, v, g = np.array([D[r['sample']] for r in S]), np.log([float(r[f'{c}_bp']) for r in S]), np.array([r['lineage'] for r in S])
     for k in set(g): m = g == k; d[m] -= d[m].mean(); v[m] -= v[m].mean()
     rho = spearmanr(d, v)[0]; rows.append(('within_lineage_spearman', c, len(S), f'{rho:+.3f}', '.', '.'))
     print(f'{c}: {len(S)} males, {len(set(g))} lineages, within-lineage rho {rho:+.3f}', flush=True)
-S = [r['sample'] for r in E.values() if r['comparable'] in ('yes', 'no_Yq12')]; f = 100 * np.array([D[s] for s in S])
+S = [r['sample'] for r in E.values() if r['sample'] in valid]; f = 100 * np.array([D[s] for s in S])
 rows.append(('duplicate_fraction_pct', 'all', len(S), f'{np.median(f):.2f}', f'{np.percentile(f, 10):.2f}', f'{np.percentile(f, 90):.2f}'))
 print(f'duplicate fraction: {len(S)} males, median {np.median(f):.2f}%, p10-p90 {np.percentile(f, 10):.2f}-{np.percentile(f, 90):.2f}%', flush=True)
 # same reads without duplicates, same model

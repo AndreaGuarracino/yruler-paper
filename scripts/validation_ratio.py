@@ -18,8 +18,8 @@ def paired(a,b):
         assert np.isfinite(factor) and factor>0
         r=dict(sample=sample,signed=100*(factor-1),reference_ratio=ref,estimate_ratio=ref*factor)
         if 'fold' in x:r['fold']=x['fold']
-        if 'chr2_depth' in x:
-            assert np.isclose(x['chr2_depth'],y['chr2_depth']);r['chr2_depth']=x['chr2_depth']
+        if 'chr8_depth' in x:
+            assert np.isclose(x['chr8_depth'],y['chr8_depth']);r['chr8_depth']=x['chr8_depth']
         result.append(r)
     return result
 

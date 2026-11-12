@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Supplementary Fig. 1: aligned read depth, which uses no Yruler marker, against the Yruler estimates of DYZ3 and DYZ19 (Fig. 1 style).
-usage: python3 scripts/suppfig1_markerfree.py [out.pdf]   (default manuscript/figures/supp/suppfig1_markerfree.pdf)
+usage: python3 scripts/suppfig2_markerfree.py [out.pdf]   (default manuscript/figures/supp/suppfig2_markerfree.pdf)
 inputs: results/checks/dyz3_check.tsv (aligned_ratio: GRCh38 DYZ3 block over chrY:14.5-15.5 Mb),
-        results/checks/dyz19_depth.tsv (depth_ratio_core: chrY:20,054,500-20,351,000 over chrY:14.5-15.5 Mb, um_dyz19depth.py with v9bBx),
+        results/checks/dyz19_depth.tsv (depth_ratio_core: chrY:20,054,500-20,351,000 over chrY:14.5-15.5 Mb, um_dyz19depth.py; its DYZ19_bp column is v9bBx and is not used),
         results/checks/alignchk.tsv (same reads aligned by DRAGEN 3.7.6 and NYGC BWA: aligned depth per class, um_alignchk.py, 7 classes),
-        Yruler estimates and population set from figures_1kgp.load_snapshot (final model v9bBx)."""
+        results/checks/ont_estimates_v8bBxontAmeanA1pgOL.tsv (nanopore production estimates of 84 R10.4.1 males, um_ontall.py),
+        Yruler estimates and population set from figures_1kgp.load_snapshot (final model v9bBxAmean)."""
 import csv, sys
 from pathlib import Path
 import numpy as np
@@ -18,7 +19,7 @@ from palette import CLASS, LINEAGE, MUTED, RATIO
 from matplotlib.colors import to_rgba
 
 ROOT = Path(__file__).resolve().parents[1]
-S, H = 0.75, 589   # pt per font unit, page height in Fig. 1 units
+S, H = 0.75, 664   # pt per font unit, page height in Fig. 1 units
 XS = 180 / 25.4 * 72 / S / 540; W = 540 * XS   # 180 mm wide, Fig. 1 font sizes
 GREY = '#B8C0C6'
 rd = lambda p: {r['sample']: r for r in csv.DictReader(open(p), delimiter='\t')}
@@ -65,13 +66,41 @@ def aligner(ax):
         ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.45, patch_artist=True, manage_ticks=False, zorder=3,
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22)
         print(f'aligner {n}: {len(v)} males, DRAGEN vs BWA aligned depth median {q[2]:.2f}%, range {v.min():.2f} to {v.max():.2f}%', flush=True)
-    ax.set_xticks(range(len(cl)), cl); ax.set_xlim(-.6, len(cl) - .4)
+    ax.set_xticks(range(len(cl)), cl, rotation=90); ax.set_xlim(-.6, len(cl) - .4)   # 8 names in the width of panel a
     for t, n in zip(ax.get_xticklabels(), cl): t.set_color(RATIO if n == 'DYZ1:DYZ2' else CLASS[n]); t.set_fontweight('bold')
-    style(ax, '', 'DRAGEN − BWA aligned depth (%)'); put(291, 347, f'Aligner dependence ({len(v)} males)', 12, fontweight='bold', ha='center'); put(8, 347, 'c', 20, fontweight='bold')
+    style(ax, '', 'DRAGEN − BWA aligned depth (%)'); put(157, 347, f'Aligner dependence ({len(v)} males)', 12, fontweight='bold', ha='center'); put(8, 347, 'c', 20, fontweight='bold')
+
+
+def nanopore(ax):
+    """Nanopore estimates against short-read estimates of the same males."""
+    O = {}
+    for r in csv.DictReader(open(ROOT / 'results/checks/ont_estimates_v8bBxontAmeanA1pgOL.tsv'), delimiter='\t'): O.setdefault(r['sample'], {})[r['class']] = float(r['estimate_bp'])
+    _, valid, _ = f.load_snapshot(); E = {r['sample']: r for r in valid}
+    M = sorted(s for s in O if s in E); K = {'DYZ3': 'dyz3', 'Yq12': 'yq12', 'DYZ19': 'dyz19'}
+    G = {'O2a2b1a1': ([s for s in M if E[s]['haplogroup'].startswith('O2a2b1a1')], CLASS['DYZ3']),
+         'O2a2b1a2': ([s for s in M if E[s]['haplogroup'].startswith('O2a2b1a2')], LINEAGE['O']),
+         'J2a1a1': ([s for s in M if E[s]['haplogroup'].startswith('J2a1a1')], CLASS['DYZ19'])}
+    mk = {'DYZ3': 'o', 'Yq12': 's', 'DYZ19': '^'}
+    for n, k in K.items():
+        x = np.array([float(E[s][f'{n}_bp']) / 1e6 for s in M]); y = np.array([O[s][k] / 1e6 for s in M])
+        ax.scatter(x, y, s=5, marker=mk[n], color=CLASS[n], alpha=.55, lw=0, zorder=2, label=f'{n} ({len(M)})')
+        print(f'nanopore {n}: {len(M)} males, Spearman {spearmanr(x, y).statistic:.3f}, median |difference| {100 * np.median(np.abs(y / x - 1)):.2f}%', flush=True)
+    for lab, (S_, c) in G.items():
+        for n in ('DYZ3', 'DYZ19'):
+            if (lab.startswith('O2a')) != (n == 'DYZ3'): continue
+            xs = [float(E[s][f'{n}_bp']) / 1e6 for s in S_]; ys = [O[s][K[n]] / 1e6 for s in S_]
+            ax.scatter(xs, ys, s=22, marker=mk[n], facecolor='none', edgecolor=c, lw=.9, zorder=4, label=f'{lab} ({len(S_)})')
+            print(f'nanopore {lab} {n}: ' + ', '.join(f'{1e3 * v:.0f} kb against {1e3 * u:.0f} kb' for u, v in zip(xs, ys)), flush=True)
+    lo, hi = 2e-2, 60; ax.plot([lo, hi], [lo, hi], color=MUTED, lw=.6, ls=(0, (3, 2)), zorder=1)
+    ax.set_xscale('log'); ax.set_yscale('log'); ax.set_xlim(lo, hi); ax.set_ylim(lo, hi); ax.set_aspect('equal')
+    t = [.05, .1, .5, 1, 5, 10, 50]; ax.set_xticks(t, [f'{v:g}' for v in t]); ax.set_yticks(t, [f'{v:g}' for v in t]); ax.minorticks_off()
+    style(ax, 'Short-read estimate (Mb, log scale)', 'Nanopore estimate (Mb, log scale)')
+    ax.legend(loc='upper left', fontsize=8 * S, frameon=False, handletextpad=.2, borderaxespad=.3, ncol=2, columnspacing=.8)
+    put(425, 347, f'Nanopore ({len(M)} males)', 12, fontweight='bold', ha='center'); put(276, 347, 'd', 20, fontweight='bold')
 
 
 def main():
-    out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/supp/suppfig1_markerfree.pdf'
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'manuscript/figures/supp/suppfig2_markerfree.pdf'
     _, valid, _ = f.load_snapshot(); E = {r['sample']: r for r in valid if r.get('population_included') in (True, 'True', 'yes')}
     print(f'population males {len(E)}', flush=True)
     D3 = rd(ROOT / 'results/checks/dyz3_check.tsv'); D19 = rd(ROOT / 'results/checks/dyz19_depth.tsv')
@@ -82,7 +111,7 @@ def main():
     a = axes(52, 34, 262, 299)   # square: 210 x units = 265 y units
     panel(a, [('other lineages', rest, GREY, .5, 5, 1), ('R1b', r1b, LINEAGE['R'], .7, 7, 2), ('O2a2b1a2', o2, LINEAGE['O'], .9, 12, 3), ('O2a2b1a1', o1, CLASS['DYZ3'], .9, 12, 4)],
           'est', 'aligned_ratio', 1e6, 'DYZ3', 'a', 52, 262, 'Yruler DYZ3 estimate (Mb)', 'Aligned read depth, DYZ3 / control')
-    r19 = [dict(r, est=r['DYZ19_bp']) for s, r in D19.items() if s in E]
+    r19 = [dict(r, est=E[s]['DYZ19_bp']) for s, r in D19.items() if s in E]   # estimates of the current snapshot, not the v9bBx column of dyz19_depth.tsv
     for nm, rr, k in (('DYZ3', r3, 'aligned_ratio'), ('DYZ19', r19, 'depth_ratio_core')):   # least-squares line for the caption
         x, y = np.array([float(r['est']) for r in rr]), np.array([float(r[k]) for r in rr]); sl, ic = np.polyfit(x, y, 1); r2 = 1 - np.var(y - sl * x - ic) / np.var(y)
         print(f'{nm} fit: {k} = estimate / {1 / sl / 1e3:.1f} kb + {ic:.3f}, R2 {r2:.4f}, {len(x)} males, median |residual| {100 * np.median(np.abs(y - sl * x - ic) / y):.2f}%', flush=True)
@@ -90,7 +119,8 @@ def main():
     b = axes(320, 34, 530, 299)
     panel(b, [('other lineages', ot, GREY, .5, 5, 1), ('other J', jo, LINEAGE['J'], .6, 8, 2), ('J2a1a1', j1, CLASS['DYZ19'], .9, 10, 3)],
           'est', 'depth_ratio_core', 1e3, 'DYZ19', 'b', 320, 530, 'Yruler DYZ19 estimate (kb)', 'Aligned read depth, DYZ19 core / control')
-    aligner(axes(52, 359, 530, 569))
+    aligner(axes(52, 359, 262, 624))
+    nanopore(axes(320, 359, 530, 624))
     from palette import PAD, crop_ink
     fig.savefig(out, bbox_inches='tight', pad_inches=PAD); crop_ink(out); print(f'written {out}: {W * S / 72 * 25.4:.1f} x {H * S / 72 * 25.4:.1f} mm', flush=True)
 

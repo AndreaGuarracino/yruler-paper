@@ -2331,3 +2331,14 @@ SGDP	SGDP_HG03006	Bengali	23.7	90.4	Unassigned	no matched published assignment		
 SGDP	SGDP_HGDP01079	Sardinian	40.0	9.0	J	Hallast 2021 Supplementary Table 2	HGDP01079;LP6005441-DNA_C11	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_HGDP01076	Sardinian	40.0	9.0	J	Hallast 2021 Supplementary Table 2	HGDP01076;SS6004474	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
 SGDP	SGDP_ND19394	Korean	37.6	127.0	O	Hallast 2021 Supplementary Table 2	LP6005443-DNA_D06;ND19394	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
+HGDP	HGDP00763	Japanese	38.0	138.0	O	HaploGrouper ISOGG 2019; delivered chrY genotype calls 2026-10-28	HGDP00763	IGSR population metadata	planned manifest before final QC	O1b2a1a1a1	called	67163	1035		True	
+HGDP	HGDP00916	Mandenka	12.0	-12.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01006	Karitiana	-10.0	-63.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01024	Han	32.3	114.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01051	Pima	29.0	-108.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01219	Daur	48.5	124.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01239	Hezhen	47.5	133.5	O	Hallast 2021 Supplementary Table 2	HGDP01239	IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01273	Mozabite	32.0	3.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+HGDP	HGDP01381	Adygei	44.0	39.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented				True	
+SGDP	SGDP_HG00126	English	51.2	0.7	R	Hallast 2021 Supplementary Table 2	HG00126;LP6005442-DNA_E10	IGSR population metadata	planned manifest before final QC		not supplemented			M	True	
+SGDP	SGDP_IHW9118	Australian	-13.0	143.0	Unassigned	no matched published assignment		IGSR population metadata	planned manifest before final QC		not supplemented			U	True	

@@ -56,14 +56,12 @@ if __name__ == '__main__':
         c, s, v = l.split()[:3]
         if s in T[c]: T[c][s] = float(v)
     EX = {l.split()[0] for l in open(os.environ['EXCL'])} if os.environ.get('EXCL') else set(); CM = {f[:-4] for f in os.listdir(f'{O}/cnpy') if f.endswith('.npy')}
-    RS = [T['yq12'][m] - T['dyz1'][m] - T['dyz2'][m] for m in sorted(CM - EX) if all(m in T[c] for c in ('yq12', 'dyz1', 'dyz2'))]; REST = float(np.median(RS))
-    log(f'Yq12 = DYZ1 + DYZ2 + rest; rest = median Yq12 - DYZ1 - DYZ2 of {len(RS)} training truth males = {REST:.0f} bp (min {min(RS):.0f}, max {max(RS):.0f})')
     np.savez(f'{D}/model.npz', **ff)
     with open(f'{D}/model.tsv', 'w') as o:
         o.write('\t'.join(H + ['min_gc', 'length']) + '\n')
         for m in mf:
-            c = m['class']; o.write('\t'.join([m[h] for h in H] + [str(FL.get(c, 0)), ({'rest': 'dyz1+dyz2+yq12rest', 'rest2': 'dyz1+dyz2+dyz18s+yq12rest2', 'plain': 'yq12'}.get(os.environ.get('YQ12', 'rest'), f'dyz1+dyz2+{REST:.0f}') if c == 'yq12' else 'none' if c in ('yq12rest', 'yq12rest2') else c)]) + '\n')
+            c = m['class']; o.write('\t'.join([m[h] for h in H] + [str(FL.get(c, 0)), ('dyz1+dyz2+dyz18s+yq12rest2' if c == 'yq12' else 'none' if c in ('yq12rest', 'yq12rest2') else c)]) + '\n')
     with open(f'{D}/source.txt', 'w') as o:
         for m in sorted({B, F}): o.write(''.join(f'{x}.npz md5 {hashlib.md5(open(f"{O}/{x}.npz", "rb").read()).hexdigest()}; {x}.tsv md5 {hashlib.md5(open(f"{O}/{x}.tsv", "rb").read()).hexdigest()}\n' for x in ([m] if os.path.exists(f'{O}/{m}.npz') else [f'{m}_{c}' for c in CL if os.path.exists(f'{O}/{m}_{c}.npz')])))
-        o.write(f'GC floors (of 31 bases): {",".join(f"{c}:{g}" for c, g in FL.items())}; Yq12 = ' + {'rest': 'DYZ1 + DYZ2 + estimated rest (class yq12rest)', 'rest2': 'DYZ1 + DYZ2 + DYZ18S + estimated rest without DYZ18S (class yq12rest2)', 'plain': 'own markers'}.get(os.environ.get('YQ12', 'rest'), f'DYZ1 + DYZ2 + {REST:.0f} bp (median rest of {len(RS)} training truth males)') + '\n')
+        o.write(f'GC floors (of 31 bases): {",".join(f"{c}:{g}" for c, g in FL.items())}; Yq12 = DYZ1 + DYZ2 + DYZ18S + estimated rest (class yq12rest2)' + '\n')
     log(open(f'{D}/model.tsv').read() + open(f'{D}/source.txt').read() + f'written {D}')

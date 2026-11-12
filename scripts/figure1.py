@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fig. 1: panels a-b cut from Alejandro's Fig1_Yruler_v4.svg, panels c-f drawn from the model tables in its style (specificity moved to Extended Data Fig. 5).
-usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4 in the Fig. 1c style)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
+usage: python3 scripts/figure1.py [out dir] | python3 scripts/figure1.py ed4   (ed4: Extended Data Fig. 4, a pooled excluded-lineage errors, b earliest-branching lineages)   (default manuscript/figures/main; TOP: c drops points above TOP %, counted as triangles; needs inkscape and pypdf)
 writes <out>/fig1/fig1{a..f}_*.pdf (one per panel) and <out>/fig1_method.pdf/.svg (the panels composed).
 Layout units are the SVG units (540 wide, y down); 1 unit = 0.75 pt in the PDF, as in the Inkscape export of v4."""
 import collections as co, csv, os, re, subprocess, sys, tempfile, xml.etree.ElementTree as ET
@@ -30,6 +30,7 @@ KEY = {n: n.lower() for n in NAMES}
 FONTS = [("'ArialMT';", "'Arial';"), ("'Arial-BoldMT';", "'Arial';font-weight:bold;"), ("'Arial-ItalicMT';", "'Arial';font-style:italic;"),
          ("'Arial-BoldItalicMT';", "'Arial';font-weight:bold;font-style:italic;"), ("'HelveticaNeue-Light';", "'Arial';font-weight:300;"),
          ("'HelveticaNeue-Italic';", "'Arial';font-style:italic;"), ("'HelveticaNeue-MediumItalic';", "'Arial';font-weight:500;font-style:italic;")]
+RECOLOR = [(f'.st{n}{{fill:{a};stroke:#9A5A18;', f'.st{n}{{fill:{CLASS[c]};stroke:#3D4651;') for n, a, c in ((46, '#D9822B', 'DYZ1'), (49, '#D9822B', 'DYZ1'), (47, '#F2B872', 'DYZ2'), (50, '#F2B872', 'DYZ2'))]   # b Output box: DYZ1/DYZ2 array and legend in the palette colours
 DRAWN = {'path', 'text', 'line', 'rect', 'circle', 'ellipse', 'polygon', 'polyline', 'g', 'image', 'use'}
 GREY, SHADE, GRIDC = '#55666F', '#F4F6F7', '#E8EDEF'
 rd = lambda p: list(csv.DictReader(open(p), delimiter='\t'))
@@ -64,6 +65,9 @@ def svg_panels(tmp, out):
         r.set('viewBox', f'{x0} {y0} {x1 - x0} {y1 - y0}'); r.set('style', f'enable-background:new {x0} {y0} {x1 - x0} {y1 - y0};')
         s = ET.tostring(r, encoding='unicode')
         for a, b in FONTS: s = s.replace(a, b)
+        for a, b in RECOLOR:
+            if a not in s: sys.exit(f'ERROR panel {p}: style {a} not found for recolouring')
+            s = s.replace(a, b)
         f = out / f'fig1{p}_{PANELS[p][0]}.pdf'; (tmp / f'{p}.svg').write_text(s)
         subprocess.run(['inkscape', str(tmp / f'{p}.svg'), '--export-type=pdf', f'--export-filename={f}'], check=True, capture_output=True)
         print(f'panel {p}: {sum(v == p for v in parts.values())} SVG elements, y {high:.1f}-{low:.1f} -> {f}', flush=True)
@@ -127,7 +131,7 @@ def cv_errors():
         m = co.defaultdict(list)
         for (rep, male), v in U[KEY[n]].items(): m[male].append(abs(v))
         if {len(v) for v in m.values()} != {10}: sys.exit(f'ERROR {n}: not 10 repeats per male')
-        out[n] = ({k: float(np.mean(v)) for k, v in m.items()}, float(np.median(np.abs(list(U[KEY[n]].values())))))
+        out[n] = ({k: float(np.mean(v)) for k, v in m.items()}, float(np.median([np.mean(v) for v in m.values()])))
     return out
 
 
@@ -181,11 +185,11 @@ def cost(x0, x1, uc):   # uc: design units per box step in c, so boxes match
         ax.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[i], widths=.55 * k, patch_artist=True, manage_ticks=False, zorder=3,
                boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=.22 * k)
         print(f'cost {["runtime min", "peak memory GB"][i]}: {len(v)} CRAMs, median {q[2]:.2f}, p10-p90 {q[0]:.2f}-{q[4]:.2f}, min {v.min():.2f}, max {v.max():.2f}', flush=True)
-    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(1.1, 2.3); b.set_ylim(3.45, 3.53); a.set_yticks([1.2, 1.4, 1.6, 1.8, 2, 2.2], ['1.2', '1.4', '1.6', '1.8', '2.0', '2.2']); b.set_yticks([3.46, 3.48, 3.5, 3.52], ['3.46', '3.48', '3.50', '3.52'])   # zoomed on the data (axes do not start at 0)   # axes end above the top tick, clear of the title
+    a.set_xlim(-.36, 1.36); a.set_xticks([0, 1], ['Runtime', 'Memory']); a.set_ylim(1.3, 2.45); b.set_ylim(3.43, 3.536); a.set_yticks([1.4, 1.6, 1.8, 2.0, 2.2, 2.4], ['1.4', '1.6', '1.8', '2.0', '2.2', '2.4']); b.set_yticks([3.43, 3.45, 3.47, 3.49, 3.51, 3.53], ['3.43', '3.45', '3.47', '3.49', '3.51', '3.53'])   # zoomed on the data (axes do not start at 0)   # axes end above the top tick, clear of the title
     for ax, side in ((a, 'left'), (b, 'right')): frame(ax, ('bottom', side))
     for tk in a.get_xticklabels(): tk.set_fontweight('bold')   # black
     a.set_ylabel('Runtime (min)', fontsize=10 * S, fontstyle='italic', labelpad=2); b.set_ylabel('Memory (GB)', fontsize=10 * S, fontstyle='italic', labelpad=2)
-    put((x0 + x1) / 2, 357, 'Performance', 12, fontweight='bold', ha='center'); put(x0 - 40, 357, 'd', 20, fontweight='bold')   # letter on the title baseline, clear of the tick labels
+    put((x0 + x1) / 2, 357, 'Runtime and memory', 11, fontweight='bold', ha='center'); put(x0 - 44, 357, 'd', 20, fontweight='bold')   # letter on the title baseline, clear of the tick labels
 
 
 def panel_c(out):
@@ -193,18 +197,57 @@ def panel_c(out):
 
 
 def ed4(path):
-    """Extended Data Fig. 4: excluded-lineage errors, Fig. 1c style."""
-    global R, XS
-    global P_
-    XS = 180 / 25.4 * 72 / S / 540; panel('c'); P_ = 'ed4'; R = (0, 342, 540 * XS, 270); FIG.set_size_inches(R[2] * S / 72, R[3] * S / 72)   # ED4: no shrink
-    E = lolo_errors(); mx = max(max(per.values()) for per, _ in E.values()); print(f'ED4 largest error {mx:.2f}%', flush=True)
-    boxes(E, 'Absolute error (%, log scale)', 'Excluded-lineage error', '', ybot=581)   # every point shown, log y as Fig. 1c
-    from palette import PAD, crop_ink
-    FIG.savefig(path, bbox_inches='tight', pad_inches=PAD); crop_ink(path); plt.close(FIG); XS = 1; print(f'written {path}', flush=True)
+    """Extended Data Fig. 4: excluded-lineage errors, a pooled per class, b split by the earliest-branching lineages A, B, D, E, C on the same rows."""
+    from palette import FS, MM, PAD, crop_ink
+    E = lolo_errors(); H = {r['sample']: r['haplogroup'] for r in rd(ROOT / 'data/method/haplogroups_cv_males.tsv')}; DEEP = ['A', 'B', 'D', 'E', 'C']   # first splits of the Y tree: A, B, then the CT branches
+    sub = lambda per, l: np.array([per[m] for m in per if H[m][0] == l])
+    fig = plt.figure(figsize=(180 * MM, 235 * MM)); G = fig.add_gridspec(2, 2, width_ratios=[1, 1.15], height_ratios=[150, 92], wspace=.4, hspace=.16)
+    a, b = fig.add_subplot(G[0, 0]), fig.add_subplot(G[0, 1]); cx = fig.add_subplot(G[1, :]); rng = np.random.default_rng(1); y = 0; T = []
+    J2 = ('HG02492', 'HG02735', 'NA20809')   # short J2a1a1 DYZ19 arrays
+    for n in NAMES:
+        per, md = E[n]; c = COL[n]; L = [l for l in DEEP if len(sub(per, l))]; y0 = y
+        for l in L:
+            v = sub(per, l); m = float(np.median(v)); b.scatter(v, y + rng.uniform(-.2, .2, len(v)), s=4, color=c, alpha=.6, lw=0, zorder=2)
+            b.plot([m, m], [y - .3, y + .3], color='k', lw=1.1, zorder=4); b.text(1.01, y, f'{m:.2f}%', color=c, va='center', ha='left', fontsize=FS['tick'], transform=b.get_yaxis_transform())
+            T.append((y, f'{l} ({len(v)})')); print(f'ED4b {n} {l}: {len(v)} males, median {m:.2f}%, max {v.max():.2f}%', flush=True); y += 1
+        mid = (y0 + y - 1) / 2; males = sorted(per); v = np.array([per[k] for k in males]); q = np.percentile(v, [10, 25, 50, 75, 90]); yy = mid + rng.uniform(-1.3, 1.3, len(v))
+        a.scatter(v, yy, s=4, color=c, alpha=.55, lw=0, zorder=2)
+        a.bxp([dict(whislo=q[0], q1=q[1], med=q[2], q3=q[3], whishi=q[4], fliers=[])], positions=[mid], widths=2.6, vert=False, patch_artist=True, manage_ticks=False, zorder=3,
+              boxprops=dict(facecolor=to_rgba(c, .28), edgecolor=c, lw=.75), medianprops=dict(color='k', lw=1.2), whiskerprops=dict(color='k', lw=.6), capprops=dict(color='k', lw=.6), capwidths=1)
+        if n == 'DYZ19': [a.scatter(per[k], yy[males.index(k)], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, zorder=5) for k in J2 if k in per]
+        a.text(1.01, mid, f'{md:.2f}%', color=c, va='center', ha='left', fontsize=FS['tick'], transform=a.get_yaxis_transform()); a.text(.0075, mid, f'{n}\n(n = {len(v)})', color=c, ha='right', va='center', fontsize=FS['tick'], fontweight='bold')
+        print(f'ED4a {n}: {len(v)} males, median {md:.2f}%, p10-p90 {q[0]:.2f}-{q[4]:.2f}, max {v.max():.2f}', flush=True)
+        for ax in (a, b): ax.axhline(y - .2, color=GRIDC, lw=.6)
+        y += .6
+    for ax in (a, b):
+        ax.set_xscale('log'); ax.set_xlim(.01, 50); ax.set_xticks([.01, .1, 1, 10], ['0.01', '0.1', '1', '10']); ax.set_ylim(y - .3, -.8); frame(ax, ('bottom',))
+        ax.grid(axis='x', color=GRIDC, lw=.5); ax.set_axisbelow(True); ax.set_xlabel('Absolute error (%, log scale)', fontsize=FS['label'], fontstyle='italic')
+    a.set_yticks([]); b.set_yticks([p for p, _ in T], [t for _, t in T], fontsize=FS['tick']); b.tick_params(axis='y', length=0)
+    a.set_title('All excluded lineages', fontsize=FS['title'], fontweight='bold'); b.set_title('Earliest-branching excluded lineages', fontsize=FS['title'], fontweight='bold')
+    for ax, k in ((a, 'a'), (b, 'b')): ax.text(-.02 if k == 'b' else -.2, 1.0, k, transform=ax.transAxes, fontsize=FS['letter'], fontweight='bold', va='bottom', ha='right')
+    a.scatter([], [], marker='D', s=12, facecolor='white', edgecolor='k', lw=.6, label='Short J2a1a1 DYZ19 arrays'); a.legend(loc='upper left', fontsize=FS['legend'], bbox_to_anchor=(0, -.06), borderaxespad=0)
+    R = rd(ROOT / 'results/model/range_units.tsv'); DES = [('short_to_long', 'Short \u2192 long'), ('long_to_short', 'Long \u2192 short'), ('middle_to_extremes', 'Centre \u2192 ends')]   # c: length extrapolation
+    yc = 0; TC = []; MK = {'short_to_long': '>', 'long_to_short': '<', 'middle_to_extremes': 'o'}
+    for n in [x for x in NAMES if x != 'DYZ1:DYZ2']:
+        c = COL[n]; y0 = yc
+        for d, lab in DES:
+            x = [r for r in R if r['class'] == n and r['design'] == d]
+            if not x: continue
+            v = np.array([float(r['abs_error_pct']) for r in x]); w = np.array([float(r['cv_mean_abs_error_pct']) for r in x]); m, mw = float(np.median(v)), float(np.median(w))
+            cx.scatter(v, yc + rng.uniform(-.25, .25, len(v)), s=4, color=c, alpha=.6, lw=0, zorder=2); cx.plot([m, m], [yc - .32, yc + .32], color='k', lw=1.1, zorder=4)
+            cx.plot([mw, mw], [yc - .32, yc + .32], color='#888888', lw=1.1, ls=(0, (1.5, 1)), zorder=4)
+            cx.text(1.01, yc, f'{m:.2f}% (CV {mw:.2f}%)', color=c, va='center', ha='left', fontsize=FS['tick'], transform=cx.get_yaxis_transform())
+            TC.append((yc, f'{lab} ({len(v)})')); print(f'ED4c {n} {d}: {len(v)} test males, median {m:.2f}% (same males in CV {mw:.2f}%), max {v.max():.2f}%', flush=True); yc += 1
+        if yc > y0: cx.text(-.135, (y0 + yc - 1) / 2, n, color=c, ha='right', va='center', fontsize=FS['tick'], fontweight='bold', transform=cx.get_yaxis_transform()); cx.axhline(yc - .5, color=GRIDC, lw=.6); yc += .3
+    cx.set_xscale('log'); cx.set_xlim(.01, 50); cx.set_xticks([.01, .1, 1, 10], ['0.01', '0.1', '1', '10']); cx.set_ylim(yc - .5, -.7); frame(cx, ('bottom',)); cx.grid(axis='x', color=GRIDC, lw=.5); cx.set_axisbelow(True)
+    cx.set_yticks([p for p, _ in TC], [t for _, t in TC], fontsize=FS['tick']); cx.tick_params(axis='y', length=0)
+    cx.set_xlabel('Absolute error (%, log scale)', fontsize=FS['label'], fontstyle='italic'); cx.set_title('Arrays outside the training length range', fontsize=FS['title'], fontweight='bold')
+    cx.text(-.215, 1.0, 'c', transform=cx.transAxes, fontsize=FS['letter'], fontweight='bold', va='bottom', ha='right')
+    fig.savefig(path, bbox_inches='tight', pad_inches=PAD); crop_ink(path); plt.close(fig); print(f'written {path}', flush=True)
 
 
 def panel_d(out):
-    panel('d'); D = {(r['depth'], r['class']): float(r['median_abs']) for r in rd(M / 'depth.tsv')}
+    panel('d'); D = {(r['depth'], r['class']): float(r['median_abs']) for r in rd(M / 'depth_individual_summary.tsv')}
     X = {r['fraction']: float(r['median_autosomal_depth']) for r in rd(ROOT / 'results/figures/figure1_depth_summary.tsv')}
     levels = [('d1x', X['d1x']), ('d2x', X['d2x']), ('d5x', X['d5x']), ('d10x', X['d10x']), ('d15x', X['d15x']), ('d20x', X['d20x']), ('full', X['1'])]
     ax = axes(32, 571, 198, 695.5)
@@ -216,7 +259,7 @@ def panel_d(out):
     ax.set_xticks([1, 2, 5, 10, 20, X['1']], ['1', '2', '5', '10', '20', f'{X["1"]:.0f}'])
     frame(ax); ax.tick_params(which='minor', width=.4, length=1.5)
     ax.set_xlabel('Median autosomal coverage (×)', fontsize=10 * S, fontstyle='italic', labelpad=2)
-    ax.set_ylabel('Median absolute error (%)', fontsize=10 * S, fontstyle='italic', labelpad=4)
+    ax.set_ylabel('Median per-male error (%)', fontsize=10 * S, fontstyle='italic', labelpad=4)
     put(22.3, 550.3, 'e', 20, fontweight='bold'); put(54.1, 546, 'Sequencing coverage', 12, fontweight='bold')   # baseline as the e title
     for i, n in enumerate(NAMES[:-1]):
         x, y = [48.7, 89.6, 130.5, 176.7][i // 2], [558, 567][i % 2]
@@ -228,7 +271,7 @@ def pairs():
     """Parent-offspring percent differences, batch group."""
     E = {r['sample']: r for r in rd(M / 'cohort_1kgp.tsv')}; out = []
     for p, o in (l.split()[:2] for l in open(ROOT / 'data/catalog_d376/fs_pairs.tsv') if l.strip()):
-        if p not in E or o not in E or any(E[s]['sex'] != 'male' or E[s]['estimate_basis'] != 'ruler' for s in (p, o)): continue   # both males with a Y
+        if p not in E or o not in E or any(E[s]['sex'] != 'male' or E[s]['y_status'] != 'y_found' for s in (p, o)): continue   # both males with a Y
         b = (E[p]['batch'], E[o]['batch']); g = 'same' if b[0] == b[1] else 'cross' if b == ('2504', '698') else 'reverse'
         val = lambda s, n: float(E[s]['DYZ1_bp']) / float(E[s]['DYZ2_bp']) if n == 'DYZ1:DYZ2' else float(E[s][f'{n}_bp'])
         out.append(dict(parent=p, child=o, group=g, **{n: 100 * (val(o, n) / val(p, n) - 1) for n in NAMES}))

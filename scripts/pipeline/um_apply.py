@@ -1,17 +1,10 @@
 # Apply the model to saved counts
 # usage: python3 um_apply.py <pass dir> <out.tsv> [model dir]; per sample: cohort, sex, population, Y and X dose, lengths, estimate_status, Y state
-import os, sys, glob, subprocess as sp, numpy as np, multiprocessing as mp
+import os, sys, glob, collections, subprocess as sp, numpy as np, multiprocessing as mp
 P = os.environ['P']; O = f'{P}/{os.environ.get("UM", "markers_u25")}'; A25 = f'{P}/markers_u25'; sys.path.insert(0, f'{P}/scripts'); import um_model, truth_cl
 D, OUT = f'{P}/{sys.argv[1]}', sys.argv[2]; MD = sys.argv[3] if len(sys.argv) > 3 else f'{P}/model'; Z = 'zstd'
 U = np.load(f'{O}/u_keys.npy'); oi = np.load(f'{A25}/counts_order_idx.npy'); gc = um_model.gcount(U); fm, M = um_model.load(MD); y0 = fm[f'ysc_{M[0]["class"]}']
 LUT = np.full(256, 255, np.uint8); LUT[[65, 67, 71, 84]] = [0, 1, 2, 3]
-fa = open(f'{O}/markers_u.fa').read().split('\n'); c2 = [fa[i + 1] for i in range(0, len(fa) - 1, 2) if fa[i].startswith('>chr2depth_')]
-v = LUT[np.frombuffer(''.join(c2).encode(), np.uint8).reshape(-1, 31)]; k = np.zeros(len(v), np.uint64); rc = np.zeros(len(v), np.uint64)
-for i in range(31): k = (k << np.uint64(2)) | v[:, i].astype(np.uint64)
-for i in range(30, -1, -1): rc = (rc << np.uint64(2)) | (3 - v[:, i]).astype(np.uint64)
-kc = np.minimum(k, rc); C2 = np.minimum(np.searchsorted(U, kc), len(U) - 1)
-if not np.array_equal(U[C2], kc): sys.exit(f'ERROR {(U[C2] != kc).sum()} chr2 markers not in u_keys')
-del fa, c2, v, k, rc, kc
 V5 = O != A25   # v5, v6: markers_u25 whole counts plus saved-read counts of the other keys
 if V5:
     U0 = np.load(f'{A25}/u_keys.npy'); o2n = np.searchsorted(U, U0); N0 = len(o2n); DD = f'{O}/{os.environ.get("DYZ17DIR", "dyz17c")}'   # markers_u25 whole counts -> UM order; DYZ17DIR/DFA: saved-read counts of the keys not in markers_u25 (v5: dyz17c/dyz17.fa, v6: deltac/delta.fa)
@@ -34,14 +27,14 @@ if DN:
         WK = np.load(f); DR.append(np.isin(kc, WK)); print(f'denominator window {os.path.basename(f)}: {int(DR[-1].sum())} of {len(WK)} keys in {os.environ["DENOMFA"]}, counts from {DN}', flush=True)
         if DR[-1].sum() < 0.99 * len(WK): sys.exit(f'ERROR denominator: keys of {f} missing from the slice marker file')
     del kc
-def den(s, c):   # denominator depth (median over windows) and per-window means: window keys in the slice, else the chr2 50-60 markers
-    if not DN: return c[C2].mean(), [c[C2].mean()]
+def den(s, c):   # denominator depth (median over windows) and per-window means: window keys in the slice
+    if not DN: raise SystemExit('ERROR DENOMC (chr8 window counts) is required')
     d = np.array(sp.run([Z, '-dcq', f'{DN}/{s}/counts.col.zst'], check=True, capture_output=True).stdout.split(), np.float64)
     if len(d) != NDR: raise ValueError(f'{len(d)} slice counts, expected {NDR}')
     w = [d[m].mean() for m in DR]; return (w[0] if SEL == 'first' else float(np.median(w))), w
 YPQ = np.load(os.environ['YPQ']) if os.environ.get('YPQ') else None   # YPQ=<um_v5pos.py ypq XDR block labels>: raw Yp (XDR1-2), Yq (XDR3-8) and per-block ruler doses -> <out>.ypq.tsv
 if YPQ is not None and len(YPQ) != len(y0): sys.exit(f'ERROR {len(YPQ)} Yp/Yq labels, ruler {len(y0)}')
-NOY = float(os.environ['NOY']) if os.environ.get('NOY') else None   # NOY=<no-Y cut on the scaled y_dose>: basis rule of the release
+NOY = float(os.environ['NOY']) if os.environ.get('NOY') else None   # NOY=<no-Y cut on the scaled y_dose>: y_status cut of the release (no_y at or below); the estimate formula is the same for every sample
 YDN = float(os.environ.get('YDN', 1))   # YDN=<reference median of the raw 1kGP y_dose>: y_dose relative to the median 1kGP male (scale B, user 2026-10-31)
 GB = [] if YPQ is None else [y0[(YPQ == 1) | (YPQ == 2)], y0[YPQ >= 3]] + [y0[YPQ == b] for b in range(1, 9)]
 def one(s):   # Y dose and reported lengths of one sample
@@ -54,10 +47,9 @@ def one(s):   # Y dose and reported lengths of one sample
             c0 = np.zeros(N0); c0[oi] = x; c = np.zeros(len(U)); c[o2n] = c0; c[DJ[NEW]] = d[NEW]
         else: c = np.zeros(len(U)); c[oi] = x
         d, wm = den(s, c); pq = [2 * c[g].mean() / d for g in GB]; yd = 2 * c[y0].mean() / d / YDN
-        e = um_model.lengths(c, fm, M, gc, y0, flat=NOY is not None and round(yd, 4) > NOY)   # NOY: ruler basis above the no-Y cut, no G+C curve needed
-        if e and NOY is not None and round(yd, 4) <= NOY: e = None   # no Y signal: haploid basis
-        if e and not um_model.gcbins(c[y0].astype(np.float64), gc[y0]): print(f'{s}: y_dose {yd:.4f} above the no-Y cut without a G+C curve: ruler basis, no G+C correction', flush=True)
-        return s, yd, (e[0], 'ruler') if e else (um_model.haploid(c, fm, M, d), 'haploid_depth'), pq, wm
+        e = um_model.lengths(c, fm, M, gc, y0, flat=True)   # one formula for every sample (user 2026-11-07): ruler basis, no G+C correction without a curve, None (NA) when the ruler sum is 0
+        if e and not um_model.gcbins(c[y0].astype(np.float64), gc[y0]): print(f'{s}: y_dose {yd:.4f} without a G+C curve: ruler basis, no G+C correction', flush=True)
+        return s, yd, (e[0] if e else None, 'y_found' if NOY is None or round(yd, 4) > NOY else 'no_y'), pq, wm   # NOY: y_status cut, as the release
     except Exception as e: print(f'WARNING {s}: {e}', flush=True); return s, None, None, [], []
 S = sorted(f.split('/')[-3] for f in glob.glob(f'{D}/*/whole/counts.col.zst')); print(f'{D}: {len(S)} samples, model {MD}', flush=True)
 with mp.Pool(int(os.environ.get('SLURM_CPUS_PER_TASK', 8))) as p: R = p.map(one, S)
@@ -69,7 +61,12 @@ YS = {x[0]: x[2:10] for x in (l.rstrip('\n').split('\t') for l in list(open(os.e
 NM = {'dyz3': 'DYZ3', 'yq12': 'Yq12', 'dyz1': 'DYZ1', 'dyz2': 'DYZ2', 'dyz18s': 'DYZ18S', 'yq2k7': 'YqHet2.7', 'dyz18sub': 'DYZ18sub', 'dyz19': 'DYZ19', 'dyz17': 'DYZ17'}
 SX = {x[2]: x[3] for f in ('PRJEB6463_sex.tsv', 'PRJEB9586_sex.tsv') for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/lists/{f}'))[1:])}   # HGDP, SGDP sex by sample alias
 PO = {x[0]: x[1].split('/data/')[1].split('/')[0] for x in (l.split('\t') for l in open(f'{P}/lists/hgdp_sgdp_urls.tsv')) if '/data/' in x[1]}   # HGDP, SGDP population from the URL
-LB = {x[0]: ('PCR-free' if int(x[1]) >= 2 else 'PCR') if x[0].startswith('HGDP') else 'PCR-free' if x[2].startswith('LP60') else 'unknown' for x in (l.split('\t') for l in list(open(f'{P}/model/cram_meta_hgdp_sgdp.tsv'))[1:])}   # library: HGDP >= 2 read groups, SGDP LP60* plates; 1kGP all PCR-free
+HL = {x[0]: ({'PCRfree': 'PCR-free', 'PCR': 'PCR'}[x[4]], x[3]) for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/ext/meta/hgdp_wgs.20190516.metadata.txt'))[1:])}   # HGDP published library type and source (Bergstrom 2020)
+SL = {f.rsplit('/', 1)[1].rsplit('_', 1)[0]: x[6] for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/lists/PRJEB9586.tsv'))[1:]) for f in x[11].split(';')}   # SGDP library name (ENA file name without _1/_2.fastq.gz) -> ENA protocol
+rg = lambda x: 'PCR-free' if int(x[1]) >= 2 else 'PCR'   # HGDP files without a usable published type: read groups
+lib = lambda x: (rg(x) if x[0] not in HL or (HL[x[0]][1] == 'sgdp' and not any(v.startswith('LP') for v in x[2].split(','))) else HL[x[0]][0]) if x[0].startswith('HGDP') else 'PCR-free' if 'PCR-free' in SL.get(x[2].split(',')[0], '') else 'unknown'
+LB = {x[0]: lib(x) for x in (l.split('\t') for l in list(open(f'{P}/model/cram_meta_hgdp_sgdp.tsv'))[1:])}   # library: published type (HGDP Bergstrom 2020, SGDP ENA PRJEB9586 by library name), read groups >= 2 for HGDP files without one; 1kGP all PCR-free
+print(f"library labels: {collections.Counter((k[:4], v) for k, v in LB.items())}", flush=True)
 def meta(s):   # cohort, sex, population, superpopulation
     if s in ped: pd = ped[s]; return '1kGP', {'1': 'male', '2': 'female'}.get(pd[4], '.'), pd[5], pd[6]
     if s.startswith('SGDP_'): return 'SGDP', SX.get(s[5:], '.'), PO.get(s, '.'), '.'
@@ -77,11 +74,11 @@ def meta(s):   # cohort, sex, population, superpopulation
     return 'other_run:' + s.split('_', 1)[-1], 'male', '.', '.'
 cls = [m['class'] for m in M if m['length'] != 'none']; lin = lambda h: '.' if h == '.' else h[:3] if h.startswith('R1') else h[0]; n = {}
 with open(OUT, 'w') as o:
-    o.write('\t'.join(['sample', 'cohort', 'sex', 'population', 'superpopulation', 'batch', 'haplogroup', 'lineage', 'y_dose', 'x_dose'] + [f'{NM[c]}_bp' for c in cls] + ['estimate_status', 'reference_male', 'yp_ruler_dose', 'yq_ruler_dose', 'y_state', 'yp_deletion_bias_pct', 'sex_chromosomes', 'par1_dose', 'par2_dose', 'library', 'estimate_basis']) + '\n')
+    o.write('\t'.join(['sample', 'cohort', 'sex', 'population', 'superpopulation', 'batch', 'haplogroup', 'lineage', 'y_dose', 'x_dose'] + [f'{NM[c]}_bp' for c in cls] + ['estimate_status', 'reference_male', 'yp_ruler_dose', 'yq_ruler_dose', 'y_state', 'yp_deletion_bias_pct', 'sex_chromosomes', 'par1_dose', 'par2_dose', 'library', 'y_status']) + '\n')
     for s, dose, e, pq, wm in R:
         co, sx, po, su = meta(s); h = hg.get(s, '.'); y = YS.get(s, []); y = y + ['.'] * (8 - len(y))
-        f = 'no_counts' if dose is None else 'female' if sx == 'female' else 'haploid_depth' if e[1] != 'ruler' else 'low_y_dose' if dose < 0.9 else 'ok'; n[f] = n.get(f, 0) + 1
-        o.write('\t'.join([s, co, sx, po, su, bat.get(s, '.'), h, lin(h), 'nan' if dose is None else f'{dose:.4f}', y[4]] + [f'{e[0][c]:.0f}' if e else 'nan' for c in cls] + [f, 'yes' if s in ref else 'no'] + y[:3] + [y[3] if y[2] == 'yp_deletion' else '.'] + y[5:8] + ['PCR-free' if co == '1kGP' else LB.get(s, '.'), e[1] if e else '.']) + '\n')
+        f = 'no_counts' if dose is None else 'female' if sx == 'female' else 'no_y' if e[1] == 'no_y' else 'low_y_dose' if dose < 0.9 else 'ok'; n[f] = n.get(f, 0) + 1
+        o.write('\t'.join([s, co, sx, po, su, bat.get(s, '.'), h, lin(h), 'nan' if dose is None else f'{dose:.4f}', y[4]] + [f'{e[0][c]:.0f}' if e and e[0] and e[1] != 'no_y' else 'nan' for c in cls] + [f, 'yes' if s in ref else 'no'] + y[:3] + [y[3] if y[2] == 'yp_deletion' else '.'] + y[5:8] + ['PCR-free' if co == '1kGP' else LB.get(s, '.'), e[1] if e else '.']) + '\n')
 print(f'written {OUT}: {len(R)} samples, flags {n}', flush=True)
 if YPQ is not None:
     with open(f'{OUT}.ypq.tsv', 'w') as o: o.write('\t'.join(['sample', 'yp_raw', 'yq_raw'] + [f'xdr{b}_raw' for b in range(1, 9)]) + '\n'); o.writelines(s + ''.join(f'\t{v:.5f}' for v in pq) + '\n' for s, d, e, pq, wm in R if pq)   # every sample, sex-blind
@@ -90,5 +87,5 @@ if DN and len(DR) > 1:   # per-window depth / median: a window off by > 10% flag
     with open(f'{OUT}.den.tsv', 'w') as o: o.write('sample\t' + '\t'.join(WL) + '\tmedian\tdenominator\t' + '\t'.join(f'{w}_ratio' for w in WL) + '\n'); o.writelines(f'{s}\t' + '\t'.join(f'{x:.4f}' for x in wm) + f'\t{np.median(wm):.4f}\t{(wm[0] if SEL == "first" else np.median(wm)):.4f}\t' + '\t'.join(f'{x / np.median(wm):.4f}' for x in wm) + '\n' for s, d, e, pq, wm in R if wm)
     fl = [(s, [w for w, x in zip(WL, wm) if abs(x / np.median(wm) - 1) > 0.1]) for s, d, e, pq, wm in R if wm]; fl = [x for x in fl if x[1]]
     print(f'written {OUT}.den.tsv; samples with a window off the median by > 10%: {len(fl)}' + ''.join(f'; {s} {",".join(w)}' for s, w in fl[:40]), flush=True)
-ok = [e[0] for s, d, e, pq, wm in R if e and e[1] == 'ruler' and d >= 0.9 and meta(s)[1] != 'female']
+ok = [e[0] for s, d, e, pq, wm in R if e and e[0] and e[1] == 'y_found' and d >= 0.9 and meta(s)[1] != 'female']
 for c in cls if ok else []: q = np.percentile([e[c] for e in ok], [25, 50, 75]); print(f'{NM[c]}: {len(ok)} males y_dose >= 0.9, median {q[1]:,.0f} bp (IQR {q[0]:,.0f}-{q[2]:,.0f})', flush=True)

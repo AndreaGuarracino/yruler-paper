@@ -20,7 +20,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'cvsum':   # summary over repeat files
         med = [np.median(v) for v in E[c].values()]
         log(f'cv {c}: repeats {len(med)}, males per repeat {len(next(iter(E[c].values())))}, median |err| mean {np.mean(med):.2f}% (min {min(med):.2f}, max {max(med):.2f}), choices (presence, outside) {dict(collections.Counter(TH[c]))}')
     sys.exit(0)
-# superset keys, G+C, chr2depth markers
+# superset keys, G+C
 U = np.load(f'{O}/u_keys.npy'); NU = len(U)
 gc = np.zeros(NU, np.uint8)
 for i in range(31): b = (U >> np.uint64(2 * i)) & np.uint64(3); gc += ((b == 1) | (b == 2)).astype(np.uint8)
@@ -31,8 +31,7 @@ def enc_lines(lines):
     rc = np.zeros(len(v), np.uint64)
     for i in range(30, -1, -1): rc = (rc << np.uint64(2)) | (3 - v[:, i]).astype(np.uint64)
     return np.minimum(k, rc)
-fa = open(f'{O}/markers_u.fa').read().split('\n'); c2 = [fa[i + 1] for i in range(0, len(fa) - 1, 2) if fa[i].startswith('>chr2depth_')]
-CHR2 = np.zeros(NU, bool); CHR2[np.searchsorted(U, enc_lines(c2))] = True; log('superset', NU, 'chr2depth', CHR2.sum())
+log('superset', NU)
 # truth per male and class
 sys.path.insert(0, f'{P}/scripts'); import truth_cl   # dyz3, yq12 from truth.load; units from indep_setB, dyz19_clean
 T = truth_cl.load(O)
@@ -108,10 +107,10 @@ def gccurve(j, ysc):   # yruler gc_sums: G+C curve from single-copy Y markers ->
 def tsum(v):   # trimmed sum, rescaled to all markers (TRIM 0: plain sum)
     if not TRIM or len(v) < 100: return v.sum()
     lo, hi = np.quantile(v, [TRIM, 1 - TRIM]); k = (v >= lo) & (v <= hi); return v[k].sum() * len(v) / k.sum()
-RUL = os.environ.get('RULERS', 'match').split(',')   # denominators: match (Y presence = class p), yQQ (Y at QQ%), chr2, yQQchr2 (geometric mean)
+RUL = os.environ.get('RULERS', 'match').split(',')   # denominators: match (Y presence = class p), yQQ (Y at QQ%)
+if any(R != 'match' and not R[1:].isdigit() for R in RUL): raise SystemExit(f'ERROR rulers {RUL}: only match and yQQ')
 RSEL = os.environ.get('RULERS_SEL', ','.join(RUL)).split(',')   # rulers eligible for the nested choice; others reported only
-rq = lambda R: None if R in ('match', 'chr2') else int(R[1:].replace('chr2', '')) / 100
-C2I = np.flatnonzero(CHR2)
+rq = lambda R: None if R == 'match' else int(R[1:]) / 100
 # k-mer filters: drop markers whose score in a source exceeds t
 FILTS = os.environ.get('FILTS')   # 'score.npy=t1,t2;score2.npy=t3': several sources, labels s<k>:<t>
 if FILTS:
@@ -149,11 +148,9 @@ def fit(train, test, thr_fixed=None, allrules=False):   # markers + K on train; 
     for q in sorted((set(th) if 'match' in RUL else set()) | {rq(R) for R in RUL if rq(R) is not None}):   # only the ruler thresholds in use
         y = build(train, 'ysinglecopy', q)
         for t in FT: YS[(q, t)] = y if FEMFILT else keep(y, t)
-    GY = {k: {s: gccurve(MI[s], YS[k]) for s in who} for k in YS}; G2 = {s: gccurve(MI[s], C2I) for s in who} if any('chr2' in R for R in RUL) else {}
-    def den(R, p, t, s):   # (G+C curve, f, denominator) of ruler R
-        if R == 'chr2': return G2[s]
-        r, f, Y = GY[(p if R == 'match' else rq(R), t)][s]; return (r, f, math.sqrt(Y * G2[s][2])) if R.endswith('chr2') else (r, f, Y)
-    def arrays(key): R, t = key[2], key[3]; return {'ysc': YS[(key[0] if R == 'match' else rq(R), t)] if R != 'chr2' else np.zeros(0, np.int64), 'chr2': R.endswith('chr2')}
+    GY = {k: {s: gccurve(MI[s], YS[k]) for s in who} for k in YS}
+    def den(R, p, t, s): return GY[(p if R == 'match' else rq(R), t)][s]   # (G+C curve, f, ruler sum) of ruler R
+    def arrays(key): R, t = key[2], key[3]; return {'ysc': YS[(key[0] if R == 'match' else rq(R), t)]}
     for p in th:
         for c in [x for x in CL if x != 'ysinglecopy']:
             na = sum(1 for s in train if asm_of(s, c))
@@ -315,7 +312,7 @@ if mode in ('all', 'production'):   # all truth males: final markers and K
     FM = os.environ.get('FINAL', 'final_model')   # output name
     np.savez(f'{O}/{FM}.npz', **{f'm_{c}': r[c][4] for c in r}, **{f'ysc_{c}': r[c][5]['ysc'] for c in r})
     with open(f'{O}/{FM}.tsv', 'w') as o:
-        o.write('class\tpresence\toutside\truler\tfemale_t\tmarkers\tK\tysinglecopy_markers\tchr2' + ('\tmin_gc' if MGS else '') + '\n')
-        for c in r: o.write(f'{c}\t{r[c][0][0]}\t{r[c][0][1]}\t{r[c][0][2]}\t{r[c][0][3]}\t{r[c][1]}\t{float(r[c][3])!r}\t{len(r[c][5]["ysc"])}\t{r[c][5]["chr2"]}' + (f'\t{r[c][0][4]}' if MGS else '') + '\n')
+        o.write('class\tpresence\toutside\truler\tfemale_t\tmarkers\tK\tysinglecopy_markers' + ('\tmin_gc' if MGS else '') + '\n')
+        for c in r: o.write(f'{c}\t{r[c][0][0]}\t{r[c][0][1]}\t{r[c][0][2]}\t{r[c][0][3]}\t{r[c][1]}\t{float(r[c][3])!r}\t{len(r[c][5]["ysc"])}' + (f'\t{r[c][0][4]}' if MGS else '') + '\n')
     if FEMFILT: np.save(f'{O}/{FM}_femscore.npy', FRS[0])   # model female filter score
     log('model written', f'{O}/{FM}.npz', f'{O}/{FM}.tsv')

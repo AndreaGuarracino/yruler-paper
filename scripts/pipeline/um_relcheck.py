@@ -24,7 +24,9 @@ for k in S: ok = abs(ys[k][0] - S[k]) <= 0.05 + 1e-6; bad += not ok; print(f'{s}
 ok = ys['ysinglecopy'][1] == Y; bad += not ok; print(f'{s} ruler sum: yruler {ys["ysinglecopy"][1]:.0f} python {Y:.0f} {"OK" if ok else "DIFF"}', flush=True)
 for k in L: ok = abs(yl.get(k, np.nan) - L[k]) <= 0.5 + 1e-6; bad += not ok; print(f'{s} {k}: length yruler {yl.get(k, np.nan):.0f} python {L[k]:.3f} bp {"OK" if ok else "DIFF"}', flush=True)
 if 'relative' in LH:   # relative = sum_gc(class) / ruler sum, the row class itself
-    for x in LT: k = x[1]; r = ys[k][0] / ys['ysinglecopy'][1] if k in ys else np.nan; ok = abs(float(col(x, 'relative')) / r - 1) <= 1e-4; bad += not ok; print(f'{s} {k}: relative yruler {col(x, "relative")} from summary {r:.6g} {"OK" if ok else "DIFF"}', flush=True)
+    for x in LT:
+        if col(x, 'relative') == '.': print(f'{s} {x[1]}: composed class, no relative value (terms {col(x, "terms") if "terms" in LH else "?"})', flush=True); continue
+        k = x[1]; r = ys[k][0] / ys['ysinglecopy'][1] if k in ys else np.nan; ok = abs(float(col(x, 'relative')) / r - 1) <= 1e-4; bad += not ok; print(f'{s} {k}: relative yruler {col(x, "relative")} from summary {r:.6g} {"OK" if ok else "DIFF"}', flush=True)
 ok = bs == {'y_found'}; bad += not ok; print(f'{s} y_status yruler {sorted(bs)} ({LF}) python y_found {"OK" if ok else "DIFF"}', flush=True)
 if os.environ.get('COHORT'):   # y_dose: pipeline (window keys in region slices, YDN scale) vs yruler (whole input, model y_dose_scale)
     R = [l.rstrip('\n').split('\t') for l in open(os.environ['COHORT'])]; py = {r[0]: r[R[0].index('y_dose')] for r in R[1:]}.get(s, 'nan'); yd = float(col(LT[0], 'y_dose'))
