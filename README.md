@@ -20,14 +20,14 @@ R=results/model
 python3 scripts/cohort_to_snapshot.py $R/cohort_1kgp.tsv results/estimates_1kgp.tsv results/model/depth/depth_f1.tsv
 python3 scripts/figure1b_ratio.py $R/cv_units.tsv $R/cohort_1kgp.tsv results/figures/figure1b_ratio.pdf $R/dyz1_dyz2_lineages.tsv
 python3 scripts/final_extras.py $R data/method/yq12_truth_hallast.tsv data/markers_u/truth_regions.tsv
-python3 scripts/manuscript_figures.py      # Extended Data Figs. 2, 4, 5, 7 and 8, Supplementary Fig. 2
+python3 scripts/manuscript_figures.py      # Extended Data Figs. 2, 4, 5, 7 and 8, Supplementary Fig. 1
 python3 scripts/cohort_lineages.py         # cohort map tables in results/cohorts
 python3 scripts/pedigree_plots.py          # Extended Data Fig. 6
 python3 scripts/figure_array_structure.py data/figure_inputs/clusters_all.tsv.xz manuscript/figures/ed/ed1_array_structure.pdf data/markers_u/truth_regions.tsv data/method/dyz19_clean.tsv data/method/dyz17_clean.tsv data/method/truth_qc/x/rule_w4.txt
-ORDER=band python3 scripts/figure_ychm13_states.py results/checks manuscript/figures/ed/ed3_chrY_unusual_males.pdf unusual kmer results/checks/xpar_kmer.summary.tsv results/checks/ychm13_yspecific_100kb.tsv
+ORDER=band python3 scripts/figure_ychm13_states.py results/checks manuscript/figures/ed/ed3_chrY_unusual_males.pdf unusual kmer results/checks/xpar_kmer_g72.summary.tsv results/checks/ychm13_yspecific_100kb_g72y_fem.tsv
 python3 scripts/figure1.py                 # Fig. 1 (panels a and b from manuscript/figures/main/fig1/*.svg)
 python3 scripts/figure2.py                 # Fig. 2 (layout of manuscript/figures/main/fig2/Fig2_Yruler_v3.svg, data from the tables)
-python3 scripts/suppfig1_markerfree.py     # Supplementary Fig. 1
+python3 scripts/suppfig2_markerfree.py     # Supplementary Fig. 2
 python3 scripts/biology_tests.py $R data/method/indep_ours10.tsv data/method/yq12_truth_hallast.tsv $R/biology_tests.tsv $R/dunn_pairs.tsv
 python3 scripts/text_numbers.py $R $R/text_numbers.tsv
 python3 scripts/methods_numbers.py $R results/checks/gc_curves.tsv $R/methods_numbers.tsv
