@@ -180,43 +180,43 @@
     },
     {
       "path": "results/model/depth/depth_fd10x.tsv",
-      "bytes": 565035,
-      "sha256": "0511775642a18fd3d6c2de6aff9099f71541317d9daa985e944b2cbcd162c6b2"
+      "bytes": 565770,
+      "sha256": "5be4a25f4931d49caae14f0ef39abd3dcafc8a87cc5acb9813354bd3cf4f61f5"
     },
     {
       "path": "results/model/depth/depth_fd15x.tsv",
-      "bytes": 571972,
-      "sha256": "8c121b223432713d86a262de6a49cafde036bd78b6e6bb3f53a27d0cabe26ad6"
+      "bytes": 572724,
+      "sha256": "21250bc45f5f4e39ef935c6f664ea1ebbfb6fa2ebee53a2769bdd6d145d31fae"
     },
     {
       "path": "results/model/depth/depth_fd1x.tsv",
-      "bytes": 565453,
-      "sha256": "bb2e571bc60d6049041c4d6db0898ea6020d6078d82471da2fcfae0af8296d37"
+      "bytes": 566278,
+      "sha256": "7f03189c615ee89d8b469e98e3fd571e47fcd664fc0fcb6fcf24cedbaa92f742"
     },
     {
       "path": "results/model/depth/depth_fd20x.tsv",
-      "bytes": 571981,
-      "sha256": "df939a09a2c6b193a84d05f63a4f6fbe24229f33d489fba4193acd082b5204fb"
+      "bytes": 572709,
+      "sha256": "952b99d2caf598f93c369d33ef35caf0d520e47bf009531e4ee2d0adb1337ebb"
     },
     {
       "path": "results/model/depth/depth_fd25x.tsv",
-      "bytes": 571901,
-      "sha256": "e52b56257a3d7602ed1b6438036a6fdf5f60e27302320cc6c161a3b6e34ee195"
+      "bytes": 572644,
+      "sha256": "3a35c72c20ca453bbf1864888b7b6af6e65d759afdb9abf266f86dd65e90beff"
     },
     {
       "path": "results/model/depth/depth_fd2x.tsv",
-      "bytes": 565285,
-      "sha256": "5b6654409942a707f2b7b5b477e3a68b6ad31e02bd1b468af725a9d8c5726647"
+      "bytes": 565962,
+      "sha256": "0aa75882674d816dd1b7ac6b32aab774c2f00fce16b120bf60e45347430af2df"
     },
     {
       "path": "results/model/depth/depth_fd30x.tsv",
-      "bytes": 571894,
-      "sha256": "1e42d4dde64201b7d8f7bfaab3259035838b86d94cd87a6a2ea28d5635f61f5c"
+      "bytes": 572631,
+      "sha256": "9cebdd31b46ce1c512abaaf490c0c28fd37c1350e8fc8e081aa568a6f717f92b"
     },
     {
       "path": "results/model/depth/depth_fd5x.tsv",
-      "bytes": 565045,
-      "sha256": "82e6f8b04496828b2fd43f7e75139379e65680d6603ab22616e44f0b6737a463"
+      "bytes": 565811,
+      "sha256": "294974c7590990d43cb2007cad6e65c629879dd6824836e9fef7ac3b99b1f5f7"
     },
     {
       "path": "results/model/depth/summary.tsv",
@@ -256,12 +256,12 @@
     {
       "path": "scripts/figure2_tree.py",
       "bytes": 44926,
-      "sha256": "1d8ed85ed907ceec9aee820ae48ffcf40e9cb21958bbef3b00b4ec6c4e6ea1e9"
+      "sha256": "2308344c4cda6eb4312668d2e1a0763158211253cf8750ab5359fe628dfd507f"
     },
     {
       "path": "scripts/figures_1kgp.py",
-      "bytes": 102298,
-      "sha256": "f0a51099a2d31fa45832117b102884c3c0bd1df5ee0dd89aef6d8d2a5665c4e9"
+      "bytes": 102966,
+      "sha256": "9360931dd0aa518ea92d0ee328d2a9354db6c061942d6ecfef6293d3bf9b8dad"
     },
     {
       "path": "scripts/manuscript_figures.py",
@@ -296,14 +296,14 @@
       "sha256": "9ce68798cb63d2ef73c1ddb8947a96923cfa1268dd6f7eadc5cda6763894ab68"
     },
     {
-      "path": "manuscript/figures/ed/ed2_yq12_composition.pdf",
-      "bytes": 209805,
-      "sha256": "585918ae3ba27987e97c06ee351dd4ab2d22ea161a2f3dc80e6b4791763a5f72"
+      "path": "manuscript/figures/ed/ed2_no_y_cut.pdf",
+      "bytes": 79889,
+      "sha256": "abfc64da857f75554c7870dea993965640376601ec1cc5eb43369ef108956ade"
     },
     {
       "path": "manuscript/figures/ed/ed3_chrY_unusual_males.pdf",
-      "bytes": 154016,
-      "sha256": "ea098fad0b94993f18d61cc9293cfe2d16cab007e1018b187aff90ab4c5d2c35"
+      "bytes": 151746,
+      "sha256": "0c2caa35aabe299270a07e093f79ca7ab22a541db916edf0962d7dc22dda4db7"
     },
     {
       "path": "manuscript/figures/ed/ed4_lineage_validation.pdf",
@@ -321,49 +321,44 @@
       "sha256": "d2e77126384532eba8492ed0c7a1543674e58636abd5837a2e81ff7349de26f6"
     },
     {
-      "path": "manuscript/figures/ed/ed7_no_y_cut.pdf",
-      "bytes": 81626,
-      "sha256": "93255845236b9ff6bcc5acd24578da5c8e2c72ce84664829b0b0d67beba3f877"
-    },
-    {
-      "path": "manuscript/figures/ed/ed7c_bases.pdf",
-      "bytes": 385430,
-      "sha256": "d0e4a3848a5ea5a7b48da20d56b2da5f39a51d356e8a2cf045bd97c085589199"
-    },
-    {
-      "path": "manuscript/figures/ed/ed8_population.pdf",
+      "path": "manuscript/figures/ed/ed7_population.pdf",
       "bytes": 779590,
       "sha256": "72932ab689c26644ec57db9bba66325dcf6547b6a3b2e0ae36ec137a4caa6d34"
     },
     {
-      "path": "manuscript/figures/ed/ed9_J_DYZ19.pdf",
+      "path": "manuscript/figures/ed/ed8_J_DYZ19.pdf",
       "bytes": 56040,
       "sha256": "388bfcd14ab0a0524a14276573387b9343407d7bf3aa27022e39660d59e165bb"
     },
     {
+      "path": "manuscript/figures/ed/ed9_yq12_composition.pdf",
+      "bytes": 209805,
+      "sha256": "585918ae3ba27987e97c06ee351dd4ab2d22ea161a2f3dc80e6b4791763a5f72"
+    },
+    {
       "path": "manuscript/figures/main/fig1/fig1a_chrY.pdf",
       "bytes": 32826,
-      "sha256": "a3b5bca800297462b403bee7831be95f66d1eb2cf9239f02e413128b8c018804"
+      "sha256": "4adb01025fec92a8afe273fc614b3e1f2728cf613fb21b2f3232b204e0dc3d52"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1b_workflow.pdf",
       "bytes": 89744,
-      "sha256": "2c11db1f4b0e56103ba43f8dc5f065585e6ef34206eca7b5f77caef920876575"
+      "sha256": "beeef0bc3e9f4f9718e9bff6fd29b7fb9ac787de50f93b92a682ef48d0bd393d"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1c_cv.pdf",
-      "bytes": 70495,
-      "sha256": "181e9b18d89f69411fb7379c218d45a1702938cd97a3bdd5443453aab84a9a89"
+      "bytes": 70689,
+      "sha256": "f32d250c28c46ca8c1f961cb9565e296503f8df5c84fec0916f1a401a2ccee27"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1d_coverage.pdf",
-      "bytes": 41464,
-      "sha256": "782ff9f26142c54ad84432af820a4c301cbc02422532cfd55877964c4a50f34b"
+      "bytes": 41462,
+      "sha256": "fbcd1f67709945b8c302fc8313809382b736ce162a9e16941bb09f1847921a43"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1e_pedigrees.pdf",
       "bytes": 87808,
-      "sha256": "d2b6bf45bb1bf2038c129be07c802f57f875e201fb6e6d3aa45c4c2c5beab886"
+      "sha256": "39f3baa434aa2d9b691858a10b414793554fc7fe0deb8aebf5083d32900df4db"
     },
     {
       "path": "manuscript/figures/main/fig1/fig1f_specificity.pdf",
@@ -372,23 +367,23 @@
     },
     {
       "path": "manuscript/figures/main/fig1_method.pdf",
-      "bytes": 510675,
-      "sha256": "ce28f56f2d61a6c402e72785f28ee520fa9c40b3bc785acc591a5cb6c8df7e28"
+      "bytes": 511050,
+      "sha256": "208a4f733a0eaa7e89aa02db0503a4f75c83591e68926817cf86cd1fbd30fa62"
     },
     {
       "path": "manuscript/figures/main/fig2_biology.pdf",
-      "bytes": 307522,
-      "sha256": "68589e2c098f4317a3cc58c01d11e850015542d09b2c36d16cb369a53d735b2e"
+      "bytes": 325274,
+      "sha256": "f276289d5bc1f8b30e3569b5b0f40c36bc19a602cd7eb6d154463336997b59a2"
     },
     {
-      "path": "manuscript/figures/supp/suppfig1_markerfree.pdf",
-      "bytes": 112666,
-      "sha256": "4237a09d5a07437227cbad51ecb49d76a2c5e5c6f78dc70f24313ef4f6283c08"
+      "path": "manuscript/figures/supp/suppfig1_world_map.pdf",
+      "bytes": 507990,
+      "sha256": "1cc8d017ea3bd2787fb1b0adf6caebc5a2b0e211822949bb85ac9f7c39929381"
     },
     {
-      "path": "manuscript/figures/supp/suppfig2_world_map.pdf",
-      "bytes": 507735,
-      "sha256": "e25b89945329e5acb38dd872b2ab9a792846ac21c82774734a081e3fa59c9913"
+      "path": "manuscript/figures/supp/suppfig2_markerfree.pdf",
+      "bytes": 112670,
+      "sha256": "554e95c8d7cb0d975bd64e37a351e6dfbd72601e234a3a94caeb5229033144d1"
     },
     {
       "path": "results/estimates_1kgp.follow_up.tsv",
@@ -432,8 +427,8 @@
     },
     {
       "path": "results/figures/figure1_depth_summary.tsv",
-      "bytes": 3350,
-      "sha256": "1541c3c21311af3fe96449e428f6df830f4a736d98b26f5a45c4dc0ebd57796a"
+      "bytes": 3332,
+      "sha256": "b6bb3d3636d61a6b00a838eccf93e3ba61c9ec746b0b03da8be685e733f58557"
     },
     {
       "path": "results/figures/figure1_validation_summary.tsv",
@@ -457,8 +452,8 @@
     },
     {
       "path": "results/figures/figure2_lineage_counts.tsv",
-      "bytes": 509,
-      "sha256": "1efa592bbd4eb0171aa8185598452301770fc2a20c4225ec23aceecda673ab3a"
+      "bytes": 515,
+      "sha256": "1d0454c19325c95437ede6106937f3f1d64c107eeab81fd829de9f560c80f295"
     },
     {
       "path": "results/figures/figure2_tree_membership.tsv",

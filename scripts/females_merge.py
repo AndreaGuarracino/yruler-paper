@@ -21,7 +21,7 @@ def ident(s):   # one key per individual: the smallest normalized alias
     i = s.replace('SGDP_', ''); return min({pc.norm(i)} | {pc.norm(r[k]) for r in AL.get(pc.norm(i), []) for k in pc.ALIAS_FIELDS if pc.valid_key(r[k])})
 rows = [dict(sample=r['sample'], cohort=r['cohort'], y_dose=r['y_dose'], y_status=r.get('y_status', '.'), source='cohort_fem') for r in rd('results/model/cohort_fem.tsv')]
 rows += [dict(sample=r['sample'], cohort=r['cohort'], y_dose=r['y_dose'], y_status=r['y_status'], source=f"whole_file_{r['source']}") for r in rd('results/checks/female_whole_file.tsv')]
-rows += [dict(sample=r['sample'], cohort=r['cohort'], y_dose=r['y_dose'], y_status=r['y_state'], source='recount_final1') for r in rd('results/checks/female_recount_final1.tsv')]
+rows += [dict(sample=r['sample'], cohort=r['cohort'], y_dose=r['y_dose'], y_status=r['y_state'].lower(), source='recount_final1') for r in rd('results/checks/female_recount_final1.tsv')]
 rows += [dict(sample=r['sample'], cohort=r['cohort'], y_dose=r['y_dose'], y_status=r['y_status'], source='cohort_hgdp_sgdp') for r in rd('results/model/cohort_hgdp_sgdp.tsv') if r['sex'] == 'female' and r['y_dose'] not in ('nan', 'NA', '.')]
 order = {'1kGP': 0, 'HGDP': 1, 'SGDP': 2}; seen, keep, dup = {}, [], []
 for r in sorted(rows, key=lambda r: order[r['cohort']]):   # stable: source order kept within a cohort
