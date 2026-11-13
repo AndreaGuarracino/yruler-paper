@@ -297,8 +297,8 @@
     },
     {
       "path": "manuscript/figures/ed/ed2_no_y_cut.pdf",
-      "bytes": 79889,
-      "sha256": "abfc64da857f75554c7870dea993965640376601ec1cc5eb43369ef108956ade"
+      "bytes": 79901,
+      "sha256": "bd1291e059482a9845dd961c8d1b241190c8eb6f6689ac8ee69cdd8e162ca921"
     },
     {
       "path": "manuscript/figures/ed/ed3_chrY_unusual_males.pdf",
@@ -307,8 +307,8 @@
     },
     {
       "path": "manuscript/figures/ed/ed4_lineage_validation.pdf",
-      "bytes": 207265,
-      "sha256": "099badffc76c1497a44973f310d6b7e9ab069bd6943b64c8508a9e6b47bce11c"
+      "bytes": 207995,
+      "sha256": "2b7b9d5175c7107b0120ce6e1733930a95e75df5ab1904fcd76d0066ffe4a677"
     },
     {
       "path": "manuscript/figures/ed/ed5_y_dosage.pdf",
@@ -317,8 +317,8 @@
     },
     {
       "path": "manuscript/figures/ed/ed6_pedigrees.pdf",
-      "bytes": 150761,
-      "sha256": "d2e77126384532eba8492ed0c7a1543674e58636abd5837a2e81ff7349de26f6"
+      "bytes": 150763,
+      "sha256": "03c15dd43f959d59d993e7198d2f656c0946e045ca3837cf1691c2186eb0f6d0"
     },
     {
       "path": "manuscript/figures/ed/ed7_population.pdf",
@@ -372,8 +372,8 @@
     },
     {
       "path": "manuscript/figures/main/fig2_biology.pdf",
-      "bytes": 325274,
-      "sha256": "f276289d5bc1f8b30e3569b5b0f40c36bc19a602cd7eb6d154463336997b59a2"
+      "bytes": 325256,
+      "sha256": "3338b7ba7ae1bcbb603f6f0b99cf894cbdbd5e6b7579a6ce0744291b0e879d54"
     },
     {
       "path": "manuscript/figures/supp/suppfig1_world_map.pdf",
@@ -382,8 +382,8 @@
     },
     {
       "path": "manuscript/figures/supp/suppfig2_markerfree.pdf",
-      "bytes": 112670,
-      "sha256": "554e95c8d7cb0d975bd64e37a351e6dfbd72601e234a3a94caeb5229033144d1"
+      "bytes": 112658,
+      "sha256": "7f53caf07890bb35d34aa1138b48a11da75812c04e5443f9b84968bf445347ae"
     },
     {
       "path": "results/estimates_1kgp.follow_up.tsv",
