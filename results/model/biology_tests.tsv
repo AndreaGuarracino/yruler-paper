@@ -60,7 +60,7 @@ composition_slope_cohort	-0.263 (95% -0.317 to -0.212); 1204 men, within lineage
 composition_sd_assemblies	83: SD 0.172 and 0.244, ratio 0.704 (95% 0.625 to 0.809), Pitman-Morgan r -0.582, P 8.2e-09
 composition_slope_assemblies	-0.370 (95% -0.510 to -0.196); 83 assemblies, within lineage
 composition_error_sd	CV SD of log error DYZ1 0.0353, DYZ2 0.0353
-hgsg_calls	668 of 722 with a HaploGrouper call; 535 PCR-free individuals after removing 1kGP aliases and duplicates
+hgsg_calls	668 of 723 with a HaploGrouper call; 535 PCR-free individuals after removing 1kGP aliases and duplicates
 hgsg_one_per_component	516 of 535 individuals, one per kinship group
 hgsg_j	67 J men; DYZ19 below 100 kb in 24: 65.0-79.4 kb; others min 251.7 kb
 composition_sd_hgdp	378: SD 0.214 and 0.267, ratio 0.801 (95% 0.755 to 0.850), Pitman-Morgan r -0.399, P 7.5e-16

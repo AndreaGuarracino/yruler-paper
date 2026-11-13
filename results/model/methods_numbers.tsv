@@ -7,8 +7,8 @@ table_dyz18s	83 & 4.17 & 3.69 & 8.64 & 11.88 & 3.77
 table_dyz19	125 & 3.07 & 2.44 & 6.31 & 16.48 & 2.40
 table_dyz17	126 & 2.64 & 2.08 & 5.77 & 9.72 & 2.08
 table_ratio	82 & 3.36 & 2.70 & 6.43 & 28.41 & 2.66; predictions 820
-depth_levels	1.0, 2.0, 5.0, 10.0, 15.0, 20.0, 36.5
-depth_low	DYZ3 3.15, Yq12 1.91, DYZ1 2.35, DYZ2 2.78, DYZ18S 4.26, DYZ19 4.21, DYZ17 2.34
+depth_levels	1.0, 2.0, 5.0, 10.0, 15.0, 20.0, 36.4
+depth_low	DYZ3 3.15, Yq12 1.88, DYZ1 2.44, DYZ2 2.78, DYZ18S 4.06, DYZ19 4.21, DYZ17 2.34
 female_bg	dyz3 median 21 max 4963; yq12 median 4009 max 122950; dyz1 median 2957 max 72863; dyz2 median 502 max 47912; dyz18s median 98 max 1044; dyz19 median 13 max 1266; dyz17 median 224 max 3934; predictions 2430
 female_max_y	0.0026 (41)
 male_vs_female_max	lowest ratio (0.1990521327014218, 'HG02966'), next (22.993552286923233, 'NA18952'); HG02966 classes at or below: 5
@@ -37,13 +37,13 @@ man_HG01967	DYZ3 992313 Yq12 5222274 DYZ1 3220725 DYZ2 1865493 DYZ18S 67374 DYZ1
 j_split	a 17 b 25
 dyz19_refs	139, median 321716; HG02492 63499, HG02735 62499, NA20805 62251, NA20809 62627, NA20905 267723
 dyz1_fraction	91: 45.2-67.7%
-hgdp_libraries	{'PCR': 98, 'PCR-free': 385}; populations 13
-pcr_vs_free_DYZ2	median -45.6%, negative in 13 of 13
-pcr_vs_free_DYZ18S	median +25.9%, negative in 0 of 13
-pcr_vs_free_Yq12	median -14.1%, negative in 12 of 13
+hgdp_libraries	{'PCR': 146, 'PCR-free': 386}; populations 22
+pcr_vs_free_DYZ2	median -44.8%, negative in 21 of 22
+pcr_vs_free_DYZ18S	median +27.8%, negative in 0 of 22
+pcr_vs_free_Yq12	median -12.1%, negative in 17 of 22
 pairs_SGDP_vs_1kGP_NYGC	DYZ3 3.55, Yq12 3.75, DYZ1 5.04, DYZ2 4.67, DYZ18S 1.82, DYZ19 9.85, DYZ17 4.95 (10 pairs)
 pairs_SGDP_vs_HGDP	DYZ3 9.54, Yq12 11.30, DYZ1 2.94, DYZ2 55.13, DYZ18S 7.50, DYZ19 6.84, DYZ17 6.82 (11 pairs)
-signed_Cross_batch	282 pairs: dyz3 -0.87, yq12 -0.10
-signed_Same_batch	25 pairs: dyz3 +0.19, yq12 +0.13
-fs_median	dyz3 1.88, yq12 1.81, dyz19 2.94, dyz1 2.82, dyz2 2.60, dyz18s 3.69, dyz17 3.14; ratio 3.96
-fs_lowgc	297 pairs: dyz18s -0.510, dyz1 -0.366, dyz2 +0.364, dyz17 -0.383, dyz3 +0.001, dyz19 -0.130
+signed_Cross_batch	282 pairs: dyz3 -0.87, yq12 -0.35
+signed_Same_batch	25 pairs: dyz3 +0.19, yq12 -0.05
+fs_median	dyz3 1.88, yq12 1.56, dyz19 2.94, dyz1 2.40, dyz2 2.60, dyz18s 3.80, dyz17 3.14; ratio 3.26
+fs_lowgc	297 pairs: dyz18s -0.508, dyz1 -0.276, dyz2 +0.364, dyz17 -0.383, dyz3 +0.001, dyz19 -0.130
