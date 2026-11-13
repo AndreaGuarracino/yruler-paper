@@ -2,6 +2,10 @@
 
 Manuscript, figures and analysis tables of the yruler paper: lengths of the satellite arrays of the human Y chromosome measured from sequencing reads. The tool is at https://github.com/guarracinolab/yruler.
 
+## Citation
+
+Ortigas-Vasquez A. and Guarracino A. Measuring satellite arrays of the human Y chromosome from sequencing reads. bioRxiv (2026). https://doi.org/10.64898/2026.11.04.764422
+
 ## Contents
 
 - `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex` and `methods.tex`), bibliography and figure PDFs.
