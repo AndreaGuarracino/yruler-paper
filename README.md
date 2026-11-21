@@ -11,9 +11,22 @@ Ortigas-Vasquez A. and Guarracino A. Measuring satellite arrays of the human Y c
 - `manuscript/`: LaTeX source (`main.tex` with `brief-text.tex` and `methods.tex`), bibliography and figure PDFs.
 - `results/model/`: per-sample estimates of the final model (`cohort_1kgp.tsv`, `cohort_hgdp_sgdp.tsv`), cross-validation predictions, depth tests and the tables behind the numbers in the text (`text_numbers.tsv`, `methods_numbers.tsv`, `biology_tests.tsv`, `pgls_composition.tsv`).
 - `results/checks/`: checks cited in the Methods (relatedness, nanopore cross-validation, sequencing-protocol pairs and others).
-- `results/cohorts/`, `results/tree/`, `results/tree_biallelic/`: cohort tables and the Y SNP trees.
+- `results/cohorts/`, `results/tree/`: cohort tables and the Y SNP tree.
 - `data/`: reference-array annotations, marker regions and metadata used by the figure scripts.
 - `scripts/`: Python scripts that make the figures and tables from the files above; `scripts/pipeline/`: the cluster scripts that build the model and its cross-validation from assemblies and reads.
+
+## Tables from the cluster pipeline
+
+These tables come from `scripts/pipeline/` and have no rebuild line below.
+
+- `results/checks/d9_batch_holdout.tsv`, `d9_batch_holdout_units.tsv`, `d9_batch_holdout_1kgp.tsv`: model trained on the 2,504-sample 1000 Genomes batch and tested on the 698-sample batch.
+- `results/checks/duplicate_check_ol.tsv`: duplicate read share per male.
+- `results/checks/runtime_threads_coverage.tsv`, `results/checks/runtime_threads_depth.tsv`: run time and memory by thread count and coverage.
+- `results/checks/marker_sampling_variant_bx.tsv`: marker sampling comparison of the Methods.
+- `results/checks/arraydepth.tsv`: aligned read density against the estimates.
+- `results/checks/cv_ygroup.tsv`, `results/checks/cv_ygroup_groups.txt`: cross-validation with folds grouped by Y lineage.
+- `results/checks/xpar_kmer_g72.chrY_XY.tsv`: PAR and XTR windows of Extended Data Fig. 3 (read by `scripts/figure_ychm13_states.py`).
+- `results/model/sanroman_individual_summary.tsv`: per-individual comparison with San Roman 2024.
 
 ## Rebuild
 
@@ -36,6 +49,7 @@ python3 scripts/biology_tests.py $R data/method/indep_ours10.tsv data/method/yq1
 python3 scripts/text_numbers.py $R $R/text_numbers.tsv
 python3 scripts/methods_numbers.py $R results/checks/gc_curves.tsv $R/methods_numbers.tsv
 python3 scripts/pgls_composition.py $R/cohort_1kgp.tsv $R/pgls_composition.tsv
+REPS=all python3 scripts/pgls_composition.py $R/cohort_1kgp.tsv $R/pgls_composition.n1268.tsv
 python3 scripts/relatedness_checks.py $R results/checks/relatedness/gnomad_related_pairs.tsv results/checks/relatedness.tsv results/checks/relatedness/sgdp_king_pairs.tsv
 python3 scripts/sanroman_bootstrap.py $R/sanroman_comparison.tsv $R/sanroman_bootstrap.tsv
 python3 scripts/duplicate_check.py results/estimates_1kgp.tsv results/checks/duprate_1kgp.tsv results/checks/dupq_bx.tsv results/checks/duplicate_check.tsv
