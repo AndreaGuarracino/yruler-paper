@@ -4,7 +4,7 @@ usage: python3 scripts/suppfig2_markerfree.py [out.pdf]   (default manuscript/fi
 inputs: results/checks/dyz3_check.tsv (aligned_ratio: GRCh38 DYZ3 block over chrY:14.5-15.5 Mb),
         results/checks/dyz19_depth.tsv (depth_ratio_core: chrY:20,054,500-20,351,000 over chrY:14.5-15.5 Mb, um_dyz19depth.py; its DYZ19_bp column is v9bBx and is not used),
         results/checks/alignchk.tsv (same reads aligned by DRAGEN 3.7.6 and NYGC BWA: aligned depth per class, um_alignchk.py, 7 classes),
-        results/checks/ont_estimates_v8bBxontAmeanA1pgOL.tsv (nanopore production estimates of 84 R10.4.1 males, um_ontall.py),
+        results/checks/ont_estimates_v1ont.tsv (nanopore production estimates of 84 R10.4.1 males, um_ontall.py),
         Yruler estimates and population set from figures_1kgp.load_snapshot (final model v9bBxAmean)."""
 import csv, sys
 from pathlib import Path
@@ -74,7 +74,7 @@ def aligner(ax):
 def nanopore(ax):
     """Nanopore estimates against short-read estimates of the same males."""
     O = {}
-    for r in csv.DictReader(open(ROOT / 'results/checks/ont_estimates_v8bBxontAmeanA1pgOL.tsv'), delimiter='\t'): O.setdefault(r['sample'], {})[r['class']] = float(r['estimate_bp'])
+    for r in csv.DictReader(open(ROOT / 'results/checks/ont_estimates_v1ont.tsv'), delimiter='\t'): O.setdefault(r['sample'], {})[r['class']] = float(r['estimate_bp'])
     _, valid, _ = f.load_snapshot(); E = {r['sample']: r for r in valid}
     M = sorted(s for s in O if s in E); K = {'DYZ3': 'dyz3', 'Yq12': 'yq12', 'DYZ19': 'dyz19'}
     G = {'O2a2b1a1': ([s for s in M if E[s]['haplogroup'].startswith('O2a2b1a1')], CLASS['DYZ3']),
