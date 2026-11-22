@@ -7,9 +7,9 @@ inputs: <results dir>/{cohort_1kgp,cohort_hgdp_sgdp,cv_units}.tsv, results/estim
 import sys, csv, re, math, collections as co, itertools
 from pathlib import Path
 import numpy as np
-from scipy.stats import spearmanr, pearsonr, kruskal, norm, rankdata, wilcoxon
+from scipy.stats import spearmanr, pearsonr, kruskal, norm, rankdata, wilcoxon, t as tdist
 sys.path.insert(0, str(Path(__file__).resolve().parent)); import figures_1kgp as fs
-D, OURS, HAL, OUT = sys.argv[1:5]; DP = sys.argv[5] if len(sys.argv) > 5 else None; D = Path(D); N = []; rng = np.random.default_rng(20261102); rng2 = np.random.default_rng(20261103)
+D, OURS, HAL, OUT = sys.argv[1:5]; DP = sys.argv[5] if len(sys.argv) > 5 else None; D = Path(D); N = []; rng = np.random.default_rng(20261102); rng2 = np.random.default_rng(20261103); rng3 = np.random.default_rng(20261121)   # rng3: tests added 2026-11-21, so earlier draws stay the same
 rd = lambda f: list(csv.DictReader(open(f), delimiter='\t'))
 LIN = lambda h: h[:3] if h.startswith('R1') else (lambda t: t if len(t) > 1 else t[0])(re.match('[A-Z]+', h).group(0))   # lineage of a haplogroup call, as um_apply.py (R1a/R1b split, stem clades kept)
 def put(k, v): N.append((k, v)); print(f'{k}\t{v}', flush=True)
@@ -38,12 +38,18 @@ def hl(a, c):   # Hodges-Lehmann ratio of two groups
 v = hl(np.array([b(x, 'DYZ3') for x in R1 if x['lineage'] == 'R1b']), np.array([b(x, 'DYZ3') for x in R1 if x['lineage'] != 'R1b'])); put('hl_dyz3_r1b_over_other', '%.3f (%.3f-%.3f)' % v)
 J = [x for x in R1 if x['lineage'] == 'J']; ja = np.array([b(x, 'DYZ19') for x in J if x['haplogroup'].startswith('J2a1a1')]); jo = np.array([b(x, 'DYZ19') for x in J if not x['haplogroup'].startswith('J2a1a1')]); put('hl_dyz19_j2a1a1_over_other_j', '%.3f (%.3f-%.3f)' % hl(ja, jo) + f'; {len(ja)} vs {len(jo)}')
 from scipy.stats import mannwhitneyu
+MWP = co.defaultdict(list)   # cohort -> (contrast, P)
 def mw(name, a, c):   # two-sided Mann-Whitney, medians in kb
-    a, c = np.array(a), np.array(c); r = mannwhitneyu(a, c, alternative='two-sided'); put(f'mw_{name}', f'{len(a)} vs {len(c)}, median {np.median(a) / 1e3:.0f} vs {np.median(c) / 1e3:.0f} kb, U {r.statistic:.0f}, p {r.pvalue:.3g}')
+    a, c = np.array(a), np.array(c); r = mannwhitneyu(a, c, alternative='two-sided'); put(f'mw_{name}', f'{len(a)} vs {len(c)}, median {np.median(a) / 1e3:.0f} vs {np.median(c) / 1e3:.0f} kb, U {r.statistic:.0f}, p {r.pvalue:.3g}'); MWP[name.rsplit('_', 1)[1]].append((name, r.pvalue))
+def holm(cohort):   # Holm over the contrasts of one cohort
+    v = sorted(MWP[cohort], key=lambda x: x[1]); m = len(v); adj = []; run = 0
+    for i, (k, p_) in enumerate(v): run = max(run, min(1.0, (m - i) * p_)); adj.append((k, p_, run))
+    put(f'mw_holm_{cohort}', '; '.join(f'{k.rsplit("_", 1)[0]} p {p_:.3g} Holm {q:.3g}' for k, p_, q in adj))
 hg = lambda x, p: x['haplogroup'].startswith(p)
 mw('dyz3_r1b_1kgp', [b(x, 'DYZ3') for x in R1 if x['lineage'] == 'R1b'], [b(x, 'DYZ3') for x in R1 if x['lineage'] != 'R1b'])
 mw('dyz3_o2a2b1a1_1kgp', [b(x, 'DYZ3') for x in R1 if hg(x, 'O2a2b1a1')], [b(x, 'DYZ3') for x in R1 if hg(x, 'O2a2b1a2')])
 mw('dyz19_j2a1a1_1kgp', ja, jo)
+holm('1kgp')
 M = np.array([[math.log(b(x, c)) for c in CL] for x in inc]); L = np.array([x['lineage'] for x in inc]); W = M.copy()
 for k in set(L): W[L == k] -= W[L == k].mean(0)
 for i, j in itertools.combinations(range(len(CL)), 2): put(f'corr_{CL[i]}_{CL[j]}', f'all {spearmanr(M[:, i], M[:, j])[0]:+.3f}, within lineage {spearmanr(W[:, i], W[:, j])[0]:+.3f}')
@@ -56,7 +62,14 @@ def within(v, l):   # subtract the lineage means
     return v
 def sdratio(d1, d2, l, label):   # SD log DYZ1 / SD log DYZ2 within lineage; Pitman-Morgan test
     a, c = within(np.log(d1), l), within(np.log(d2), l); n = len(a); B = [a[i].std() / c[i].std() for i in (rng2.integers(0, n, n) for _ in range(2000))]; r = pearsonr(a - c, a + c)
-    put(f'composition_sd_{label}', f'{n}: SD {a.std():.3f} and {c.std():.3f}, ratio {a.std() / c.std():.3f} (95% {np.percentile(B, 2.5):.3f} to {np.percentile(B, 97.5):.3f}), Pitman-Morgan r {r[0]:.3f}, P {r[1]:.2g}'); return a, c
+    put(f'composition_sd_{label}', f'{n}: SD {a.std():.3f} and {c.std():.3f}, ratio {a.std() / c.std():.3f} (95% {np.percentile(B, 2.5):.3f} to {np.percentile(B, 97.5):.3f}), Pitman-Morgan r {r[0]:.3f}, P {r[1]:.2g}')
+    k = np.array([np.sum(l == x) >= 2 for x in l]); l1 = np.asarray(l)[k]; a1, c1 = within(np.log(np.asarray(d1, float)[k]), l1), within(np.log(np.asarray(d2, float)[k]), l1); n1, g1 = len(a1), len(set(l1))   # singleton lineages out
+    r1 = float(np.corrcoef(a1 - c1, a1 + c1)[0, 1]); df = n1 - g1 - 1; tt = r1 * math.sqrt(df / (1 - r1 * r1)); p1 = 2 * tdist.sf(abs(tt), df)   # centring spends one df per lineage
+    idx = [np.where(l1 == x)[0] for x in sorted(set(l1))]; BR, BQ = [], []
+    for _ in range(2000):   # bootstrap within lineage
+        i = np.concatenate([rng3.choice(w, len(w)) for w in idx]); x_, y_ = within(np.log(np.asarray(d1, float)[k][i]), l1[i]), within(np.log(np.asarray(d2, float)[k][i]), l1[i]); BR.append(x_.std() / y_.std()); BQ.append(np.corrcoef(x_ - y_, x_ + y_)[0, 1])
+    put(f'composition_sd_pm_{label}', f'{n1} in {g1} lineages ({n - n1} in singleton lineages out): ratio {a1.std() / c1.std():.3f} (95% within-lineage bootstrap {np.percentile(BR, 2.5):.3f} to {np.percentile(BR, 97.5):.3f}), Pitman-Morgan r {r1:.3f} (95% {np.percentile(BQ, 2.5):.3f} to {np.percentile(BQ, 97.5):.3f}), t {tt:.2f}, df {df}, P {p1:.2g}')
+    return a, c
 sc = [x for x in R1 if x['reference_male'] != 'yes']; lr = np.array([math.log(b(x, 'DYZ1') / b(x, 'DYZ2')) for x in sc]); ls = np.array([math.log(b(x, 'Yq12')) for x in sc]); l2 = np.array([x['lineage'] for x in sc])
 d1, d2, dy = (np.array([b(x, k) for x in sc]) for k in ('DYZ1', 'DYZ2', 'Yq12')); sdratio(d1, d2, l2, '1kgp'); rest = dy - d1 - d2; NL = []
 for _ in range(1000):   # DYZ2 moved between men of a lineage
@@ -112,6 +125,7 @@ for co_ in ('HGDP', 'SGDP'):   # same contrasts per cohort, never pooled
     mw(f'dyz3_r1b_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('R1b')], [b(x, 'DYZ3') for x, h in G2 if not h.startswith('R1b')])
     mw(f'dyz3_o2a2b1a1_{co_.lower()}', [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a1')], [b(x, 'DYZ3') for x, h in G2 if h.startswith('O2a2b1a2')])
     mw(f'dyz19_j2a1a1_{co_.lower()}', [b(x, 'DYZ19') for x, h in G2 if h.startswith('J2a1a1')], [b(x, 'DYZ19') for x, h in G2 if h.startswith('J') and not h.startswith('J2a1a1')])
+    holm(co_.lower())
 M3 = lambda f: [b(x, 'DYZ3') for x, c in got if f(c[0])]; put('hgsg_dyz3', f"R1b {len(M3(lambda h: h.startswith('R1b')))} men, median {np.median(M3(lambda h: h.startswith('R1b'))):.0f}; others {len(M3(lambda h: not h.startswith('R1b')))}, median {np.median(M3(lambda h: not h.startswith('R1b'))):.0f}; O2a2b1a1 {len(M3(lambda h: h.startswith('O2a2b1a1')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a1'))):.0f}; O2a2b1a2 {len(M3(lambda h: h.startswith('O2a2b1a2')))}, median {np.median(M3(lambda h: h.startswith('O2a2b1a2'))):.0f}")
 put('hgsg_j_labels_short', str(co.Counter(c[0] for _, c in sh).most_common())); put('hgsg_j_labels_other', str(co.Counter(c[0] for x, c in JJ if b(x, 'DYZ19') >= 1e5).most_common(14)))
 put('hgsg_short_outside_j', str([(x['sample'], c[0], round(b(x, 'DYZ19'))) for x, c in got if b(x, 'DYZ19') < 1e5 and not c[0].startswith('J')]))
@@ -130,7 +144,7 @@ def ch(n, out):
     k = n['children']
     if len(k) == 2 and not k[0]['children'] and not k[1]['children'] and k[0]['name'] in C and k[1]['name'] in C and all(C[y['name']] in inc for y in k): out.append((k[0]['name'], k[1]['name']))
     for z in k: ch(z, out)
-for t, f in (('v4', 'results/tree/tree.rooted.nwk'), ('v3', 'results/tree_biallelic/tree.rooted.nwk')):
+for t, f in (('v4', 'results/tree/tree.rooted.nwk'),):
     S = []; sys.setrecursionlimit(20000); ch(fs.parse_newick(fs.ROOT / f), S); put(f'sister_pairs_{t}', f'{len(S)} pairs: ' + ', '.join(f"{c} {sum(abs(math.log(b(C[a], c) / b(C[q], c))) > math.log(1.25) for a, q in S)}" for c in ('DYZ19', 'DYZ3', 'Yq12')))
 O = {r['assembly']: r for r in rd(OURS)}; Hh = {r['assembly']: r for r in rd(HAL)}; MM = sorted(set(O) & set(Hh))
 for c, n in (('dyz1_units', 'DYZ1'), ('dyz2_units', 'DYZ2'), ('dyz18_units', 'DYZ18'), ('yq12_span', 'Yq12 span')):

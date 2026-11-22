@@ -8,4 +8,3 @@ pgls_assemblies_geomean	83 men, lambda 1.000, slope -0.333 (95% -0.433 to -0.232
 pgls_outside_panel_geomean	1204 men, lambda 0.976, slope -0.298 (95% -0.324 to -0.271), P 2.43e-90, terms 2
 pgls_outside_panel_dyz3	1204 men, lambda 0.974, slope 0.004 (95% -0.025 to 0.034), P 0.769, terms 2
 pgls_outside_panel_rest	1204 men, lambda 0.974, slope 0.037 (95% -0.052 to 0.127), P 0.413, terms 2
-pgls_outside_panel_geomean_tree_v3	1204 men, lambda 0.981, slope -0.297 (95% -0.324 to -0.271), P 1.86e-90, terms 2

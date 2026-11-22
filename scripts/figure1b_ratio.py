@@ -17,7 +17,7 @@ CL = [('dyz3', 'DYZ3'), ('yq12', 'Yq12'), ('dyz1', 'DYZ1'), ('dyz2', 'DYZ2'), ('
 E = collections.defaultdict(dict)
 for l in list(open(CVU))[1:]:
     c, r, m, e = l.rstrip('\n').split('\t'); E[c][(r, m)] = float(e)
-pm = lambda d: {m: np.mean([v for (r, mm), v in d.items() if mm == m]) for m in {k[1] for k in d}}   # per-male mean over repeats
+pm = lambda d: {m: np.mean([v for (r, mm), v in d.items() if mm == m]) for m in sorted({k[1] for k in d})}   # per-male mean over repeats
 R = {k: 100 * ((1 + E['dyz1'][k] / 100) / (1 + E['dyz2'][k] / 100) - 1) for k in E['dyz1'] if k in E['dyz2']}
 L = [l.rstrip('\n').split('\t') for l in open(COH)]; H = L[0]; X = [dict(zip(H, x)) for x in L[1:]]
 lin = {x['sample']: x['lineage'] for x in X}
@@ -25,7 +25,7 @@ inc = [x for x in X if x['y_status'] == 'y_found' and x['sex'] == 'male']
 print(f'CV predictions: ratio {len(R)}; cohort men included {len(inc)}', flush=True)
 plt.rcParams.update({'font.size': 7.5, 'axes.spines.top': False, 'axes.spines.right': False, 'axes.edgecolor': MUTED, 'xtick.color': MUTED, 'ytick.color': MUTED})
 fig, ax = plt.subplots(1, 3, figsize=(7.2, 2.7), constrained_layout=True, gridspec_kw={'width_ratios': [1.5, 1, 1.15]})
-pma = lambda d: {m: np.mean([abs(v) for (r, mm), v in d.items() if mm == m]) for m in {k[1] for k in d}}   # per-male mean |error|
+pma = lambda d: {m: np.mean([abs(v) for (r, mm), v in d.items() if mm == m]) for m in sorted({k[1] for k in d})}   # per-male mean |error|
 a = ax[0]; data = [np.array(list(pma(E[c]).values())) for c, _ in CL] + [np.array(list(pma(R).values()))]; names = [n for _, n in CL] + ['DYZ1:DYZ2']
 for i, v in enumerate(data):   # per-male mean |error| over 10 repeats
     col = ORANGE if i == len(data) - 1 else GRAY

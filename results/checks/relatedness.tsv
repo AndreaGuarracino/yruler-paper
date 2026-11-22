@@ -4,25 +4,25 @@ kgp_new_links_2nd	0 pairs above kinship 0.0884 join different current components
 kgp_new_links_1st	0 pairs above kinship 0.177 join different current components: []
 kgp_current	1268 representatives; SD ratio outside panel 1192: ratio 0.772 (95% 0.736 to 0.809); HL DYZ3 R1b/other 0.340; HL DYZ19 J2a1a1/other J 0.233; Kruskal H DYZ3 796.6 over 14 lineages
 kgp_with_3rd_degree	1268 representatives; SD ratio outside panel 1192: ratio 0.772 (95% 0.738 to 0.808); HL DYZ3 R1b/other 0.340; HL DYZ19 J2a1a1/other J 0.233; Kruskal H DYZ3 796.6 over 14 lineages
-hgsg_relatedness_coverage	{('HGDP', 'gnomAD'): 393, ('SGDP', 'own KING'): 78, ('SGDP', 'gnomAD'): 62, ('SGDP', 'none'): 3}
+hgsg_relatedness_coverage	{('HGDP', 'gnomAD'): 392, ('SGDP', 'own KING'): 78, ('SGDP', 'gnomAD'): 62, ('SGDP', 'none'): 3}
 hgsg_pairs_3rd	12 pairs: [('HGDP00102', 'HGDP00108', 0.093), ('HGDP00173', 'HGDP00175', 0.059), ('HGDP00622', 'HGDP00642', 0.07), ('HGDP00720', 'HGDP00758', 0.492), ('HGDP01317', 'HGDP01318', 0.072), ('HGDP01317', 'HGDP01322', 0.068), ('HGDP01318', 'HGDP01322', 0.087), ('HGDP01321', 'HGDP01322', 0.054), ('HGDP01321', 'SGDP_HGDP01320', 0.052), ('HGDP01322', 'SGDP_HGDP01320', 0.054), ('HGDP01327', 'HGDP01330', 0.097), ('HGDP01339', 'HGDP01342', 0.128)]
 hgsg_pairs_2nd	4 pairs: [('HGDP00102', 'HGDP00108', 0.093), ('HGDP00720', 'HGDP00758', 0.492), ('HGDP01327', 'HGDP01330', 0.097), ('HGDP01339', 'HGDP01342', 0.128)]
 hgsg_pairs_1st	1 pairs: [('HGDP00720', 'HGDP00758', 0.492)]
-hgsg_sd_HGDP_all	393: ratio 0.799 (95% 0.756 to 0.845)
-hgsg_sd_SGDP_all	143: ratio 0.716 (95% 0.637 to 0.832)
-hgsg_dyz19_all	536 individuals; 24 of 67 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
-hgsg_dyz3_all	R1b 51 367835; other 485 880466; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
-hgsg_mw_dyz3_r1b_hgdp_all	44 against 349 men, medians 360 and 875 kb, U 1431, P 1.4e-18
+hgsg_sd_HGDP_all	392: ratio 0.799 (95% 0.755 to 0.842)
+hgsg_sd_SGDP_all	143: ratio 0.716 (95% 0.635 to 0.834)
+hgsg_dyz19_all	535 individuals; 24 of 67 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
+hgsg_dyz3_all	R1b 51 367835; other 484 881440; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
+hgsg_mw_dyz3_r1b_hgdp_all	44 against 348 men, medians 360 and 877 kb, U 1421, P 1.3e-18
 hgsg_mw_dyz3_o2a2b1a1_hgdp_all	10 against 10 men, medians 266 and 1057 kb, U 1, P 0.00025
 hgsg_mw_dyz19_j2a1a1_hgdp_all	16 against 30 men, medians 71 and 291 kb, U 0, P 3.3e-08
 hgsg_mw_dyz3_r1b_sgdp_all	7 against 136 men, medians 411 and 930 kb, U 115, P 0.00023
 hgsg_mw_dyz3_o2a2b1a1_sgdp_all	3 against 4 men, medians 256 and 969 kb, U 0, P 0.057
 hgsg_mw_dyz19_j2a1a1_sgdp_all	7 against 14 men, medians 74 and 301 kb, U 5, P 0.00033
-hgsg_sd_HGDP_one_per_component	384: ratio 0.802 (95% 0.757 to 0.851)
-hgsg_sd_SGDP_one_per_component	142: ratio 0.716 (95% 0.637 to 0.833)
-hgsg_dyz19_one_per_component	526 individuals; 24 of 66 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
-hgsg_dyz3_one_per_component	R1b 50 364563; other 476 879106; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
-hgsg_mw_dyz3_r1b_hgdp_one_per_component	43 against 341 men, medians 358 and 869 kb, U 1314, P 1.7e-18
+hgsg_sd_HGDP_one_per_component	383: ratio 0.802 (95% 0.755 to 0.849)
+hgsg_sd_SGDP_one_per_component	142: ratio 0.716 (95% 0.638 to 0.825)
+hgsg_dyz19_one_per_component	525 individuals; 24 of 66 J below 100 kb, all J2a1a1: False; other lineages below 100 kb: 1
+hgsg_dyz3_one_per_component	R1b 50 364563; other 475 879620; O2a2b1a1 13 264754; O2a2b1a2 14 1043270
+hgsg_mw_dyz3_r1b_hgdp_one_per_component	43 against 340 men, medians 358 and 870 kb, U 1305, P 1.7e-18
 hgsg_mw_dyz3_o2a2b1a1_hgdp_one_per_component	10 against 10 men, medians 266 and 1057 kb, U 1, P 0.00025
 hgsg_mw_dyz19_j2a1a1_hgdp_one_per_component	16 against 29 men, medians 71 and 291 kb, U 0, P 4e-08
 hgsg_mw_dyz3_r1b_sgdp_one_per_component	7 against 135 men, medians 411 and 927 kb, U 115, P 0.00024

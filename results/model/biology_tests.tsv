@@ -30,6 +30,7 @@ hl_dyz19_j2a1a1_over_other_j	0.235 (0.230-0.240); 34 vs 36
 mw_dyz3_r1b_1kgp	216 vs 988, median 318 vs 978 kb, U 7508, p 7.31e-102
 mw_dyz3_o2a2b1a1_1kgp	30 vs 19, median 266 vs 1026 kb, U 0, p 5.29e-09
 mw_dyz19_j2a1a1_1kgp	34 vs 36, median 65 vs 277 kb, U 0, p 6.69e-13
+mw_holm_1kgp	dyz3_r1b p 7.31e-102 Holm 2.19e-101; dyz19_j2a1a1 p 6.69e-13 Holm 1.34e-12; dyz3_o2a2b1a1 p 5.29e-09 Holm 5.29e-09
 corr_DYZ3_Yq12	all +0.104, within lineage +0.001
 corr_DYZ3_DYZ1	all +0.171, within lineage +0.020
 corr_DYZ3_DYZ2	all +0.014, within lineage -0.016
@@ -55,22 +56,28 @@ father_son_ratio_all	297 pairs: son closer to 1 in 147, median |log ratio| fathe
 father_son_ratio_cross	273 pairs: son closer to 1 in 134, median |log ratio| father 0.0728 son 0.0767, Wilcoxon p 0.72
 father_son_ratio_same	22 pairs: son closer to 1 in 12, median |log ratio| father 0.0644 son 0.0663, Wilcoxon p 0.679
 composition_sd_1kgp	1204: SD 0.194 and 0.252, ratio 0.771 (95% 0.736 to 0.807), Pitman-Morgan r -0.468, P 1.8e-66
+composition_sd_pm_1kgp	1204 in 17 lineages (0 in singleton lineages out): ratio 0.771 (95% within-lineage bootstrap 0.734 to 0.809), Pitman-Morgan r -0.468 (95% -0.543 to -0.389), t -18.22, df 1186, P 1.3e-65
 composition_arithmetic_null	slope on Yq12 with DYZ2 permuted within lineage: median -0.141 (central 95% -0.172 to -0.107), 1,000 permutations
 composition_slope_cohort	-0.263 (95% -0.317 to -0.212); 1204 men, within lineage, outside the panel
 composition_sd_assemblies	83: SD 0.172 and 0.244, ratio 0.704 (95% 0.625 to 0.809), Pitman-Morgan r -0.582, P 8.2e-09
+composition_sd_pm_assemblies	78 in 13 lineages (5 in singleton lineages out): ratio 0.704 (95% within-lineage bootstrap 0.625 to 0.837), Pitman-Morgan r -0.582 (95% -0.768 to -0.298), t -5.72, df 64, P 3e-07
 composition_slope_assemblies	-0.370 (95% -0.510 to -0.196); 83 assemblies, within lineage
 composition_error_sd	CV SD of log error DYZ1 0.0353, DYZ2 0.0353
 hgsg_calls	668 of 723 with a HaploGrouper call; 535 PCR-free individuals after removing 1kGP aliases and duplicates
 hgsg_one_per_component	516 of 535 individuals, one per kinship group
 hgsg_j	67 J men; DYZ19 below 100 kb in 24: 65.0-79.4 kb; others min 251.7 kb
 composition_sd_hgdp	378: SD 0.214 and 0.267, ratio 0.801 (95% 0.755 to 0.850), Pitman-Morgan r -0.399, P 7.5e-16
+composition_sd_pm_hgdp	376 in 17 lineages (2 in singleton lineages out): ratio 0.801 (95% within-lineage bootstrap 0.755 to 0.849), Pitman-Morgan r -0.399 (95% -0.503 to -0.299), t -8.22, df 358, P 3.7e-15
 composition_sd_sgdp	138: SD 0.327 and 0.484, ratio 0.675 (95% 0.612 to 0.760), Pitman-Morgan r -0.688, P 1.2e-20
+composition_sd_pm_sgdp	137 in 17 lineages (1 in singleton lineages out): ratio 0.675 (95% within-lineage bootstrap 0.613 to 0.765), Pitman-Morgan r -0.688 (95% -0.800 to -0.508), t -10.33, df 119, P 3.1e-18
 mw_dyz3_r1b_hgdp	42 vs 336, median 356 vs 865 kb, U 1288, p 5.67e-18
 mw_dyz3_o2a2b1a1_hgdp	10 vs 10, median 266 vs 1057 kb, U 1, p 0.000246
 mw_dyz19_j2a1a1_hgdp	16 vs 28, median 71 vs 291 kb, U 0, p 4.96e-08
+mw_holm_hgdp	dyz3_r1b p 5.67e-18 Holm 1.7e-17; dyz19_j2a1a1 p 4.96e-08 Holm 9.91e-08; dyz3_o2a2b1a1 p 0.000246 Holm 0.000246
 mw_dyz3_r1b_sgdp	7 vs 131, median 411 vs 966 kb, U 100, p 0.000123
 mw_dyz3_o2a2b1a1_sgdp	3 vs 4, median 256 vs 969 kb, U 0, p 0.0571
 mw_dyz19_j2a1a1_sgdp	6 vs 13, median 74 vs 305 kb, U 0, p 7.37e-05
+mw_holm_sgdp	dyz19_j2a1a1 p 7.37e-05 Holm 0.000221; dyz3_r1b p 0.000123 Holm 0.000246; dyz3_o2a2b1a1 p 0.0571 Holm 0.0571
 hgsg_dyz3	R1b 51 men, median 367835; others 484, median 881440; O2a2b1a1 13, median 264754; O2a2b1a2 14, median 1043270
 hgsg_j_labels_short	[('J2a1a1b1', 5), ('J2a1a1a2b2a1a1a2', 2), ('J2a1a1b2a1a2', 2), ('J2a1a1b2a1a1', 2), ('J2a1a1a2a2b2a', 2), ('J2a1a1b2a1a1a', 1), ('J2a1a1b1a1a', 1), ('J2a1a1a2b2a1a1c1a', 1), ('J2a1a1b2a1a2a1', 1), ('J2a1a1a2b2a2b2a2', 1), ('J2a1a1a2b2a1a1a', 1), ('J2a1a1a2b2a1a1a2a1a', 1), ('J2a1', 1), ('J2a1a1a2b2a3a1', 1), ('J2a1a1a2b2a3b1a1b1a2a', 1), ('J2a1a1a2b2a3b1a1a2', 1)]
 hgsg_j_labels_other	[('J1a2a1a2d2b2b2c4b1c1c1a1a', 9), ('J1a2a1a2d2b2b2c4b2a1', 3), ('J1a2a1a2d2b2b2c4d2a2a4a2', 3), ('J2a1', 3), ('J2a1a2b2a2a2', 2), ('J2b2a2b', 2), ('J1a2a1a2d2b2b2c4b1c1c1a', 2), ('J1a2a1a2d2b2b2c4d2a2a4a', 2), ('J1b1b', 1), ('J2b2a2b2b1b1', 1), ('J2b2a2a1', 1), ('J1a2b1a', 1), ('J1a2b1b2', 1), ('J1a2a1a2d2b2b2c4d2a2a2', 1)]
@@ -91,7 +98,6 @@ overlap_father_son_DYZ19	282 cross-batch pairs, Spearman +0.298, P 3.5e-07
 overlap_father_son_DYZ17	282 cross-batch pairs, Spearman +0.239, P 5e-05
 overlap_share	median 0.0612, 1st to 99th percentile 0.0426 to 0.1052, 1639 samples
 sister_pairs_v4	553 pairs: DYZ19 6, DYZ3 46, Yq12 54
-sister_pairs_v3	556 pairs: DYZ19 5, DYZ3 48, Yq12 57
 annotation_floor_DYZ1	91 assemblies: offset +1.92%, median |difference around it| 0.09%, p90 0.27%, max 0.60%
 annotation_floor_DYZ2	91 assemblies: offset -0.27%, median |difference around it| 0.07%, p90 0.19%, max 0.75%
 annotation_floor_DYZ18	91 assemblies: offset +0.05%, median |difference around it| 0.00%, p90 0.13%, max 1.75%
