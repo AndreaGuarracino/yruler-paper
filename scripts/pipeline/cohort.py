@@ -1,13 +1,13 @@
 # Apply the model to saved counts
-# usage: python3 um_apply.py <pass dir> <out.tsv> [model dir]; per sample: cohort, sex, population, Y and X dose, lengths, estimate_status, Y state
-import os, sys, glob, collections, subprocess as sp, numpy as np, multiprocessing as mp
-P = os.environ['P']; O = f'{P}/{os.environ.get("UM", "markers_u25")}'; A25 = f'{P}/markers_u25'; sys.path.insert(0, f'{P}/scripts'); import um_model, truth_cl
-D, OUT = f'{P}/{sys.argv[1]}', sys.argv[2]; MD = sys.argv[3] if len(sys.argv) > 3 else f'{P}/model'; Z = 'zstd'
-U = np.load(f'{O}/u_keys.npy'); oi = np.load(f'{A25}/counts_order_idx.npy'); gc = um_model.gcount(U); fm, M = um_model.load(MD); y0 = fm[f'ysc_{M[0]["class"]}']
+# usage: python3 cohort.py <pass dir> <out.tsv> [model dir]; per sample: cohort, sex, population, Y and X dose, lengths, estimate_status, Y state
+import os, re, sys, glob, collections, subprocess as sp, numpy as np, multiprocessing as mp
+P = os.environ['P']; O = f'{P}/{os.environ["UM"]}'; IN = os.environ['IN']; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import model, truth
+D, OUT = f'{P}/{sys.argv[1]}', sys.argv[2]; MD = sys.argv[3]; Z = 'zstd'
+U = np.load(f'{O}/u_keys.npy'); oi = np.load(f'{O}/u25_order_idx.npy'); gc = model.gcount(U); fm, M = model.load(MD); y0 = fm[f'ysc_{M[0]["class"]}']
 LUT = np.full(256, 255, np.uint8); LUT[[65, 67, 71, 84]] = [0, 1, 2, 3]
-V5 = O != A25   # v5, v6: markers_u25 whole counts plus saved-read counts of the other keys
+V5 = True   # pass counts are over the older universe (u25_keys): map them to u_keys, plus saved-read counts of the other keys
 if V5:
-    U0 = np.load(f'{A25}/u_keys.npy'); o2n = np.searchsorted(U, U0); N0 = len(o2n); DD = f'{O}/{os.environ.get("DYZ17DIR", "dyz17c")}'   # markers_u25 whole counts -> UM order; DYZ17DIR/DFA: saved-read counts of the keys not in markers_u25 (v5: dyz17c/dyz17.fa, v6: deltac/delta.fa)
+    U0 = np.load(f'{O}/u25_keys.npy'); o2n = np.searchsorted(U, U0); N0 = len(o2n); DD = f'{O}/{os.environ.get("DYZ17DIR", "dyz17c")}'   # markers_u25 whole counts -> UM order; DYZ17DIR/DFA: saved-read counts of the keys not in markers_u25 (v5: dyz17c/dyz17.fa, v6: deltac/delta.fa)
     if not (U[np.minimum(o2n, len(U) - 1)] == U0).all(): sys.exit(f'ERROR {O} keys do not contain markers_u25 keys')
     sq = open(f'{O}/{os.environ.get("DFA", "dyz17.fa")}.order').read().split('\n')[:-1]; v = LUT[np.frombuffer(''.join(sq).encode(), np.uint8).reshape(-1, 31)]; k = np.zeros(len(v), np.uint64); rc = np.zeros(len(v), np.uint64)
     for i in range(31): k = (k << np.uint64(2)) | v[:, i].astype(np.uint64)
@@ -47,32 +47,32 @@ def one(s):   # Y dose and reported lengths of one sample
             c0 = np.zeros(N0); c0[oi] = x; c = np.zeros(len(U)); c[o2n] = c0; c[DJ[NEW]] = d[NEW]
         else: c = np.zeros(len(U)); c[oi] = x
         d, wm = den(s, c); pq = [2 * c[g].mean() / d for g in GB]; yd = 2 * c[y0].mean() / d / YDN
-        e = um_model.lengths(c, fm, M, gc, y0, flat=True)   # one formula for every sample (user 2026-11-07): ruler basis, no G+C correction without a curve, None (NA) when the ruler sum is 0
-        if e and not um_model.gcbins(c[y0].astype(np.float64), gc[y0]): print(f'{s}: y_dose {yd:.4f} without a G+C curve: ruler basis, no G+C correction', flush=True)
+        e = model.lengths(c, fm, M, gc, y0, flat=True)   # one formula for every sample (user 2026-11-07): ruler basis, no G+C correction without a curve, None (NA) when the ruler sum is 0
+        if e and not model.gcbins(c[y0].astype(np.float64), gc[y0]): print(f'{s}: y_dose {yd:.4f} without a G+C curve: ruler basis, no G+C correction', flush=True)
         return s, yd, (e[0] if e else None, 'y_found' if NOY is None or round(yd, 4) > NOY else 'no_y'), pq, wm   # NOY: y_status cut, as the release
     except Exception as e: print(f'WARNING {s}: {e}', flush=True); return s, None, None, [], []
 S = sorted(f.split('/')[-3] for f in glob.glob(f'{D}/*/whole/counts.col.zst')); print(f'{D}: {len(S)} samples, model {MD}', flush=True)
 with mp.Pool(int(os.environ.get('SLURM_CPUS_PER_TASK', 8))) as p: R = p.map(one, S)
-ref = set().union(*[set(x) for x in truth_cl.load(O).values()])
-ped = {l.split()[1]: l.split() for l in open(f'{P}/yhaplo/ped3202.txt') if not l.startswith('FamilyID')}
-for l in list(open(f'{P}/lists/1kGP.3202_samples.pedigree_info.txt'))[1:]: x = l.split(); ped[x[0]][4] = x[3]   # sex from the corrected 1kGP pedigree (Byrska-Bishop 2022): HG02300 female
-hg = dict(l.rstrip('\n').split('\t')[:2] for l in open(f'{O}/lineage.tsv') if l.strip()); bat = {l.split('\t')[0]: l.split('\t')[3] for l in open(f'{P}/lists/pass1kgp.tsv')}
-YS = {x[0]: x[2:10] for x in (l.rstrip('\n').split('\t') for l in list(open(os.environ.get('YSF', f'{P}/results/ystate_1kgp.tsv')))[1:])}   # Yp, Yq, state, ruler bias; YSF=<um_ystate.py output> (v6: model_v5_v6/ystate_1kgp.tsv)
+ref = set().union(*[set(x) for x in truth.load(f'{IN}/truth').values()])
+ped = {l.split()[1]: l.split() for l in open(f'{IN}/lists/ped3202.txt') if not l.startswith('FamilyID')}
+for l in list(open(f'{IN}/lists/1kGP.3202_samples.pedigree_info.txt'))[1:]: x = l.split(); ped[x[0]][4] = x[3]   # sex from the corrected 1kGP pedigree (Byrska-Bishop 2022): HG02300 female
+hg = dict(l.rstrip('\n').split('\t')[:2] for l in open(f'{IN}/lists/lineage.tsv') if l.strip()); bat = {l.split('\t')[0]: l.split('\t')[3] for l in open(f'{IN}/lists/pass1kgp.tsv')}
+YS = {x[0]: x[2:10] for x in (l.rstrip('\n').split('\t') for l in list(open(os.environ['YSF']))[1:])}   # Yp, Yq, state, ruler bias; YSF=<um_ystate.py output> (v6: model_v5_v6/ystate_1kgp.tsv)
 NM = {'dyz3': 'DYZ3', 'yq12': 'Yq12', 'dyz1': 'DYZ1', 'dyz2': 'DYZ2', 'dyz18s': 'DYZ18S', 'yq2k7': 'YqHet2.7', 'dyz18sub': 'DYZ18sub', 'dyz19': 'DYZ19', 'dyz17': 'DYZ17'}
-SX = {x[2]: x[3] for f in ('PRJEB6463_sex.tsv', 'PRJEB9586_sex.tsv') for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/lists/{f}'))[1:])}   # HGDP, SGDP sex by sample alias
-PO = {x[0]: x[1].split('/data/')[1].split('/')[0] for x in (l.split('\t') for l in open(f'{P}/lists/hgdp_sgdp_urls.tsv')) if '/data/' in x[1]}   # HGDP, SGDP population from the URL
-HL = {x[0]: ({'PCRfree': 'PCR-free', 'PCR': 'PCR'}[x[4]], x[3]) for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/ext/meta/hgdp_wgs.20190516.metadata.txt'))[1:])}   # HGDP published library type and source (Bergstrom 2020)
-SL = {f.rsplit('/', 1)[1].rsplit('_', 1)[0]: x[6] for x in (l.rstrip('\n').split('\t') for l in list(open(f'{P}/lists/PRJEB9586.tsv'))[1:]) for f in x[11].split(';')}   # SGDP library name (ENA file name without _1/_2.fastq.gz) -> ENA protocol
+SX = {x[2]: x[3] for f in ('PRJEB6463_sex.tsv', 'PRJEB9586_sex.tsv') for x in (l.rstrip('\n').split('\t') for l in list(open(f'{IN}/lists/{f}'))[1:])}   # HGDP, SGDP sex by sample alias
+PO = {x[0]: x[1].split('/data/')[1].split('/')[0] for x in (l.split('\t') for l in open(f'{IN}/lists/hgdp_sgdp_urls.tsv')) if '/data/' in x[1]}   # HGDP, SGDP population from the URL
+HL = {x[0]: ({'PCRfree': 'PCR-free', 'PCR': 'PCR'}[x[4]], x[3]) for x in (l.rstrip('\n').split('\t') for l in list(open(f'{IN}/lists/hgdp_wgs.20190516.metadata.txt'))[1:])}   # HGDP published library type and source (Bergstrom 2020)
+SL = {f.rsplit('/', 1)[1].rsplit('_', 1)[0]: x[6] for x in (l.rstrip('\n').split('\t') for l in list(open(f'{IN}/lists/PRJEB9586.tsv'))[1:]) for f in x[11].split(';')}   # SGDP library name (ENA file name without _1/_2.fastq.gz) -> ENA protocol
 rg = lambda x: 'PCR-free' if int(x[1]) >= 2 else 'PCR'   # HGDP files without a usable published type: read groups
-lib = lambda x: (rg(x) if x[0] not in HL or (HL[x[0]][1] == 'sgdp' and not any(v.startswith('LP') for v in x[2].split(','))) else HL[x[0]][0]) if x[0].startswith('HGDP') else 'PCR-free' if 'PCR-free' in SL.get(x[2].split(',')[0], '') else 'unknown'
-LB = {x[0]: lib(x) for x in (l.split('\t') for l in list(open(f'{P}/model/cram_meta_hgdp_sgdp.tsv'))[1:])}   # library: published type (HGDP Bergstrom 2020, SGDP ENA PRJEB9586 by library name), read groups >= 2 for HGDP files without one; 1kGP all PCR-free
+lib = lambda x: (rg(x) if x[0] not in HL or (HL[x[0]][1] == 'sgdp' and not any(v.startswith('LP') for v in x[2].split(','))) else HL[x[0]][0]) if x[0].startswith('HGDP') else 'PCR-free' if x[2].split(',')[0].startswith('LP6005') else 'PCR'
+LB = {x[0]: lib(x) for x in (l.split('\t') for l in list(open(f'{IN}/lists/cram_meta_hgdp_sgdp.tsv'))[1:])}   # library: published type (HGDP Bergstrom 2020, SGDP ENA PRJEB9586 by library name), read groups >= 2 for HGDP files without one; 1kGP all PCR-free
 print(f"library labels: {collections.Counter((k[:4], v) for k, v in LB.items())}", flush=True)
 def meta(s):   # cohort, sex, population, superpopulation
     if s in ped: pd = ped[s]; return '1kGP', {'1': 'male', '2': 'female'}.get(pd[4], '.'), pd[5], pd[6]
     if s.startswith('SGDP_'): return 'SGDP', SX.get(s[5:], '.'), PO.get(s, '.'), '.'
     if s.startswith('HGDP'): return 'HGDP', SX.get(s, '.'), PO.get(s, '.'), '.'
     return 'other_run:' + s.split('_', 1)[-1], 'male', '.', '.'
-cls = [m['class'] for m in M if m['length'] != 'none']; lin = lambda h: '.' if h == '.' else h[:3] if h.startswith('R1') else h[0]; n = {}
+cls = [m['class'] for m in M if m['length'] != 'none']; lin = lambda h: '.' if h in ('.', '') or h.startswith('YRoot') else h[:3] if h.startswith('R1') else (lambda t: t if len(t) > 1 else t[0])(re.match('[A-Z]+', h).group(0)); n = {}   # lin: stem clades (NO, CT, IJ) keep their name
 with open(OUT, 'w') as o:
     o.write('\t'.join(['sample', 'cohort', 'sex', 'population', 'superpopulation', 'batch', 'haplogroup', 'lineage', 'y_dose', 'x_dose'] + [f'{NM[c]}_bp' for c in cls] + ['estimate_status', 'reference_male', 'yp_ruler_dose', 'yq_ruler_dose', 'y_state', 'yp_deletion_bias_pct', 'sex_chromosomes', 'par1_dose', 'par2_dose', 'library', 'y_status']) + '\n')
     for s, dose, e, pq, wm in R:

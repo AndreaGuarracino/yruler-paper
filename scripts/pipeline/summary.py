@@ -1,65 +1,67 @@
-# Summaries of v5 CV, lineage-out, holdout
-# usage: UM=markers_v5 (TRUTHX, TRUTHSET as the model) [RULE=r0.5_0.1] python3 um_v5sum.py cv|lolo|holdout <base dir> <floor dir or none> <out.tsv>; also rules, depth and pair modes (below)
-# reported classes: floors for dyz2 and yq2k7, Yq12 = DYZ1 + DYZ2 + rest (median Yq12 - DYZ1 - DYZ2 of the training truth males); errors in % of the assembly length
+# Summaries of the CV, lineage-out, batch holdout and depth runs, and the tables for the figure scripts
+# usage: (TRUTHX as the model) python3 summary.py cv|lolo|holdout <base folds dir> <floor folds dir or none> <out.tsv> (dirs relative to $P/$UM)
+#        python3 summary.py depth <dir with cv_depth_<label>.tsv> <out.tsv> <label> ... | export <v1 dir> <out dir> (CHR8DEPTH=<chr8 window 31-mer depth per level and sample>)
+# reported classes: floors for dyz2 and yq2k7, Yq12 = DYZ1 + DYZ2 + DYZ18S + rest; errors in % of the assembly length
 import os, sys, glob, collections, numpy as np
-if sys.argv[1] == 'floors':   # floors <out tsv> <g> ...: per class and G+C floor, median |SGDP - HGDP| of the same individuals (model_gcf<g>/same_male_pairs.tsv); no truth; SGDP vs 1kGP NYGC as a control
-    P = os.environ['P']; R = collections.defaultdict(lambda: collections.defaultdict(list))
-    for g in sys.argv[3:]:
-        fn = f'{P}/model_gcf{g}/same_male_pairs.tsv'
-        if not os.path.exists(fn): print(f'ERROR floor {g}: no {fn}', flush=True); continue
-        for l in list(open(fn))[1:]:
-            a, b, pr, c, x, y, d = l.rstrip('\n').split('\t')
-            if d not in ('', 'nan') and pr in ('SGDP vs HGDP', 'SGDP vs 1kGP NYGC'): R[(c, pr)][int(g)].append(abs(float(d)))
-    with open(sys.argv[2], 'w') as o:
-        o.write('class\tpairs\tfloor\tn\tmedian_abs_diff\tmax_abs_diff\n')
-        for (c, pr), F in sorted(R.items()):
-            for g in sorted(F): v = np.array(F[g]); o.write(f'{c}\t{pr}\t{g}\t{len(v)}\t{np.median(v):.2f}\t{v.max():.2f}\n')
-    for c in sorted({c for c, pr in R}):
-        F = R[(c, 'SGDP vs HGDP')]
-        if not F: continue
-        gb = min(F, key=lambda g: (np.median(F[g]), g)); N = R[(c, 'SGDP vs 1kGP NYGC')]
-        print(f'{c}: chosen floor {gb} (SGDP vs HGDP median |diff| {np.median(F[gb]):.2f}% over {len(F[gb])} pairs; no floor {np.median(F[0]):.2f}%' + (f'; control SGDP vs NYGC {np.median(N[gb]):.2f}% vs no floor {np.median(N[0]):.2f}%' if 0 in N and gb in N else '') + ')', flush=True)
+if sys.argv[1] == 'export':   # per prediction: repeat, fold, class, sample, choice, markers, error, truth bp, estimate bp, chr8 window depth of the test run; level 1 = the main CV (cv/), other levels = depth/
+    import csv
+    V, OD = sys.argv[2:4]; os.makedirs(OD, exist_ok=True); CL = ['dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'dyz19', 'dyz17']; LV = {'1': 'full', 'd30x': 'd30x', 'd25x': 'd25x', 'd20x': 'd20x', 'd15x': 'd15x', 'd10x': 'd10x', 'd5x': 'd5x', 'd2x': 'd2x', 'd1x': 'd1x'}
+    def log(*a): print(*a, flush=True)
+    def units(f):
+        R = {}
+        for l in list(open(f))[1:]:
+            c, r, m, e = l.rstrip('\n').split('\t')
+            if c in CL: R[(c, r, m)] = e
+        return R
+    def rows(pat, key):   # (class, key fields, sample) -> row of the per-class fold files; DYZ2 from the G+C floor run
+        R = {}
+        for c in CL:
+            d = pat(c == 'dyz2'); fs = glob.glob(f'{d}/*_c{c}.tsv')
+            if not fs: sys.exit(f'ERROR no files {d}/*_c{c}.tsv')
+            for f in fs:
+                for l in open(f):
+                    x = l.rstrip('\n').split('\t'); R[(c, key(x), x[3] if key(x) is not None else x[2])] = x
+        return R
+    DEP = {(r['level'], r['sample']): r['chr8_depth_mean'] for r in csv.DictReader(open(os.environ['CHR8DEPTH']), delimiter='\t')}
+    def dep(lv, s):   # chr8 window 31-mer depth of the test run; full depth when the sample has no run at that level (the CV used its full-depth counts)
+        if (lv, s) not in DEP: log(f'{s}: no {lv} chr8 depth, full depth used')
+        return DEP[(lv, s)] if (lv, s) in DEP else DEP[('full', s)]
+    for f, lv in LV.items():
+        E = units(f'{V}/cv/cv_units.tsv' if f == '1' else f'{V}/depth/cv_depth_{lv}_units.tsv')
+        X = rows(lambda fl: f'{V}/cv/folds{"_dyz2_gcfloor" * fl}' if f == '1' else f'{V}/depth/folds{"_dyz2_gcfloor" * fl}/{lv}', lambda x: x[0])
+        n = collections.Counter(); miss = 0
+        with open(f'{OD}/depth_f{f}.tsv', 'w') as o:
+            o.write('repeat\tfold\tclass\tsample\tchoice_presence_outside_ruler_filter\tmarkers\terror_pct\treference_bp\testimate_bp\tchr8_depth_test\n')
+            for (c, r, m), e in sorted(E.items(), key=lambda z: (CL.index(z[0][0]), int(z[0][1]), z[0][2])):
+                x = X.get((c, r, m))
+                if x is None: miss += 1; continue
+                t = float(x[7]); o.write('\t'.join([r, x[1], c, m, x[4], x[5], e, f'{t:.1f}', f'{t * (1 + float(e) / 100):.0f}', dep(lv, m)]) + '\n'); n[c] += 1
+        if miss: sys.exit(f'ERROR level {lv}: {miss} predictions without a CV row')
+        log(f'level {f} ({lv}): ' + ', '.join(f'{c} {n[c]}' for c in CL) + f'; men {len({k[2] for k in E})}')
+    E = units(f'{V}/lineage_out/lolo_units.tsv'); X = rows(lambda fl: f'{V}/lineage_out/folds{"_dyz2_gcfloor" * fl}', lambda x: None)
+    with open(f'{OD}/lineage_out.tsv', 'w') as o:
+        o.write('lineage\tclass\tsample\tchoice_presence_outside_ruler_filter\tmarkers\terror_pct\treference_bp\testimate_bp\n'); k = 0
+        for (c, r, m), e in sorted(E.items(), key=lambda z: (CL.index(z[0][0]), z[0][2])):
+            x = X.get((c, None, m))
+            if x is None: sys.exit(f'ERROR lineage-out {c} {m}: no row')
+            t = float(x[6]); o.write('\t'.join([x[0], c, m, x[3], x[4], e, f'{t:.1f}', f'{t * (1 + float(e) / 100):.0f}']) + '\n'); k += 1
+    log(f'lineage_out: {k} rows, lineages {sorted({x[0] for x in X.values()})}')
     sys.exit(0)
-if sys.argv[1] == 'rules':   # rules <prefix> <rule> ...: one row per fixed rule from <prefix>_<rule>.tsv, sorted by the mean of class medians
-    print('rule\tmean_of_medians\tmax_of_max\t' + '\t'.join(f'{c}_median/p90/max' for c in ['dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'yq2k7', 'dyz18sub', 'dyz19', 'dyz17']), flush=True); rows = []
-    for r in sys.argv[3:]:
-        X = {x.split('\t')[0]: x.rstrip('\n').split('\t') for x in list(open(f'{sys.argv[2]}_{r}.tsv'))[1:]}
-        rows.append((np.mean([float(v[4]) for v in X.values()]), max(float(v[6]) for v in X.values()), r, '\t'.join(f'{X[c][4]}/{X[c][5]}/{X[c][6]}' if c in X else '.' for c in ['dyz3', 'yq12', 'dyz1', 'dyz2', 'dyz18s', 'yq2k7', 'dyz18sub', 'dyz19', 'dyz17'])))
-    for m, x, r, t in sorted(rows): print(f'{r}\t{m:.3f}\t{x:.2f}\t{t}', flush=True)
-    sys.exit(0)
-if sys.argv[1] in ('depth', 'pair'):   # depth table: depth <out.tsv> <label> ...; paired runs: pair <units A> <units B> <name A> <name B> <out.tsv>
-    M = f"{os.environ['P']}/{os.environ.get('MDIR', 'model_v5_sum')}"
-    if sys.argv[1] == 'depth':
-        with open(sys.argv[2], 'w') as o:
-            o.write('depth\tclass\tn_predictions\tn_males\tmean_abs\tmedian_abs\tp90_abs\tmax_abs\tbias_median\trepeat_median_mean\tfemale_median_bp\tfemale_max_bp\n')
-            for l in sys.argv[3:]:
-                R = [x.rstrip('\n').split('\t') for x in open(f'{M}/cv_depth_{l}.tsv')]; F = {x.split('\t')[0]: x.rstrip('\n').split('\t') for x in list(open(f'{M}/cv_depth_{l}_females.tsv'))[1:]}
-                for r in R[1:]: o.write('\t'.join([l] + r[:8] + [r[9], F.get(r[0], ['.'] * 5)[2], F.get(r[0], ['.'] * 5)[4]]) + '\n')
-        print(open(sys.argv[2]).read(), flush=True); sys.exit(0)
-    A, B, NA, NB, OUT = sys.argv[2:7]
-    def rd(f):
-        D = collections.defaultdict(lambda: collections.defaultdict(list))
-        for l in list(open(f))[1:]: c, r, m, e = l.rstrip('\n').split('\t'); D[c][m].append(abs(float(e)))
-        return {c: {m: np.mean(v) for m, v in d.items()} for c, d in D.items()}
-    X, Y = rd(A), rd(B)
-    with open(OUT, 'w') as o:
-        o.write(f'class\tcommon_males\tonly_{NA}\tonly_{NB}\tmedian_{NA}\tmedian_{NB}\tp90_{NA}\tp90_{NB}\tmax_{NA}\tmax_{NB}\tmedian_paired_diff\t{NB}_better\t{NA}_better\n')
-        for c in X:
-            cm = sorted(set(X[c]) & set(Y.get(c, {}))); a = np.array([X[c][m] for m in cm]); b = np.array([Y[c][m] for m in cm]); d = b - a
-            row = [c, len(cm), len(set(X[c]) - set(cm)), len(set(Y.get(c, {})) - set(cm)), f'{np.median(a):.2f}', f'{np.median(b):.2f}', f'{np.percentile(a, 90):.2f}', f'{np.percentile(b, 90):.2f}', f'{a.max():.2f}', f'{b.max():.2f}', f'{np.median(d):+.3f}', int((d < 0).sum()), int((d > 0).sum())]
-            o.write('\t'.join(map(str, row)) + '\n'); print('\t'.join(map(str, row)), flush=True)
-    sys.exit(0)
-P = os.environ['P']; O = f'{P}/{os.environ.get("UM", "markers_v5")}'; sys.path.insert(0, f'{P}/scripts'); import truth_cl
+if sys.argv[1] == 'depth':   # depth <dir> <out.tsv> <label> ...: one table over the depth levels
+    M = sys.argv[2]
+    with open(sys.argv[3], 'w') as o:
+        o.write('depth\tclass\tn_predictions\tn_males\tmean_abs\tmedian_abs\tp90_abs\tmax_abs\tbias_median\trepeat_median_mean\tfemale_median_bp\tfemale_max_bp\n')
+        for l in sys.argv[4:]:
+            R = [x.rstrip('\n').split('\t') for x in open(f'{M}/cv_depth_{l}.tsv')]; F = {x.split('\t')[0]: x.rstrip('\n').split('\t') for x in list(open(f'{M}/cv_depth_{l}_females.tsv'))[1:]}
+            for r in R[1:]: o.write('\t'.join([l] + r[:8] + [r[9], F.get(r[0], ['.'] * 5)[2], F.get(r[0], ['.'] * 5)[4]]) + '\n')
+    print(open(sys.argv[3]).read(), flush=True); sys.exit(0)
+P = os.environ['P']; O = f'{P}/{os.environ["UM"]}'; IN = os.environ['IN']; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import truth
 K, B, F, OUT = sys.argv[1], f'{O}/{sys.argv[2]}', f'{O}/{sys.argv[3]}', sys.argv[4]
 def log(*a): print(*a, flush=True)
-T = truth_cl.load(O)
+T = truth.load(f'{IN}/truth')
 if os.environ.get('TRUTHX'):
     for l in open(os.environ['TRUTHX']): c, s = l.split()[:2]; T[c].pop(s, None)
-if os.environ.get('TRUTHSET'):
-    for l in open(os.environ['TRUTHSET']):
-        c, s, v = l.split()[:3]
-        if s in T[c]: T[c][s] = float(v)
-G = {}; TRU = {}; RULE = os.environ.get('RULE', '')   # (class, unit) -> training group: (repeat, fold) for cv, lineage for lolo; RULE=r<presence>_<outside>: rows of one fixed rule (um_eval.py ALLRULES)
+G = {}; TRU = {}; RULE = os.environ.get('RULE', '')   # (class, unit) -> training group: (repeat, fold) for cv, lineage for lolo; RULE=r<presence>_<outside>: rows of one fixed rule (cv_eval.py allrules)
 def read(d):   # (class, unit) -> % error; unit = (repeat, male) for cv, male otherwise
     E = {}
     for fn in sorted(glob.glob(f'{d}/*.tsv')):
@@ -71,7 +73,7 @@ def read(d):   # (class, unit) -> % error; unit = (repeat, male) for cv, male ot
             else: c, s, e = x[:3]; u = s   # holdout: class, male, error[, truth]
             if (c.split('|')[1] if '|' in c else '') != RULE: continue
             c = c.split('|')[0]; E[(c, u)] = float(e); G[(c, u)] = (x[0], x[1]) if K == 'cv' else x[0] if K == 'lolo' else '.'
-            if len(x) > {'cv': 7, 'lolo': 6}.get(K, 3): TRU[(c, u)] = float(x[-1])   # truth used by um_eval.py (per-fold all-copies truth)
+            if len(x) > {'cv': 7, 'lolo': 6}.get(K, 3): TRU[(c, u)] = float(x[-1])   # truth used by cv_eval.py (per-fold all-copies truth)
     return E
 EB, EF = read(B), read(F) if os.path.isdir(F) else {}
 if os.environ.get('TRUTHNEW'):   # same predictions scored against another truth
