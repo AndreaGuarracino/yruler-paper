@@ -27,6 +27,7 @@ These tables come from `scripts/pipeline/` and have no rebuild line below.
 - `results/checks/cv_ygroup.tsv`, `results/checks/cv_ygroup_groups.txt`: cross-validation with folds grouped by Y lineage.
 - `results/checks/xpar_kmer_g72.chrY_XY.tsv`: PAR and XTR windows of Extended Data Fig. 3 (read by `scripts/figure_ychm13_states.py`).
 - `results/model/sanroman_individual_summary.tsv`: per-individual comparison with San Roman 2024.
+- `results/checks/base_quality_1kgp.tsv`: mean read base quality and mismatch rate in chr8:95.0-95.2 Mb per 1kGP male (aligned CRAMs), input of `scripts/batch_pairs.py`.
 
 ## Rebuild
 
@@ -53,6 +54,7 @@ REPS=all python3 scripts/pgls_composition.py $R/cohort_1kgp.tsv $R/pgls_composit
 python3 scripts/relatedness_checks.py $R results/checks/relatedness/gnomad_related_pairs.tsv results/checks/relatedness.tsv results/checks/relatedness/sgdp_king_pairs.tsv
 python3 scripts/sanroman_bootstrap.py $R/sanroman_comparison.tsv $R/sanroman_bootstrap.tsv
 python3 scripts/duplicate_check.py results/estimates_1kgp.tsv results/checks/duprate_1kgp.tsv results/checks/dupq_bx.tsv results/checks/duplicate_check.tsv
+python3 scripts/batch_pairs.py results/figures/pedigree_pairs.tsv results/checks/base_quality_1kgp.tsv results/checks/batch_pairs.tsv
 cd manuscript && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
 
